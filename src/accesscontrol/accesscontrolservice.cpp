@@ -19,7 +19,6 @@ void AccessControlService::initialize(FileController fileController,
 	_loginTries = 0;
 
 	_accessControlActive = false;
-	_countdownIsRunning = false;
 
 	_accessControlIp = accessControlIp;
 	_mediaMirrorIps = mediaMirrorIps;
@@ -38,7 +37,6 @@ std::string AccessControlService::checkCode(std::string code) {
 	if (_accessUser.getPassword() == code) {
 		_accessControlActive = false;
 		_loginTries = 0;
-		stopCountdown();
 		accessControlLoginSuccessful();
 		return "codeValid";
 	} else {
@@ -50,40 +48,23 @@ std::string AccessControlService::checkCode(std::string code) {
 
 void AccessControlService::doorOpened() {
 	if (_accessControlActive) {
-		if (!_countdownIsRunning) {
-			startCountdown();
-			accessControlRequestCode();
-		}
+		accessControlRequestCode();
 	}
+}
+
+std::string AccessControlService::playAlarm() {
+	mediaMirrorPlayAlarmSound();
+	playAlarmSound();
+	return "playingAlarmSound";
+}
+
+std::string AccessControlService::stopAlarm() {
+	mediaMirrorStopAlarmSound();
+	stopAlarmSound();
+	return "stoppedPlayingAlarmSound";
 }
 
 /*==============PRIVATE==============*/
-
-void AccessControlService::startCountdown() {
-	if (!_accessControlActive) {
-		return;
-	}
-	if (_countdownIsRunning) {
-		return;
-	}
-	_countdownIsRunning = true;
-
-	//TODO reactivate while tested and working!
-	//std::thread countdownThread(createCountdown);
-}
-
-void AccessControlService::stopCountdown() {
-	if (!_countdownIsRunning) {
-		return;
-	}
-	_countdownIsRunning = false;
-}
-
-void AccessControlService::countdownFinished() {
-	mediaMirrorPlayAlarmSound();
-	playAlarmSound();
-	accessControlCountdownFinished();
-}
 
 void AccessControlService::accessControlRequestCode() {
 	sendMessageToServer(_accessControlIp, 8080, "ACTION:REQUEST_CODE");
@@ -108,16 +89,10 @@ void AccessControlService::accessControlLoginFailed() {
 	}
 }
 
-void AccessControlService::accessControlCountdownFinished() {
-	mediaMirrorPlayAlarmSound();
-	playAlarmSound();
-	_mailService.sendMail("User entered 5 times a wrong code!");
-	sendMessageToServer(_accessControlIp, 8080, "ACTION:ALARM_ACTIVE");
-}
-
 void AccessControlService::mediaMirrorPlayAlarmSound() {
 	for (int index = 0; index < _mediaMirrorIps.size(); index++) {
-		sendMessageToServer(_mediaMirrorIps[index], 8080, "ACTION:PLAY_ALARM&DATA:");
+		sendMessageToServer(_mediaMirrorIps[index], 8080,
+				"ACTION:PLAY_ALARM&DATA:");
 	}
 }
 
@@ -157,7 +132,8 @@ void AccessControlService::sendMessageToServer(std::string ip, int port,
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 
-	if (connect(serverSocket, (struct sockaddr *) &server, sizeof(server)) < 0) {
+	if (connect(serverSocket, (struct sockaddr *) &server, sizeof(server))
+			< 0) {
 		//connect failed. Error
 		return;
 	}
@@ -167,17 +143,4 @@ void AccessControlService::sendMessageToServer(std::string ip, int port,
 	}
 
 	close(serverSocket);
-}
-
-void AccessControlService::createCountdown() {
-	syslog(LOG_INFO, "Countdown Accesscontrol started!");
-
-	int currentSec = 0;
-	while (currentSec < 15 && _countdownIsRunning) {
-		currentSec++;
-		sleep(1);
-	}
-	if (_countdownIsRunning) {
-		countdownFinished();
-	}
 }

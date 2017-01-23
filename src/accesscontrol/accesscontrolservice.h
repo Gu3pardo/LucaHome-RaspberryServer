@@ -6,7 +6,6 @@
 #include <sstream>
 #include <ctime>
 #include <algorithm>
-//#include <thread>
 
 #include <string.h>
 #include <stdlib.h>
@@ -33,7 +32,6 @@ private:
 	User _accessUser;
 
 	bool _accessControlActive;
-	bool _countdownIsRunning;
 
 	std::string _accessControlIp;
 	std::vector<std::string> _mediaMirrorIps;
@@ -41,15 +39,10 @@ private:
 	FileController _fileController;
 	MailService _mailService;
 
-	void startCountdown();
-	void stopCountdown();
-	void countdownFinished();
-
 	void accessControlRequestCode();
 	void accessControlAccessControlActive();
 	void accessControlLoginSuccessful();
 	void accessControlLoginFailed();
-	void accessControlCountdownFinished();
 
 	void mediaMirrorPlayAlarmSound();
 	void mediaMirrorStopAlarmSound();
@@ -71,6 +64,8 @@ public:
 	std::string activateAlarm();
 	std::string checkCode(std::string);
 	void doorOpened();
+	std::string playAlarm();
+	std::string stopAlarm();
 };
 
 #endif

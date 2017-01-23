@@ -122,7 +122,8 @@ string executeCmd(string cmd) {
 		return "Error 25:No action parameter";
 	}
 
-	_logger.addLog("DEBUG", data, username);
+	// TODO activate if logger is wished
+	//_logger.addLog("DEBUG", data, username);
 
 	//---------------Authentificate user--------------
 	if (!_authentificationService.authentificateUser(username, password)) {
@@ -191,6 +192,10 @@ string executeCmd(string cmd) {
 			return _accessControlService.activateAlarm();
 		} else if (action == "CHECK" && data[4] == "CODE") {
 			return _accessControlService.checkCode(data[5]);
+		} else if (action == "PLAYALARM") {
+			return _accessControlService.playAlarm();
+		} else if (action == "STOPALARM") {
+			return _accessControlService.stopAlarm();
 		}
 	}
 	//-----------------------Other--------------------
