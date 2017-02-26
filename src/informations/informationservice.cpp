@@ -57,6 +57,7 @@ std::string InformationService::getRestString() {
 			<< "{Android App Version:" << _information.getAndroidAppVersion() << "};"
 			<< "{Android Wear Version:" << _information.getAndroidWearVersion() << "};"
 			<< "{Android Access Version:" << _information.getAndroidAccessVersion() << "};"
+			<< "{Media Server Version:" << _information.getMediaServerVersion() << "};"
 			<< "};";
 
 	out << "\x00" << std::endl;
@@ -76,7 +77,8 @@ std::string InformationService::getString() {
 			<< "information:" << "Temperature Log Version:" << _information.getTemperatureLogVersion() << ";"
 			<< "information:" << "Android App Version:" << _information.getAndroidAppVersion() << ";"
 			<< "information:" << "Android Wear Version:" << _information.getAndroidWearVersion() << ";"
-			<< "information:" << "Android Access Version:" << _information.getAndroidAccessVersion() << ";";
+			<< "information:" << "Android Access Version:" << _information.getAndroidAccessVersion() << ";"
+			<< "information:" << "Media Server Version:" << _information.getMediaServerVersion() << ";";
 
 	out << "\x00" << std::endl;
 

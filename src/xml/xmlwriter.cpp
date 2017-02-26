@@ -172,6 +172,22 @@ std::string XmlWriter::generateSettingsXml(int port, int datagpio,
 	return xml.str();
 }
 
+std::string XmlWriter::generateShoppingListXml(std::vector<Entry> entries) {
+	std::stringstream xml;
+
+	xml << "<entries>" << std::endl;
+	for (int index = 0; index < entries.size(); index++) {
+		xml << Tools::convertIntToStr(entries[index].getId()) << ":"
+				<< entries[index].getName() << ":"
+				<< entries[index].getGroup() << ":"
+				<< Tools::convertIntToStr(entries[index].getQuantity()) << ";"
+				<< std::endl;
+	}
+	xml << "</entries>" << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::generateUsersXml(std::vector<User> users) {
 	std::stringstream xml;
 

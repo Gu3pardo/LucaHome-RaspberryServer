@@ -7,7 +7,8 @@ Information::Information(std::string _author, std::string _company,
 		std::string _contact, std::string _builddate,
 		std::string _serverversion, std::string _websiteversion,
 		std::string _temperaturelogversion, std::string _androidappversion,
-		std::string _androidwearversion, std::string _androidaccessversion) {
+		std::string _androidwearversion, std::string _androidaccessversion,
+		std::string _mediaserverversion) {
 	author = _author;
 	company = _company;
 	contact = _contact;
@@ -18,6 +19,7 @@ Information::Information(std::string _author, std::string _company,
 	androidappversion = _androidappversion;
 	androidwearversion = _androidwearversion;
 	androidaccessversion = _androidaccessversion;
+	mediaserverversion = _mediaserverversion;
 }
 
 Information::~Information() {
@@ -63,8 +65,13 @@ std::string Information::getAndroidAccessVersion() {
 	return androidaccessversion;
 }
 
+std::string Information::getMediaServerVersion() {
+	return mediaserverversion;
+}
+
 std::string Information::toString() {
-	std::string str = std::string("Information { author: ") + author
+	std::string str =
+			std::string("Information { author: ") + author
 			+ std::string("; company: ") + company
 			+ std::string("; contact: ") + contact
 			+ std::string("; builddate: ") + builddate
@@ -74,6 +81,7 @@ std::string Information::toString() {
 			+ std::string("; androidappversion: ") + androidappversion
 			+ std::string("; androidwearversion: ") + androidwearversion
 			+ std::string("; androidaccessversion: ") + androidaccessversion
+			+ std::string("; mediaserverversion: ") + mediaserverversion
 			+ std::string(" }");
 	return str;
 }

@@ -6,6 +6,7 @@ Code			Error
 11				UserAction cannot be performed
 12				No password
 13				No username
+14				Invalid source
 
 20				action not found
 21				statement too short
@@ -13,6 +14,7 @@ Code			Error
 23				no action
 24				no category
 25				no action parameter
+26				scheduler not allowed from external source
 
 30				Could not add birthday
 31				Could not update birthday
@@ -91,3 +93,10 @@ Code			Error
 143				Could not delete mapcontent
 144				Action not found for mapcontent
 145				Parameter not found for mapcontent
+
+150				Could not add shopping entry
+151				Wrong word size for shopping entry
+152				Could not update shopping entry
+153				Could not delete shopping entry
+154				Action not found action for shopping entry
+155				Parameter not found for shopping entry

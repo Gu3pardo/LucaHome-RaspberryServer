@@ -14,6 +14,7 @@
 #include "../birthdays/birthday.h"
 #include "../changes/change.h"
 #include "../movies/movie.h"
+#include "../shoppinglist/entry.h"
 
 #include "../flatmap/mapcontent.h"
 #include "../flatmap/point.h"
@@ -49,6 +50,7 @@ public:
 	std::vector<Movie> parseMovies();
 	std::vector<Schedule> parseSchedules();
 	std::vector<Socket> parseSockets();
+	std::vector<Entry> parseEntries();
 	std::vector<User> parseUsers();
 	std::vector<Log> parseLogs();
 };

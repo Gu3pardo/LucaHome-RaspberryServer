@@ -44,6 +44,11 @@ std::string XmlService::generateSettingsXml(int port, int datagpio,
 			gpios, schedules);
 }
 
+std::string XmlService::generateShoppingListXml(std::vector<Entry> entries) {
+	XmlWriter writer;
+	return writer.generateShoppingListXml(entries);
+}
+
 std::string XmlService::generateUsersXml(std::vector<User> users) {
 	XmlWriter writer;
 	return writer.generateUsersXml(users);
@@ -84,7 +89,8 @@ Information XmlService::getInformation() {
 			parser.findTag("temperaturelogversion"),
 			parser.findTag("appversion"),
 			parser.findTag("wearappversion"),
-			parser.findTag("accessappversion"));
+			parser.findTag("accessappversion"),
+			parser.findTag("mediaserverversion"));
 	return information;
 }
 
@@ -166,6 +172,11 @@ std::vector<Gpio> XmlService::getGpios() {
 std::vector<Schedule> XmlService::getSchedules() {
 	XmlParser parser(content);
 	return parser.parseSchedules();
+}
+
+std::vector<Entry> XmlService::getShoppingEntries() {
+	XmlParser parser(content);
+	return parser.parseEntries();
 }
 
 std::vector<User> XmlService::getUsers() {

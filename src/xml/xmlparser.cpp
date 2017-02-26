@@ -347,6 +347,33 @@ std::vector<Socket> XmlParser::parseSockets() {
 	return sockets;
 }
 
+std::vector<Entry> XmlParser::parseEntries() {
+	std::string entries = findTag("entries");
+	std::vector<Entry> entrys;
+	if (entries.length() > 0) {
+		std::vector < std::string > lines = Tools::explode(";", entries);
+		for (int l = 0; l < lines.size(); l++) {
+			if (lines[l].length() > 0) {
+				std::vector < std::string > words = Tools::explode(":",
+						lines[l]);
+				Entry e;
+				for (int w = 0; w < words.size(); w++) {
+					if (typeid(words.at(0)) == typeid(std::string))
+						e.setId(atoi(words[0].c_str()));
+					if (typeid(words.at(1)) == typeid(std::string))
+						e.setName(words[1]);
+					if (typeid(words.at(2)) == typeid(std::string))
+						e.setGroup(words[2]);
+					if (typeid(words.at(3)) == typeid(std::string))
+						e.setQuantity(atoi(words[3].c_str()));
+				}
+				entrys.push_back(e);
+			}
+		}
+	}
+	return entrys;
+}
+
 std::vector<User> XmlParser::parseUsers() {
 	std::string entries = findTag("users");
 	std::vector<User> users;

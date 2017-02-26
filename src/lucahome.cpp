@@ -41,6 +41,7 @@ template<typename T> std::string to_string(const T& n) {
 #include "receiver/receiverservice.h"
 #include "remote/schedule.h"
 #include "remote/remoteservice.h"
+#include "shoppinglist/entryservice.h"
 #include "temperature/temperatureservice.h"
 
 #include "logger/logger.h"
@@ -62,6 +63,7 @@ AudioService _audioService;
 AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
 ChangeService _changeService;
+EntryService _entryService;
 InformationService _informationService;
 MailService _mailService;
 MapContentService _mapContentService;
@@ -80,11 +82,14 @@ pthread_mutex_t moviesMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t schedulesMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
 
-string executeCmd(string cmd) {
+string executeCmd(string cmd, int source) {
 	syslog(LOG_INFO, "Received command: %s", cmd.c_str());
 
 	if (cmd.length() < 20) {
 		return "Error 21:statement too short";
+	}
+	if (source != 1 && source != 2) {
+		return "Error 14:Invalid source";
 	}
 
 	vector < string > data = Tools::explode(":", cmd);
@@ -120,6 +125,10 @@ string executeCmd(string cmd) {
 	}
 	if (data[4] == "") {
 		return "Error 25:No action parameter";
+	}
+
+	if (username == "Scheduler" && source != 2) {
+		return "Error 26:scheduler not allowed from external source";
 	}
 
 	// TODO activate if logger is wished
@@ -170,6 +179,11 @@ string executeCmd(string cmd) {
 			}
 		}
 		return _remoteService.performAction(action, data, _changeService,
+				username);
+	}
+	//------------------ShoppingList------------------
+	if (category == "SHOPPINGLIST") {
+		return _entryService.performAction(action, data, _changeService,
 				username);
 	}
 	//----------------------Sound---------------------
@@ -256,7 +270,7 @@ void *server(void *arg) {
 			pthread_mutex_lock(&socketsMutex);
 
 			// Parse and execute request
-			string response = executeCmd(message);
+			string response = executeCmd(message, 1);
 
 			if (_updatedSchedules) {
 				_schedules = _remoteService.getSchedules();
@@ -393,7 +407,8 @@ void *scheduler(void *arg) {
 
 								pthread_mutex_lock(&socketsMutex);
 
-								string response = executeCmd(socket_out.str());
+								string response = executeCmd(socket_out.str(),
+										2);
 								if (response != "setsocket:1") {
 									syslog(LOG_INFO,
 											"Setting socket %s by scheduler failed!",
@@ -411,7 +426,7 @@ void *scheduler(void *arg) {
 
 								pthread_mutex_lock(&gpiosMutex);
 
-								string response = executeCmd(gpio_out.str());
+								string response = executeCmd(gpio_out.str(), 2);
 								if (response != "setgpio:1") {
 									syslog(LOG_INFO,
 											"Setting gpio %s by scheduler failed!",
@@ -436,7 +451,7 @@ void *scheduler(void *arg) {
 									pthread_mutex_lock(&socketsMutex);
 
 									string responseSocket = executeCmd(
-											socket_out.str());
+											socket_out.str(), 2);
 									if (responseSocket
 											!= "activateSoundSocket:1") {
 										syslog(LOG_INFO,
@@ -444,7 +459,7 @@ void *scheduler(void *arg) {
 												responseSocket.c_str());
 									} else {
 										string responseSound = executeCmd(
-												sound_out.str());
+												sound_out.str(), 2);
 										if (responseSound
 												!= _remoteService.getWakeUpSound().c_str()) {
 											syslog(LOG_INFO,
@@ -473,7 +488,7 @@ void *scheduler(void *arg) {
 										pthread_mutex_lock(&socketsMutex);
 
 										string responseSocket = executeCmd(
-												socket_out.str());
+												socket_out.str(), 2);
 										if (responseSocket
 												!= "deactivateSoundSocket:0") {
 											syslog(LOG_INFO,
@@ -481,7 +496,7 @@ void *scheduler(void *arg) {
 													responseSocket.c_str());
 										} else {
 											string responseSound = executeCmd(
-													sound_out.str());
+													sound_out.str(), 2);
 											if (responseSound
 													!= "stopplaying:1") {
 												syslog(LOG_INFO,
@@ -501,7 +516,7 @@ void *scheduler(void *arg) {
 										<< _schedules[s].getName();
 
 								string response = executeCmd(
-										schedule_delete_out.str());
+										schedule_delete_out.str(), 2);
 								if (response != "deleteschedule:1") {
 									syslog(LOG_INFO,
 											"Deleting schedule %s by scheduler failed!",
@@ -581,7 +596,7 @@ void *birthdayControl(void *arg) {
 	while (1) {
 		_birthdayService.checkBirthday();
 		//Check birthdays once a day (86400sec == 1440min == 24h)
-		sleep(86400);
+		sleep(24 * 60 * 60);
 	}
 
 	syslog(LOG_INFO, "Exiting *birthdayControl");
@@ -598,6 +613,7 @@ int main(void) {
 	_authentificationService.initialize(_fileController);
 	_birthdayService.initialize(_fileController, _mailService);
 	_changeService.initialize(_fileController);
+	_entryService.initialize(_fileController);
 	_informationService.initialize(_fileController);
 	_mapContentService.initialize(_fileController);
 	_movieService.initialize(_fileController);

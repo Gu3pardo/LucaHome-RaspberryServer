@@ -21,11 +21,12 @@ private:
 	std::string androidappversion;
 	std::string androidwearversion;
 	std::string androidaccessversion;
+	std::string mediaserverversion;
 
 public:
 	Information();
 	Information(std::string, std::string, std::string, std::string, std::string,
-			std::string, std::string, std::string, std::string, std::string);
+			std::string, std::string, std::string, std::string, std::string, std::string);
 	~Information();
 
 	std::string getAuthor();
@@ -38,6 +39,7 @@ public:
 	std::string getAndroidAppVersion();
 	std::string getAndroidWearVersion();
 	std::string getAndroidAccessVersion();
+	std::string getMediaServerVersion();
 
 	std::string toString();
 };
