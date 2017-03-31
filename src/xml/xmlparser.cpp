@@ -240,6 +240,54 @@ std::vector<MapContent> XmlParser::parseMapContents() {
 	return mapcontents;
 }
 
+std::vector<Menu> XmlParser::parseMenu() {
+	std::vector<Menu> menu;
+
+	std::string monday = findTag("monday");
+	Menu mondayMenu = parseMenuDay("monday", monday);
+	menu.push_back(mondayMenu);
+
+	std::string tuesday = findTag("tuesday");
+	Menu tuesdayMenu = parseMenuDay("tuesday", tuesday);
+	menu.push_back(tuesdayMenu);
+
+	std::string wednesday = findTag("wednesday");
+	Menu wednesdayMenu = parseMenuDay("wednesday", wednesday);
+	menu.push_back(wednesdayMenu);
+
+	std::string thursday = findTag("thursday");
+	Menu thursdayMenu = parseMenuDay("thursday", thursday);
+	menu.push_back(thursdayMenu);
+
+	std::string friday = findTag("friday");
+	Menu fridayMenu = parseMenuDay("friday", friday);
+	menu.push_back(fridayMenu);
+
+	std::string saturday = findTag("saturday");
+	Menu saturdayMenu = parseMenuDay("saturday", saturday);
+	menu.push_back(saturdayMenu);
+
+	std::string sunday = findTag("sunday");
+	Menu sundayMenu = parseMenuDay("sunday", sunday);
+	menu.push_back(sundayMenu);
+
+	return menu;
+}
+
+Menu XmlParser::parseMenuDay(std::string weekday, std::string tagData) {
+	std::vector < std::string > data = Tools::explode(":", tagData);
+	Menu menu;
+
+	menu.setWeekday(weekday);
+	menu.setDay(atoi(data[0].c_str()));
+	menu.setMonth(atoi(data[1].c_str()));
+	menu.setYear(atoi(data[2].c_str()));
+	menu.setTitle(data[3].c_str());
+	menu.setDescription(data[4].c_str());
+
+	return menu;
+}
+
 std::vector<Movie> XmlParser::parseMovies() {
 	std::string entries = findTag("movies");
 	std::vector<Movie> movies;

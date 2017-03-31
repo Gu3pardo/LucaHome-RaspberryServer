@@ -13,6 +13,7 @@
 #include "../authentification/user.h"
 #include "../birthdays/birthday.h"
 #include "../changes/change.h"
+#include "../menu/menu.h"
 #include "../movies/movie.h"
 #include "../shoppinglist/entry.h"
 
@@ -47,6 +48,8 @@ public:
 	std::vector<Change> parseChanges();
 	std::vector<Gpio> parseGpios();
 	std::vector<MapContent> parseMapContents();
+	std::vector<Menu> parseMenu();
+	Menu parseMenuDay(std::string, std::string);
 	std::vector<Movie> parseMovies();
 	std::vector<Schedule> parseSchedules();
 	std::vector<Socket> parseSockets();

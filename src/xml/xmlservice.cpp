@@ -27,21 +27,27 @@ std::string XmlService::generateMapContentsXml(
 	return writer.generateMapContentsXml(mapcontents);
 }
 
+std::string XmlService::generateMenuXml(std::vector<Menu> menu) {
+	XmlWriter writer;
+	return writer.generateMenuXml(menu);
+}
+
 std::string XmlService::generateMoviesXml(std::vector<Movie> movies) {
 	XmlWriter writer;
 	return writer.generateMoviesXml(movies);
 }
 
 std::string XmlService::generateSettingsXml(int port, int datagpio,
-		int receivergpio, int raspberry, std::string alarmSound, std::string wakeUpSound,
-		std::vector<std::string> areas, std::vector<std::string> sensors,
-		std::vector<std::string> urls, std::string accessurl,
-		std::vector<std::string> mediamirror, std::vector<Socket> sockets,
-		std::vector<Gpio> gpios, std::vector<Schedule> schedules) {
+		int receivergpio, int raspberry, std::string alarmSound,
+		std::string wakeUpSound, std::vector<std::string> areas,
+		std::vector<std::string> sensors, std::vector<std::string> urls,
+		std::string accessurl, std::vector<std::string> mediamirror,
+		std::vector<Socket> sockets, std::vector<Gpio> gpios,
+		std::vector<Schedule> schedules) {
 	XmlWriter writer;
 	return writer.generateSettingsXml(port, datagpio, receivergpio, raspberry,
-			alarmSound, wakeUpSound, areas, sensors, urls, accessurl, mediamirror, sockets,
-			gpios, schedules);
+			alarmSound, wakeUpSound, areas, sensors, urls, accessurl,
+			mediamirror, sockets, gpios, schedules);
 }
 
 std::string XmlService::generateShoppingListXml(std::vector<Entry> entries) {
@@ -79,16 +85,11 @@ std::vector<Change> XmlService::getChanges() {
 
 Information XmlService::getInformation() {
 	XmlParser parser(content);
-	Information information(
-			parser.findTag("author"),
-			parser.findTag("company"),
-			parser.findTag("contact"),
-			parser.findTag("builddate"),
-			parser.findTag("serverversion"),
-			parser.findTag("websiteversion"),
+	Information information(parser.findTag("author"), parser.findTag("company"),
+			parser.findTag("contact"), parser.findTag("builddate"),
+			parser.findTag("serverversion"), parser.findTag("websiteversion"),
 			parser.findTag("temperaturelogversion"),
-			parser.findTag("appversion"),
-			parser.findTag("wearappversion"),
+			parser.findTag("appversion"), parser.findTag("wearappversion"),
 			parser.findTag("accessappversion"),
 			parser.findTag("mediaserverversion"));
 	return information;
@@ -97,6 +98,11 @@ Information XmlService::getInformation() {
 std::vector<MapContent> XmlService::getMapContents() {
 	XmlParser parser(content);
 	return parser.parseMapContents();
+}
+
+std::vector<Menu> XmlService::getMenu() {
+	XmlParser parser(content);
+	return parser.parseMenu();
 }
 
 std::vector<Movie> XmlService::getMovies() {

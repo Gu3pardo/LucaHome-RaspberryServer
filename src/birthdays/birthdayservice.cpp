@@ -53,7 +53,7 @@ std::string BirthdayService::performAction(std::string action,
 	if (action == "GET") {
 		return getBirthdays();
 	} else if (action == "ADD") {
-		if (data.size() == 9) {
+		if (data.size() == 10) {
 			if (addBirthday(data, changeService, username)) {
 				return "addbirthday:1";
 			} else {
@@ -63,7 +63,7 @@ std::string BirthdayService::performAction(std::string action,
 			return "Error 33:Wrong word size for birthday";
 		}
 	} else if (action == "UPDATE") {
-		if (data.size() == 9) {
+		if (data.size() == 10) {
 			if (updateBirthday(data, changeService, username)) {
 				return "updatebirthday:1";
 			} else {
@@ -120,15 +120,15 @@ std::string BirthdayService::getBirthdays() {
 
 bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData,
 		ChangeService changeService, std::string username) {
-	Birthday newBirthday(atoi(newBirthdayData[3].c_str()), newBirthdayData[4],
-			atoi(newBirthdayData[5].c_str()), atoi(newBirthdayData[6].c_str()),
-			atoi(newBirthdayData[7].c_str()));
+	Birthday newBirthday(atoi(newBirthdayData[4].c_str()), newBirthdayData[5],
+			atoi(newBirthdayData[6].c_str()), atoi(newBirthdayData[7].c_str()),
+			atoi(newBirthdayData[8].c_str()));
 	_birthdays.push_back(newBirthday);
 
 	saveBirthdays(changeService, username);
 	loadBirthdays();
 
-	syslog(LOG_INFO, "Added birthday %d", atoi(newBirthdayData[3].c_str()));
+	syslog(LOG_INFO, "Added birthday %d", atoi(newBirthdayData[4].c_str()));
 
 	return true;
 }
@@ -136,10 +136,10 @@ bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData,
 bool BirthdayService::updateBirthday(
 		std::vector<std::string> updateBirthdayData,
 		ChangeService changeService, std::string username) {
-	Birthday updateBirthday(atoi(updateBirthdayData[3].c_str()),
-			updateBirthdayData[4], atoi(updateBirthdayData[5].c_str()),
-			atoi(updateBirthdayData[6].c_str()),
-			atoi(updateBirthdayData[7].c_str()));
+	Birthday updateBirthday(atoi(updateBirthdayData[4].c_str()),
+			updateBirthdayData[5], atoi(updateBirthdayData[6].c_str()),
+			atoi(updateBirthdayData[7].c_str()),
+			atoi(updateBirthdayData[8].c_str()));
 
 	for (int index = 0; index < _birthdays.size(); index++) {
 		if (_birthdays[index].getId() == updateBirthday.getId()) {
@@ -148,7 +148,7 @@ bool BirthdayService::updateBirthday(
 			saveBirthdays(changeService, username);
 			loadBirthdays();
 
-			syslog(LOG_INFO, "Updated birthday %d", atoi(updateBirthdayData[3].c_str()));
+			syslog(LOG_INFO, "Updated birthday %d", atoi(updateBirthdayData[4].c_str()));
 
 			return true;
 		}

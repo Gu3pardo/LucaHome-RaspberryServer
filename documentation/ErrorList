@@ -100,3 +100,9 @@ Code			Error
 153				Could not delete shopping entry
 154				Action not found action for shopping entry
 155				Parameter not found for shopping entry
+
+160				Wrong word size for menu
+161				Could not update menu
+162				Could not clear menu
+163				Action not found action for menu
+164				Parameter not found for menu

@@ -1,4 +1,4 @@
-SOURCE = ./src/lucahome.cpp ./src/accesscontrol/accesscontrolservice.cpp ./src/shoppinglist/entryservice.cpp ./src/shoppinglist/entry.cpp ./src/xml/xmlparser.cpp ./src/xml/xmlservice.cpp ./src/xml/xmlwriter.cpp ./src/temperature/temperatureservice.cpp ./src/remote/gpio.cpp ./src/remote/schedule.cpp ./src/remote/socket.cpp ./src/remote/remoteservice.cpp ./src/receiver/receiverservice.cpp ./src/movies/movie.cpp ./src/movies/movieservice.cpp ./src/mail/mailservice.cpp ./src/logger/logger.cpp ./src/logger/log.cpp ./src/informations/information.cpp ./src/informations/informationservice.cpp ./src/flatmap/point.cpp ./src/flatmap/mapcontentservice.cpp ./src/flatmap/mapcontent.cpp ./src/controller/filecontroller.cpp ./src/common/picontrol.cpp ./src/common/tools.cpp ./src/changes/change.cpp ./src/changes/changeservice.cpp ./src/birthdays/birthday.cpp ./src/birthdays/birthdayservice.cpp ./src/authentification/authentificationservice.cpp ./src/authentification/user.cpp ./src/audio/audioservice.cpp -lwiringPi -lpthread
+SOURCE = ./src/lucahome.cpp ./src/menu/menu.cpp ./src/menu/menuservice.cpp ./src/accesscontrol/accesscontrolservice.cpp ./src/shoppinglist/entryservice.cpp ./src/shoppinglist/entry.cpp ./src/xml/xmlparser.cpp ./src/xml/xmlservice.cpp ./src/xml/xmlwriter.cpp ./src/temperature/temperatureservice.cpp ./src/remote/gpio.cpp ./src/remote/schedule.cpp ./src/remote/socket.cpp ./src/remote/remoteservice.cpp ./src/receiver/receiverservice.cpp ./src/movies/movie.cpp ./src/movies/movieservice.cpp ./src/mail/mailservice.cpp ./src/logger/logger.cpp ./src/logger/log.cpp ./src/informations/information.cpp ./src/informations/informationservice.cpp ./src/flatmap/point.cpp ./src/flatmap/mapcontentservice.cpp ./src/flatmap/mapcontent.cpp ./src/controller/filecontroller.cpp ./src/common/picontrol.cpp ./src/common/tools.cpp ./src/changes/change.cpp ./src/changes/changeservice.cpp ./src/birthdays/birthday.cpp ./src/birthdays/birthdayservice.cpp ./src/authentification/authentificationservice.cpp ./src/authentification/user.cpp ./src/audio/audioservice.cpp -lwiringPi -lpthread
 APP = ./bin/lucahome
 CC = g++ -std=c++11
 
@@ -22,6 +22,7 @@ install:
 	cp ./assets/changes /etc/default/lucahome/changes
 	cp ./assets/infos /etc/default/lucahome/infos
 	cp ./assets/mapcontent /etc/default/lucahome/mapcontent
+	cp ./assets/menu /etc/default/lucahome/menu
 	cp ./assets/movies /etc/default/lucahome/movies
 	cp ./assets/settings /etc/default/lucahome/settings
 	cp ./assets/shoppinglist /etc/default/lucahome/shoppinglist
@@ -32,6 +33,7 @@ install:
 	chmod 777 /etc/default/lucahome/changes
 	chmod 777 /etc/default/lucahome/infos
 	chmod 777 /etc/default/lucahome/mapcontent
+	chmod 777 /etc/default/lucahome/menu
 	chmod 777 /etc/default/lucahome/movies
 	chmod 777 /etc/default/lucahome/settings
 	chmod 777 /etc/default/lucahome/shoppinglist

@@ -37,6 +37,7 @@ template<typename T> std::string to_string(const T& n) {
 #include "flatmap/mapcontentservice.h"
 #include "informations/informationservice.h"
 #include "mail/mailservice.h"
+#include "menu/menuservice.h"
 #include "movies/movieservice.h"
 #include "receiver/receiverservice.h"
 #include "remote/schedule.h"
@@ -66,6 +67,7 @@ ChangeService _changeService;
 EntryService _entryService;
 InformationService _informationService;
 MailService _mailService;
+MenuService _menuService;
 MapContentService _mapContentService;
 MovieService _movieService;
 ReceiverService _receiverService;
@@ -164,6 +166,11 @@ string executeCmd(string cmd, int source) {
 	//-------------------MapContent-------------------
 	else if (category == "MAPCONTENT") {
 		return _mapContentService.performAction(action, data, _changeService,
+				username);
+	}
+	//----------------------Menu----------------------
+	else if (category == "MENU") {
+		return _menuService.performAction(action, data, _changeService,
 				username);
 	}
 	//---------------------Movies---------------------
@@ -616,6 +623,7 @@ int main(void) {
 	_entryService.initialize(_fileController);
 	_informationService.initialize(_fileController);
 	_mapContentService.initialize(_fileController);
+	_menuService.initialize(_fileController);
 	_movieService.initialize(_fileController);
 	_remoteService.initialize(_fileController);
 	_audioService.initialize("/media/lucahome/",

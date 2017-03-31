@@ -62,6 +62,24 @@ std::string XmlWriter::generateMapContentsXml(
 	return xml.str();
 }
 
+std::string XmlWriter::generateMenuXml(
+		std::vector<Menu> menu) {
+	std::stringstream xml;
+
+	for (int index = 0; index < menu.size(); index++) {
+			xml << "<"<< menu[index].getWeekday() << ">"
+					<< Tools::convertIntToStr(menu[index].getDay()) << ":"
+					<< Tools::convertIntToStr(menu[index].getMonth()) << ":"
+					<< Tools::convertIntToStr(menu[index].getYear()) << ":"
+					<< menu[index].getTitle() << ":"
+					<< menu[index].getDescription()
+					<< "</"<< menu[index].getWeekday() << ">"
+					<< std::endl;
+		}
+
+	return xml.str();
+}
+
 std::string XmlWriter::generateMoviesXml(std::vector<Movie> movies) {
 	std::stringstream xml;
 

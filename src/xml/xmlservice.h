@@ -14,6 +14,7 @@
 #include "../birthdays/birthday.h"
 #include "../changes/change.h"
 #include "../informations/information.h"
+#include "../menu/menu.h"
 #include "../movies/movie.h"
 #include "../shoppinglist/entry.h"
 
@@ -41,6 +42,7 @@ public:
 	static std::string generateBirthdaysXml(std::vector<Birthday>);
 	static std::string generateChangesXml(std::vector<Change>);
 	static std::string generateMapContentsXml(std::vector<MapContent>);
+	static std::string generateMenuXml(std::vector<Menu>);
 	static std::string generateMoviesXml(std::vector<Movie>);
 	static std::string generateSettingsXml(int, int, int, int, std::string,
 			std::string, std::vector<std::string>, std::vector<std::string>,
@@ -60,6 +62,8 @@ public:
 	Information getInformation();
 
 	std::vector<MapContent> getMapContents();
+
+	std::vector<Menu> getMenu();
 
 	std::vector<Movie> getMovies();
 

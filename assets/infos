@@ -1,11 +1,11 @@
 <author>Jonas Schubert</author>
 <company>Guepardo Apps</company>
 <contact>guepardoapps@gmail.com</contact>
-<builddate>26.02.2017</builddate>
-<serverversion>1.8.0.170226</serverversion>
-<websiteversion>1.8.0.170226</websiteversion>
+<builddate>30.03.2017</builddate>
+<serverversion>2.6.1.170330</serverversion>
+<websiteversion>2.6.0.170326</websiteversion>
 <temperaturelogversion>1.0.3.161002</temperaturelogversion>
-<appversion>2.1.0.170226</appversion>
-<wearappversion>2.1.0.170226</wearappversion>
+<appversion>2.6.1.170330</appversion>
+<wearappversion>2.6.1.170330</wearappversion>
 <accessappversion>0.4.2.170218</accessappversion>
-<mediaserverversion>0.11.0.170226</mediaserverversion>
+<mediaserverversion>0.15.1.170330</mediaserverversion>

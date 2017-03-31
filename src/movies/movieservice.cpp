@@ -141,17 +141,17 @@ std::string MovieService::getRestString(int start, int end) {
 bool MovieService::addMovie(std::vector<std::string> newMovieData,
 		ChangeService changeService, std::string username) {
 	std::vector < std::string > socketList = Tools::explode("|",
-			newMovieData[8]);
+			newMovieData[9]);
 
-	Movie newMovie(newMovieData[3], newMovieData[4], newMovieData[5],
-			socketList, atoi(newMovieData[6].c_str()),
-			atoi(newMovieData[7].c_str()));
+	Movie newMovie(newMovieData[4], newMovieData[5], newMovieData[6],
+			socketList, atoi(newMovieData[7].c_str()),
+			atoi(newMovieData[8].c_str()));
 	_movies.push_back(newMovie);
 
 	saveMovies(changeService, username);
 	loadMovies();
 
-	syslog(LOG_INFO, "Added movie %s", newMovieData[3].c_str());
+	syslog(LOG_INFO, "Added movie %s", newMovieData[4].c_str());
 
 	return true;
 }
@@ -159,20 +159,20 @@ bool MovieService::addMovie(std::vector<std::string> newMovieData,
 bool MovieService::updateMovie(std::vector<std::string> updateMovieData,
 		ChangeService changeService, std::string username) {
 	std::vector < std::string > socketList = Tools::explode("|",
-			updateMovieData[8]);
+			updateMovieData[9]);
 
 	for (int index = 0; index < _movies.size(); index++) {
-		if (_movies[index].getTitle() == updateMovieData[3]) {
-			Movie updateMovie(updateMovieData[3], updateMovieData[4],
-					updateMovieData[5], socketList,
-					atoi(updateMovieData[6].c_str()),
-					atoi(updateMovieData[7].c_str()));
+		if (_movies[index].getTitle() == updateMovieData[4]) {
+			Movie updateMovie(updateMovieData[4], updateMovieData[5],
+					updateMovieData[6], socketList,
+					atoi(updateMovieData[7].c_str()),
+					atoi(updateMovieData[8].c_str()));
 			_movies[index] = updateMovie;
 
 			saveMovies(changeService, username);
 			loadMovies();
 
-			syslog(LOG_INFO, "Updated movie %s", updateMovieData[3].c_str());
+			syslog(LOG_INFO, "Updated movie %s", updateMovieData[4].c_str());
 
 			return true;
 		}
