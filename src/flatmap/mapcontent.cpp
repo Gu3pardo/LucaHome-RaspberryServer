@@ -13,7 +13,8 @@ MapContent::MapContent(
 		int type,
 		std::vector<std::string> schedules,
 		std::vector<std::string> sockets,
-		std::string temperatureArea)
+		std::string temperatureArea,
+		int visibility)
 {
 	_id = id;
 	_position = position;
@@ -21,6 +22,7 @@ MapContent::MapContent(
 	_schedules = schedules;
 	_sockets = sockets;
 	_temperatureArea = temperatureArea;
+	_visibility = visibility;
 }
 
 MapContent::~MapContent() {
@@ -50,6 +52,10 @@ std::string MapContent::getTemperatureArea() {
 	return _temperatureArea;
 }
 
+int MapContent::getVisibility() {
+	return _visibility;
+}
+
 std::string MapContent::getRestString() {
 	std::string str = std::string("{mapcontent:")
 			+ std::string("};{id:") + Tools::convertIntToStr(_id)
@@ -58,6 +64,7 @@ std::string MapContent::getRestString() {
 			+ std::string("};{schedules:") + getSchedulesString()
 			+ std::string("};{sockets:") + getSocketsString()
 			+ std::string("};{temperatureArea:") + _temperatureArea
+			+ std::string("};{visibility:") + Tools::convertIntToStr(_visibility)
 			+ std::string("};};");
 	return str;
 }
@@ -69,6 +76,7 @@ std::string MapContent::getFileString() {
 			+ std::string(":") + getSchedulesString()
 			+ std::string(":") + getSocketsString()
 			+ std::string(":") + _temperatureArea
+			+ std::string(":") + Tools::convertIntToStr(_visibility)
 			+ std::string(";");
 	return str;
 }
@@ -81,6 +89,7 @@ std::string MapContent::toString() {
 			+ std::string("; schedules: ") + getSchedulesString()
 			+ std::string("; Sockets: ") + getSocketsString()
 			+ std::string("; temperature: ") + _temperatureArea
+			+ std::string("; visibility: ") + Tools::convertIntToStr(_visibility)
 			+ std::string(" }");
 	return str;
 }

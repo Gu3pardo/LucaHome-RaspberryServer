@@ -33,6 +33,7 @@ template<typename T> std::string to_string(const T& n) {
 #include "audio/audioservice.h"
 #include "authentification/authentificationservice.h"
 #include "birthdays/birthdayservice.h"
+#include "camera/cameraservice.h"
 #include "changes/changeservice.h"
 #include "flatmap/mapcontentservice.h"
 #include "informations/informationservice.h"
@@ -43,7 +44,9 @@ template<typename T> std::string to_string(const T& n) {
 #include "remote/schedule.h"
 #include "remote/remoteservice.h"
 #include "shoppinglist/entryservice.h"
+#include "system/systemservice.h"
 #include "temperature/temperatureservice.h"
+#include "watchdog/watchdogservice.h"
 
 #include "logger/logger.h"
 #include "controller/filecontroller.h"
@@ -63,6 +66,7 @@ AccessControlService _accessControlService;
 AudioService _audioService;
 AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
+CameraService _cameraService;
 ChangeService _changeService;
 EntryService _entryService;
 InformationService _informationService;
@@ -72,7 +76,9 @@ MapContentService _mapContentService;
 MovieService _movieService;
 ReceiverService _receiverService;
 RemoteService _remoteService;
+SystemService _systemService;
 TemperatureService _temperatureService;
+WatchdogService _watchdogService;
 
 //TODO reactivate!
 //RCSwitch _receiverSwitch;
@@ -140,20 +146,36 @@ string executeCmd(string cmd, int source) {
 	if (!_authentificationService.authentificateUser(username, password)) {
 		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUser failed!",
 				cmd.c_str());
-		return "Error 10:Authentification Failed";
+		return "Error 10:Authentification failed";
 	}
 	if (!_authentificationService.authentificateUserAction(username, password,
 			action)) {
 		syslog(LOG_INFO,
 				"executeCmd: %s failed! authentificateUserAction failed!",
 				cmd.c_str());
-		return "Error 11:UserAction cannot be performed";
+		return "Error 11:UserAction cannot be performed:No rights";
 	}
 
+	//-----------------Access Control-----------------
+	if (category == "ACCESS") {
+		if (action == "ACTIVATE" && data[4] == "ALARM") {
+			return _accessControlService.activateAlarm();
+		} else if (action == "CHECK" && data[4] == "CODE") {
+			return _accessControlService.checkCode(data[5]);
+		} else if (action == "PLAY" && data[4] == "ALARM") {
+			return _accessControlService.playAlarm();
+		} else if (action == "STOP" && data[4] == "ALARM") {
+			return _accessControlService.stopAlarm();
+		}
+	}
 	//--------------------Birthday--------------------
-	if (category == "BIRTHDAY") {
+	else if (category == "BIRTHDAY") {
 		return _birthdayService.performAction(action, data, _changeService,
 				username);
+	}
+	//---------------------Camera---------------------
+	else if (category == "CAMERA") {
+		return _cameraService.PerformAction(action, data);
 	}
 	//---------------------Changes--------------------
 	else if (category == "CHANGE") {
@@ -181,7 +203,7 @@ string executeCmd(string cmd, int source) {
 	//---------------------Remote---------------------
 	else if (category == "REMOTE") {
 		if (data[4] == "SCHEDULE") {
-			if (action == "SET" || action == "ADD" || action == "DELETE") {
+			if (action == "ADD" || action == "DELETE" || action == "SET") {
 				_updatedSchedules = true;
 			}
 		}
@@ -197,9 +219,13 @@ string executeCmd(string cmd, int source) {
 	else if (category == "SOUND") {
 		return _audioService.performAction(action, data);
 	}
+	//---------------------System---------------------
+	else if (category == "SYSTEM") {
+		return _systemService.PerformAction(action, data);
+	}
 	//--------------------Temperature-----------------
 	else if (category == "TEMPERATURE") {
-		return _temperatureService.performAction(action, data);
+		return _temperatureService.PerformAction(action, data);
 	}
 	//----------------------User----------------------
 	else if (category == "USER") {
@@ -207,23 +233,9 @@ string executeCmd(string cmd, int source) {
 			return "validateuser:1";
 		}
 	}
-	//-----------------Access Control-----------------
-	else if (category == "ACCESS") {
-		if (action == "ACTIVATE" && data[4] == "ALARM") {
-			return _accessControlService.activateAlarm();
-		} else if (action == "CHECK" && data[4] == "CODE") {
-			return _accessControlService.checkCode(data[5]);
-		} else if (action == "PLAYALARM") {
-			return _accessControlService.playAlarm();
-		} else if (action == "STOPALARM") {
-			return _accessControlService.stopAlarm();
-		}
-	}
-	//-----------------------Other--------------------
-	else if (category == "SERVER") {
-		if (action == "AVAILABILITY") {
-			return "server:available:1";
-		}
+	//---------------------Watchdog---------------------
+	else if (category == "WATCHDOG") {
+		return _watchdogService.PerformAction(action, data);
 	}
 
 	return "Error 20:action not found";
@@ -584,29 +596,83 @@ void *receiver(void *arg) {
 	pthread_exit (NULL);
 }
 
-void *temperatureControl(void *arg) {
-	syslog(LOG_INFO, "TemperatureControl started!");
-
-	while (1) {
-		_temperatureService.controlTemperature();
-		//Check temperature every minute (60sec == 1min)
-		sleep(60);
-	}
-
-	syslog(LOG_INFO, "Exiting *temperatureControl");
-	pthread_exit (NULL);
-}
-
 void *birthdayControl(void *arg) {
 	syslog(LOG_INFO, "BirthdayControl started!");
 
 	while (1) {
-		_birthdayService.checkBirthday();
+		if (_birthdayService.GetBirthdayControlActive()) {
+			_birthdayService.checkBirthday();
+		}
+
 		//Check birthdays once a day (86400sec == 1440min == 24h)
 		sleep(24 * 60 * 60);
 	}
 
 	syslog(LOG_INFO, "Exiting *birthdayControl");
+	pthread_exit (NULL);
+}
+
+void *cameraStartControl(void *arg) {
+	syslog(LOG_INFO, "CameraStartControl started!");
+
+	while (1) {
+		if (_cameraService.GetStartCamera()
+				&& !_cameraService.GetStopCamera()) {
+			_cameraService.StartMotion();
+		}
+
+		sleep(1);
+	}
+
+	syslog(LOG_INFO, "Exiting *cameraStartControl");
+	pthread_exit (NULL);
+}
+
+void *cameraStopControl(void *arg) {
+	syslog(LOG_INFO, "CameraStopControl started!");
+
+	while (1) {
+		if (!_cameraService.GetStartCamera()
+				&& _cameraService.GetStopCamera()) {
+			_cameraService.StopMotion();
+		}
+
+		sleep(1);
+	}
+
+	syslog(LOG_INFO, "Exiting *cameraStopControl");
+	pthread_exit (NULL);
+}
+
+void *motionControl(void *arg) {
+	syslog(LOG_INFO, "MotionControl started!");
+
+	while (1) {
+		if (_cameraService.GetMotionControlActive()) {
+			_cameraService.Check();
+		}
+
+		//Check motion every 30 seconds (1800 msec == 30 sec)
+		sleep(15 * 60);
+	}
+
+	syslog(LOG_INFO, "Exiting *motionControl");
+	pthread_exit (NULL);
+}
+
+void *temperatureControl(void *arg) {
+	syslog(LOG_INFO, "TemperatureControl started!");
+
+	while (1) {
+		if (_temperatureService.GetTemperatureControlActive()) {
+			_temperatureService.ControlTemperature();
+		}
+
+		//Check temperature every 30 seconds
+		sleep(30);
+	}
+
+	syslog(LOG_INFO, "Exiting *temperatureControl");
 	pthread_exit (NULL);
 }
 
@@ -632,7 +698,9 @@ int main(void) {
 	_accessControlService.initialize(_fileController, _mailService,
 			User("AccessControl", "518716", 1), _remoteService.getAccessUrl(),
 			_remoteService.getMediaMirror());
-	_temperatureService.initialize(_mailService, _remoteService.getSensor(),
+	_cameraService.Initialize("/NAS/Camera/", _remoteService.getCameraUrl(),
+			_mailService, _systemService);
+	_temperatureService.Initialize(_mailService, _remoteService.getSensor(),
 			_remoteService.getArea(), _remoteService.getTemperatureGraphUrl());
 
 	_logger.initialize(_fileController);
@@ -645,19 +713,25 @@ int main(void) {
 	_schedules = _remoteService.getSchedules();
 
 	pthread_t scheduleThread, serverThread, receiverThread, temperatureThread,
-			birthdayThread;
+			birthdayThread, cameraStartThread, cameraStopThread, motionThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
 	pthread_create(&scheduleThread, NULL, scheduler, NULL);
 	pthread_create(&receiverThread, NULL, receiver, NULL);
 	pthread_create(&temperatureThread, NULL, temperatureControl, NULL);
 	pthread_create(&birthdayThread, NULL, birthdayControl, NULL);
+	pthread_create(&cameraStartThread, NULL, cameraStartControl, NULL);
+	pthread_create(&cameraStopThread, NULL, cameraStopControl, NULL);
+	pthread_create(&motionThread, NULL, motionControl, NULL);
 
 	pthread_join(serverThread, NULL);
 	pthread_join(scheduleThread, NULL);
 	pthread_join(receiverThread, NULL);
 	pthread_join(temperatureThread, NULL);
 	pthread_join(birthdayThread, NULL);
+	pthread_join(cameraStartThread, NULL);
+	pthread_join(cameraStopThread, NULL);
+	pthread_join(motionThread, NULL);
 
 	pthread_mutex_destroy(&socketsMutex);
 	pthread_mutex_destroy(&gpiosMutex);

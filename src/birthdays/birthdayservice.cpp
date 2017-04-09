@@ -3,6 +3,7 @@
 /*===============PUBLIC==============*/
 
 BirthdayService::BirthdayService() {
+	_birthdayControlActive = true;
 }
 
 BirthdayService::~BirthdayService() {
@@ -78,9 +79,23 @@ std::string BirthdayService::performAction(std::string action,
 		} else {
 			return "Error 32:Could not delete birthday";
 		}
+	} else if (action == "SETCONTROLTASK") {
+		if (data[4] == "ON") {
+			_birthdayControlActive = true;
+			return "setBirthdayControl:1:1";
+		} else if (data[4] == "OFF") {
+			_birthdayControlActive = false;
+			return "setBirthdayControl:0:1";
+		} else {
+			return "Error 36:Invalid data for birthday";
+		}
 	} else {
 		return "Error 34:Action not found for birthday";
 	}
+}
+
+bool BirthdayService::GetBirthdayControlActive() {
+	return _birthdayControlActive;
 }
 
 /*==============PRIVATE==============*/
@@ -104,12 +119,14 @@ std::string BirthdayService::getBirthdays() {
 	std::stringstream out;
 
 	for (int index = 0; index < _birthdays.size(); index++) {
-		out << "{birthday:"
-				<< "{id:" << Tools::convertIntToStr(_birthdays[index].getId()) << "};"
-				<< "{name:" << _birthdays[index].getName() << "};"
-				<< "{day:" << Tools::convertIntToStr(_birthdays[index].getDay()) << "};"
-				<< "{month:" << Tools::convertIntToStr(_birthdays[index].getMonth()) << "};"
-				<< "{year:" << Tools::convertIntToStr(_birthdays[index].getYear()) << "};"
+		out << "{birthday:" << "{id:"
+				<< Tools::convertIntToStr(_birthdays[index].getId()) << "};"
+				<< "{name:" << _birthdays[index].getName() << "};" << "{day:"
+				<< Tools::convertIntToStr(_birthdays[index].getDay()) << "};"
+				<< "{month:"
+				<< Tools::convertIntToStr(_birthdays[index].getMonth()) << "};"
+				<< "{year:"
+				<< Tools::convertIntToStr(_birthdays[index].getYear()) << "};"
 				<< "};";
 	}
 
@@ -148,7 +165,8 @@ bool BirthdayService::updateBirthday(
 			saveBirthdays(changeService, username);
 			loadBirthdays();
 
-			syslog(LOG_INFO, "Updated birthday %d", atoi(updateBirthdayData[4].c_str()));
+			syslog(LOG_INFO, "Updated birthday %d",
+					atoi(updateBirthdayData[4].c_str()));
 
 			return true;
 		}

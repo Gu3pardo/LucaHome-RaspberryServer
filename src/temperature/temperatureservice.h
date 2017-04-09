@@ -40,6 +40,8 @@ private:
 	int _warningCount;
 	bool _isInitialized;
 
+	bool _temperatureControlActive;
+
 	int LED_ERROR_HIGH_TEMP;
 	int LED_ERROR_LOW_TEMP;
 	int LED_NORMAL_TEMP;
@@ -60,10 +62,12 @@ public:
 	TemperatureService();
 	~TemperatureService();
 
-	void initialize(MailService, std::string, std::string, std::string);
-	void controlTemperature();
+	void Initialize(MailService, std::string, std::string, std::string);
+	void ControlTemperature();
 
-	std::string performAction(std::string, std::vector<std::string>);
+	bool GetTemperatureControlActive();
+
+	std::string PerformAction(std::string, std::vector<std::string>);
 };
 
 #endif

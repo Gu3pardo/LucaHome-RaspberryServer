@@ -119,6 +119,7 @@ public:
 	std::string getSensor();
 	std::string getUrl();
 	std::string getAccessUrl();
+	std::string getCameraUrl();
 	std::vector<std::string> getMediaMirror();
 	std::string getTemperatureGraphUrl();
 	std::string getAlarmSound();

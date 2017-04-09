@@ -24,16 +24,20 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#ifndef MAILSERVICE_H
-#define MAILSERVICE_H
+#include "../common/tools.h"
 
-class MailService {
+#ifndef WATCHDOGSERVICE_H
+#define WATCHDOGSERVICE_H
+
+class WatchdogService {
+private:
+	int _count;
+
 public:
-	MailService();
-	~MailService();
+	WatchdogService();
+	~WatchdogService();
 
-	void sendMail(std::string);
-	void sendMailWithAttachement(std::string);
+	std::string PerformAction(std::string, std::vector<std::string>);
 };
 
 #endif

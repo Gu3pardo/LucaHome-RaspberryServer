@@ -5,6 +5,8 @@
 TemperatureService::TemperatureService() {
 	_isInitialized = false;
 
+	_temperatureControlActive = true;
+
 	//TODO: add gpios for LEDs
 	LED_ERROR_HIGH_TEMP = -1;
 	LED_ERROR_LOW_TEMP = -1;
@@ -17,7 +19,7 @@ TemperatureService::TemperatureService() {
 TemperatureService::~TemperatureService() {
 }
 
-void TemperatureService::initialize(MailService mailService,
+void TemperatureService::Initialize(MailService mailService,
 		std::string sensorId, std::string temperatureArea,
 		std::string graphPath) {
 	_mailService = mailService;
@@ -34,7 +36,7 @@ void TemperatureService::initialize(MailService mailService,
 	_isInitialized = true;
 }
 
-void TemperatureService::controlTemperature() {
+void TemperatureService::ControlTemperature() {
 	if (!_isInitialized) {
 		syslog(LOG_INFO, "TemperatureService is not initialized!");
 		return;
@@ -72,7 +74,7 @@ void TemperatureService::controlTemperature() {
 	}
 }
 
-std::string TemperatureService::performAction(std::string action,
+std::string TemperatureService::PerformAction(std::string action,
 		std::vector<std::string> data) {
 	if (action == "GET") {
 		if (data.size() == 5) {
@@ -86,9 +88,23 @@ std::string TemperatureService::performAction(std::string action,
 		} else {
 			return "Error 131:Wrong data size for temperature";
 		}
+	} else if (action == "SETCONTROLTASK") {
+		if (data[4] == "ON") {
+			_temperatureControlActive = true;
+			return "setTemperatureControl:1:1";
+		} else if (data[4] == "OFF") {
+			_temperatureControlActive = false;
+			return "setTemperatureControl:0:1";
+		} else {
+			return "Error 133:Invalid data for temperature";
+		}
 	} else {
 		return "Error 130:Action not found for temperature";
 	}
+}
+
+bool TemperatureService::GetTemperatureControlActive() {
+	return _temperatureControlActive;
 }
 
 /*==============PRIVATE==============*/
@@ -126,7 +142,7 @@ double TemperatureService::loadTemperature() {
 void TemperatureService::sendWarningMail(std::string warning) {
 	_warningCount++;
 
-	if (_warningCount % 5 != 0) {
+	if (_warningCount % 10 != 0) {
 		syslog(LOG_INFO,
 				"Already send a mail within the last five or more minutes!");
 		return;
@@ -186,12 +202,9 @@ std::string TemperatureService::getRestString() {
 
 	std::stringstream out;
 
-	out << "{temperature:"
-			<< "{value:" << loadTemperature() << "};"
-			<< "{area:" << _temperatureArea << "};"
-			<< "{sensorPath:" << _sensorPath << "};"
-			<< "{graphPath:" << _graphPath << "};"
-			<< "};";
+	out << "{temperature:" << "{value:" << loadTemperature() << "};" << "{area:"
+			<< _temperatureArea << "};" << "{sensorPath:" << _sensorPath << "};"
+			<< "{graphPath:" << _graphPath << "};" << "};";
 
 	out << "\x00" << std::endl;
 

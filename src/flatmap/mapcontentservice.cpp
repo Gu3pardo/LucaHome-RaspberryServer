@@ -23,7 +23,7 @@ std::string MapContentService::performAction(std::string action,
 			return getRestString();
 		}
 	} else if (action == "ADD") {
-		if (data.size() == 6) {
+		if (data.size() == 7) {
 			if (add(data, changeService, username)) {
 				return "addmapcontent:1";
 			} else {
@@ -33,7 +33,7 @@ std::string MapContentService::performAction(std::string action,
 			return "Error 141:Wrong word size for mapcontent";
 		}
 	} else if (action == "UPDATE") {
-		if (data.size() == 6) {
+		if (data.size() == 7) {
 			if (update(data, changeService, username)) {
 				return "updatemapcontent:1";
 			} else {
@@ -145,6 +145,7 @@ MapContent MapContentService::createMapContent(std::vector<std::string> words) {
 	std::vector < std::string > schedules;
 	std::vector < std::string > sockets;
 	std::string temperatureArea = "";
+	int visibility = -1;
 
 	if (typeid(words.at(0)) == typeid(std::string)) {
 		id = atoi(words[0].c_str());
@@ -169,10 +170,13 @@ MapContent MapContentService::createMapContent(std::vector<std::string> words) {
 	if (typeid(words.at(5)) == typeid(std::string)) {
 		temperatureArea = words[5].c_str();
 	}
+	if (typeid(words.at(6)) == typeid(std::string)) {
+		visibility = atoi(words[6].c_str());
+	}
 
 	Point position = Point(x, y);
 	MapContent mapContent = MapContent(id, position, type, schedules, sockets,
-			temperatureArea);
+			temperatureArea, visibility);
 
 	return mapContent;
 }

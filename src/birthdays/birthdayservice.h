@@ -31,6 +31,8 @@ private:
 	std::string _birthdaysFile;
 	std::vector<Birthday> _birthdays;
 
+	bool _birthdayControlActive;
+
 	FileController _fileController;
 	MailService _mailService;
 	XmlService _xmlService;
@@ -50,6 +52,8 @@ public:
 
 	void initialize(FileController, MailService);
 	void checkBirthday();
+
+	bool GetBirthdayControlActive();
 
 	std::string performAction(std::string, std::vector<std::string>,
 			ChangeService, std::string);

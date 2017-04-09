@@ -28,6 +28,8 @@ std::string RemoteService::performAction(std::string action,
 		} else if (data[4] == "URL") {
 			if (data[5] == "MAIN") {
 				return getUrl();
+			} else if (data[5] == "CAMERA") {
+				return getCameraUrl();
 			} else if (data[5] == "TEMPERATURE") {
 				return getTemperatureGraphUrl();
 			} else {
@@ -322,6 +324,12 @@ std::string RemoteService::getUrl() {
 
 std::string RemoteService::getAccessUrl() {
 	return _accessurl;
+}
+
+std::string RemoteService::getCameraUrl() {
+	std::stringstream url;
+	url << _url << ":8081";
+	return url.str();
 }
 
 std::vector<std::string> RemoteService::getMediaMirror() {

@@ -248,15 +248,18 @@ void AuthentificationService::loadUsers() {
 }
 
 int AuthentificationService::getActionId(std::string action) {
-	if (action == "GET" || action == "VALIDATE") {
+	if (action == "AVAILABILITY" || action == "CHECK" || action == "COUNT"
+			|| action == "GET" || action == "VALIDATE") {
 		return 1;
-	} else if (action == "SET" || action == "START" || action == "PLAY"
-			|| action == "STOP") {
+	} else if (action == "ACTIVATE" || action == "PLAY" || action == "SET"
+			|| action == "START" || action == "STOP") {
 		return 2;
 	} else if (action == "ADD" || action == "UPDATE") {
 		return 3;
-	} else if (action == "DELETE" || action == "CLEAR") {
+	} else if (action == "CLEAR" || action == "DELETE") {
 		return 4;
+	} else if (action == "SETCONTROLTASK" || action == "SYSTEM") {
+		return 5;
 	}
 	return -1;
 }

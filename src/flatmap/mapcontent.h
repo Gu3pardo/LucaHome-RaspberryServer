@@ -17,11 +17,12 @@ private:
 	std::vector<std::string> _schedules;
 	std::vector<std::string> _sockets;
 	std::string _temperatureArea;
+	int _visibility;
 
 public:
 	MapContent();
 	MapContent(int, Point, int, std::vector<std::string>,
-			std::vector<std::string>, std::string);
+			std::vector<std::string>, std::string, int);
 	~MapContent();
 
 	int getId();
@@ -30,6 +31,7 @@ public:
 	std::vector<std::string> getSchedules();
 	std::vector<std::string> getSockets();
 	std::string getTemperatureArea();
+	int getVisibility();
 
 	std::string getRestString();
 	std::string getFileString();

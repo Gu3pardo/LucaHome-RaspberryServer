@@ -54,7 +54,8 @@ std::string XmlWriter::generateMapContentsXml(
 				<< Tools::convertIntToStr(mapcontents[index].getType()) << ":"
 				<< mapcontents[index].getSchedulesString() << ":"
 				<< mapcontents[index].getSocketsString() << ":"
-				<< mapcontents[index].getTemperatureArea() << ";"
+				<< mapcontents[index].getTemperatureArea() << ":"
+				<< Tools::convertIntToStr(mapcontents[index].getVisibility()) << ";"
 				<< std::endl;
 	}
 	xml << "</mapcontent>" << std::endl;

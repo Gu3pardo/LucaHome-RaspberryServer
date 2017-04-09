@@ -23,17 +23,25 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <dirent.h>
 
-#ifndef MAILSERVICE_H
-#define MAILSERVICE_H
+#include "../common/tools.h"
 
-class MailService {
+#ifndef SYSTEMSERVICE_H
+#define SYSTEMSERVICE_H
+
+class SystemService {
+private:
+	std::string reboot();
+	std::string shutdown();
+
 public:
-	MailService();
-	~MailService();
+	SystemService();
+	~SystemService();
 
-	void sendMail(std::string);
-	void sendMailWithAttachement(std::string);
+	std::string PerformAction(std::string, std::vector<std::string>);
+
+	int IsProcessRunning(std::string);
 };
 
 #endif

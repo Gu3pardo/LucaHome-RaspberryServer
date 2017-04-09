@@ -202,6 +202,7 @@ std::vector<MapContent> XmlParser::parseMapContents() {
 				std::vector < std::string > schedules;
 				std::vector < std::string > sockets;
 				std::string temperatureArea = "";
+				int visibility = -1;
 
 				if (typeid(words.at(0)) == typeid(std::string)) {
 					id = atoi(words[0].c_str());
@@ -228,10 +229,13 @@ std::vector<MapContent> XmlParser::parseMapContents() {
 				if (typeid(words.at(5)) == typeid(std::string)) {
 					temperatureArea = words[5].c_str();
 				}
+				if (typeid(words.at(6)) == typeid(std::string)) {
+					visibility = atoi(words[6].c_str());
+				}
 
 				Point position = Point(x, y);
 				MapContent newEntry = MapContent(id, position, type, schedules,
-						sockets, temperatureArea);
+						sockets, temperatureArea, visibility);
 
 				mapcontents.push_back(newEntry);
 			}

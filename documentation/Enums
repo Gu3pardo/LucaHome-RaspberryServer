@@ -3,9 +3,14 @@ MapContentType
 2	Arduino
 3	Socket
 4	Temperature
+5 	MediaMirror
+6	ShoppingList
+7	Menu
+8	Camera
 
 Users
-1	Get		Validate
-2	Set		Start		Play		Stop
-3	Add		Update
-4	Delete
+1	Availability	Check			Count		Get			Validate
+2	Activate		Play			Set			Start		Stop
+3	Add				Update
+4	Clear			Delete
+5	SetControlTask	System
