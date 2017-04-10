@@ -7,6 +7,8 @@ CameraService::CameraService() {
 	_stopCamera = false;
 
 	_motionControlActive = false;
+	
+	_alreadyDetectedMotionEvents = scanFolder();
 }
 
 CameraService::~CameraService() {
@@ -42,9 +44,15 @@ std::string CameraService::PerformAction(std::string action,
 		if (data[4] == "MOTION") {
 			if (data[5] == "STATE") {
 				if (IsMotionRunning()) {
-					return "motion:ON";
+					return "STATE:ON";
 				} else {
-					return "motion:OFF";
+					return "STATE:OFF";
+				}
+			} else if (data[5] == "CONTROL") {
+				if (_motionControlActive) {
+					return "CONTROL:ON";
+				} else {
+					return "CONTROL:OFF";
 				}
 			} else if (data[5] == "DATA") {
 				return getData();
@@ -64,6 +72,13 @@ std::string CameraService::PerformAction(std::string action,
 		} else {
 			return "Error 171:Invalid data for camera";
 		}
+	} else if (action == "ACTIVATE") {
+		if (data[4] == "CAMERACONTROL") {
+			_motionControlActive = true;
+			return "setMotionControl:1:1";
+		} else {
+			return "Error 171:Invalid data for camera";
+		}
 	}
 
 	return "Error 170:Action not found for camera";
@@ -73,12 +88,12 @@ void CameraService::Check() {
 	std::vector < std::string > currentMotionEvents = scanFolder();
 
 	int currentMotionEventsCount = currentMotionEvents.size();
-	int motionEventsCount = _motionEvents.size();
+	int alreadyDetectedMotionEventsCount = _alreadyDetectedMotionEvents.size();
 
-	if (currentMotionEventsCount != motionEventsCount) {
-		if (currentMotionEventsCount > motionEventsCount) {
+	if (currentMotionEventsCount != alreadyDetectedMotionEventsCount) {
+		if (currentMotionEventsCount > alreadyDetectedMotionEventsCount) {
 			int maxImagesToSend = 10;
-			int difference = currentMotionEventsCount - motionEventsCount;
+			int difference = currentMotionEventsCount - alreadyDetectedMotionEventsCount;
 			int startIndex = 0;
 
 			if (difference > maxImagesToSend) {
@@ -113,7 +128,7 @@ void CameraService::Check() {
 		}
 	}
 
-	_motionEvents = currentMotionEvents;
+	_alreadyDetectedMotionEvents = currentMotionEvents;
 }
 
 bool CameraService::GetMotionControlActive() {
@@ -194,6 +209,8 @@ std::string CameraService::stopCamera() {
 	_startCamera = false;
 	_stopCamera = true;
 
+	_motionControlActive = false;
+
 	return "stopCamera:1";
 }
 
@@ -209,7 +226,15 @@ std::string CameraService::getData() {
 
 	data << "{URL:" << _cameraUrl << "};";
 
-	data << getMotionEventsRestString() << "};";
+	data << getMotionEventsRestString();
+
+	if(_motionControlActive){
+		data << "{Control:1};";
+	}else{
+		data << "{Control:0};";
+	}
+
+	data << "};";
 
 	return data.str();
 }
@@ -228,6 +253,9 @@ std::vector<std::string> CameraService::scanFolder() {
 				continue;
 			}
 			if (Tools::hasEnding(fileName, ".jpg")) {
+				imageEntries.push_back(fileName);
+			}
+			if (Tools::hasEnding(fileName, ".swf")) {
 				imageEntries.push_back(fileName);
 			}
 		}

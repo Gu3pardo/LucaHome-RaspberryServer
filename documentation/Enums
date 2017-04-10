@@ -12,5 +12,5 @@ Users
 1	Availability	Check			Count		Get			Validate
 2	Activate		Play			Set			Start		Stop
 3	Add				Update
-4	Clear			Delete
+4	Clear			Deactivate		Delete
 5	SetControlTask	System

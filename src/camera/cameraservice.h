@@ -37,6 +37,7 @@ private:
 	std::string _motionPath;
 	std::string _cameraUrl;
 	std::vector<std::string> _motionEvents;
+	std::vector<std::string> _alreadyDetectedMotionEvents;
 	std::vector<std::string> _alreadySentEvents;
 	bool _isMotionRunning;
 

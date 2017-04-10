@@ -256,7 +256,8 @@ int AuthentificationService::getActionId(std::string action) {
 		return 2;
 	} else if (action == "ADD" || action == "UPDATE") {
 		return 3;
-	} else if (action == "CLEAR" || action == "DELETE") {
+	} else if (action == "CLEAR" || action == "DEACTIVATE"
+			|| action == "DELETE") {
 		return 4;
 	} else if (action == "SETCONTROLTASK" || action == "SYSTEM") {
 		return 5;

@@ -16,6 +16,7 @@ startmotion
 stopmotion
 getmotiondata
 getmotionstate
+getmotioncontrol
 getcameraurl
 setcontroltaskcamera
 
