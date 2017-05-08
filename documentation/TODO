@@ -17,7 +17,7 @@ ______________________________
 []		add number pad for authorization
 []		add LEDs for temperature module for warning of high/low temperature
 []		add 433MHz receiver for wireless communication
-[]		add camera for making an image of a possible intruder
+[x]		add camera for making an image of a possible intruder
 []		add humidity sensor
 
 ==============================
@@ -31,7 +31,7 @@ ______________________________
 [x]		add module to play sound for wakeup or going to bed or as alarm -> perhaps implement in Schedules!
 []		add module to warn about high traffic on way to work
 []		add module to inform about events nearby
-[]		add module to warn about possible intruder sending a mail with an image of the possible intruder
+[o]		add module to warn about possible intruder sending a mail with an image of the possible intruder
 []		add module to inform about humidity
 []		add module to remote control osmc
 
@@ -95,11 +95,11 @@ ______________________________
 		
 [x]			changes & informations contains just the data
 
-[]		create a map of the flat containing all spots of raspberries/arduinos, but also speaker, lights and all other remote
+[x]		create a map of the flat containing all spots of raspberries/arduinos, but also speaker, lights and all other remote
 		devices
-[]			-> clicking on raspberrys shows informations (e.g. temperature/humidity) and possibilities to activate sockets,
-			movies, etc.
-[]			-> clicking on arduinos shows informations (e.g. temperature/humidity)
+[-]			-> clicking on raspberrys shows informations (e.g. temperature/humidity) and possibilities to activate sockets,
+			movies, etc. ->OBSOLETE
+[-]			-> clicking on arduinos shows informations (e.g. temperature/humidity) ->OBSOLETE
 [x]			-> clicking on the remote devices shows a possibility to de/activate them
 
 [x]		module to start&stop sound & set volume

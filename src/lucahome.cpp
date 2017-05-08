@@ -231,6 +231,8 @@ string executeCmd(string cmd, int source) {
 	else if (category == "USER") {
 		if (action == "VALIDATE") {
 			return "validateuser:1";
+		} else if (action == "RESETFAILEDLOGIN") {
+			return _authentificationService.ResetFailedLogin(username, password, data[4]);
 		}
 	}
 	//---------------------Watchdog---------------------
@@ -652,8 +654,7 @@ void *motionControl(void *arg) {
 			_cameraService.Check();
 		}
 
-		//Check motion every 30 seconds (1800 msec == 30 sec)
-		sleep(15 * 60);
+		sleep(15);
 	}
 
 	syslog(LOG_INFO, "Exiting *motionControl");
@@ -696,7 +697,7 @@ int main(void) {
 			_remoteService.getWakeUpSound(), _remoteService.getAlarmSound(),
 			_remoteService.getRaspberry());
 	_accessControlService.initialize(_fileController, _mailService,
-			User("AccessControl", "518716", 1), _remoteService.getAccessUrl(),
+			User("AccessControl", "518716", 1, 0, 0), _remoteService.getAccessUrl(),
 			_remoteService.getMediaMirror());
 	_cameraService.Initialize("/NAS/Camera/", _remoteService.getCameraUrl(),
 			_mailService, _systemService);

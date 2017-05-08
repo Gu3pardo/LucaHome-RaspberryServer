@@ -46,6 +46,10 @@ MENU
 getmenu
 updatemenu
 clearmenu
+getlistedmenu
+addlistedmenu
+updatelistedmenu
+deletelistedmenu
 
 MOVIE
 getmoviesstringlength

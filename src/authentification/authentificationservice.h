@@ -30,6 +30,9 @@ private:
 	std::string _usersFile;
 	std::string _defaultPassword;
 
+	int MAX_INVALID_LOGIN_COUNT = 5;
+	int _invalidLoginCount;
+
 	FileController _fileController;
 	XmlService _xmlService;
 
@@ -37,6 +40,10 @@ private:
 	void loadUsers();
 
 	int getActionId(std::string);
+	int isAdminAction(std::string);
+
+	bool isUserAdmin(std::string);
+	int getInvalidLoginCount(std::string);
 
 public:
 	AuthentificationService();
@@ -50,11 +57,13 @@ public:
 	bool authentificateUser(std::string, std::string);
 	bool authentificateUserAction(std::string, std::string, std::string);
 
-	bool updatePassword(std::string, std::string);
-	bool resetPassword(std::string);
+	bool updatePassword(std::string, std::string, std::string, std::string);
+	bool resetPassword(std::string, std::string, std::string);
 
-	bool addUser(User);
-	bool deleteUser(std::string);
+	bool addUser(std::string, std::string, User);
+	bool deleteUser(std::string, std::string, std::string);
+
+	std::string ResetFailedLogin(std::string, std::string, std::string);
 };
 
 #endif

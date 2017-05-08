@@ -184,6 +184,37 @@ std::vector<Gpio> XmlParser::parseGpios() {
 	return gpios;
 }
 
+std::vector<ListedMenu> XmlParser::parseListedMenu() {
+	std::string entries = findTag("listedmenu");
+	std::vector<ListedMenu> listedmenus;
+	if (entries.length() > 0) {
+		std::vector < std::string > lines = Tools::explode(";", entries);
+		for (int l = 0; l < lines.size(); l++) {
+			if (lines[l].length() > 0) {
+				std::vector < std::string > words = Tools::explode(":",
+						lines[l]);
+				ListedMenu newListedMenu;
+				for (int w = 0; w < words.size(); w++) {
+					if (typeid(words.at(0)) == typeid(std::string)) {
+						newListedMenu.setId(atoi(words[0].c_str()));
+					}
+					if (typeid(words.at(1)) == typeid(std::string)) {
+						newListedMenu.setDescription(words[1]);
+					}
+					if (typeid(words.at(2)) == typeid(std::string)) {
+						newListedMenu.setRating(atoi(words[2].c_str()));
+					}
+					if (typeid(words.at(3)) == typeid(std::string)) {
+						newListedMenu.setLastSuggestion(atoi(words[3].c_str()));
+					}
+				}
+				listedmenus.push_back(newListedMenu);
+			}
+		}
+	}
+	return listedmenus;
+}
+
 std::vector<MapContent> XmlParser::parseMapContents() {
 	std::string entries = findTag("mapcontent");
 	std::vector<MapContent> mapcontents;
@@ -435,9 +466,10 @@ std::vector<User> XmlParser::parseUsers() {
 			if (lines[l].length() > 0) {
 				std::vector < std::string > words = Tools::explode(":",
 						lines[l]);
-				if (words.size() == 3) {
+				if (words.size() == 5) {
 					User user(words[0].c_str(), words[1].c_str(),
-							atoi(words[2].c_str()));
+							atoi(words[2].c_str()), atoi(words[3].c_str()),
+							atoi(words[4].c_str()));
 					users.push_back(user);
 				}
 			}

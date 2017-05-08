@@ -120,7 +120,7 @@ void CameraService::Check() {
 				}
 
 				std::stringstream imagePath;
-				imagePath << "/NAS/Camera/" << currentMotionEventImage;
+				imagePath << "../../../NAS/Camera/" << currentMotionEventImage;
 
 				_mailService.sendMailWithAttachement(imagePath.str());
 				_alreadySentEvents.push_back(currentMotionEvents[index]);

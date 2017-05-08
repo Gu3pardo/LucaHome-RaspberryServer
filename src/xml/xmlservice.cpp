@@ -21,6 +21,11 @@ std::string XmlService::generateChangesXml(std::vector<Change> changes) {
 	return writer.generateChangesXml(changes);
 }
 
+std::string XmlService::generateListedMenuXml(std::vector<ListedMenu> listedmenu) {
+	XmlWriter writer;
+	return writer.generateListedMenuXml(listedmenu);
+}
+
 std::string XmlService::generateMapContentsXml(
 		std::vector<MapContent> mapcontents) {
 	XmlWriter writer;
@@ -93,6 +98,11 @@ Information XmlService::getInformation() {
 			parser.findTag("accessappversion"),
 			parser.findTag("mediaserverversion"));
 	return information;
+}
+
+std::vector<ListedMenu> XmlService::getListedMenu() {
+	XmlParser parser(content);
+	return parser.parseListedMenu();
 }
 
 std::vector<MapContent> XmlService::getMapContents() {

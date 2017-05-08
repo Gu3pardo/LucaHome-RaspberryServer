@@ -3,7 +3,8 @@ import smtplib
 import socket
 import datetime
 import sys
-from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
 
 # account information to send the email
 Receiver = 'YOUR_RECEIVER'
@@ -20,20 +21,19 @@ smtpserver.login(Sender, Passphrase)
 # Get current date
 Date = datetime.date.today()
 
-message = MIMEText('New image from motion!')
-
-# attach preamble to message with current time
-f_time = datetime.now().strftime('%a %d %b @ %H:%M')
-message.preamble = "Photo @ " + f_time
+message = MIMEMultipart()
 
 # Read path to image from arguments
 imagePath = ""
 for argument in range(1, len(sys.argv)):
 	imagePath += str(sys.argv[argument])
 
+# attach preamble to message with current time
+message.preamble = "Photo @ " + imagePath
+
 # Open file and attach it to the mail
 imageFile = open(imagePath, 'rb')
-image = MIMEImage(imageFile.read())
+image = MIMEImage(imageFile.read(), _subtype="jpg")
 imageFile.close()
 message.attach(image)
 

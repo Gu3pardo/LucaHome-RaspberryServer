@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <syslog.h>
 
+#include "listedmenu.h"
 #include "menu.h"
 #include "../changes/changeservice.h"
 #include "../controller/filecontroller.h"
@@ -29,7 +30,9 @@
 class MenuService {
 private:
 	std::string _menuFile;
+	std::string _listedmenuFile;
 	std::vector<Menu> _menu;
+	std::vector<ListedMenu> _listedmenus;
 
 	FileController _fileController;
 	XmlService _xmlService;
@@ -41,6 +44,15 @@ private:
 
 	bool updateMenu(std::vector<std::string>, ChangeService, std::string);
 	bool clearMenu(std::string, ChangeService, std::string);
+
+	void saveListedMenu(ChangeService, std::string);
+	void loadListedMenu();
+
+	std::string getListedMenu();
+
+	bool addListedMenu(std::vector<std::string>, ChangeService, std::string);
+	bool updateListedMenu(std::vector<std::string>, ChangeService, std::string);
+	bool deleteListedMenu(int, ChangeService, std::string);
 
 public:
 	MenuService();

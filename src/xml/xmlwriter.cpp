@@ -43,6 +43,23 @@ std::string XmlWriter::generateChangesXml(std::vector<Change> changes) {
 	return xml.str();
 }
 
+std::string XmlWriter::generateListedMenuXml(
+		std::vector<ListedMenu> listedmenus) {
+	std::stringstream xml;
+
+	xml << "<listedmenu>" << std::endl;
+	for (int index = 0; index < listedmenus.size(); index++) {
+		xml << Tools::convertIntToStr(listedmenus[index].getId()) << ":"
+				<< listedmenus[index].getDescription() << ":"
+				<< Tools::convertIntToStr(listedmenus[index].getRating()) << ":"
+				<< Tools::convertIntToStr(listedmenus[index].isLastSuggestion()) << ";"
+				<< std::endl;
+	}
+	xml << "</listedmenu>" << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::generateMapContentsXml(
 		std::vector<MapContent> mapcontents) {
 	std::stringstream xml;
@@ -214,7 +231,9 @@ std::string XmlWriter::generateUsersXml(std::vector<User> users) {
 	for (int index = 0; index < users.size(); index++) {
 		xml << users[index].getName() << ":"
 				<< users[index].getPassword() << ":"
-				<< Tools::convertIntToStr(users[index].getRole()) << ";"
+				<< Tools::convertIntToStr(users[index].getRole()) << ":"
+				<< Tools::convertIntToStr(users[index].isAdmin()) << ":"
+				<< Tools::convertIntToStr(users[index].getInvalidLoginCount()) << ";"
 				<< std::endl;
 	}
 	xml << "</users>" << std::endl;

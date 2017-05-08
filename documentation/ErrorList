@@ -7,6 +7,7 @@ Code			Error
 12				No password
 13				No username
 14				Invalid source
+15				Could not reset invalid login count
 
 20				action not found
 21				statement too short
@@ -108,6 +109,11 @@ Code			Error
 162				Could not clear menu
 163				Action not found for menu
 164				Parameter not found for menu
+165				Invalid data for menu
+166				Could not update listedmenu
+167				Wrong word size for listedmenu
+168				Could not delete listedmenu
+169				Could not add listedmenu
 
 170				Action not found for camera
 171				Invalid data for camera

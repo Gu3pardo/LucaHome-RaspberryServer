@@ -13,6 +13,7 @@
 #include "../authentification/user.h"
 #include "../birthdays/birthday.h"
 #include "../changes/change.h"
+#include "../menu/listedmenu.h"
 #include "../menu/menu.h"
 #include "../movies/movie.h"
 #include "../shoppinglist/entry.h"
@@ -37,6 +38,7 @@ public:
 
 	static std::string generateBirthdaysXml(std::vector<Birthday>);
 	static std::string generateChangesXml(std::vector<Change>);
+	static std::string generateListedMenuXml(std::vector<ListedMenu>);
 	static std::string generateMapContentsXml(std::vector<MapContent>);
 	static std::string generateMenuXml(std::vector<Menu>);
 	static std::string generateMoviesXml(std::vector<Movie>);
