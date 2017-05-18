@@ -232,7 +232,8 @@ string executeCmd(string cmd, int source) {
 		if (action == "VALIDATE") {
 			return "validateuser:1";
 		} else if (action == "RESETFAILEDLOGIN") {
-			return _authentificationService.ResetFailedLogin(username, password, data[4]);
+			return _authentificationService.ResetFailedLogin(username, password,
+					data[4]);
 		}
 	}
 	//---------------------Watchdog---------------------
@@ -697,12 +698,13 @@ int main(void) {
 			_remoteService.getWakeUpSound(), _remoteService.getAlarmSound(),
 			_remoteService.getRaspberry());
 	_accessControlService.initialize(_fileController, _mailService,
-			User("AccessControl", "518716", 1, 0, 0), _remoteService.getAccessUrl(),
-			_remoteService.getMediaMirror());
+			User("AccessControl", "518716", 1, 0, 0),
+			_remoteService.getAccessUrl(), _remoteService.getMediaMirror());
 	_cameraService.Initialize("/NAS/Camera/", _remoteService.getCameraUrl(),
 			_mailService, _systemService);
-	_temperatureService.Initialize(_mailService, _remoteService.getSensor(),
-			_remoteService.getArea(), _remoteService.getTemperatureGraphUrl());
+	_temperatureService.Initialize(_fileController, _mailService,
+			_remoteService.getSensor(), _remoteService.getArea(),
+			_remoteService.getTemperatureGraphUrl());
 
 	_logger.initialize(_fileController);
 

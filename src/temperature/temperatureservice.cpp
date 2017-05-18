@@ -5,24 +5,28 @@
 TemperatureService::TemperatureService() {
 	_isInitialized = false;
 
-	_temperatureControlActive = true;
+	MIN_TEMP = 15;
+	MAX_TEMP = 35;
 
 	//TODO: add gpios for LEDs
-	LED_ERROR_HIGH_TEMP = -1;
-	LED_ERROR_LOW_TEMP = -1;
 	LED_NORMAL_TEMP = -1;
+	LED_ERROR_LOW_TEMP = -1;
+	LED_ERROR_HIGH_TEMP = -1;
 
-	MIN_TEMP = 15;
-	MAX_TEMP = 25;
+	_temperatureControlActive = true;
 }
 
 TemperatureService::~TemperatureService() {
 }
 
-void TemperatureService::Initialize(MailService mailService,
-		std::string sensorId, std::string temperatureArea,
-		std::string graphPath) {
+void TemperatureService::Initialize(FileController fileController,
+		MailService mailService, std::string sensorId,
+		std::string temperatureArea, std::string graphPath) {
+	_fileController = fileController;
 	_mailService = mailService;
+
+	_settingsFile = "/etc/default/lucahome/temperaturesettings";
+	loadSettings();
 
 	std::ostringstream path;
 	path << "/sys/bus/w1/devices/" << sensorId << "/w1_slave";
@@ -108,6 +112,27 @@ bool TemperatureService::GetTemperatureControlActive() {
 }
 
 /*==============PRIVATE==============*/
+
+void TemperatureService::saveSettings() {
+	std::string xmldata = _xmlService.generateTemperatureSettingsXml(MIN_TEMP,
+			MAX_TEMP, LED_NORMAL_TEMP, LED_ERROR_LOW_TEMP, LED_ERROR_HIGH_TEMP,
+			_temperatureControlActive);
+	_fileController.saveFile(_settingsFile, xmldata);
+}
+
+void TemperatureService::loadSettings() {
+	std::string settingsString = _fileController.readFile(_settingsFile);
+	_xmlService.setContent(settingsString);
+
+	MIN_TEMP = _xmlService.getTempMin();
+	MAX_TEMP = _xmlService.getTempMax();
+
+	LED_NORMAL_TEMP = _xmlService.getLEDTempNormal();
+	LED_ERROR_LOW_TEMP = _xmlService.getLEDTempLow();
+	LED_ERROR_HIGH_TEMP = _xmlService.getLEDTempHigh();
+
+	_temperatureControlActive = _xmlService.isTempControlActive();
+}
 
 double TemperatureService::loadTemperature() {
 	const char *charPath = _sensorPath.c_str();

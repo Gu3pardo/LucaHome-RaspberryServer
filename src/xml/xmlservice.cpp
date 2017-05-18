@@ -21,7 +21,8 @@ std::string XmlService::generateChangesXml(std::vector<Change> changes) {
 	return writer.generateChangesXml(changes);
 }
 
-std::string XmlService::generateListedMenuXml(std::vector<ListedMenu> listedmenu) {
+std::string XmlService::generateListedMenuXml(
+		std::vector<ListedMenu> listedmenu) {
 	XmlWriter writer;
 	return writer.generateListedMenuXml(listedmenu);
 }
@@ -58,6 +59,14 @@ std::string XmlService::generateSettingsXml(int port, int datagpio,
 std::string XmlService::generateShoppingListXml(std::vector<Entry> entries) {
 	XmlWriter writer;
 	return writer.generateShoppingListXml(entries);
+}
+
+std::string XmlService::generateTemperatureSettingsXml(int tempMin, int tempMax,
+		int ledTempNormal, int ledTempLow, int ledTempHigh,
+		bool tempControlActive) {
+	XmlWriter writer;
+	return writer.generateTemperatureSettingsXml(tempMin, tempMax,
+			ledTempNormal, ledTempLow, ledTempHigh, tempControlActive);
 }
 
 std::string XmlService::generateUsersXml(std::vector<User> users) {
@@ -203,4 +212,39 @@ std::vector<User> XmlService::getUsers() {
 std::vector<Log> XmlService::getLogs() {
 	XmlParser parser(content);
 	return parser.parseLogs();
+}
+
+int XmlService::getTempMin() {
+	XmlParser parser(content);
+	return atoi(parser.findTag("tempmin").c_str());
+}
+
+int XmlService::getTempMax() {
+	XmlParser parser(content);
+	return atoi(parser.findTag("tempmax").c_str());
+}
+
+int XmlService::getLEDTempNormal() {
+	XmlParser parser(content);
+	return atoi(parser.findTag("ledtempnormal").c_str());
+}
+
+int XmlService::getLEDTempLow() {
+	XmlParser parser(content);
+	return atoi(parser.findTag("ledtemplow").c_str());
+}
+
+int XmlService::getLEDTempHigh() {
+	XmlParser parser(content);
+	return atoi(parser.findTag("ledtemphigh").c_str());
+}
+
+bool XmlService::isTempControlActive() {
+	XmlParser parser(content);
+	int controlState = atoi(parser.findTag("controlactive").c_str());
+	if (controlState == 1) {
+		return true;
+	} else {
+		return false;
+	}
 }

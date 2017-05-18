@@ -1,0 +1,11 @@
+<tempmin>15</tempmin>
+
+<tempmax>35</tempmax>
+
+<ledtempnormal>-1</ledtempnormal>
+
+<ledtemplow>-1</ledtemplow>
+
+<ledtemphigh>-1</ledtemphigh>
+
+<controlactive>1</controlactive>

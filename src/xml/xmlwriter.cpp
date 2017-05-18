@@ -224,6 +224,33 @@ std::string XmlWriter::generateShoppingListXml(std::vector<Entry> entries) {
 	return xml.str();
 }
 
+std::string XmlWriter::generateTemperatureSettingsXml(int tempMin, int tempMax,
+		int ledTempNormal, int ledTempLow, int ledTempHigh,
+		bool tempControlActive) {
+	std::stringstream xml;
+
+	xml << "<tempmin>" << Tools::convertIntToStr(tempMin) << "</tempmin>" << std::endl << std::endl;
+
+	xml << "<tempmax>" << Tools::convertIntToStr(tempMax) << "</tempmax>" << std::endl << std::endl;
+
+	xml << "<ledtempnormal>" << Tools::convertIntToStr(ledTempNormal) << "</ledtempnormal>" << std::endl << std::endl;
+
+	xml << "<ledtemplow>" << Tools::convertIntToStr(ledTempLow) << "</ledtemplow>" << std::endl << std::endl;
+
+	xml << "<ledtemphigh>" << Tools::convertIntToStr(ledTempHigh) << "</ledtemphigh>" << std::endl << std::endl;
+
+	int controlActive = -1;
+	if(tempControlActive) {
+		controlActive = 1;
+	} else {
+		controlActive = 0;
+	}
+
+	xml << "<controlactive>" << Tools::convertIntToStr(controlActive) << "</controlactive>" << std::endl << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::generateUsersXml(std::vector<User> users) {
 	std::stringstream xml;
 

@@ -26,28 +26,39 @@
 
 #include "../common/picontrol.h"
 #include "../mail/mailservice.h"
+#include "../controller/filecontroller.h"
+#include "../xml/xmlservice.h"
 
 #ifndef TEMPERATURESERVICE_H
 #define TEMPERATURESERVICE_H
 
 class TemperatureService {
 private:
+	std::string _settingsFile;
+
 	std::string _sensorPath;
 	std::string _temperatureArea;
 	std::string _graphPath;
+
 	MailService _mailService;
+
+	FileController _fileController;
+	XmlService _xmlService;
 
 	int _warningCount;
 	bool _isInitialized;
 
+	int MIN_TEMP;
+	int MAX_TEMP;
+
+	int LED_NORMAL_TEMP;
+	int LED_ERROR_LOW_TEMP;
+	int LED_ERROR_HIGH_TEMP;
+
 	bool _temperatureControlActive;
 
-	int LED_ERROR_HIGH_TEMP;
-	int LED_ERROR_LOW_TEMP;
-	int LED_NORMAL_TEMP;
-
-	double MIN_TEMP;
-	double MAX_TEMP;
+	void saveSettings();
+	void loadSettings();
 
 	double loadTemperature();
 
@@ -62,7 +73,8 @@ public:
 	TemperatureService();
 	~TemperatureService();
 
-	void Initialize(MailService, std::string, std::string, std::string);
+	void Initialize(FileController, MailService, std::string, std::string,
+			std::string);
 	void ControlTemperature();
 
 	bool GetTemperatureControlActive();

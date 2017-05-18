@@ -51,6 +51,8 @@ public:
 			std::vector<std::string>, std::string, std::vector<std::string>,
 			std::vector<Socket>, std::vector<Gpio>, std::vector<Schedule>);
 	static std::string generateShoppingListXml(std::vector<Entry>);
+	static std::string generateTemperatureSettingsXml(int, int, int, int, int,
+			bool);
 	static std::string generateUsersXml(std::vector<User>);
 	static std::string generateLoggerXml(std::vector<Log>);
 
@@ -94,6 +96,13 @@ public:
 	std::vector<User> getUsers();
 
 	std::vector<Log> getLogs();
+
+	int getTempMin();
+	int getTempMax();
+	int getLEDTempNormal();
+	int getLEDTempLow();
+	int getLEDTempHigh();
+	bool isTempControlActive();
 };
 
 #endif
