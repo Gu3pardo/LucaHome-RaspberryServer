@@ -5,7 +5,7 @@
 <serverversion>2.9.0.170518</serverversion>
 <websiteversion>2.8.2.170507</websiteversion>
 <temperaturelogversion>1.0.4.170408</temperaturelogversion>
-<appversion>2.8.6.170510</appversion>
-<wearappversion>2.8.6.170510</wearappversion>
-<accessappversion>0.5.0.170331</accessappversion>
-<mediaserverversion>0.17.2.170507</mediaserverversion>
+<appversion>3.2.0.170608</appversion>
+<wearappversion>3.2.0.170608</wearappversion>
+<accessappversion>0.7.0.170610</accessappversion>
+<mediaserverversion>0.19.0.170609</mediaserverversion>
