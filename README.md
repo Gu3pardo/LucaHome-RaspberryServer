@@ -4,7 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Version](https://img.shields.io/badge/version-v2.9.0.170518-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Build](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Version](https://img.shields.io/badge/version-v2.9.1.170611-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
 
 Part of the LucaHome-Project
 

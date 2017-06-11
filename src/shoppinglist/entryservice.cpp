@@ -59,7 +59,7 @@ void EntryService::saveEntries(ChangeService changeService,
 	std::string xmldata = _xmlService.generateShoppingListXml(_entries);
 	_fileController.saveFile(_shoppingListFile, xmldata);
 
-	changeService.updateChange("Shopping Entries", username);
+	changeService.updateChange("ShoppingList", username);
 }
 
 void EntryService::loadEntries() {
