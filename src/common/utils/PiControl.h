@@ -10,7 +10,7 @@
 #define WFALSE 142
 #define PLENGTH 300
 #define REPEAT 10
-#define CODE_LENGTH 6;
+#define CODE_LENGTH 6
 
 #ifndef PICONTROL_H
 #define PICONTROL_H

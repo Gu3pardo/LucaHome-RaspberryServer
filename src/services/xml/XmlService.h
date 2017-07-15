@@ -6,7 +6,7 @@
 #include <sstream>
 #include <syslog.h>
 
-#include "xmlparser.h"
+#include "XmlParser.h"
 #include "XmlWriter.h"
 
 #include "../../common/dto/BirthdayDto.h"

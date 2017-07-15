@@ -154,9 +154,9 @@ bool AudioService::play(std::string fileName) {
 		execlp("/usr/bin/omxplayer", " ", command.str().c_str(), NULL);
 		_exit(0);
 	}
-	else {
+	/*else {
 		wait();
-	}
+	}*/
 
 	_isPlaying = true;
 

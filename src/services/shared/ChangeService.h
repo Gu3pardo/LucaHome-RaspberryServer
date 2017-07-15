@@ -16,9 +16,8 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include "../../common/dto/ChangeDto.h"
 #include "../../controller/FileController.h"
-#include "../xml/xmlservice.h"
+#include "../xml/XmlService.h"
 
 #define CHANGE_DATA_SIZE 5
 #define GET "GET"

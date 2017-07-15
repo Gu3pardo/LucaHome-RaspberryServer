@@ -21,8 +21,7 @@
 #include "../controller/FileController.h"
 #include "../controller/MailController.h"
 #include "shared/ChangeService.h"
-
-#include "xml/xmlservice.h"
+#include "xml/XmlService.h"
 
 #define GET "GET"
 #define ADD "ADD"

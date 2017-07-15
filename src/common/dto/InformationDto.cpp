@@ -1,5 +1,9 @@
 #include "InformationDto.h"
 
+InformationDto::InformationDto()
+{
+}
+
 InformationDto::InformationDto(
 	std::string author,
 	std::string company,
@@ -95,18 +99,18 @@ std::string InformationDto::GetWpfApplicationVersion()
 std::string InformationDto::ToString()
 {
 	std::string str =
-		std::string("InformationDto { Author: ") + _author 
-		+ std::string("; Company: ") + _company 
-		+ std::string("; Contact: ") + _contact 
-		+ std::string("; BuildDate: ") + _buildDate 
-		+ std::string("; ServerVersion: ") + _serverVersion 
-		+ std::string("; WebsiteVersion: ") + _websiteVersion 
-		+ std::string("; TemperatureLoggerVersion: ") + _temperatureLoggerVersion 
-		+ std::string("; AndroidApplicationVersion: ") + _androidApplicationVersion 
-		+ std::string("; AndroidWearableVersion: ") + _androidWearableVersion 
-		+ std::string("; AndroidAccessApplicationVersion: ") + _androidAccessApplicationVersion 
-		+ std::string("; MediaServerVersion: ") + _mediaServerVersion 
-		+ std::string("; WpfApplicationVersion: ") + _wpfApplicationVersion 
+		std::string("InformationDto { Author: ") + _author
+		+ std::string("; Company: ") + _company
+		+ std::string("; Contact: ") + _contact
+		+ std::string("; BuildDate: ") + _buildDate
+		+ std::string("; ServerVersion: ") + _serverVersion
+		+ std::string("; WebsiteVersion: ") + _websiteVersion
+		+ std::string("; TemperatureLoggerVersion: ") + _temperatureLoggerVersion
+		+ std::string("; AndroidApplicationVersion: ") + _androidApplicationVersion
+		+ std::string("; AndroidWearableVersion: ") + _androidWearableVersion
+		+ std::string("; AndroidAccessApplicationVersion: ") + _androidAccessApplicationVersion
+		+ std::string("; MediaServerVersion: ") + _mediaServerVersion
+		+ std::string("; WpfApplicationVersion: ") + _wpfApplicationVersion
 		+ std::string(" }");
 	return str;
 }

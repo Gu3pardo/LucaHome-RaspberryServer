@@ -1,6 +1,7 @@
 #include "InformationService.h"
 
 /*===============PUBLIC==============*/
+
 InformationService::InformationService()
 {
 }

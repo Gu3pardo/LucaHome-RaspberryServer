@@ -23,7 +23,7 @@ void CameraService::Initialize(std::string cameraUrl, MailController mailControl
 	_pathController = pathController;
 	_systemService = systemService;
 
-	_alreadyDetectedMotionEvents = _pathController.ScanMotionFolder();
+	_alreadyDetectedMotionEvents = _pathController.ScanCameraFolder();
 }
 
 std::string CameraService::PerformAction(std::string action,
@@ -128,7 +128,7 @@ std::string CameraService::PerformAction(std::string action,
 
 void CameraService::Check()
 {
-	std::vector<std::string> currentMotionEvents = _pathController.ScanMotionFolder();
+	std::vector<std::string> currentMotionEvents = _pathController.ScanCameraFolder();
 
 	int currentMotionEventsCount = currentMotionEvents.size();
 	int alreadyDetectedMotionEventsCount = _alreadyDetectedMotionEvents.size();
@@ -312,7 +312,7 @@ std::string CameraService::getMotionEventsRestString()
 	std::stringstream out;
 	out << "{MotionEvents:";
 
-	_motionEvents = _pathController.ScanMotionFolder();
+	_motionEvents = _pathController.ScanCameraFolder();
 
 	int maxEventCount = 10;
 	int startIndex = 0;

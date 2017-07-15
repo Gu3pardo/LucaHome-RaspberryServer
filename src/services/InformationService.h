@@ -31,7 +31,7 @@
 
 class InformationService
 {
-  private:
+private:
 	std::string _informationFile;
 	InformationDto _informationList;
 
@@ -43,7 +43,7 @@ class InformationService
 	std::string getRestString();
 	std::string getString();
 
-  public:
+public:
 	InformationService();
 	~InformationService();
 

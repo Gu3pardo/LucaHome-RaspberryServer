@@ -10,7 +10,7 @@
 
 class InformationDto
 {
-  private:
+private:
 	std::string _author;
 	std::string _company;
 	std::string _contact;
@@ -24,7 +24,8 @@ class InformationDto
 	std::string _mediaServerVersion;
 	std::string _wpfApplicationVersion;
 
-  public:
+public:
+	InformationDto();
 	InformationDto(std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 	~InformationDto();
 

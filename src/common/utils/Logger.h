@@ -27,9 +27,9 @@
 
 #include <cstdio>
 
-#include "../controller/FileController.h"
 #include "../dto/LogDto.h"
-#include "../services/xml/XmlService.h"
+#include "../../controller/FileController.h"
+#include "../../services/xml/XmlService.h"
 #include "Tools.h"
 
 #ifndef LOGGER_H
