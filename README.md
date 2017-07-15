@@ -10,7 +10,7 @@
 Part of the LucaHome-Project
 
 Small server running on a raspberry to control your home.
-Remotely controlled by an android application (https://github.com/Gu3pardo/LucaHome-AndroidApplication)
+Remotely controlled by an android application (https://github.com/GuepardoApps/LucaHome-AndroidApplication)
 
 # Installation
 
@@ -74,18 +74,18 @@ pi@raspberrypi ~/lucahome $ sudo /etc/init.d/LucaHome start
 # IMPORTANT
 
 following project is also needed to work with the android application
-https://github.com/Gu3pardo/LucaHome-Website
+https://github.com/GuepardoApps/LucaHome-Website
 The code of this project needs to be copied to /var/www
 
 optional:
-https://github.com/Gu3pardo/LucaHome-RaspberryTemperatureLogger
+https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
 
 for the CAMERA module (working with motion!)
 https://www.pcwelt.de/ratgeber/Mit_dem_Raspberry_Pi_die_Wohnung_ueberwachen-Sicherheit-8638548.html
 
 ---
 
-![alt tag](https://github.com/Gu3pardo/LucaHome-RaspberryServer/blob/master/screenshots/img001.png)
+![alt tag](https://github.com/GuepardoApps/LucaHome-RaspberryServer/blob/master/screenshots/img001.png)
 
 ---
 
