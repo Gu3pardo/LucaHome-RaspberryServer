@@ -1,4 +1,4 @@
-SOURCE = ./src/lucahome.cpp ./src/xml/xmlparser.cpp ./src/xml/xmlservice.cpp ./src/xml/xmlwriter.cpp ./src/temperature/temperatureservice.cpp ./src/watchdog/watchdogservice.cpp ./src/system/systemservice.cpp ./src/camera/cameraservice.cpp ./src/menu/listedmenu.cpp  ./src/menu/menu.cpp ./src/menu/menuservice.cpp ./src/accesscontrol/accesscontrolservice.cpp ./src/shoppinglist/entryservice.cpp ./src/shoppinglist/entry.cpp ./src/remote/gpio.cpp ./src/remote/schedule.cpp ./src/remote/socket.cpp ./src/remote/remoteservice.cpp ./src/receiver/receiverservice.cpp ./src/movies/movie.cpp ./src/movies/movieservice.cpp ./src/mail/mailservice.cpp ./src/logger/logger.cpp ./src/logger/log.cpp ./src/informations/information.cpp ./src/informations/informationservice.cpp ./src/flatmap/point.cpp ./src/flatmap/mapcontentservice.cpp ./src/flatmap/mapcontent.cpp ./src/controller/filecontroller.cpp ./src/common/picontrol.cpp ./src/common/tools.cpp ./src/changes/change.cpp ./src/changes/changeservice.cpp ./src/birthdays/birthday.cpp ./src/birthdays/birthdayservice.cpp ./src/authentification/authentificationservice.cpp ./src/authentification/user.cpp ./src/audio/audioservice.cpp -lwiringPi -lpthread
+SOURCE = ./src/lucahome.cpp ./src/common/dto/BirthdayDto.cpp ./src/common/dto/ChangeDto.cpp ./src/common/dto/GpioDto.cpp ./src/common/dto/InformationDto.cpp ./src/common/dto/ListedMenuDto.cpp ./src/common/dto/LogDto.cpp ./src/common/dto/MapContentDto.cpp ./src/common/dto/MenuDto.cpp ./src/common/dto/MovieDto.cpp ./src/common/dto/PointDto.cpp ./src/common/dto/ScheduleDto.cpp ./src/common/dto/ShoppingEntryDto.cpp  ./src/common/dto/UserDto.cpp ./src/common/dto/WirelessSocketDto.cpp ./src/common/utils/Logger.cpp ./src/common/utils/PiControl.cpp ./src/common/utils/Tools.cpp ./src/controller/FileController.cpp ./src/controller/MailController.cpp ./src/controller/PathController.cpp ./src/services/shared/ChangeService.cpp ./src/services/xml/XmlParser.cpp ./src/services/xml/XmlService.cpp ./src/services/xml/XmlWriter.cpp ./src/services/AccessControlService.cpp ./src/services/AudioService.cpp ./src/services/AuthentificationService.cpp ./src/services/BirthdayService.cpp ./src/services/CameraService.cpp ./src/services/InformationService.cpp ./src/services/MapContentService.cpp ./src/services/MenuService.cpp ./src/services/MovieService.cpp ./src/services/ReceiverService.cpp ./src/services/RemoteService.cpp ./src/services/ShoppingListService.cpp ./src/services/SystemService.cpp ./src/services/TemperatureService.cpp ./src/services/WatchdogService.cpp -lwiringPi -lpthread
 APP = ./bin/lucahome
 CC = g++ -std=c++11
 
@@ -24,13 +24,12 @@ install:
 	cp ./assets/mapcontent /etc/default/lucahome/mapcontent
 	cp ./assets/listedmenu /etc/default/lucahome/listedmenu
 	cp ./assets/menu /etc/default/lucahome/menu
-	cp ./assets/movies /etc/default/lucahome/movies
 	cp ./assets/settings /etc/default/lucahome/settings
 	cp ./assets/shoppinglist /etc/default/lucahome/shoppinglist
 	cp ./assets/temperaturesettings /etc/default/lucahome/temperaturesettings
 	cp ./assets/users /etc/default/lucahome/users
-	cp ./src/mail/python/mail.py /etc/default/lucahome/mail.py
-	cp ./src/mail/python/mailWithAttachement.py /etc/default/lucahome/mailWithAttachement.py
+	cp ./python/mail.py /etc/default/lucahome/mail.py
+	cp ./python/mailWithImage.py /etc/default/lucahome/mailWithImage.py
 	cp ./bin/lucahome /bin/lucahome
 	chmod 777 /etc/default/lucahome/birthdays
 	chmod 777 /etc/default/lucahome/changes
@@ -38,12 +37,11 @@ install:
 	chmod 777 /etc/default/lucahome/mapcontent
 	chmod 777 /etc/default/lucahome/listedmenu
 	chmod 777 /etc/default/lucahome/menu
-	chmod 777 /etc/default/lucahome/movies
 	chmod 777 /etc/default/lucahome/settings
 	chmod 777 /etc/default/lucahome/shoppinglist
 	chmod 777 /etc/default/lucahome/temperaturesettings
 	chmod 777 /etc/default/lucahome/users
 	chmod 777 /etc/default/lucahome/mail.py
-	chmod 777 /etc/default/lucahome/mailWithAttachement.py
+	chmod 777 /etc/default/lucahome/mailWithImage.py
 	cp ./init/lucahome /etc/init.d
 	update-rc.d lucahome defaults

@@ -19,13 +19,15 @@
 #ifndef FILECONTROLLER_H
 #define FILECONTROLLER_H
 
-class FileController {
+class FileController
+{
 public:
 	FileController();
 	~FileController();
 
-	std::string readFile(std::string path);
-	bool saveFile(std::string path, std::string content);
+	std::string ReadFile(std::string path);
+	std::vector<std::string> ReadFileList(std::string path);
+	bool SaveFile(std::string path, std::string content);
 };
 
 #endif

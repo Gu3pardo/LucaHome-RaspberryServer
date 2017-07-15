@@ -2,11 +2,11 @@
 #include <sstream>
 
 namespace patch {
-template<typename T> std::string to_string(const T& n) {
-	std::ostringstream stm;
-	stm << n;
-	return stm.str();
-}
+	template<typename T> std::string to_string(const T& n) {
+		std::ostringstream stm;
+		stm << n;
+		return stm.str();
+	}
 }
 
 #include <string>
@@ -27,40 +27,52 @@ template<typename T> std::string to_string(const T& n) {
 #include <unistd.h>
 #include <syslog.h>
 
-#include "common/tools.h"
+#include "common\dto\ScheduleDto.h"
+#include "common\dto\ScheduleTaskDto.h"
+#include "common\utils\Logger.h"
+#include "common\utils\Tools.h"
 
-#include "accesscontrol/accesscontrolservice.h"
-#include "audio/audioservice.h"
-#include "authentification/authentificationservice.h"
-#include "birthdays/birthdayservice.h"
-#include "camera/cameraservice.h"
-#include "changes/changeservice.h"
-#include "flatmap/mapcontentservice.h"
-#include "informations/informationservice.h"
-#include "mail/mailservice.h"
-#include "menu/menuservice.h"
-#include "movies/movieservice.h"
-#include "receiver/receiverservice.h"
-#include "remote/schedule.h"
-#include "remote/remoteservice.h"
-#include "shoppinglist/entryservice.h"
-#include "system/systemservice.h"
-#include "temperature/temperatureservice.h"
-#include "watchdog/watchdogservice.h"
+#include "controller\FileController.h"
+#include "controller\MailController.h"
+#include "controller\PathController.h"
 
-#include "logger/logger.h"
-#include "controller/filecontroller.h"
+#include "services\shared\ChangeService.h"
+#include "services\AccessControlService.h"
+#include "services\AudioService.h"
+#include "services\AuthentificationService.h"
+#include "services\BirthdayService.h"
+#include "services\CameraService.h"
+#include "services\InformationService.h"
+#include "services\MapContentService.h"
+#include "services\MenuService.h"
+#include "services\MovieService.h"
+#include "services\ReceiverService.h"
+#include "services\RemoteService.h"
+#include "services\ShoppingListService.h"
+#include "services\SystemService.h"
+#include "services\TemperatureService.h"
+#include "services\WatchdogService.h"
 
 #define BUFLEN 512
+
+#define BIRTHDAY_CHECK_TIMEOUT 2 * 60 * 60
+#define MOTION_CONTROL_TIMEOUT 15
+#define SCHEDULE_CONTROL_TIMEOUT 10
+#define TEMPERATURE_CONTROL_TIMEOUT 60
+#define RELOAD_TIMEOUT 15 * 60
+
+#define MEDIA_PATH "/media/lucahome/"
 
 using namespace std;
 
 bool _updatedSchedules;
-vector<Schedule> _schedules;
-vector<ScheduleTask> _scheduleTasks;
+vector<ScheduleDto> _scheduleList;
+vector<ScheduleTaskDto> _scheduleTaskList;
 
 Logger _logger;
+MailController _mailController;
 FileController _fileController;
+PathController _pathController;
 
 AccessControlService _accessControlService;
 AudioService _audioService;
@@ -68,14 +80,13 @@ AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
 CameraService _cameraService;
 ChangeService _changeService;
-EntryService _entryService;
 InformationService _informationService;
-MailService _mailService;
 MenuService _menuService;
 MapContentService _mapContentService;
 MovieService _movieService;
 ReceiverService _receiverService;
 RemoteService _remoteService;
+ShoppingListService _shoppingListService;
 SystemService _systemService;
 TemperatureService _temperatureService;
 WatchdogService _watchdogService;
@@ -100,7 +111,7 @@ string executeCmd(string cmd, int source) {
 		return "Error 14:Invalid source";
 	}
 
-	vector < string > data = Tools::explode(":", cmd);
+	vector < string > data = Tools::Explode(":", cmd);
 	if (data.size() < 1) {
 		return "Error 13:No username";
 	}
@@ -143,35 +154,33 @@ string executeCmd(string cmd, int source) {
 	//_logger.addLog("DEBUG", data, username);
 
 	//---------------Authentificate user--------------
-	if (!_authentificationService.authentificateUser(username, password)) {
-		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUser failed!",
-				cmd.c_str());
+	if (!_authentificationService.AuthentificateUser(username, password)) {
+		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUser failed!", cmd.c_str());
 		return "Error 10:Authentification failed";
 	}
-	if (!_authentificationService.authentificateUserAction(username, password,
-			action)) {
-		syslog(LOG_INFO,
-				"executeCmd: %s failed! authentificateUserAction failed!",
-				cmd.c_str());
+	if (!_authentificationService.AuthentificateUserAction(username, password, action)) {
+		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUserAction failed!", cmd.c_str());
 		return "Error 11:UserAction cannot be performed:No rights";
 	}
 
 	//-----------------Access Control-----------------
 	if (category == "ACCESS") {
 		if (action == "ACTIVATE" && data[4] == "ALARM") {
-			return _accessControlService.activateAlarm();
-		} else if (action == "CHECK" && data[4] == "CODE") {
-			return _accessControlService.checkCode(data[5]);
-		} else if (action == "PLAY" && data[4] == "ALARM") {
-			return _accessControlService.playAlarm();
-		} else if (action == "STOP" && data[4] == "ALARM") {
-			return _accessControlService.stopAlarm();
+			return _accessControlService.ActivateAlarm();
+		}
+		else if (action == "CHECK" && data[4] == "CODE") {
+			return _accessControlService.CheckCode(data[5]);
+		}
+		else if (action == "PLAY" && data[4] == "ALARM") {
+			return _accessControlService.PlayAlarm();
+		}
+		else if (action == "STOP" && data[4] == "ALARM") {
+			return _accessControlService.StopAlarm();
 		}
 	}
 	//--------------------Birthday--------------------
 	else if (category == "BIRTHDAY") {
-		return _birthdayService.performAction(action, data, _changeService,
-				username);
+		return _birthdayService.PerformAction(action, data, _changeService, username);
 	}
 	//---------------------Camera---------------------
 	else if (category == "CAMERA") {
@@ -179,26 +188,23 @@ string executeCmd(string cmd, int source) {
 	}
 	//---------------------Changes--------------------
 	else if (category == "CHANGE") {
-		return _changeService.performAction(action, data);
+		return _changeService.PerformAction(action, data);
 	}
 	//------------------Informations------------------
 	else if (category == "INFORMATION") {
-		return _informationService.performAction(action, data);
+		return _informationService.PerformAction(action, data);
 	}
 	//-------------------MapContent-------------------
 	else if (category == "MAPCONTENT") {
-		return _mapContentService.performAction(action, data, _changeService,
-				username);
+		return _mapContentService.PerformAction(action, data, _changeService, username);
 	}
 	//----------------------Menu----------------------
 	else if (category == "MENU") {
-		return _menuService.performAction(action, data, _changeService,
-				username);
+		return _menuService.PerformAction(action, data, _changeService, username);
 	}
 	//---------------------Movies---------------------
 	else if (category == "MOVIE") {
-		return _movieService.performAction(action, data, _changeService,
-				username, _remoteService);
+		return _movieService.PerformAction(action, data, _changeService, username, _remoteService);
 	}
 	//---------------------Remote---------------------
 	else if (category == "REMOTE") {
@@ -207,17 +213,15 @@ string executeCmd(string cmd, int source) {
 				_updatedSchedules = true;
 			}
 		}
-		return _remoteService.performAction(action, data, _changeService,
-				username);
+		return _remoteService.PerformAction(action, data, _changeService, username);
 	}
 	//------------------ShoppingList------------------
 	if (category == "SHOPPINGLIST") {
-		return _entryService.performAction(action, data, _changeService,
-				username);
+		return _shoppingListService.PerformAction(action, data, _changeService, username);
 	}
 	//----------------------Sound---------------------
 	else if (category == "SOUND") {
-		return _audioService.performAction(action, data);
+		return _audioService.PerformAction(action, data);
 	}
 	//---------------------System---------------------
 	else if (category == "SYSTEM") {
@@ -231,9 +235,9 @@ string executeCmd(string cmd, int source) {
 	else if (category == "USER") {
 		if (action == "VALIDATE") {
 			return "validateuser:1";
-		} else if (action == "RESETFAILEDLOGIN") {
-			return _authentificationService.ResetFailedLogin(username, password,
-					data[4]);
+		}
+		else if (action == "RESETFAILEDLOGIN") {
+			return _authentificationService.ResetFailedLogin(username, password, data[4]);
 		}
 	}
 	//---------------------Watchdog---------------------
@@ -251,7 +255,7 @@ void *server(void *arg) {
 	struct sockaddr_in clientAddress, serverAddress;
 	char message[BUFLEN];
 
-	int port = _remoteService.getPort();
+	int port = _remoteService.GetPort();
 
 	socketResult = socket(AF_INET, SOCK_DGRAM, 0);
 	if (socketResult < 0) {
@@ -262,8 +266,7 @@ void *server(void *arg) {
 	serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
 	serverAddress.sin_port = htons(port);
 
-	connection = bind(socketResult, (struct sockaddr *) &serverAddress,
-			sizeof(serverAddress));
+	connection = bind(socketResult, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
 	if (connection < 0) {
 		syslog(LOG_CRIT, "Can't bind socket to port %d", port);
 		exit(1);
@@ -275,13 +278,13 @@ void *server(void *arg) {
 		memset(message, 0x0, BUFLEN);
 		clientLength = sizeof(clientAddress);
 
-		answer = recvfrom(socketResult, message, BUFLEN, 0,
-				(struct sockaddr *) &clientAddress, (socklen_t*) &clientLength);
+		answer = recvfrom(socketResult, message, BUFLEN, 0, (struct sockaddr *) &clientAddress, (socklen_t*)&clientLength);
 
 		if (answer < 0) {
 			syslog(LOG_ERR, "Can't receive data");
 			continue;
-		} else {
+		}
+		else {
 			syslog(LOG_INFO, "Received: %s", message);
 
 			pthread_mutex_lock(&changesMutex);
@@ -295,12 +298,12 @@ void *server(void *arg) {
 			string response = executeCmd(message, 1);
 
 			if (_updatedSchedules) {
-				_schedules = _remoteService.getSchedules();
+				_scheduleList = _remoteService.GetScheduleList();
 				_updatedSchedules = false;
 			}
 
-			_remoteService.reloadData();
-			_changeService.reloadData();
+			_remoteService.ReloadData();
+			_changeService.ReloadData();
 
 			pthread_mutex_unlock(&socketsMutex);
 			pthread_mutex_unlock(&gpiosMutex);
@@ -309,18 +312,17 @@ void *server(void *arg) {
 			pthread_mutex_unlock(&birthdaysMutex);
 			pthread_mutex_unlock(&changesMutex);
 
-			int sendResult = sendto(socketResult, response.c_str(),
-					strlen(response.c_str()), 0,
-					(struct sockaddr *) &clientAddress, clientLength);
+			int sendResult = sendto(socketResult, response.c_str(), strlen(response.c_str()), 0, (struct sockaddr *) &clientAddress, clientLength);
 			if (sendResult < 0) {
 				syslog(LOG_ERR, "Can't send data");
 			}
 			syslog(LOG_INFO, "Sent: %s", response.c_str());
 		}
 	}
+
 	close(socketResult);
 	syslog(LOG_INFO, "Exiting *server");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *scheduler(void *arg) {
@@ -343,151 +345,127 @@ void *scheduler(void *arg) {
 		pthread_mutex_lock(&schedulesMutex);
 
 		// Search for done, deleted and inactive Schedules
-		vector<ScheduleTask>::iterator it = _scheduleTasks.begin();
-		while (it != _scheduleTasks.end()) {
+		vector<ScheduleTaskDto>::iterator it = _scheduleTaskList.begin();
+		while (it != _scheduleTaskList.end()) {
 			int found = 0;
 			int done = 0;
 			int active = 1;
 
-			for (int s = 0; s < _schedules.size(); s++) {
-				if (_schedules[s].getName() == (*it).getSchedule()) {
+			for (int s = 0; s < _scheduleList.size(); s++) {
+				if (_scheduleList[s].GetName() == (*it).GetSchedule()) {
 					found = 1;
-					if (!_schedules[s].getStatus()) {
+					if (!_scheduleList[s].GetStatus()) {
 						active = 0;
 					}
 				}
 			}
 
-			if ((*it).isDone()) {
-				double deltaTime = difftime((*it).getTime(), now);
+			if ((*it).IsDone()) {
+				double deltaTime = difftime((*it).GetTime(), now);
 				if (deltaTime < -61) {
 					done = 1;
 				}
 			}
 
 			if (!found || !active || done) {
-				syslog(LOG_INFO, "Removing Task '%s'",
-						(*it).getSchedule().c_str());
-				it = _scheduleTasks.erase(it);
-			} else {
+				syslog(LOG_INFO, "Removing Task '%s'", (*it).GetSchedule().c_str());
+				it = _scheduleTaskList.erase(it);
+			}
+			else {
 				++it;
 			}
 		}
 
 		// Add Schedules to Tasklist
-		for (int s = 0; s < _schedules.size(); s++) {
+		for (int s = 0; s < _scheduleList.size(); s++) {
 			int found = 0;
 
-			for (int st = 0; st < _scheduleTasks.size(); st++) {
-				if (_schedules[s].getName()
-						== _scheduleTasks[st].getSchedule()) {
+			for (int st = 0; st < _scheduleTaskList.size(); st++) {
+				if (_scheduleList[s].GetName() == _scheduleTaskList[st].GetSchedule()) {
 					found = 1;
 				}
 			}
 
-			if (!found && _schedules[s].getStatus()) {
+			if (!found && _scheduleList[s].GetStatus()) {
 				time_t newtime = time(0);
 				struct tm tasktime;
 				localtime_r(&newtime, &tasktime);
-				tasktime.tm_hour = _schedules[s].getHour();
-				tasktime.tm_min = _schedules[s].getMinute();
+				tasktime.tm_hour = _scheduleList[s].GetHour();
+				tasktime.tm_min = _scheduleList[s].GetMinute();
 				tasktime.tm_sec = 0;
 
 				newtime = mktime(&tasktime);
-				ScheduleTask task(_schedules[s].getName(), newtime,
-						_schedules[s].getWeekday());
-				_scheduleTasks.push_back(task);
-				syslog(LOG_INFO, "Adding Task '%s'",
-						_schedules[s].getName().c_str());
+				ScheduleTaskDto task(_scheduleList[s].GetName(), newtime, _scheduleList[s].GetWeekday());
+				_scheduleTaskList.push_back(task);
+				syslog(LOG_INFO, "Adding Task '%s'", _scheduleList[s].GetName().c_str());
 			}
 		}
 
 		// Execute Tasks
-		for (int st = 0; st < _scheduleTasks.size(); st++) {
-			time_t tasktime = _scheduleTasks[st].getTime();
+		for (int st = 0; st < _scheduleTaskList.size(); st++) {
+			time_t tasktime = _scheduleTaskList[st].GetTime();
 			struct tm tasktime_info;
 			localtime_r(&tasktime, &tasktime_info);
 
-			int scheduleWeekday = _scheduleTasks[st].getWeekday();
-			string schedule = _scheduleTasks[st].getSchedule();
+			int scheduleWeekday = _scheduleTaskList[st].GetWeekday();
+			string schedule = _scheduleTaskList[st].GetSchedule();
 
-			if (_scheduleTasks[st].isDone() == 0 && scheduleWeekday == weekday
-					&& tasktime_info.tm_hour == now_info.tm_hour
-					&& tasktime_info.tm_min == now_info.tm_min) {
+			if (_scheduleTaskList[st].IsDone() == 0
+				&& scheduleWeekday == weekday
+				&& tasktime_info.tm_hour == now_info.tm_hour
+				&& tasktime_info.tm_min == now_info.tm_min) {
 
 				syslog(LOG_INFO, "Executing Task '%s'", schedule.c_str());
 
-				for (int s = 0; s < _schedules.size(); s++) {
-					if (schedule == _schedules[s].getName()) {
-						if (_schedules[s].getStatus()) {
-							if (_schedules[s].getSocket() != "") {
+				for (int s = 0; s < _scheduleList.size(); s++) {
+					if (schedule == _scheduleList[s].GetName()) {
+						if (_scheduleList[s].GetStatus()) {
+							if (_scheduleList[s].GetSocket() != "") {
 								stringstream socket_out;
-								socket_out
-										<< "Scheduler:435435:REMOTE:SET:SOCKET:"
-										<< _schedules[s].getSocket() << ":"
-										<< _schedules[s].getOnoff();
+								socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:" << _scheduleList[s].GetSocket() << ":" << _scheduleList[s].GetOnoff();
 
 								pthread_mutex_lock(&socketsMutex);
 
-								string response = executeCmd(socket_out.str(),
-										2);
+								string response = executeCmd(socket_out.str(), 2);
 								if (response != "setsocket:1") {
-									syslog(LOG_INFO,
-											"Setting socket %s by scheduler failed!",
-											_schedules[s].getSocket().c_str());
+									syslog(LOG_INFO, "Setting socket %s by scheduler failed!", _scheduleList[s].GetSocket().c_str());
 								}
 
 								pthread_mutex_unlock(&socketsMutex);
 							}
 
-							if (_schedules[s].getGpio() != "") {
+							if (_scheduleList[s].GetGpio() != "") {
 								stringstream gpio_out;
-								gpio_out << "Scheduler:435435:REMOTE:SET:GPIO:"
-										<< _schedules[s].getGpio() << ":"
-										<< _schedules[s].getOnoff();
+								gpio_out << "Scheduler:435435:REMOTE:SET:GPIO:" << _scheduleList[s].GetGpio() << ":" << _scheduleList[s].GetOnoff();
 
 								pthread_mutex_lock(&gpiosMutex);
 
 								string response = executeCmd(gpio_out.str(), 2);
 								if (response != "setgpio:1") {
-									syslog(LOG_INFO,
-											"Setting gpio %s by scheduler failed!",
-											_schedules[s].getGpio().c_str());
+									syslog(LOG_INFO, "Setting gpio %s by scheduler failed!", _scheduleList[s].GetGpio().c_str());
 								}
 
 								pthread_mutex_unlock(&gpiosMutex);
 							}
 
-							if (_schedules[s].getPlaySound() == 1
-									&& _schedules[s].getIsTimer() != 1) {
-								if (_schedules[s].getPlayRaspberry()
-										== _remoteService.getRaspberry()) {
+							if (_scheduleList[s].GetPlaySound() == 1 && _scheduleList[s].GetIsTimer() != 1) {
+								if (_scheduleList[s].GetPlayRaspberry() == _remoteService.GetRaspberry()) {
 									stringstream sound_out;
-									sound_out
-											<< "Scheduler:435435:SOUND:PLAY:WAKEUP";
+									sound_out << "Scheduler:435435:SOUND:PLAY:WAKEUP";
 
 									stringstream socket_out;
-									socket_out
-											<< "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:1";
+									socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:1";
 
 									pthread_mutex_lock(&socketsMutex);
 
-									string responseSocket = executeCmd(
-											socket_out.str(), 2);
-									if (responseSocket
-											!= "activateSoundSocket:1") {
-										syslog(LOG_INFO,
-												"Activating sound socket failed! %s",
-												responseSocket.c_str());
-									} else {
-										string responseSound = executeCmd(
-												sound_out.str(), 2);
-										if (responseSound
-												!= _remoteService.getWakeUpSound().c_str()) {
-											syslog(LOG_INFO,
-													"Playing wakeup failed! %s | %s",
-													_remoteService.getWakeUpSound().c_str(),
-													responseSound.c_str());
+									string responseSocket = executeCmd(socket_out.str(), 2);
+									if (responseSocket != "activateSoundSocket:1") {
+										syslog(LOG_INFO, "Activating sound socket failed! %s", responseSocket.c_str());
+									}
+									else {
+										string responseSound = executeCmd(sound_out.str(), 2);
+										if (responseSound != _remoteService.GetWakeUpSound().c_str()) {
+											syslog(LOG_INFO, "Playing wakeup failed! %s | %s", _remoteService.GetWakeUpSound().c_str(), responseSound.c_str());
 										}
 									}
 
@@ -495,36 +473,25 @@ void *scheduler(void *arg) {
 								}
 							}
 
-							if (_schedules[s].getIsTimer() == 1) {
-								if (_schedules[s].getPlaySound() == 1) {
-									if (_schedules[s].getPlayRaspberry()
-											== _remoteService.getRaspberry()) {
+							if (_scheduleList[s].GetIsTimer() == 1) {
+								if (_scheduleList[s].GetPlaySound() == 1) {
+									if (_scheduleList[s].GetPlayRaspberry() == _remoteService.GetRaspberry()) {
 										stringstream sound_out;
-										sound_out
-												<< "Scheduler:435435:SOUND:STOP:WAKEUP";
+										sound_out << "Scheduler:435435:SOUND:STOP:WAKEUP";
 
 										stringstream socket_out;
-										socket_out
-												<< "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:0";
+										socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:0";
 
 										pthread_mutex_lock(&socketsMutex);
 
-										string responseSocket = executeCmd(
-												socket_out.str(), 2);
-										if (responseSocket
-												!= "deactivateSoundSocket:0") {
-											syslog(LOG_INFO,
-													"Deactivating sound socket failed! %s",
-													responseSocket.c_str());
-										} else {
-											string responseSound = executeCmd(
-													sound_out.str(), 2);
-											if (responseSound
-													!= "stopplaying:1") {
-												syslog(LOG_INFO,
-														"Stopping wakeup failed! %s | %s",
-														_remoteService.getWakeUpSound().c_str(),
-														responseSound.c_str());
+										string responseSocket = executeCmd(socket_out.str(), 2);
+										if (responseSocket != "deactivateSoundSocket:0") {
+											syslog(LOG_INFO, "Deactivating sound socket failed! %s", responseSocket.c_str());
+										}
+										else {
+											string responseSound = executeCmd(sound_out.str(), 2);
+											if (responseSound != "stopplaying:1") {
+												syslog(LOG_INFO, "Stopping wakeup failed! %s | %s", _remoteService.GetWakeUpSound().c_str(), responseSound.c_str());
 											}
 										}
 
@@ -533,35 +500,33 @@ void *scheduler(void *arg) {
 								}
 
 								stringstream schedule_delete_out;
-								schedule_delete_out
-										<< "Scheduler:435435:REMOTE:DELETE:SCHEDULE:"
-										<< _schedules[s].getName();
+								schedule_delete_out << "Scheduler:435435:REMOTE:DELETE:SCHEDULE:" << _scheduleList[s].GetName();
 
-								string response = executeCmd(
-										schedule_delete_out.str(), 2);
+								string response = executeCmd(schedule_delete_out.str(), 2);
 								if (response != "deleteschedule:1") {
-									syslog(LOG_INFO,
-											"Deleting schedule %s by scheduler failed!",
-											_schedules[s].getName().c_str());
+									syslog(LOG_INFO, "Deleting schedule %s by scheduler failed!", _scheduleList[s].GetName().c_str());
 								}
 							}
 						}
 					}
 				}
-				_scheduleTasks[st].setDone(1);
+
+				_scheduleTaskList[st].SetDone(1);
 			}
 		}
+
 		pthread_mutex_unlock(&schedulesMutex);
-		sleep(10);
+		sleep(SCHEDULE_CONTROL_TIMEOUT);
 	}
+
 	syslog(LOG_INFO, "Exiting *scheduler");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *receiver(void *arg) {
 	syslog(LOG_INFO, "Receiver started!");
 
-	int receivergpio = _remoteService.getReceiverGpio();
+	int receivergpio = _remoteService.GetReceiverGpio();
 
 	bool foundValidGpio = false;
 	//TODO: enable receiver later to test feature! only if receiver is mounted on RPi and store data to assets!
@@ -571,7 +536,8 @@ void *receiver(void *arg) {
 		//TODO reactivate!
 		//_receiverSwitch = RCSwitch();
 		//_receiverSwitch.enableReceive(receivergpio);
-	} else {
+	}
+	else {
 		syslog(LOG_INFO, "receivergpio has invalid value: %d", receivergpio);
 	}
 
@@ -596,7 +562,7 @@ void *receiver(void *arg) {
 	}
 
 	syslog(LOG_INFO, "Exiting *receiver");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *birthdayControl(void *arg) {
@@ -604,15 +570,14 @@ void *birthdayControl(void *arg) {
 
 	while (1) {
 		if (_birthdayService.GetBirthdayControlActive()) {
-			_birthdayService.checkBirthday();
+			_birthdayService.CheckBirthdayList();
 		}
 
-		//Check birthdays once a day (86400sec == 1440min == 24h)
-		sleep(24 * 60 * 60);
+		sleep(BIRTHDAY_CHECK_TIMEOUT);
 	}
 
 	syslog(LOG_INFO, "Exiting *birthdayControl");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *cameraStartControl(void *arg) {
@@ -620,7 +585,7 @@ void *cameraStartControl(void *arg) {
 
 	while (1) {
 		if (_cameraService.GetStartCamera()
-				&& !_cameraService.GetStopCamera()) {
+			&& !_cameraService.GetStopCamera()) {
 			_cameraService.StartMotion();
 		}
 
@@ -628,7 +593,7 @@ void *cameraStartControl(void *arg) {
 	}
 
 	syslog(LOG_INFO, "Exiting *cameraStartControl");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *cameraStopControl(void *arg) {
@@ -636,7 +601,7 @@ void *cameraStopControl(void *arg) {
 
 	while (1) {
 		if (!_cameraService.GetStartCamera()
-				&& _cameraService.GetStopCamera()) {
+			&& _cameraService.GetStopCamera()) {
 			_cameraService.StopMotion();
 		}
 
@@ -644,7 +609,7 @@ void *cameraStopControl(void *arg) {
 	}
 
 	syslog(LOG_INFO, "Exiting *cameraStopControl");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *motionControl(void *arg) {
@@ -655,11 +620,11 @@ void *motionControl(void *arg) {
 			_cameraService.Check();
 		}
 
-		sleep(15);
+		sleep(MOTION_CONTROL_TIMEOUT);
 	}
 
 	syslog(LOG_INFO, "Exiting *motionControl");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
 }
 
 void *temperatureControl(void *arg) {
@@ -670,12 +635,31 @@ void *temperatureControl(void *arg) {
 			_temperatureService.ControlTemperature();
 		}
 
-		//Check temperature every 30 seconds
-		sleep(30);
+		sleep(TEMPERATURE_CONTROL_TIMEOUT);
 	}
 
 	syslog(LOG_INFO, "Exiting *temperatureControl");
-	pthread_exit (NULL);
+	pthread_exit(NULL);
+}
+
+void *reloader(void *arg) {
+	syslog(LOG_INFO, "Reloader started!");
+
+	while (1) {
+		_birthdayService.ReloadBirthdayList();
+		_informationService.ReloadInformationList();
+		_mapContentService.ReloadMapContent();
+		_menuService.ReloadLists();
+		_movieService.ReloadMovies();
+		_remoteService.ReloadData();
+		_shoppingListService.ReloadData();
+		_temperatureService.ReloadData();
+
+		sleep(RELOAD_TIMEOUT);
+	}
+
+	syslog(LOG_INFO, "Exiting *reloader");
+	pthread_exit(NULL);
 }
 
 int main(void) {
@@ -685,38 +669,31 @@ int main(void) {
 	time_t now = time(0);
 	syslog(LOG_INFO, "Current Scheduler-Time: %s", ctime(&now));
 
-	_authentificationService.initialize(_fileController);
-	_birthdayService.initialize(_fileController, _mailService);
-	_changeService.initialize(_fileController);
-	_entryService.initialize(_fileController);
-	_informationService.initialize(_fileController);
-	_mapContentService.initialize(_fileController);
-	_menuService.initialize(_fileController);
-	_movieService.initialize(_fileController);
-	_remoteService.initialize(_fileController);
-	_audioService.initialize("/media/lucahome/",
-			_remoteService.getWakeUpSound(), _remoteService.getAlarmSound(),
-			_remoteService.getRaspberry());
-	_accessControlService.initialize(_fileController, _mailService,
-			User("AccessControl", "518716", 1, 0, 0),
-			_remoteService.getAccessUrl(), _remoteService.getMediaMirror());
-	_cameraService.Initialize("/NAS/Camera/", _remoteService.getCameraUrl(),
-			_mailService, _systemService);
-	_temperatureService.Initialize(_fileController, _mailService,
-			_remoteService.getSensor(), _remoteService.getArea(),
-			_remoteService.getTemperatureGraphUrl());
+	_authentificationService.Initialize(_fileController);
+	_birthdayService.Initialize(_fileController, _mailController);
+	_changeService.Initialize(_fileController);
+	_informationService.Initialize(_fileController);
+	_mapContentService.Initialize(_fileController);
+	_menuService.Initialize(_fileController);
+	_movieService.Initialize(_fileController, _pathController);
+	_remoteService.Initialize(_fileController);
+	_shoppingListService.Initialize(_fileController);
 
-	_logger.initialize(_fileController);
+	_audioService.Initialize(MEDIA_PATH, _remoteService.GetWakeUpSound(), _remoteService.GetAlarmSound(), _remoteService.GetRaspberry());
+	_accessControlService.Initialize(_fileController, _mailController, UserDto("AccessControl", "518716", 1, 0, 0), _remoteService.GetAccessUrl(), _remoteService.GetMediaMirrorList());
+	_cameraService.Initialize(_remoteService.GetCameraUrl(), _mailController, _pathController, _systemService);
+	_temperatureService.Initialize(_fileController, _mailController, _remoteService.GetSensor(), _remoteService.GetArea(), _remoteService.GetTemperatureGraphUrl());
+
+	_logger.Initialize(_fileController);
 
 	std::ostringstream startMessage;
-	startMessage << "Starting LucaHome at " << _remoteService.getArea();
-	_mailService.sendMail(startMessage.str());
+	startMessage << "Starting LucaHome at " << _remoteService.GetArea();
+	_mailController.SendMail(startMessage.str());
 
 	_updatedSchedules = false;
-	_schedules = _remoteService.getSchedules();
+	_scheduleList = _remoteService.GetScheduleList();
 
-	pthread_t scheduleThread, serverThread, receiverThread, temperatureThread,
-			birthdayThread, cameraStartThread, cameraStopThread, motionThread;
+	pthread_t scheduleThread, serverThread, receiverThread, temperatureThread, birthdayThread, cameraStartThread, cameraStopThread, motionThread, reloadThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
 	pthread_create(&scheduleThread, NULL, scheduler, NULL);
@@ -726,6 +703,7 @@ int main(void) {
 	pthread_create(&cameraStartThread, NULL, cameraStartControl, NULL);
 	pthread_create(&cameraStopThread, NULL, cameraStopControl, NULL);
 	pthread_create(&motionThread, NULL, motionControl, NULL);
+	pthread_create(&reloadThread, NULL, reloader, NULL);
 
 	pthread_join(serverThread, NULL);
 	pthread_join(scheduleThread, NULL);
@@ -735,6 +713,7 @@ int main(void) {
 	pthread_join(cameraStartThread, NULL);
 	pthread_join(cameraStopThread, NULL);
 	pthread_join(motionThread, NULL);
+	pthread_join(reloadThread, NULL);
 
 	pthread_mutex_destroy(&socketsMutex);
 	pthread_mutex_destroy(&gpiosMutex);

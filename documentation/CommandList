@@ -56,10 +56,8 @@ getmoviesstringlength
 getmoviescount
 getmoviesbyindex
 getmovies
-addmovie
 updatemovie
-deletemovie
-startmovie
+loadmovies
 
 REMOTE
 getraspberry
