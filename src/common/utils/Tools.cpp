@@ -15,6 +15,21 @@ int Tools::ConvertStrToInt(std::string str)
 	return number;
 }
 
+std::string Tools::ConvertDoubleToStr(double number)
+{
+	std::ostringstream numberStringStream;
+	numberStringStream << number;
+	return numberStringStream.str();
+}
+
+double Tools::ConvertStrToDouble(std::string str)
+{
+	std::stringstream ss(str);
+	double number;
+	ss >> number;
+	return number;
+}
+
 std::string Tools::ConvertBoolToStr(bool boolean)
 {
 	std::ostringstream booleanStringStream;

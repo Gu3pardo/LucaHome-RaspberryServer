@@ -49,6 +49,24 @@ std::string XmlWriter::GenerateChangesXml(std::vector<ChangeDto> changelist)
 	return xml.str();
 }
 
+std::string XmlWriter::GenerateCoinsXml(std::vector<CoinDto> coinList)
+{
+	std::stringstream xml;
+
+	xml << "<coins>" << std::endl;
+	for (int index = 0; index < coinList.size(); index++)
+	{
+		xml << Tools::ConvertIntToStr(coinList[index].GetId()) << ":"
+			<< coinList[index].GetUser() << ":"
+			<< coinList[index].GetType() << ":"
+			<< Tools::ConvertDoubleToStr(coinList[index].GetAmount()) << ";"
+			<< std::endl;
+	}
+	xml << "</coins>" << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::GenerateListedMenuXml(std::vector<ListedMenuDto> listedmenus)
 {
 	std::stringstream xml;

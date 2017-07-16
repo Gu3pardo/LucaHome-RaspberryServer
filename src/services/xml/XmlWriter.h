@@ -10,6 +10,7 @@
 
 #include "../../common/dto/BirthdayDto.h"
 #include "../../common/dto/ChangeDto.h"
+#include "../../common/dto/CoinDto.h"
 #include "../../common/dto/GpioDto.h"
 #include "../../common/dto/InformationDto.h"
 #include "../../common/dto/ListedMenuDto.h"
@@ -33,6 +34,7 @@ public:
 
 	static std::string GenerateBirthdaysXml(std::vector<BirthdayDto>);
 	static std::string GenerateChangesXml(std::vector<ChangeDto>);
+	static std::string GenerateCoinsXml(std::vector<CoinDto>);
 	static std::string GenerateListedMenuXml(std::vector<ListedMenuDto>);
 	static std::string GenerateMapContentsXml(std::vector<MapContentDto>);
 	static std::string GenerateMenuXml(std::vector<MenuDto>);

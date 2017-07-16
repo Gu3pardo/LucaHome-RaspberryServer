@@ -43,6 +43,7 @@ namespace patch {
 #include "services/AuthentificationService.h"
 #include "services/BirthdayService.h"
 #include "services/CameraService.h"
+#include "services/CoinService.h"
 #include "services/InformationService.h"
 #include "services/MapContentService.h"
 #include "services/MenuService.h"
@@ -81,6 +82,7 @@ AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
 CameraService _cameraService;
 ChangeService _changeService;
+CoinService _coinService;
 InformationService _informationService;
 MenuService _menuService;
 MapContentService _mapContentService;
@@ -190,6 +192,10 @@ string executeCmd(string cmd, int source) {
 	//---------------------Changes--------------------
 	else if (category == "CHANGE") {
 		return _changeService.PerformAction(action, data);
+	}
+	//----------------------Coins---------------------
+	else if (category == "COINS") {
+		return _coinService.PerformAction(action, data, _changeService, username);
 	}
 	//------------------Informations------------------
 	else if (category == "INFORMATION") {
@@ -673,6 +679,7 @@ int main(void) {
 	_authentificationService.Initialize(_fileController);
 	_birthdayService.Initialize(_fileController, _mailController);
 	_changeService.Initialize(_fileController);
+	_coinService.Initialize(_fileController);
 	_informationService.Initialize(_fileController);
 	_mapContentService.Initialize(_fileController);
 	_menuService.Initialize(_fileController);

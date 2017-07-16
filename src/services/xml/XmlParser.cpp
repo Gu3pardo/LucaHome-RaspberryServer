@@ -234,6 +234,50 @@ std::vector<ChangeDto> XmlParser::ParseChangeList()
 	return changeList;
 }
 
+std::vector<CoinDto> XmlParser::ParseCoinList()
+{
+	std::string entries = FindTag("coins");
+	std::vector<CoinDto> coinList;
+
+	if (entries.length() > 0)
+	{
+		std::vector<std::string> lines = Tools::Explode(";", entries);
+		for (int l = 0; l < lines.size(); l++)
+		{
+			if (lines[l].length() > 0)
+			{
+				std::vector<std::string> words = Tools::Explode(":", lines[l]);
+				CoinDto newCoin;
+
+				for (int w = 0; w < words.size(); w++)
+				{
+					if (typeid(words.at(0)) == typeid(std::string))
+					{
+						newCoin.SetId(atoi(words[0].c_str()));
+					}
+					if (typeid(words.at(1)) == typeid(std::string))
+					{
+						newCoin.SetUser(words[1]);
+					}
+					if (typeid(words.at(2)) == typeid(std::string))
+					{
+						newCoin.SetType(words[2]);
+					}
+					if (typeid(words.at(3)) == typeid(std::string))
+					{
+						double amount = Tools::ConvertStrToDouble(words[3].c_str());
+						newCoin.SetAmount(amount);
+					}
+				}
+
+				coinList.push_back(newCoin);
+			}
+		}
+	}
+
+	return coinList;
+}
+
 std::vector<GpioDto> XmlParser::ParseGpioList()
 {
 	std::string entries = FindTag("gpios");

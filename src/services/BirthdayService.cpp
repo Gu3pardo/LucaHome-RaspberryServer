@@ -186,7 +186,7 @@ bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData, Chan
 	saveBirthdays(changeService, username);
 	loadBirthdays();
 
-	syslog(LOG_INFO, "Added birthday %d", atoi(newBirthdayData[4].c_str()));
+	syslog(LOG_INFO, "Added birthday %d", atoi(newBirthdayData[ID_INDEX].c_str()));
 
 	return true;
 }

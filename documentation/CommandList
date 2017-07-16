@@ -24,6 +24,13 @@ CHANGES
 getchanges
 getchangesrest
 
+COINS
+getcoinsall
+getcoinsuser
+addcoin
+updatecoin
+deletecoin
+
 GPIO
 getgpios
 setgpio

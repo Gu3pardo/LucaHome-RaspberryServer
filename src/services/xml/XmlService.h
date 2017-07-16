@@ -11,6 +11,7 @@
 
 #include "../../common/dto/BirthdayDto.h"
 #include "../../common/dto/ChangeDto.h"
+#include "../../common/dto/CoinDto.h"
 #include "../../common/dto/GpioDto.h"
 #include "../../common/dto/InformationDto.h"
 #include "../../common/dto/ListedMenuDto.h"
@@ -37,6 +38,9 @@ public:
 
 	static std::string GenerateChangesXml(std::vector<ChangeDto>);
 	std::vector<ChangeDto> GetChangeList(std::string);
+
+	static std::string GenerateCoinsXml(std::vector<CoinDto>);
+	std::vector<CoinDto> GetCoinList(std::string);
 
 	InformationDto GetInformation(std::string);
 

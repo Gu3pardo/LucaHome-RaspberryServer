@@ -10,6 +10,7 @@
 
 #include "../../common/dto/BirthdayDto.h"
 #include "../../common/dto/ChangeDto.h"
+#include "../../common/dto/CoinDto.h"
 #include "../../common/dto/GpioDto.h"
 #include "../../common/dto/InformationDto.h"
 #include "../../common/dto/ListedMenuDto.h"
@@ -44,6 +45,7 @@ public:
 
 	std::vector<BirthdayDto> ParseBirthdayList();
 	std::vector<ChangeDto> ParseChangeList();
+	std::vector<CoinDto> ParseCoinList();
 	std::vector<GpioDto> ParseGpioList();
 	std::vector<ListedMenuDto> ParseListedMenuList();
 	std::vector<MapContentDto> ParseMapContentList();

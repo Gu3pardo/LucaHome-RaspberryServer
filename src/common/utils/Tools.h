@@ -25,6 +25,9 @@ public:
 	static std::string ConvertIntToStr(int);
 	static int ConvertStrToInt(std::string);
 
+	static std::string ConvertDoubleToStr(double);
+	static double ConvertStrToDouble(std::string);
+
 	static std::string ConvertBoolToStr(bool);
 	static bool ConvertStrToBool(std::string);
 

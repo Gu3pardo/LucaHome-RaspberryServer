@@ -126,3 +126,11 @@ Code			Error
 190				Action not found for watchdog
 191				Invalid data for watchdog
 192				Parameter not found for watchdog
+
+200				Action not found for coin
+201				Wrong data size for coin
+202				Wrong action parameter for coin
+203				Could not add coin
+204				Could not update coin
+205				Could not delete coin
+206				Parameter not found for coin

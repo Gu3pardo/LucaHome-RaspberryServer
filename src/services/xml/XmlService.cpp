@@ -34,6 +34,18 @@ std::vector<ChangeDto> XmlService::GetChangeList(std::string content)
 	return parser.ParseChangeList();
 }
 
+std::string XmlService::GenerateCoinsXml(std::vector<CoinDto> coinList)
+{
+	XmlWriter writer;
+	return writer.GenerateCoinsXml(coinList);
+}
+
+std::vector<CoinDto> XmlService::GetCoinList(std::string content)
+{
+	XmlParser parser(content);
+	return parser.ParseCoinList();
+}
+
 InformationDto XmlService::GetInformation(std::string content)
 {
 	XmlParser parser(content);

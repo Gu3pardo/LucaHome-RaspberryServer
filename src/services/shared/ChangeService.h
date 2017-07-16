@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <syslog.h>
 
+#include "../../common/dto/ChangeDto.h"
 #include "../../controller/FileController.h"
 #include "../xml/XmlService.h"
 
