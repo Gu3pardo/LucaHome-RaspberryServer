@@ -20,7 +20,6 @@
 #include "../common/utils/Tools.h"
 #include "../controller/FileController.h"
 #include "../controller/PathController.h"
-#include "shared/ChangeService.h"
 #include "RemoteService.h"
 
 #define GET "GET"
@@ -45,21 +44,21 @@ private:
 	PathController _pathController;
 
 	void loadAllMovies();
-	void saveMovieNFO(MovieDto, ChangeService, std::string);
+	void saveMovieNFO(MovieDto, std::string);
 
 	std::string generateRestEntry(MovieDto);
 	int getCount();
 
 	std::string getRestString(int, int);
 
-	bool updateMovieData(std::vector<std::string>, ChangeService, std::string);
+	bool updateMovieData(std::vector<std::string>, std::string);
 
 public:
 	MovieService();
 	~MovieService();
 
 	void Initialize(FileController, PathController);
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string, RemoteService);
+	std::string PerformAction(std::string, std::vector<std::string>, std::string, RemoteService);
 	void ReloadMovies();
 };
 

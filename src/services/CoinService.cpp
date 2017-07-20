@@ -137,7 +137,7 @@ std::string CoinService::getRestStringUser(std::string username)
 	{
 		CoinDto coin = _coinList[index];
 
-		if (coin.GetUser == username) {
+		if (coin.GetUser() == username) {
 			out << "{coin:"
 				<< "{Id:" << Tools::ConvertIntToStr(coin.GetId()) << "};"
 				<< "{User:" << coin.GetUser() << "};"

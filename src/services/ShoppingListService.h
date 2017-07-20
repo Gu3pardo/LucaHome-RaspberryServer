@@ -27,6 +27,7 @@
 #define UPDATE "UPDATE"
 #define DELETE "DELETE"
 #define SHOPPING_ENTRY_DATA_SIZE 8
+#define ALL "ALL"
 #define WEBSITE "WEBSITE"
 
 #ifndef SHOPPING_LIST_SERVICE_H

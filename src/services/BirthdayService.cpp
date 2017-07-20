@@ -56,7 +56,14 @@ std::string BirthdayService::PerformAction(std::string action, std::vector<std::
 {
 	if (action == GET)
 	{
-		return getBirthdays();
+		if (data.size() == 6) {
+			if (data[5] == WEBSITE) {
+				return getReducedString();
+			}
+		}
+		else {
+			return getBirthdays();
+		}
 	}
 	else if (action == ADD)
 	{
@@ -165,6 +172,27 @@ std::string BirthdayService::getBirthdays()
 			<< "{month:" << Tools::ConvertIntToStr(birthday.GetMonth()) << "};"
 			<< "{year:" << Tools::ConvertIntToStr(birthday.GetYear()) << "};"
 			<< "};";
+	}
+
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string BirthdayService::getReducedString()
+{
+	std::stringstream out;
+
+	for (int index = 0; index < _birthdayList.size(); index++)
+	{
+		BirthdayDto birthday = _birthdayList[index];
+
+		out << "birthday:"
+			<< Tools::ConvertIntToStr(birthday.GetId()) << ":"
+			<< birthday.GetName() << ":"
+			<< Tools::ConvertIntToStr(birthday.GetDay()) << ":"
+			<< Tools::ConvertIntToStr(birthday.GetMonth()) << ":"
+			<< Tools::ConvertIntToStr(birthday.GetYear()) << ";";
 	}
 
 	out << "\x00" << std::endl;

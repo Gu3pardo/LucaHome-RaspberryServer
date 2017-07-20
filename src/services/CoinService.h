@@ -17,7 +17,7 @@
 #include <syslog.h>
 
 #include "../common/dto/CoinDto.h"
-#include "../../controller/FileController.h"
+#include "../controller/FileController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
 

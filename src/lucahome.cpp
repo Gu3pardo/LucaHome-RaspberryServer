@@ -211,7 +211,7 @@ string executeCmd(string cmd, int source) {
 	}
 	//---------------------Movies---------------------
 	else if (category == "MOVIE") {
-		return _movieService.PerformAction(action, data, _changeService, username, _remoteService);
+		return _movieService.PerformAction(action, data, username, _remoteService);
 	}
 	//---------------------Remote---------------------
 	else if (category == "REMOTE") {
@@ -654,6 +654,8 @@ void *reloader(void *arg) {
 
 	while (1) {
 		_birthdayService.ReloadBirthdayList();
+		_changeService.ReloadData();
+		_coinService.ReloadData();
 		_informationService.ReloadInformationList();
 		_mapContentService.ReloadMapContent();
 		_menuService.ReloadLists();

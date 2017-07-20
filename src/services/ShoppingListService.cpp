@@ -25,9 +25,17 @@ std::string ShoppingListService::PerformAction(std::string action, std::vector<s
 			if (data[4] == WEBSITE) {
 				return getReducedString();
 			}
+			else if (data[4] == ALL) {
+				return getShoppingList();
+			}
+			else
+			{
+				return "Error 155:Parameter not found for shopping entry";
+			}
 		}
-		else {
-			return getShoppingList();
+		else
+		{
+			return "Error 151:Wrong word size for shopping entry";
 		}
 	}
 	else if (action == ADD)

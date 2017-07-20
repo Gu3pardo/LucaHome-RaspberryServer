@@ -27,6 +27,7 @@
 #define ADD "ADD"
 #define UPDATE "UPDATE"
 #define DELETE "DELETE"
+#define WEBSITE "WEBSITE"
 #define BIRTHDAY_DATA_SIZE 9
 #define SETCONTROLTASK "SETCONTROLTASK"
 #define ON "ON"
@@ -55,6 +56,7 @@ class BirthdayService
 	void loadBirthdays();
 	void saveBirthdays(ChangeService, std::string);
 
+	std::string getReducedString();
 	std::string getBirthdays();
 
 	bool addBirthday(std::vector<std::string>, ChangeService, std::string);

@@ -45,5 +45,6 @@ install:
 	chmod 777 /etc/default/lucahome/users
 	chmod 777 /etc/default/lucahome/mail.py
 	chmod 777 /etc/default/lucahome/mailWithImage.py
+	chmod 777 /etc/default/lucahome
 	cp ./init/lucahome /etc/init.d
 	update-rc.d lucahome defaults

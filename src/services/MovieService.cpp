@@ -17,7 +17,7 @@ void MovieService::Initialize(FileController fileController, PathController path
 	loadAllMovies();
 }
 
-std::string MovieService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username, RemoteService remoteService)
+std::string MovieService::PerformAction(std::string action, std::vector<std::string> data, std::string username, RemoteService remoteService)
 {
 	if (action == GET)
 	{
@@ -45,7 +45,7 @@ std::string MovieService::PerformAction(std::string action, std::vector<std::str
 	{
 		if (data.size() == MOVIE_DATA_SIZE)
 		{
-			if (updateMovieData(data, changeService, username))
+			if (updateMovieData(data, username))
 			{
 				return "updatemovie:1";
 			}
@@ -134,7 +134,7 @@ void MovieService::loadAllMovies()
 	_movieList = movieList;
 }
 
-void MovieService::saveMovieNFO(MovieDto movie, ChangeService changeService, std::string username)
+void MovieService::saveMovieNFO(MovieDto movie, std::string username)
 {
 	std::ostringstream nfoFilePathStringStream;
 	nfoFilePathStringStream << MOVIE_PATH << movie.GetTitle() << "/" << NFO_LUCA_FILE;
@@ -148,7 +148,6 @@ void MovieService::saveMovieNFO(MovieDto movie, ChangeService changeService, std
 		<< "{Watched: " << Tools::ConvertIntToStr(movie.GetWatched()) << "};";
 
 	_fileController.SaveFile(nfoFilePath, fileContent.str());
-	changeService.UpdateChange("Movies", username);
 }
 
 std::string MovieService::generateRestEntry(MovieDto movie)
@@ -193,7 +192,7 @@ std::string MovieService::getRestString(int start, int end)
 	return out.str();
 }
 
-bool MovieService::updateMovieData(std::vector<std::string> movieData, ChangeService changeService, std::string username)
+bool MovieService::updateMovieData(std::vector<std::string> movieData, std::string username)
 {
 	std::vector<std::string> socketList = Tools::Explode("|", movieData[9]);
 
@@ -209,7 +208,7 @@ bool MovieService::updateMovieData(std::vector<std::string> movieData, ChangeSer
 				atoi(movieData[8].c_str()));
 
 			_movieList[index] = updateMovie;
-			saveMovieNFO(updateMovie, changeService, username);
+			saveMovieNFO(updateMovie, username);
 
 			syslog(LOG_INFO, "Updated movie %s", movieData[4].c_str());
 
