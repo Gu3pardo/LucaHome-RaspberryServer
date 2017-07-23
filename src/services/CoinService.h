@@ -59,7 +59,7 @@ public:
 	CoinService();
 	~CoinService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	void ReloadData();
 	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
 };

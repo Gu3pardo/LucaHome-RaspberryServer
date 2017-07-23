@@ -30,6 +30,7 @@
 #define INDEX "INDEX"
 
 #define MOVIE_DATA_SIZE 10
+#define REDUCED "REDUCED"
 
 #define NFO_LUCA_FILE "NFO.luca"
 
@@ -47,9 +48,11 @@ private:
 	void saveMovieNFO(MovieDto, std::string);
 
 	std::string generateRestEntry(MovieDto);
+	std::string generateReducedEntry(MovieDto);
 	int getCount();
 
 	std::string getRestString(int, int);
+	std::string getReducedString(int, int);
 
 	bool updateMovieData(std::vector<std::string>, std::string);
 
@@ -59,7 +62,7 @@ public:
 
 	void Initialize(FileController, PathController);
 	std::string PerformAction(std::string, std::vector<std::string>, std::string, RemoteService);
-	void ReloadMovies();
+	void ReloadData();
 };
 
 #endif

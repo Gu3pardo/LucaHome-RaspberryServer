@@ -27,17 +27,34 @@ std::string MovieService::PerformAction(std::string action, std::vector<std::str
 		}
 		else if (data[4] == ALL)
 		{
-			return getRestString(0, getCount() - 1);
+			if (data[5] == REDUCED) {
+				return getReducedString(0, getCount() - 1);
+			}
+			else {
+				return getRestString(0, getCount() - 1);
+			}
 		}
 		else if (data[4] == INDEX)
 		{
-			if (data.size() == 7)
-			{
-				return getRestString(atoi(data[5].c_str()), atoi(data[6].c_str()));
+			if (data[5] == REDUCED) {
+				if (data.size() == 8)
+				{
+					return getReducedString(atoi(data[5].c_str()), atoi(data[6].c_str()));
+				}
+				else
+				{
+					return "Error 47:Wrong word size for movie";
+				}
 			}
-			else
-			{
-				return "Error 47:Wrong word size for movie";
+			else {
+				if (data.size() == 7)
+				{
+					return getRestString(atoi(data[5].c_str()), atoi(data[6].c_str()));
+				}
+				else
+				{
+					return "Error 47:Wrong word size for movie";
+				}
 			}
 		}
 	}
@@ -77,7 +94,7 @@ std::string MovieService::PerformAction(std::string action, std::vector<std::str
 	}
 }
 
-void MovieService::ReloadMovies()
+void MovieService::ReloadData()
 {
 	syslog(LOG_INFO, "Reloading movies!");
 	loadAllMovies();
@@ -90,7 +107,8 @@ void MovieService::loadAllMovies()
 	std::vector<MovieDto> movieList;
 
 	std::vector<std::string> movieDirectories = _pathController.ScanMovieFolder();
-	for (int movieIndex = 0; movieIndex < movieDirectories.size(); movieIndex++) {
+	// Start at index 2, cause first two entries are not valid
+	for (int movieIndex = 2; movieIndex < movieDirectories.size(); movieIndex++) {
 		std::string currentMovieDir = movieDirectories.at(movieIndex);
 
 		std::ostringstream nfoFilePathStringStream;
@@ -163,6 +181,18 @@ std::string MovieService::generateRestEntry(MovieDto movie)
 	return out.str();
 }
 
+std::string MovieService::generateReducedEntry(MovieDto movie)
+{
+	std::stringstream out;
+	out << "movie:"
+		<< movie.GetTitle() << ":"
+		<< movie.GetGenre() << ":"
+		<< movie.GetDescription() << ":"
+		<< Tools::ConvertIntToStr(movie.GetRating()) << ":"
+		<< Tools::ConvertIntToStr(movie.GetWatched()) << ";";
+	return out.str();
+}
+
 int MovieService::getCount()
 {
 	return _movieList.size();
@@ -186,6 +216,30 @@ std::string MovieService::getRestString(int start, int end)
 	for (int index = start; index < end; index++)
 	{
 		out << generateRestEntry(_movieList[index]);
+	}
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string MovieService::getReducedString(int start, int end)
+{
+	if (start > _movieList.size() - 1)
+	{
+		return "Error 45:Start index higher then last index value";
+	}
+
+	if (end > _movieList.size() - 1)
+	{
+		syslog(LOG_INFO, "Error 46:End index higher then last index value");
+		end = _movieList.size() - 1;
+	}
+
+	std::stringstream out;
+
+	for (int index = start; index < end; index++)
+	{
+		out << generateReducedEntry(_movieList[index]);
 	}
 	out << "\x00" << std::endl;
 

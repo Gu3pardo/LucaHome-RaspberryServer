@@ -10,10 +10,10 @@ ShoppingListService::~ShoppingListService()
 {
 }
 
-void ShoppingListService::Initialize(FileController fileController)
+void ShoppingListService::Initialize(FileController fileController, std::string shoppingListFile)
 {
 	_fileController = fileController;
-	_shoppingListFile = "/etc/default/lucahome/shoppinglist";
+	_shoppingListFile = shoppingListFile;
 	loadShoppingList();
 }
 

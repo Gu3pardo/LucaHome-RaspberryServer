@@ -8,9 +8,9 @@ Logger::Logger() {
 Logger::~Logger() {
 }
 
-void Logger::Initialize(FileController fileController) {
+void Logger::Initialize(FileController fileController, std::string logPath) {
 	_fileController = fileController;
-	_logPath = "/etc/default/lucahome/log/";
+	_logPath = logPath;
 	_logFiles = scanFolder();
 }
 

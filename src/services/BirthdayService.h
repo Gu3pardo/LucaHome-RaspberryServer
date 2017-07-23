@@ -67,9 +67,9 @@ class BirthdayService
 	BirthdayService();
 	~BirthdayService();
 
-	void Initialize(FileController, MailController);
+	void Initialize(FileController, MailController, std::string);
 	void CheckBirthdayList();
-	void ReloadBirthdayList();
+	void ReloadData();
 
 	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
 

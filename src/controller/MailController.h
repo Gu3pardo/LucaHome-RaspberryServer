@@ -24,16 +24,16 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#define MAX_MESSAGE_LENGTH 512
-#define SEND_SIMPLE_MAIL "python /etc/default/lucahome/mail.py"
-#define SEND_IMAGE_MAIL "python /etc/default/lucahome/mailWithImage.py"
+#define MAX_MESSAGE_LENGTH 1024
+#define SEND_SIMPLE_MAIL "python /NAS/LucaHome/mail.py"
+#define SEND_IMAGE_MAIL "python /NAS/LucaHome/mailWithImage.py"
 
 #ifndef MAILCONTROLLER_H
 #define MAILCONTROLLER_H
 
 class MailController
 {
-  public:
+public:
 	MailController();
 	~MailController();
 

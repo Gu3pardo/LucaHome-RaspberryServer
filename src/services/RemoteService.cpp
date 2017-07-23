@@ -8,9 +8,9 @@ RemoteService::RemoteService() {
 RemoteService::~RemoteService() {
 }
 
-void RemoteService::Initialize(FileController fileController) {
+void RemoteService::Initialize(FileController fileController, std::string settingsFile) {
 	_fileController = fileController;
-	_settingsFile = "/etc/default/lucahome/settings";
+	_settingsFile = settingsFile;
 	loadSettings();
 }
 

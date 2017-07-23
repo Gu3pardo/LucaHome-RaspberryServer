@@ -82,7 +82,7 @@ class TemperatureService
 	TemperatureService();
 	~TemperatureService();
 
-	void Initialize(FileController, MailController, std::string, std::string, std::string);
+	void Initialize(FileController, MailController, std::string, std::string, std::string, std::string);
 	void ControlTemperature();
 	bool GetTemperatureControlActive();
 	std::string PerformAction(std::string, std::vector<std::string>);

@@ -10,11 +10,11 @@ MenuService::~MenuService()
 {
 }
 
-void MenuService::Initialize(FileController fileController)
+void MenuService::Initialize(FileController fileController, std::string menuFile, std::string listedMenuFile)
 {
 	_fileController = fileController;
-	_menuFile = "/etc/default/lucahome/menu";
-	_listedMenuFile = "/etc/default/lucahome/listedmenu";
+	_menuFile = menuFile;
+	_listedMenuFile = listedMenuFile;
 
 	loadMenu();
 	loadListedMenu();
@@ -147,7 +147,7 @@ std::string MenuService::PerformAction(std::string action, std::vector<std::stri
 	}
 }
 
-void MenuService::ReloadLists()
+void MenuService::ReloadData()
 {
 	syslog(LOG_INFO, "Reloading menu data!");
 	loadMenu();

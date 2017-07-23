@@ -29,6 +29,7 @@
 
 #define CAMERA_SAVE_PATH "/NAS/Camera/"
 #define LIBRARY_PATH "/NAS/Library/"
+#define LUCAHOME_PATH "/NAS/LucaHome/"
 #define MOVIE_PATH "/NAS/Movies/"
 #define SERIES_PATH "/NAS/Series/"
 

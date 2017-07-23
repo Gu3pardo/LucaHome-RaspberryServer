@@ -8,9 +8,9 @@ AuthentificationService::AuthentificationService() {
 AuthentificationService::~AuthentificationService() {
 }
 
-void AuthentificationService::Initialize(FileController fileController) {
+void AuthentificationService::Initialize(FileController fileController, std::string userFile) {
 	_fileController = fileController;
-	_userFile = "/etc/default/lucahome/users";
+	_userFile = userFile;
 	loadUsers();
 }
 

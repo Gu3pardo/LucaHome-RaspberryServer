@@ -50,7 +50,7 @@ public:
 	Logger();
 	~Logger();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	void AddLog(std::string, std::vector<std::string>, std::string);
 };
 

@@ -61,9 +61,21 @@ namespace patch {
 #define MOTION_CONTROL_TIMEOUT 15
 #define SCHEDULE_CONTROL_TIMEOUT 10
 #define TEMPERATURE_CONTROL_TIMEOUT 60
-#define RELOAD_TIMEOUT 15 * 60
+#define RELOAD_TIMEOUT 30 * 60
 
-#define MEDIA_PATH "/media/lucahome/"
+#define LOG_PATH "/NAS/LucaHome/log/"
+#define MUSIC_PATH "/NAS/Music/"
+
+#define BIRTHDAY_FILE "/NAS/LucaHome/birthdays"
+#define COIN_FILE "/NAS/LucaHome/coins"
+#define INFORMATION_FILE "/NAS/LucaHome/infos"
+#define MAP_CONTENT_FILE "/NAS/LucaHome/mapcontent"
+#define MENU_FILE "/NAS/LucaHome/menu"
+#define LISTED_MENU_FILE "/NAS/LucaHome/listedmenu"
+#define SETTINGS_FILE "/NAS/LucaHome/settings"
+#define SHOPPING_LIST_FILE "/NAS/LucaHome/shoppinglist"
+#define TEMPERATURE_SETTINGS_FILE "/etc/default/lucahome/temperaturesettings"
+#define USER_FILE "/NAS/LucaHome/users"
 
 using namespace std;
 
@@ -166,8 +178,25 @@ string executeCmd(string cmd, int source) {
 		return "Error 11:UserAction cannot be performed:No rights";
 	}
 
+	//----------------------ALL-----------------------
+	if (category == "ALL") {
+		if (action == "RELOAD") {
+			_birthdayService.ReloadData();
+			_changeService.ReloadData();
+			_coinService.ReloadData();
+			_informationService.ReloadData();
+			_mapContentService.ReloadData();
+			_menuService.ReloadData();
+			_movieService.ReloadData();
+			_remoteService.ReloadData();
+			_shoppingListService.ReloadData();
+			_temperatureService.ReloadData();
+			return "reloadall:1";
+		}
+	}
+
 	//-----------------Access Control-----------------
-	if (category == "ACCESS") {
+	else if (category == "ACCESS") {
 		if (action == "ACTIVATE" && data[4] == "ALARM") {
 			return _accessControlService.ActivateAlarm();
 		}
@@ -653,13 +682,13 @@ void *reloader(void *arg) {
 	syslog(LOG_INFO, "Reloader started!");
 
 	while (1) {
-		_birthdayService.ReloadBirthdayList();
+		_birthdayService.ReloadData();
 		_changeService.ReloadData();
 		_coinService.ReloadData();
-		_informationService.ReloadInformationList();
-		_mapContentService.ReloadMapContent();
-		_menuService.ReloadLists();
-		_movieService.ReloadMovies();
+		_informationService.ReloadData();
+		_mapContentService.ReloadData();
+		_menuService.ReloadData();
+		_movieService.ReloadData();
 		_remoteService.ReloadData();
 		_shoppingListService.ReloadData();
 		_temperatureService.ReloadData();
@@ -678,23 +707,23 @@ int main(void) {
 	time_t now = time(0);
 	syslog(LOG_INFO, "Current Scheduler-Time: %s", ctime(&now));
 
-	_authentificationService.Initialize(_fileController);
-	_birthdayService.Initialize(_fileController, _mailController);
+	_authentificationService.Initialize(_fileController, USER_FILE);
+	_birthdayService.Initialize(_fileController, _mailController, BIRTHDAY_FILE);
 	_changeService.Initialize(_fileController);
-	_coinService.Initialize(_fileController);
-	_informationService.Initialize(_fileController);
-	_mapContentService.Initialize(_fileController);
-	_menuService.Initialize(_fileController);
+	_coinService.Initialize(_fileController, COIN_FILE);
+	_informationService.Initialize(_fileController, INFORMATION_FILE);
+	_mapContentService.Initialize(_fileController, MAP_CONTENT_FILE);
+	_menuService.Initialize(_fileController, MENU_FILE, LISTED_MENU_FILE);
 	_movieService.Initialize(_fileController, _pathController);
-	_remoteService.Initialize(_fileController);
-	_shoppingListService.Initialize(_fileController);
+	_remoteService.Initialize(_fileController, SETTINGS_FILE);
+	_shoppingListService.Initialize(_fileController, SHOPPING_LIST_FILE);
 
-	_audioService.Initialize(MEDIA_PATH, _remoteService.GetWakeUpSound(), _remoteService.GetAlarmSound(), _remoteService.GetRaspberry());
+	_audioService.Initialize(MUSIC_PATH, _remoteService.GetWakeUpSound(), _remoteService.GetAlarmSound(), _remoteService.GetRaspberry());
 	_accessControlService.Initialize(_fileController, _mailController, UserDto("AccessControl", "518716", 1, 0, 0), _remoteService.GetAccessUrl(), _remoteService.GetMediaMirrorList());
 	_cameraService.Initialize(_remoteService.GetCameraUrl(), _mailController, _pathController, _systemService);
-	_temperatureService.Initialize(_fileController, _mailController, _remoteService.GetSensor(), _remoteService.GetArea(), _remoteService.GetTemperatureGraphUrl());
+	_temperatureService.Initialize(_fileController, _mailController, TEMPERATURE_SETTINGS_FILE, _remoteService.GetSensor(), _remoteService.GetArea(), _remoteService.GetTemperatureGraphUrl());
 
-	_logger.Initialize(_fileController);
+	_logger.Initialize(_fileController, LOG_PATH);
 
 	std::ostringstream startMessage;
 	startMessage << "Starting LucaHome at " << _remoteService.GetArea();

@@ -10,10 +10,10 @@ InformationService::~InformationService()
 {
 }
 
-void InformationService::Initialize(FileController fileController)
+void InformationService::Initialize(FileController fileController, std::string informationFile)
 {
 	_fileController = fileController;
-	_informationFile = "/etc/default/lucahome/infos";
+	_informationFile = informationFile;
 
 	loadInformations();
 }
@@ -48,7 +48,7 @@ std::string InformationService::PerformAction(std::string action, std::vector<st
 	}
 }
 
-void InformationService::ReloadInformationList()
+void InformationService::ReloadData()
 {
 	syslog(LOG_INFO, "Reloading informations!");
 	loadInformations();

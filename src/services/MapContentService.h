@@ -43,9 +43,9 @@ public:
 	MapContentService();
 	~MapContentService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
-	void ReloadMapContent();
+	void ReloadData();
 };
 
 #endif

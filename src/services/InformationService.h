@@ -47,9 +47,9 @@ public:
 	InformationService();
 	~InformationService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	std::string PerformAction(std::string, std::vector<std::string>);
-	void ReloadInformationList();
+	void ReloadData();
 };
 
 #endif

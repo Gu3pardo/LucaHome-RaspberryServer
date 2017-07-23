@@ -112,6 +112,10 @@ void AccessControlService::stopAlarmSound() {
 	sendMessageToServer("127.0.0.1", 6677, "Scheduler:435435:SOUND:STOP:ALARM");
 }
 
+void AccessControlService::createCountdown() {
+	// TODO
+}
+
 void AccessControlService::sendMessageToServer(std::string ip, int port,
 	std::string messageString) {
 	if (ip.length() < 13) {

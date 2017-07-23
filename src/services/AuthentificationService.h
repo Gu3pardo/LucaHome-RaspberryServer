@@ -50,7 +50,7 @@ public:
 	AuthentificationService();
 	~AuthentificationService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 
 	std::string GetUsersString();
 	std::vector<std::string> GetUserNames();

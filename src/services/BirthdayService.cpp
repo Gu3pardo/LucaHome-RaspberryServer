@@ -11,12 +11,12 @@ BirthdayService::~BirthdayService()
 {
 }
 
-void BirthdayService::Initialize(FileController fileController, MailController mailController)
+void BirthdayService::Initialize(FileController fileController, MailController mailController, std::string birthdayFile)
 {
 	_fileController = fileController;
 	_mailController = mailController;
 
-	_birthdayFile = "/etc/default/lucahome/birthdays";
+	_birthdayFile = birthdayFile;
 
 	loadBirthdays();
 }
@@ -46,7 +46,7 @@ void BirthdayService::CheckBirthdayList()
 	}
 }
 
-void BirthdayService::ReloadBirthdayList()
+void BirthdayService::ReloadData()
 {
 	syslog(LOG_INFO, "Reloading birthdays!");
 	loadBirthdays();

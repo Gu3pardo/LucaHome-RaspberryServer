@@ -10,10 +10,10 @@ CoinService::~CoinService()
 {
 }
 
-void CoinService::Initialize(FileController fileController)
+void CoinService::Initialize(FileController fileController, std::string coinFile)
 {
 	_fileController = fileController;
-	_coinFile = "/etc/default/lucahome/coins";
+	_coinFile = coinFile;
 
 	loadCoins();
 }

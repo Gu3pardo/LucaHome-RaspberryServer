@@ -10,10 +10,10 @@ MapContentService::~MapContentService()
 {
 }
 
-void MapContentService::Initialize(FileController fileController)
+void MapContentService::Initialize(FileController fileController, std::string mapContentFile)
 {
 	_fileController = fileController;
-	_mapContentFile = "/etc/default/lucahome/mapcontent";
+	_mapContentFile = mapContentFile;
 
 	load();
 }
@@ -87,7 +87,7 @@ std::string MapContentService::PerformAction(std::string action, std::vector<std
 	}
 }
 
-void MapContentService::ReloadMapContent()
+void MapContentService::ReloadData()
 {
 	syslog(LOG_INFO, "Reloading map content!");
 	load();

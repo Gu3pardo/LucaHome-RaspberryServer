@@ -21,12 +21,12 @@ TemperatureService::~TemperatureService()
 {
 }
 
-void TemperatureService::Initialize(FileController fileController, MailController mailController, std::string sensorId, std::string temperatureArea, std::string graphPath)
+void TemperatureService::Initialize(FileController fileController, MailController mailController, std::string settingsFile, std::string sensorId, std::string temperatureArea, std::string graphPath)
 {
 	_fileController = fileController;
 	_mailController = mailController;
 
-	_settingsFile = "/etc/default/lucahome/temperaturesettings";
+	_settingsFile = settingsFile;
 	loadSettings();
 
 	std::ostringstream path;

@@ -35,7 +35,7 @@
 
 class ShoppingListService
 {
-  private:
+private:
 	std::string _shoppingListFile;
 	std::vector<ShoppingEntryDto> _shoppingList;
 
@@ -52,11 +52,11 @@ class ShoppingListService
 	bool updateShoppingEntry(std::vector<std::string>, ChangeService, std::string);
 	bool deleteShoppingEntry(int, ChangeService, std::string);
 
-  public:
+public:
 	ShoppingListService();
 	~ShoppingListService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
 	void ReloadData();
 };
