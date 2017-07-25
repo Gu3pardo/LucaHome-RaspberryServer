@@ -128,10 +128,13 @@ bool AuthentificationService::UpdatePassword(std::string currentUserName, std::s
 	}
 
 	bool error = true;
+	bool foundUser = false;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
+			foundUser = true;
+
 			if ((*it).GetPassword() != newPassword) {
 				(*it).SetPassword(newPassword);
 
@@ -215,12 +218,15 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 		return false;
 	}
 
+	bool foundUser = false;
+
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == deleteUserName) {
 			it = _userList.erase(it);
 			saveUsers();
 			loadUsers();
+			foundUser = true;
 			break;
 		}
 		else {

@@ -28,11 +28,11 @@ std::string CoinService::PerformAction(std::string action, std::vector<std::stri
 	if (action == GET)
 	{
 		std::string parameter = data[4];
-		std::string type = data[5];
+		std::string parameterType = data[5];
 
 		if (parameter == ALL)
 		{
-			if (type = REDUCED)
+			if (parameterType == REDUCED)
 			{
 				return getReducedStringAll();
 			}
@@ -43,9 +43,9 @@ std::string CoinService::PerformAction(std::string action, std::vector<std::stri
 		}
 		else if (parameter == FOR_USER)
 		{
-			if (type = REDUCED)
+			if (parameterType == REDUCED)
 			{
-				return getReducedStringUser();
+				return getReducedStringUser(username);
 			}
 			else
 			{
