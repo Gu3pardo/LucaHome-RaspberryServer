@@ -31,9 +31,8 @@ std::string MenuService::PerformAction(std::string action, std::vector<std::stri
 					return getReducedString();
 				}
 			}
-			else {
-				return getMenu();
-			}
+
+			return getMenu();
 		}
 		else if (data[4] == LISTEDMENU)
 		{

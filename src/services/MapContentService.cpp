@@ -29,9 +29,8 @@ std::string MapContentService::PerformAction(std::string action, std::vector<std
 					return getReducedString();
 				}
 			}
-			else {
-				return getRestString();
-			}
+
+			return getRestString();
 		}
 	}
 	else if (action == ADD)

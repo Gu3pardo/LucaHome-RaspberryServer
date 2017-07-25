@@ -75,7 +75,7 @@ namespace patch {
 #define LISTED_MENU_FILE "/NAS/LucaHome/listedmenu"
 #define SETTINGS_FILE "/NAS/LucaHome/settings"
 #define SHOPPING_LIST_FILE "/NAS/LucaHome/shoppinglist"
-#define TEMPERATURE_SETTINGS_FILE "/etc/default/lucahome/temperaturesettings"
+#define TEMPERATURE_SETTINGS_FILE "/NAS/LucaHome/temperaturesettings"
 #define USER_FILE "/NAS/LucaHome/users"
 
 using namespace std;

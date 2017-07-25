@@ -61,10 +61,8 @@ std::string BirthdayService::PerformAction(std::string action, std::vector<std::
 				return getReducedString();
 			}
 		}
-		else
-		{
-			return getBirthdays();
-		}
+
+		return getBirthdays();
 	}
 	else if (action == ADD)
 	{

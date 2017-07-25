@@ -62,10 +62,8 @@ std::string RemoteService::PerformAction(std::string action, std::vector<std::st
 					return getGpiosReducedString();
 				}
 			}
-			else
-			{
-				return getGpiosRestString();
-			}
+
+			return getGpiosRestString();
 		}
 		else if (data[4] == SCHEDULE)
 		{
@@ -76,10 +74,8 @@ std::string RemoteService::PerformAction(std::string action, std::vector<std::st
 					return getSchedulesReducedString();
 				}
 			}
-			else
-			{
-				return getSchedulesRestString();
-			}
+
+			return getSchedulesRestString();
 		}
 		else if (data[4] == SOCKET)
 		{
@@ -90,10 +86,8 @@ std::string RemoteService::PerformAction(std::string action, std::vector<std::st
 					return getSocketsReducedString();
 				}
 			}
-			else
-			{
-				return getSocketsRestString();
-			}
+
+			return getSocketsRestString();
 		}
 		else
 		{
