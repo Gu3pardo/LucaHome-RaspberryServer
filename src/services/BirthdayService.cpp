@@ -188,7 +188,7 @@ std::string BirthdayService::getReducedString()
 	{
 		BirthdayDto birthday = _birthdayList[index];
 
-		out << "birthday:"
+		out << "birthday::"
 			<< Tools::ConvertIntToStr(birthday.GetId()) << "::"
 			<< birthday.GetName() << "::"
 			<< Tools::ConvertIntToStr(birthday.GetDay()) << "::"

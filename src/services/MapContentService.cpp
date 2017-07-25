@@ -113,7 +113,7 @@ std::string MapContentService::getReducedString()
 
 	for (int index = 0; index < _mapContentList.size(); index++)
 	{
-		out << "mapcontent:"
+		out << "mapcontent::"
 			<< Tools::ConvertIntToStr(_mapContentList[index].GetId()) << "::"
 			<< _mapContentList[index].GetPosition().GetString() << "::"
 			<< Tools::ConvertIntToStr(_mapContentList[index].GetType()) << "::"

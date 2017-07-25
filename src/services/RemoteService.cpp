@@ -675,7 +675,7 @@ std::string RemoteService::getGpiosReducedString()
 
 	for (int index = 0; index < _gpioList.size(); index++)
 	{
-		out << "gpio:"
+		out << "gpio::"
 			<< _gpioList[index].GetName() << "::"
 			<< Tools::ConvertIntToStr(_gpioList[index].GetGpio()) << "::"
 			<< Tools::ConvertIntToStr(_gpioList[index].GetState()) << ";";
@@ -820,7 +820,7 @@ std::string RemoteService::getSchedulesReducedString()
 
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		out << "schedule:"
+		out << "schedule::"
 			<< _scheduleList[index].GetName() << "::"
 			<< _scheduleList[index].GetSocket() << "::"
 			<< _scheduleList[index].GetGpio() << "::"
@@ -996,7 +996,7 @@ std::string RemoteService::getSocketsReducedString()
 
 	for (int index = 0; index < _socketList.size(); index++)
 	{
-		out << "socket:"
+		out << "socket::"
 			<< _socketList[index].GetName() << "::"
 			<< _socketList[index].GetArea() << "::"
 			<< _socketList[index].GetCode() << "::"

@@ -201,7 +201,7 @@ std::string CoinService::getReducedStringUser(std::string username)
 
 		if (coin.GetUser() == username)
 		{
-			out << "coin:"
+			out << "coin::"
 				<< Tools::ConvertIntToStr(coin.GetId()) << "::"
 				<< coin.GetUser() << "::"
 				<< coin.GetType() << "::"

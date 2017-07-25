@@ -255,7 +255,7 @@ std::string TemperatureService::getReducedString()
 
 	std::stringstream out;
 
-	out << "temperature:"
+	out << "temperature::"
 		<< loadTemperature() << "::"
 		<< _temperatureArea << "::"
 		<< _sensorPath << "::"

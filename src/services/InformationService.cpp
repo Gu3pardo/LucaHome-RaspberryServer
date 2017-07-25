@@ -89,18 +89,18 @@ std::string InformationService::getReducedString()
 {
 	std::stringstream out;
 
-	out << "information:" << "Author::" << _informationList.GetAuthor() << ";"
-		<< "information:" << "Company::" << _informationList.GetCompany() << ";"
-		<< "information:" << "Contact::" << _informationList.GetContact() << ";"
-		<< "information:" << "Build Date::" << _informationList.GetBuildDate() << ";"
-		<< "information:" << "Server Version::" << _informationList.GetServerVersion() << ";"
-		<< "information:" << "Website Version::" << _informationList.GetWebsiteVersion() << ";"
-		<< "information:" << "Temperature Logger Version::" << _informationList.GetTemperatureLoggerVersion() << ";"
-		<< "information:" << "WPF Application Version::" << _informationList.GetWpfApplicationVersion() << ";"
-		<< "information:" << "Android Application Version::" << _informationList.GetAndroidApplicationVersion() << ";"
-		<< "information:" << "Android Wear Version::" << _informationList.GetAndroidWearableVersion() << ";"
-		<< "information:" << "Android Access Application Version::" << _informationList.GetAndroidAccessApplicationVersion() << ";"
-		<< "information:" << "Media Server Version::" << _informationList.GetMediaServerVersion() << ";";
+	out << "information::" << "Author::" << _informationList.GetAuthor() << ";"
+		<< "information::" << "Company::" << _informationList.GetCompany() << ";"
+		<< "information::" << "Contact::" << _informationList.GetContact() << ";"
+		<< "information::" << "Build Date::" << _informationList.GetBuildDate() << ";"
+		<< "information::" << "Server Version::" << _informationList.GetServerVersion() << ";"
+		<< "information::" << "Website Version::" << _informationList.GetWebsiteVersion() << ";"
+		<< "information::" << "Temperature Logger Version::" << _informationList.GetTemperatureLoggerVersion() << ";"
+		<< "information::" << "WPF Application Version::" << _informationList.GetWpfApplicationVersion() << ";"
+		<< "information::" << "Android Application Version::" << _informationList.GetAndroidApplicationVersion() << ";"
+		<< "information::" << "Android Wear Version::" << _informationList.GetAndroidWearableVersion() << ";"
+		<< "information::" << "Android Access Application Version::" << _informationList.GetAndroidAccessApplicationVersion() << ";"
+		<< "information::" << "Media Server Version::" << _informationList.GetMediaServerVersion() << ";";
 
 	out << "\x00" << std::endl;
 

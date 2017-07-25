@@ -183,7 +183,7 @@ std::string MovieService::generateRestEntry(MovieDto movie)
 std::string MovieService::generateReducedEntry(MovieDto movie)
 {
 	std::stringstream out;
-	out << "movie:"
+	out << "movie::"
 		<< movie.GetTitle() << "::"
 		<< movie.GetGenre() << "::"
 		<< movie.GetDescription() << "::"

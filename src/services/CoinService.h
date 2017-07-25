@@ -23,10 +23,10 @@
 #define GET "GET"
 #define ALL "ALL"
 #define FOR_USER "FOR_USER"
+#define REDUCED "REDUCED"
 #define ADD "ADD"
 #define UPDATE "UPDATE"
 #define DELETE "DELETE"
-#define REDUCED "REDUCED"
 #define COIN_DATA_SIZE 8
 #define ID_INDEX 4
 #define NAME_INDEX 5

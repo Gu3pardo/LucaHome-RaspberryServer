@@ -136,7 +136,7 @@ std::string ShoppingListService::getReducedString()
 
 	for (int index = 0; index < _shoppingList.size(); index++)
 	{
-		out << "shopping_entry:"
+		out << "shopping_entry::"
 			<< Tools::ConvertIntToStr(_shoppingList[index].GetId()) << "::"
 			<< _shoppingList[index].GetName() << "::"
 			<< _shoppingList[index].GetGroup() << "::"

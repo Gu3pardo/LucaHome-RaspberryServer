@@ -203,7 +203,7 @@ std::string MenuService::getReducedString()
 
 	for (int index = 0; index < _menuList.size(); index++)
 	{
-		out << "menu:"
+		out << "menu::"
 			<< _menuList[index].GetWeekday() << "::"
 			<< Tools::ConvertIntToStr(_menuList[index].GetDay()) << "::"
 			<< Tools::ConvertIntToStr(_menuList[index].GetMonth()) << "::"
@@ -302,7 +302,7 @@ std::string MenuService::getListedMenuReduced()
 
 	for (int index = 0; index < _listedMenuList.size(); index++)
 	{
-		out << "listedmenu:"
+		out << "listedmenu::"
 			<< Tools::ConvertIntToStr(_listedMenuList[index].GetId()) << "::"
 			<< _listedMenuList[index].GetDescription() << "::"
 			<< Tools::ConvertIntToStr(_listedMenuList[index].GetRating()) << "::"
