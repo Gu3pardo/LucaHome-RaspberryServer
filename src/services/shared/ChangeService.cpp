@@ -116,7 +116,7 @@ std::string ChangeService::getString()
 	{
 		ChangeDto change = _changeList[index];
 
-		out << "change:" 
+		out << "change::" 
 			<< change.GetType() << "::"
 			<< Tools::ConvertIntToStr(change.GetHour()) << "::"
 			<< Tools::ConvertIntToStr(change.GetMinute()) << "::"
