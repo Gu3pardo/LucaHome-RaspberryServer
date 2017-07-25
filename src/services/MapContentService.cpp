@@ -25,7 +25,7 @@ std::string MapContentService::PerformAction(std::string action, std::vector<std
 		if (data[4] == ALL)
 		{
 			if (data.size() == 6) {
-				if (data[5] == WEBSITE) {
+				if (data[5] == REDUCED) {
 					return getReducedString();
 				}
 			}
@@ -89,7 +89,6 @@ std::string MapContentService::PerformAction(std::string action, std::vector<std
 
 void MapContentService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading map content!");
 	load();
 }
 
@@ -115,12 +114,12 @@ std::string MapContentService::getReducedString()
 	for (int index = 0; index < _mapContentList.size(); index++)
 	{
 		out << "mapcontent:"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetId()) << ":"
-			<< _mapContentList[index].GetPosition().GetString() << ":"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetType()) << ":"
-			<< _mapContentList[index].GetSchedulesString() << ":"
-			<< _mapContentList[index].GetSocketsString() << ":"
-			<< _mapContentList[index].GetTemperatureArea() << ":"
+			<< Tools::ConvertIntToStr(_mapContentList[index].GetId()) << "::"
+			<< _mapContentList[index].GetPosition().GetString() << "::"
+			<< Tools::ConvertIntToStr(_mapContentList[index].GetType()) << "::"
+			<< _mapContentList[index].GetSchedulesString() << "::"
+			<< _mapContentList[index].GetSocketsString() << "::"
+			<< _mapContentList[index].GetTemperatureArea() << ".:"
 			<< Tools::ConvertIntToStr(_mapContentList[index].GetVisibility()) << ";";
 	}
 
@@ -151,8 +150,6 @@ bool MapContentService::add(std::vector<std::string> words, ChangeService change
 	save(changeService, username);
 	load();
 
-	syslog(LOG_INFO, "Added mapcontent %s", newEntry.ToString().c_str());
-
 	return true;
 }
 
@@ -169,8 +166,6 @@ bool MapContentService::update(std::vector<std::string> words, ChangeService cha
 
 			save(changeService, username);
 			load();
-
-			syslog(LOG_INFO, "Updated mapcontent %s", updatedEntry.ToString().c_str());
 
 			return true;
 		}
@@ -191,8 +186,6 @@ bool MapContentService::deleteEntry(int id, ChangeService changeService,
 
 			save(changeService, username);
 			load();
-
-			syslog(LOG_INFO, "Deleted mapcontent %d", id);
 
 			return true;
 		}

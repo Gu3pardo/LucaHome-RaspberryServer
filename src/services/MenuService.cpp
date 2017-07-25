@@ -27,7 +27,7 @@ std::string MenuService::PerformAction(std::string action, std::vector<std::stri
 		if (data[4] == MENU)
 		{
 			if (data.size() == 6) {
-				if (data[5] == WEBSITE) {
+				if (data[5] == REDUCED) {
 					return getReducedString();
 				}
 			}
@@ -37,7 +37,14 @@ std::string MenuService::PerformAction(std::string action, std::vector<std::stri
 		}
 		else if (data[4] == LISTEDMENU)
 		{
+			if (data.size() == 6) {
+				if (data[5] == REDUCED) {
+					return getListedMenuReduced();
+				}
+			}
+			else {
 			return getListedMenu();
+			}
 		}
 		else
 		{
@@ -149,7 +156,6 @@ std::string MenuService::PerformAction(std::string action, std::vector<std::stri
 
 void MenuService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading menu data!");
 	loadMenu();
 	loadListedMenu();
 }
@@ -198,11 +204,11 @@ std::string MenuService::getReducedString()
 	for (int index = 0; index < _menuList.size(); index++)
 	{
 		out << "menu:"
-			<< _menuList[index].GetWeekday() << ":"
-			<< Tools::ConvertIntToStr(_menuList[index].GetDay()) << ":"
-			<< Tools::ConvertIntToStr(_menuList[index].GetMonth()) << ":"
-			<< Tools::ConvertIntToStr(_menuList[index].GetYear()) << ":"
-			<< _menuList[index].GetTitle() << ":"
+			<< _menuList[index].GetWeekday() << "::"
+			<< Tools::ConvertIntToStr(_menuList[index].GetDay()) << "::"
+			<< Tools::ConvertIntToStr(_menuList[index].GetMonth()) << "::"
+			<< Tools::ConvertIntToStr(_menuList[index].GetYear()) << "::"
+			<< _menuList[index].GetTitle() << "::"
 			<< _menuList[index].GetDescription() << ";";
 	}
 
@@ -230,8 +236,6 @@ bool MenuService::updateMenu(std::vector<std::string> updateMenuData, ChangeServ
 			saveMenu(changeService, username);
 			loadMenu();
 
-			syslog(LOG_INFO, "Updated menu %s", updateMenuData[5].c_str());
-
 			return true;
 		}
 	}
@@ -251,8 +255,6 @@ bool MenuService::clearMenu(std::string weekday, ChangeService changeService, st
 
 			saveMenu(changeService, username);
 			loadMenu();
-
-			syslog(LOG_INFO, "Cleared menu %s", weekday.c_str());
 
 			return true;
 		}
@@ -294,6 +296,24 @@ std::string MenuService::getListedMenu()
 	return out.str();
 }
 
+std::string MenuService::getListedMenuReduced()
+{
+	std::stringstream out;
+
+	for (int index = 0; index < _listedMenuList.size(); index++)
+	{
+		out << "listedmenu:"
+			<< Tools::ConvertIntToStr(_listedMenuList[index].GetId()) << "::"
+			<< _listedMenuList[index].GetDescription() << "::"
+			<< Tools::ConvertIntToStr(_listedMenuList[index].GetRating()) << "::"
+			<< Tools::ConvertIntToStr(_listedMenuList[index].IsLastSuggestion()) << ";";
+	}
+
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
 bool MenuService::addListedMenu(std::vector<std::string> newListedMenuData, ChangeService changeService, std::string username)
 {
 	ListedMenuDto newListedMenu(
@@ -305,8 +325,6 @@ bool MenuService::addListedMenu(std::vector<std::string> newListedMenuData, Chan
 
 	saveListedMenu(changeService, username);
 	loadListedMenu();
-
-	syslog(LOG_INFO, "Added listedMenu %d", atoi(newListedMenuData[5].c_str()));
 
 	return true;
 }
@@ -328,8 +346,6 @@ bool MenuService::updateListedMenu(std::vector<std::string> updateListedMenuData
 			saveListedMenu(changeService, username);
 			loadListedMenu();
 
-			syslog(LOG_INFO, "Updated listedmenu %d", atoi(updateListedMenuData[5].c_str()));
-
 			return true;
 		}
 	}
@@ -348,8 +364,6 @@ bool MenuService::deleteListedMenu(int id, ChangeService changeService,
 
 			saveListedMenu(changeService, username);
 			loadListedMenu();
-
-			syslog(LOG_INFO, "Deleted listedmenu %d", id);
 
 			return true;
 		}

@@ -38,30 +38,24 @@ std::vector<std::string> AuthentificationService::GetUserNames() {
 
 bool AuthentificationService::AuthentificateUser(std::string userName, std::string password) {
 	if (userName == "DUMMY" || password == "NO_PASSWORD") {
-		syslog(LOG_INFO, "Dummy user or password cannot be used!");
 		return false;
 	}
 
 	int failedUserLogins = getInvalidLoginCount(userName);
 	if (failedUserLogins >= MAX_INVALID_LOGIN_COUNT || failedUserLogins == -1) {
-		syslog(LOG_INFO, "Too many invalid login tries!");
 		return false;
 	}
 
-	bool foundUser = false;
 	bool authentificationSuccess = false;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			foundUser = true;
-
 			if ((*it).GetPassword() == password) {
 				authentificationSuccess = true;
 				(*it).SetInvalidLoginCount(0);
 			}
 			else {
-				syslog(LOG_INFO, "Entered wrong password for %s!", userName.c_str());
 				(*it).IncreaseInvalidLoginCount();
 			}
 
@@ -72,16 +66,11 @@ bool AuthentificationService::AuthentificateUser(std::string userName, std::stri
 		}
 	}
 
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s!", userName.c_str());
-	}
-
 	return authentificationSuccess;
 }
 
 bool AuthentificationService::AuthentificateUserAction(std::string userName, std::string password, std::string action) {
 	if (userName == "DUMMY" || password == "NO_PASSWORD") {
-		syslog(LOG_INFO, "Dummy user or password cannot be used!");
 		return false;
 	}
 
@@ -97,34 +86,22 @@ bool AuthentificationService::AuthentificateUserAction(std::string userName, std
 		return false;
 	}
 
-	bool foundUser = false;
 	bool authentificationSuccess = false;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			foundUser = true;
-
 			if ((*it).GetPassword() == password) {
 				if ((*it).GetRole() >= actionId) {
 					if (adminAction == 1) {
 						if (isUserAdmin(userName)) {
 							authentificationSuccess = true;
 						}
-						else {
-							syslog(LOG_INFO, "Action not allowed for %s!", userName.c_str());
-						}
 					}
 					else {
 						authentificationSuccess = true;
 					}
 				}
-				else {
-					syslog(LOG_INFO, "Action not allowed for %s!", userName.c_str());
-				}
-			}
-			else {
-				syslog(LOG_INFO, "Entered wrong password for %s!", userName.c_str());
 			}
 
 			break;
@@ -132,10 +109,6 @@ bool AuthentificationService::AuthentificateUserAction(std::string userName, std
 		else {
 			++it;
 		}
-	}
-
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s!", userName.c_str());
 	}
 
 	return authentificationSuccess;
@@ -147,23 +120,18 @@ bool AuthentificationService::UpdatePassword(std::string currentUserName, std::s
 	}
 
 	if (!isUserAdmin(currentUserName)) {
-		syslog(LOG_INFO, "User is no admin!");
 		return false;
 	}
 
 	if (userName == "DUMMY" || newPassword == "NO_PASSWORD") {
-		syslog(LOG_INFO, "Dummy user or password cannot be used!");
 		return false;
 	}
 
-	bool foundUser = false;
 	bool error = true;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			foundUser = true;
-
 			if ((*it).GetPassword() != newPassword) {
 				(*it).SetPassword(newPassword);
 
@@ -172,19 +140,12 @@ bool AuthentificationService::UpdatePassword(std::string currentUserName, std::s
 				saveUsers();
 				loadUsers();
 			}
-			else {
-				syslog(LOG_INFO, "Could not update password of user %s! Password is equal to last!", userName.c_str());
-			}
 
 			break;
 		}
 		else {
 			++it;
 		}
-	}
-
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s to update password!", userName.c_str());
 	}
 
 	return foundUser && !error;
@@ -196,14 +157,10 @@ bool AuthentificationService::ResetPassword(std::string currentUserName, std::st
 	}
 
 	if (!isUserAdmin(currentUserName)) {
-		syslog(LOG_INFO, "User is no admin!");
 		return false;
 	}
 
-	syslog(LOG_INFO, "reset password of user %s", userName.c_str());
-
 	if (userName == "DUMMY") {
-		syslog(LOG_INFO, "Dummy password cannot be reset!");
 		return false;
 	}
 
@@ -216,14 +173,10 @@ bool AuthentificationService::AddUser(std::string currentUserName, std::string c
 	}
 
 	if (!isUserAdmin(currentUserName)) {
-		syslog(LOG_INFO, "User is no admin!");
 		return false;
 	}
 
-	syslog(LOG_INFO, "Add user %s", newUser.GetName().c_str());
-
 	if (newUser.GetName() == "DUMMY" || newUser.GetPassword() == "NO_PASSWORD" || newUser.GetRole() == -1) {
-		syslog(LOG_INFO, "Dummy user or password or role cannot be used!");
 		return false;
 	}
 
@@ -232,7 +185,6 @@ bool AuthentificationService::AddUser(std::string currentUserName, std::string c
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == newUser.GetName()) {
-			syslog(LOG_INFO, "Could not add user %s! Name already existing!", newUser.GetName().c_str());
 			error = true;
 			break;
 		}
@@ -256,23 +208,16 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 	}
 
 	if (!isUserAdmin(currentUserName)) {
-		syslog(LOG_INFO, "User is no admin!");
 		return false;
 	}
-
-	syslog(LOG_INFO, "Delete user %s", deleteUserName.c_str());
 
 	if (deleteUserName == "DUMMY") {
-		syslog(LOG_INFO, "Dummy user cannot be deleted!");
 		return false;
 	}
-
-	bool foundUser = false;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == deleteUserName) {
-			foundUser = true;
 			it = _userList.erase(it);
 			saveUsers();
 			loadUsers();
@@ -281,10 +226,6 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 		else {
 			++it;
 		}
-	}
-
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s to delete!", deleteUserName.c_str());
 	}
 
 	return foundUser;
@@ -374,18 +315,14 @@ int AuthentificationService::isAdminAction(std::string action) {
 
 bool AuthentificationService::isUserAdmin(std::string userName) {
 	if (userName == "DUMMY") {
-		syslog(LOG_INFO, "Dummy user cannot be used!");
 		return false;
 	}
 
-	bool foundUser = false;
 	bool isAdmin = false;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			foundUser = true;
-
 			if ((*it).IsAdmin() == 1) {
 				isAdmin = true;
 			}
@@ -400,27 +337,19 @@ bool AuthentificationService::isUserAdmin(std::string userName) {
 		}
 	}
 
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s!", userName.c_str());
-	}
-
 	return isAdmin;
 }
 
 int AuthentificationService::getInvalidLoginCount(std::string userName) {
 	if (userName == "DUMMY") {
-		syslog(LOG_INFO, "Dummy user cannot be used!");
 		return -1;
 	}
 
-	bool foundUser = false;
 	int invalidLoginCount = -1;
 
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			foundUser = true;
-
 			invalidLoginCount = (*it).GetInvalidLoginCount();
 
 			break;
@@ -428,10 +357,6 @@ int AuthentificationService::getInvalidLoginCount(std::string userName) {
 		else {
 			++it;
 		}
-	}
-
-	if (!foundUser) {
-		syslog(LOG_INFO, "Did not found user %s!", userName.c_str());
 	}
 
 	return invalidLoginCount;

@@ -131,18 +131,14 @@ std::string AudioService::PerformAction(std::string action, std::vector<std::str
 
 bool AudioService::play(std::string fileName) {
 	if (!_isInitialized) {
-		syslog(LOG_INFO, "AudioService is not initialized!");
 		return false;
 	}
 
 	if (_isPlaying) {
 		if (!stop()) {
-			syslog(LOG_INFO, "Stop playing failed!");
 			return false;
 		}
 	}
-
-	syslog(LOG_INFO, "Playing: %s", fileName.c_str());
 
 	std::stringstream command;
 	command << _audioPath << fileName;
@@ -165,11 +161,8 @@ bool AudioService::play(std::string fileName) {
 
 bool AudioService::stop() {
 	if (!_isInitialized) {
-		syslog(LOG_INFO, "AudioService is not initialized!");
 		return false;
 	}
-
-	syslog(LOG_INFO, "Stop playing!");
 
 	std::string answer = Tools::SendSystemCommandGetResult("killall omxplayer.bin");
 
@@ -181,7 +174,6 @@ bool AudioService::stop() {
 
 std::string AudioService::setVolume(std::string volumeAction) {
 	if (!_isInitialized) {
-		syslog(LOG_INFO, "AudioService is not initialized!");
 		return "Error 99:Could not set volume! Not initialized!";
 	}
 
@@ -269,9 +261,6 @@ int AudioService::readVolume() {
 				std::string volume = data.substr(newStartIndex, newLength);
 				if (volume.find_first_not_of("0123456789") == std::string::npos) {
 					return Tools::ConvertStrToInt(volume);
-				}
-				else {
-					syslog(LOG_INFO, "failed volume is: %s", volume.c_str());
 				}
 			}
 		}

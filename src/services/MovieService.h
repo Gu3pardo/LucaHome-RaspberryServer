@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/MovieDto.h"
 #include "../common/utils/Tools.h"

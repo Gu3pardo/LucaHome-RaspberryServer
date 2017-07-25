@@ -14,8 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
-
 #include "../../common/dto/ChangeDto.h"
 #include "../../controller/FileController.h"
 #include "../xml/XmlService.h"
@@ -23,7 +21,7 @@
 #define CHANGE_DATA_SIZE 5
 #define GET "GET"
 #define REST "REST"
-#define WEBSITE "WEBSITE"
+#define REDUCED "REDUCED"
 
 #ifndef CHANGESERVICE_H
 #define CHANGESERVICE_H
@@ -44,7 +42,7 @@ class ChangeService
 	ChangeService();
 	~ChangeService();
 
-	void Initialize(FileController);
+	void Initialize(FileController, std::string);
 	void UpdateChange(std::string, std::string);
 	void ReloadData();
 

@@ -41,7 +41,6 @@ int GpioDto::GetGpio()
 bool GpioDto::SetState(int state)
 {
 	_state = state;
-	syslog(LOG_INFO, "Set Gpio %d to %d", _gpio, _state);
 	return PiControl::WriteGpio(_gpio, _state);
 }
 

@@ -4,7 +4,6 @@
 #include <typeinfo>
 #include <stdlib.h>
 #include <sstream>
-#include <syslog.h>
 
 #include "XmlParser.h"
 #include "XmlWriter.h"

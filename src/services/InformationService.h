@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/InformationDto.h"
 #include "../common/utils/Tools.h"
@@ -23,7 +22,7 @@
 
 #define GET "GET"
 #define REST "REST"
-#define WEBSITE "WEBSITE"
+#define REDUCED "REDUCED"
 #define INFORMATION_DATA_SIZE 5
 
 #ifndef INFORMATIONSERVICE_H
@@ -41,7 +40,7 @@ private:
 	void loadInformations();
 
 	std::string getRestString();
-	std::string getString();
+	std::string getReducedString();
 
 public:
 	InformationService();

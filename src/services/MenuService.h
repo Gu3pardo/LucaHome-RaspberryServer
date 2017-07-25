@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/ListedMenuDto.h"
 #include "../common/dto/MenuDto.h"
@@ -32,7 +31,7 @@
 #define LISTEDMENU "LISTEDMENU"
 #define MENU_DATA_SIZE 11
 #define LISTEDMENU_DATA_SIZE 9
-#define WEBSITE "WEBSITE"
+#define REDUCED "REDUCED"
 
 #ifndef MENUSERVICE_H
 #define MENUSERVICE_H
@@ -61,6 +60,7 @@ private:
 	void saveListedMenu(ChangeService, std::string);
 
 	std::string getListedMenu();
+	std::string getListedMenuReduced();
 
 	bool addListedMenu(std::vector<std::string>, ChangeService, std::string);
 	bool updateListedMenu(std::vector<std::string>, ChangeService, std::string);

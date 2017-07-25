@@ -115,7 +115,6 @@ bool Tools::ReplaceString(std::string& str, const std::string& from, const std::
 
 void Tools::SendSystemCommand(std::string commandString)
 {
-	syslog(LOG_INFO, "Sending command: %s", commandString.c_str());
 	const char *commandChar = commandString.c_str();
 	char command[50];
 	strcpy(command, commandChar);

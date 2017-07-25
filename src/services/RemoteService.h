@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/GpioDto.h"
 #include "../common/dto/ScheduleDto.h"
@@ -40,6 +39,7 @@
 #define MAIN "MAIN"
 #define CAMERA "CAMERA"
 #define TEMPERATURE "TEMPERATURE"
+#define REDUCED "REDUCED"
 
 #ifndef REMOTESERVICE_H
 #define REMOTESERVICE_H
@@ -89,6 +89,7 @@ private:
 	std::string getGpiosString();
 	std::vector<GpioDto> getGpioList();
 	std::string getGpiosRestString();
+	std::string getGpiosReducedString();
 
 	bool setGpio(std::string, int, ChangeService, std::string);
 	bool addGpio(std::vector<std::string>, ChangeService, std::string);
@@ -98,6 +99,7 @@ private:
 
 	std::string getSchedulesString();
 	std::string getSchedulesRestString();
+	std::string getSchedulesReducedString();
 
 	bool setSchedule(std::string, int, ChangeService, std::string);
 	bool addSchedule(std::vector<std::string>, ChangeService, std::string);
@@ -108,6 +110,7 @@ private:
 	std::string getSocketsString();
 	std::vector<WirelessSocketDto> getSocketList();
 	std::string getSocketsRestString();
+	std::string getSocketsReducedString();
 
 	bool setSocket(std::string, int, ChangeService, std::string);
 	bool addSocket(std::vector<std::string>, ChangeService, std::string);

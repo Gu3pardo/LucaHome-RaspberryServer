@@ -89,7 +89,7 @@ int BirthdayDto::GetAge()
 	}
 	else if (_month == todayMonth)
 	{
-		if (_day > todayMonth)
+		if (_day > todayDay)
 		{
 			return todayYear - _year - 1;
 		}

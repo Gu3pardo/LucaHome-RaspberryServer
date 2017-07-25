@@ -67,6 +67,7 @@ namespace patch {
 #define MUSIC_PATH "/NAS/Music/"
 
 #define BIRTHDAY_FILE "/NAS/LucaHome/birthdays"
+#define CHANGE_FILE "/NAS/LucaHome/changes"
 #define COIN_FILE "/NAS/LucaHome/coins"
 #define INFORMATION_FILE "/NAS/LucaHome/infos"
 #define MAP_CONTENT_FILE "/NAS/LucaHome/mapcontent"
@@ -117,8 +118,6 @@ pthread_mutex_t schedulesMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
 
 string executeCmd(string cmd, int source) {
-	syslog(LOG_INFO, "Received command: %s", cmd.c_str());
-
 	if (cmd.length() < 20) {
 		return "Error 21:statement too short";
 	}
@@ -170,11 +169,9 @@ string executeCmd(string cmd, int source) {
 
 	//---------------Authentificate user--------------
 	if (!_authentificationService.AuthentificateUser(username, password)) {
-		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUser failed!", cmd.c_str());
 		return "Error 10:Authentification failed";
 	}
 	if (!_authentificationService.AuthentificateUserAction(username, password, action)) {
-		syslog(LOG_INFO, "executeCmd: %s failed! authentificateUserAction failed!", cmd.c_str());
 		return "Error 11:UserAction cannot be performed:No rights";
 	}
 
@@ -352,7 +349,6 @@ void *server(void *arg) {
 			if (sendResult < 0) {
 				syslog(LOG_ERR, "Can't send data");
 			}
-			syslog(LOG_INFO, "Sent: %s", response.c_str());
 		}
 	}
 
@@ -709,7 +705,7 @@ int main(void) {
 
 	_authentificationService.Initialize(_fileController, USER_FILE);
 	_birthdayService.Initialize(_fileController, _mailController, BIRTHDAY_FILE);
-	_changeService.Initialize(_fileController);
+	_changeService.Initialize(_fileController, CHANGE_FILE);
 	_coinService.Initialize(_fileController, COIN_FILE);
 	_informationService.Initialize(_fileController, INFORMATION_FILE);
 	_mapContentService.Initialize(_fileController, MAP_CONTENT_FILE);

@@ -28,9 +28,9 @@ std::string InformationService::PerformAction(std::string action, std::vector<st
 			{
 				return getRestString();
 			}
-			else if (data[4] == WEBSITE)
+			else if (data[4] == REDUCED)
 			{
-				return getString();
+				return getReducedString();
 			}
 			else
 			{
@@ -50,7 +50,6 @@ std::string InformationService::PerformAction(std::string action, std::vector<st
 
 void InformationService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading informations!");
 	loadInformations();
 }
 
@@ -86,34 +85,22 @@ std::string InformationService::getRestString()
 	return out.str();
 }
 
-std::string InformationService::getString()
+std::string InformationService::getReducedString()
 {
 	std::stringstream out;
 
-	out << "information:"
-		<< "Author:" << _informationList.GetAuthor() << ";"
-		<< "information:"
-		<< "Company:" << _informationList.GetCompany() << ";"
-		<< "information:"
-		<< "Contact:" << _informationList.GetContact() << ";"
-		<< "information:"
-		<< "Build Date:" << _informationList.GetBuildDate() << ";"
-		<< "information:"
-		<< "Server Version:" << _informationList.GetServerVersion() << ";"
-		<< "information:"
-		<< "Website Version:" << _informationList.GetWebsiteVersion() << ";"
-		<< "information:"
-		<< "Temperature Logger Version:" << _informationList.GetTemperatureLoggerVersion() << ";"
-		<< "information:"
-		<< "Android Application Version:" << _informationList.GetAndroidApplicationVersion() << ";"
-		<< "information:"
-		<< "Android Wear Version:" << _informationList.GetAndroidWearableVersion() << ";"
-		<< "information:"
-		<< "Android Access Application Version:" << _informationList.GetAndroidAccessApplicationVersion() << ";"
-		<< "information:"
-		<< "Media Server Version:" << _informationList.GetMediaServerVersion() << ";"
-		<< "information:"
-		<< "WPF Application Version:" << _informationList.GetWpfApplicationVersion() << ";";
+	out << "information:" << "Author::" << _informationList.GetAuthor() << ";"
+		<< "information:" << "Company::" << _informationList.GetCompany() << ";"
+		<< "information:" << "Contact::" << _informationList.GetContact() << ";"
+		<< "information:" << "Build Date::" << _informationList.GetBuildDate() << ";"
+		<< "information:" << "Server Version::" << _informationList.GetServerVersion() << ";"
+		<< "information:" << "Website Version::" << _informationList.GetWebsiteVersion() << ";"
+		<< "information:" << "Temperature Logger Version::" << _informationList.GetTemperatureLoggerVersion() << ";"
+		<< "information:" << "WPF Application Version::" << _informationList.GetWpfApplicationVersion() << ";"
+		<< "information:" << "Android Application Version::" << _informationList.GetAndroidApplicationVersion() << ";"
+		<< "information:" << "Android Wear Version::" << _informationList.GetAndroidWearableVersion() << ";"
+		<< "information:" << "Android Access Application Version::" << _informationList.GetAndroidAccessApplicationVersion() << ";"
+		<< "information:" << "Media Server Version::" << _informationList.GetMediaServerVersion() << ";";
 
 	out << "\x00" << std::endl;
 

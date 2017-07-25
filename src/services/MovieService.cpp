@@ -96,7 +96,6 @@ std::string MovieService::PerformAction(std::string action, std::vector<std::str
 
 void MovieService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading movies!");
 	loadAllMovies();
 }
 
@@ -185,10 +184,10 @@ std::string MovieService::generateReducedEntry(MovieDto movie)
 {
 	std::stringstream out;
 	out << "movie:"
-		<< movie.GetTitle() << ":"
-		<< movie.GetGenre() << ":"
-		<< movie.GetDescription() << ":"
-		<< Tools::ConvertIntToStr(movie.GetRating()) << ":"
+		<< movie.GetTitle() << "::"
+		<< movie.GetGenre() << "::"
+		<< movie.GetDescription() << "::"
+		<< Tools::ConvertIntToStr(movie.GetRating()) << "::"
 		<< Tools::ConvertIntToStr(movie.GetWatched()) << ";";
 	return out.str();
 }
@@ -207,7 +206,6 @@ std::string MovieService::getRestString(int start, int end)
 
 	if (end > _movieList.size() - 1)
 	{
-		syslog(LOG_INFO, "Error 46:End index higher then last index value");
 		end = _movieList.size() - 1;
 	}
 
@@ -231,7 +229,6 @@ std::string MovieService::getReducedString(int start, int end)
 
 	if (end > _movieList.size() - 1)
 	{
-		syslog(LOG_INFO, "Error 46:End index higher then last index value");
 		end = _movieList.size() - 1;
 	}
 
@@ -263,8 +260,6 @@ bool MovieService::updateMovieData(std::vector<std::string> movieData, std::stri
 
 			_movieList[index] = updateMovie;
 			saveMovieNFO(updateMovie, username);
-
-			syslog(LOG_INFO, "Updated movie %s", movieData[4].c_str());
 
 			return true;
 		}

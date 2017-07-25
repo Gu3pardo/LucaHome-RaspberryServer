@@ -55,7 +55,6 @@ bool WirelessSocketDto::SetState(int state, int datagpio)
 	_state = state;
 	if (datagpio != 0)
 	{
-		syslog(LOG_INFO, "Set Socket %s to %d", _name.c_str(), _state);
 		return PiControl::Send433Mhz(datagpio, _code, _state);
 	}
 	return false;

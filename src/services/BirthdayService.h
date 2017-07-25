@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/BirthdayDto.h"
 #include "../common/utils/Tools.h"
@@ -27,7 +26,7 @@
 #define ADD "ADD"
 #define UPDATE "UPDATE"
 #define DELETE "DELETE"
-#define WEBSITE "WEBSITE"
+#define REDUCED "REDUCED"
 #define BIRTHDAY_DATA_SIZE 9
 #define SETCONTROLTASK "SETCONTROLTASK"
 #define ON "ON"

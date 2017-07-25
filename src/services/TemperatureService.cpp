@@ -45,7 +45,6 @@ void TemperatureService::ControlTemperature()
 {
 	if (!_isInitialized)
 	{
-		syslog(LOG_INFO, "TemperatureService is not initialized!");
 		return;
 	}
 
@@ -53,8 +52,6 @@ void TemperatureService::ControlTemperature()
 
 	if (currentTemperature < _minTemp)
 	{
-		syslog(LOG_INFO, "Temperature low! %d", currentTemperature);
-
 		std::ostringstream data;
 		data << "Current temperature at " << _temperatureArea << " is too low! " << currentTemperature << "�C!";
 
@@ -63,8 +60,6 @@ void TemperatureService::ControlTemperature()
 	}
 	else if (currentTemperature > _maxTemp)
 	{
-		syslog(LOG_INFO, "Temperature high! %d", currentTemperature);
-
 		std::ostringstream data;
 		data << "Current temperature at " << _temperatureArea << " is too high! " << currentTemperature << "�C!";
 
@@ -73,11 +68,6 @@ void TemperatureService::ControlTemperature()
 	}
 	else
 	{
-		if (_warningCount > 0)
-		{
-			syslog(LOG_INFO, "Temperature was for %d minutes not in normal values!", _warningCount);
-		}
-
 		_warningCount = 0;
 		enableLED(_ledNormalTemp);
 	}
@@ -93,9 +83,9 @@ std::string TemperatureService::PerformAction(std::string action, std::vector<st
 			{
 				return getRestString();
 			}
-			else if (data[4] == WEBSITE)
+			else if (data[4] == REDUCED)
 			{
-				return getString();
+				return getReducedString();
 			}
 			else
 			{
@@ -137,7 +127,6 @@ bool TemperatureService::GetTemperatureControlActive()
 
 void TemperatureService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading temperature data!");
 	loadSettings();
 }
 
@@ -181,19 +170,7 @@ double TemperatureService::loadTemperature()
 				fscanf(device, "%*x %*x %*x %*x %*x %*x %*x %*x %*x t=%lf", &temperature);
 				temperature /= 1000.0;
 			}
-			else
-			{
-				syslog(LOG_INFO, "Error strncmp!");
-			}
 		}
-		else
-		{
-			syslog(LOG_INFO, "Error with device!");
-		}
-	}
-	else
-	{
-		syslog(LOG_INFO, "Check connections %s", _sensorPath.c_str());
 	}
 
 	fclose(device);
@@ -207,7 +184,6 @@ void TemperatureService::sendWarningMail(std::string warning)
 
 	if (_warningCount % 10 != 0)
 	{
-		syslog(LOG_INFO, "Already send a mail within the last minutes!");
 		return;
 	}
 
@@ -218,7 +194,6 @@ void TemperatureService::enableLED(int led)
 {
 	if (led == -1)
 	{
-		//syslog(LOG_INFO, "LED has wrong value! Cannot enable -1!");
 		return;
 	}
 
@@ -238,43 +213,22 @@ void TemperatureService::enableLED(int led)
 	{
 		PiControl::WriteGpio(_ledNormalTemp, 1);
 	}
-	else
-	{
-		syslog(LOG_INFO, "LED has wrong value! Cannot enable %d!", led);
-	}
 }
 
 double TemperatureService::getValue()
 {
 	if (!_isInitialized)
 	{
-		syslog(LOG_INFO, "TemperatureService is not initialized!");
 		return -1;
 	}
 
 	return loadTemperature();
 }
 
-std::string TemperatureService::getString()
-{
-	if (!_isInitialized)
-	{
-		syslog(LOG_INFO, "TemperatureService is not initialized!");
-		return "";
-	}
-
-	std::stringstream out;
-	out << loadTemperature();
-	out << std::endl;
-
-	return out.str();
-}
-
 std::string TemperatureService::getRestString()
 {
 	if (!_isInitialized)
 	{
-		syslog(LOG_INFO, "TemperatureService is not initialized!");
 		return "";
 	}
 
@@ -286,6 +240,26 @@ std::string TemperatureService::getRestString()
 		<< "{sensorPath:" << _sensorPath << "};"
 		<< "{graphPath:" << _graphPath << "};"
 		<< "};";
+
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string TemperatureService::getReducedString()
+{
+	if (!_isInitialized)
+	{
+		return "";
+	}
+
+	std::stringstream out;
+
+	out << "temperature:"
+		<< loadTemperature() << "::"
+		<< _temperatureArea << "::"
+		<< _sensorPath << "::"
+		<< _graphPath << ";";
 
 	out << "\x00" << std::endl;
 

@@ -2,7 +2,6 @@
 #include <ctime>
 #include <cstring>
 #include <iostream>
-#include <syslog.h>
 
 #include "../utils/PiControl.h"
 #include "../utils/Tools.h"

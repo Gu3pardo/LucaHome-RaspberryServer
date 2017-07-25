@@ -22,7 +22,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/utils/PiControl.h"
 #include "../controller/FileController.h"
@@ -30,8 +29,8 @@
 #include "xml/XmlService.h"
 
 #define GET "GET"
+#define REDUCED "REDUCED"
 #define REST "REST"
-#define WEBSITE "WEBSITE"
 #define SETCONTROLTASK "SETCONTROLTASK"
 #define ON "ON"
 #define OFF "OFF"
@@ -75,8 +74,8 @@ class TemperatureService
 	void enableLED(int);
 
 	double getValue();
-	std::string getString();
 	std::string getRestString();
+	std::string getReducedString();
 
   public:
 	TemperatureService();

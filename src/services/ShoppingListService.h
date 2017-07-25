@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/ShoppingEntryDto.h"
 #include "../common/utils/Tools.h"
@@ -28,7 +27,7 @@
 #define DELETE "DELETE"
 #define SHOPPING_ENTRY_DATA_SIZE 8
 #define ALL "ALL"
-#define WEBSITE "WEBSITE"
+#define REDUCED "REDUCED"
 
 #ifndef SHOPPING_LIST_SERVICE_H
 #define SHOPPING_LIST_SERVICE_H

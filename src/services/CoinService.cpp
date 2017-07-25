@@ -20,7 +20,6 @@ void CoinService::Initialize(FileController fileController, std::string coinFile
 
 void CoinService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading coins!");
 	loadCoins();
 }
 
@@ -29,20 +28,37 @@ std::string CoinService::PerformAction(std::string action, std::vector<std::stri
 	if (action == GET)
 	{
 		std::string parameter = data[4];
+		std::string type = data[5];
+
 		if (parameter == ALL)
 		{
-			return getRestStringAll();
+			if (type = REDUCED)
+			{
+				return getReducedStringAll();
+			}
+			else
+			{
+				return getRestStringAll();
+			}
 		}
 		else if (parameter == FOR_USER)
 		{
-			return getRestStringUser(username);
+			if (type = REDUCED)
+			{
+				return getReducedStringUser();
+			}
+			else
+			{
+				return getRestStringUser(username);
+			}
 		}
 		else
 		{
 			return "Error 202:Wrong action parameter for coin";
 		}
 	}
-	else if (action == ADD) {
+	else if (action == ADD)
+	{
 		if (data.size() == COIN_DATA_SIZE)
 		{
 			if (addCoin(data, changeService, username))
@@ -59,7 +75,8 @@ std::string CoinService::PerformAction(std::string action, std::vector<std::stri
 			return "Error 201:Wrong data size for birthday";
 		}
 	}
-	else if (action == UPDATE) {
+	else if (action == UPDATE)
+	{
 		if (data.size() == COIN_DATA_SIZE)
 		{
 			if (updateCoin(data, changeService, username))
@@ -76,7 +93,8 @@ std::string CoinService::PerformAction(std::string action, std::vector<std::stri
 			return "Error 201:Wrong data size for birthday";
 		}
 	}
-	else if (action == DELETE) {
+	else if (action == DELETE)
+	{
 		if (deleteCoin(atoi(data[ID_INDEX].c_str()), changeService, username))
 		{
 			return "deleteCoin:1";
@@ -137,13 +155,57 @@ std::string CoinService::getRestStringUser(std::string username)
 	{
 		CoinDto coin = _coinList[index];
 
-		if (coin.GetUser() == username) {
+		if (coin.GetUser() == username)
+		{
 			out << "{coin:"
 				<< "{Id:" << Tools::ConvertIntToStr(coin.GetId()) << "};"
 				<< "{User:" << coin.GetUser() << "};"
 				<< "{Type:" << coin.GetType() << "};"
 				<< "{Amount:" << Tools::ConvertDoubleToStr(coin.GetAmount()) << "};"
 				<< "};";
+		}
+	}
+
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string CoinService::getReducedStringAll()
+{
+	std::stringstream out;
+
+	for (int index = 0; index < _coinList.size(); index++)
+	{
+		CoinDto coin = _coinList[index];
+
+		out << "coin::"
+			<< Tools::ConvertIntToStr(coin.GetId()) << "::"
+			<< coin.GetUser() << "::"
+			<< coin.GetType() << "::"
+			<< Tools::ConvertDoubleToStr(coin.GetAmount()) << ";";
+	}
+
+	out << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string CoinService::getReducedStringUser(std::string username)
+{
+	std::stringstream out;
+
+	for (int index = 0; index < _coinList.size(); index++)
+	{
+		CoinDto coin = _coinList[index];
+
+		if (coin.GetUser() == username)
+		{
+			out << "coin:"
+				<< Tools::ConvertIntToStr(coin.GetId()) << "::"
+				<< coin.GetUser() << "::"
+				<< coin.GetType() << "::"
+				<< Tools::ConvertDoubleToStr(coin.GetAmount()) << ";";
 		}
 	}
 
@@ -165,8 +227,6 @@ bool CoinService::addCoin(std::vector<std::string> newCoinData, ChangeService ch
 	saveCoins(changeService, username);
 	loadCoins();
 
-	syslog(LOG_INFO, "Added coin %d", atoi(newCoinData[ID_INDEX].c_str()));
-
 	return true;
 }
 
@@ -187,8 +247,6 @@ bool CoinService::updateCoin(std::vector<std::string> updateCoinData, ChangeServ
 			saveCoins(changeService, username);
 			loadCoins();
 
-			syslog(LOG_INFO, "Updated coin %d", atoi(updateCoinData[ID_INDEX].c_str()));
-
 			return true;
 		}
 	}
@@ -207,8 +265,6 @@ bool CoinService::deleteCoin(int id, ChangeService changeService, std::string us
 
 			saveCoins(changeService, username);
 			loadCoins();
-
-			syslog(LOG_INFO, "Deleted coin %d", id);
 
 			return true;
 		}

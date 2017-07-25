@@ -23,8 +23,6 @@ void BirthdayService::Initialize(FileController fileController, MailController m
 
 void BirthdayService::CheckBirthdayList()
 {
-	syslog(LOG_INFO, "Checking birthdays!");
-
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{
 		if (_birthdayList[index].HasBirthday() && !_birthdayList[index].GetSendMail())
@@ -40,7 +38,8 @@ void BirthdayService::CheckBirthdayList()
 
 			_birthdayList[index].SetSendMail(true);
 		}
-		else {
+		else if (!_birthdayList[index].HasBirthday() && _birthdayList[index].GetSendMail())
+		{
 			_birthdayList[index].SetSendMail(false);
 		}
 	}
@@ -48,7 +47,6 @@ void BirthdayService::CheckBirthdayList()
 
 void BirthdayService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading birthdays!");
 	loadBirthdays();
 }
 
@@ -56,12 +54,15 @@ std::string BirthdayService::PerformAction(std::string action, std::vector<std::
 {
 	if (action == GET)
 	{
-		if (data.size() == 6) {
-			if (data[5] == WEBSITE) {
+		if (data.size() == 6)
+		{
+			if (data[5] == REDUCED)
+			{
 				return getReducedString();
 			}
 		}
-		else {
+		else
+		{
 			return getBirthdays();
 		}
 	}
@@ -188,10 +189,10 @@ std::string BirthdayService::getReducedString()
 		BirthdayDto birthday = _birthdayList[index];
 
 		out << "birthday:"
-			<< Tools::ConvertIntToStr(birthday.GetId()) << ":"
-			<< birthday.GetName() << ":"
-			<< Tools::ConvertIntToStr(birthday.GetDay()) << ":"
-			<< Tools::ConvertIntToStr(birthday.GetMonth()) << ":"
+			<< Tools::ConvertIntToStr(birthday.GetId()) << "::"
+			<< birthday.GetName() << "::"
+			<< Tools::ConvertIntToStr(birthday.GetDay()) << "::"
+			<< Tools::ConvertIntToStr(birthday.GetMonth()) << "::"
 			<< Tools::ConvertIntToStr(birthday.GetYear()) << ";";
 	}
 
@@ -214,8 +215,6 @@ bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData, Chan
 	saveBirthdays(changeService, username);
 	loadBirthdays();
 
-	syslog(LOG_INFO, "Added birthday %d", atoi(newBirthdayData[ID_INDEX].c_str()));
-
 	return true;
 }
 
@@ -237,8 +236,6 @@ bool BirthdayService::updateBirthday(std::vector<std::string> updateBirthdayData
 			saveBirthdays(changeService, username);
 			loadBirthdays();
 
-			syslog(LOG_INFO, "Updated birthday %d", atoi(updateBirthdayData[ID_INDEX].c_str()));
-
 			return true;
 		}
 	}
@@ -257,8 +254,6 @@ bool BirthdayService::deleteBirthday(int id, ChangeService changeService, std::s
 
 			saveBirthdays(changeService, username);
 			loadBirthdays();
-
-			syslog(LOG_INFO, "Deleted birthday %d", id);
 
 			return true;
 		}

@@ -22,7 +22,7 @@ std::string ShoppingListService::PerformAction(std::string action, std::vector<s
 	if (action == GET)
 	{
 		if (data.size() == 5) {
-			if (data[4] == WEBSITE) {
+			if (data[4] == REDUCED) {
 				return getReducedString();
 			}
 			else if (data[4] == ALL) {
@@ -93,7 +93,6 @@ std::string ShoppingListService::PerformAction(std::string action, std::vector<s
 
 void ShoppingListService::ReloadData()
 {
-	syslog(LOG_INFO, "Reloading shopping list!");
 	loadShoppingList();
 }
 
@@ -137,11 +136,11 @@ std::string ShoppingListService::getReducedString()
 
 	for (int index = 0; index < _shoppingList.size(); index++)
 	{
-		out << "{shopping_entry:"
-			<< Tools::ConvertIntToStr(_shoppingList[index].GetId()) << ":"
-			<< _shoppingList[index].GetName() << ":"
-			<< _shoppingList[index].GetGroup() << ":"
-			<< Tools::ConvertIntToStr(_shoppingList[index].GetQuantity()) << "};";
+		out << "shopping_entry:"
+			<< Tools::ConvertIntToStr(_shoppingList[index].GetId()) << "::"
+			<< _shoppingList[index].GetName() << "::"
+			<< _shoppingList[index].GetGroup() << "::"
+			<< Tools::ConvertIntToStr(_shoppingList[index].GetQuantity()) << ";";
 	}
 
 	out << "\x00" << std::endl;
@@ -156,8 +155,6 @@ bool ShoppingListService::addShoppingEntry(std::vector<std::string> newEntryData
 
 	saveShoppingList(changeService, username);
 	loadShoppingList();
-
-	syslog(LOG_INFO, "Added shopping entry %d", atoi(newEntryData[3].c_str()));
 
 	return true;
 }
@@ -174,8 +171,6 @@ bool ShoppingListService::updateShoppingEntry(std::vector<std::string> updateEnt
 
 			saveShoppingList(changeService, username);
 			loadShoppingList();
-
-			syslog(LOG_INFO, "Updated shopping entry %d", atoi(updateEntryData[3].c_str()));
 
 			return true;
 		}
@@ -194,8 +189,6 @@ bool ShoppingListService::deleteShoppingEntry(int id, ChangeService changeServic
 
 			saveShoppingList(changeService, username);
 			loadShoppingList();
-
-			syslog(LOG_INFO, "Deleted shopping entry %d", id);
 
 			return true;
 		}

@@ -10,10 +10,10 @@ ChangeService::~ChangeService()
 {
 }
 
-void ChangeService::Initialize(FileController fileController)
+void ChangeService::Initialize(FileController fileController, std::string changeFile)
 {
 	_fileController = fileController;
-	_changeFile = "/etc/default/lucahome/changes";
+	_changeFile = changeFile;
 
 	ReloadData();
 }
@@ -62,7 +62,7 @@ std::string ChangeService::PerformAction(std::string action, std::vector<std::st
 			{
 				return getRestString();
 			}
-			else if (data[4] == WEBSITE)
+			else if (data[4] == REDUCED)
 			{
 				return getString();
 			}
@@ -116,12 +116,13 @@ std::string ChangeService::getString()
 	{
 		ChangeDto change = _changeList[index];
 
-		out << "change:" << change.GetType() << ":"
-			<< Tools::ConvertIntToStr(change.GetHour()) << ":"
-			<< Tools::ConvertIntToStr(change.GetMinute()) << ":"
-			<< Tools::ConvertIntToStr(change.GetDay()) << ":"
-			<< Tools::ConvertIntToStr(change.GetMonth()) << ":"
-			<< Tools::ConvertIntToStr(change.GetYear()) << ":"
+		out << "change:" 
+			<< change.GetType() << "::"
+			<< Tools::ConvertIntToStr(change.GetHour()) << "::"
+			<< Tools::ConvertIntToStr(change.GetMinute()) << "::"
+			<< Tools::ConvertIntToStr(change.GetDay()) << "::"
+			<< Tools::ConvertIntToStr(change.GetMonth()) << "::"
+			<< Tools::ConvertIntToStr(change.GetYear()) << "::"
 			<< change.GetUser() << ";";
 	}
 

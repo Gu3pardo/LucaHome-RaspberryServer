@@ -14,7 +14,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include "../common/dto/CoinDto.h"
 #include "../controller/FileController.h"
@@ -27,6 +26,7 @@
 #define ADD "ADD"
 #define UPDATE "UPDATE"
 #define DELETE "DELETE"
+#define REDUCED "REDUCED"
 #define COIN_DATA_SIZE 8
 #define ID_INDEX 4
 #define NAME_INDEX 5
@@ -50,6 +50,8 @@ private:
 
 	std::string getRestStringAll();
 	std::string getRestStringUser(std::string);
+	std::string getReducedStringAll();
+	std::string getReducedStringUser(std::string);
 
 	bool addCoin(std::vector<std::string>, ChangeService, std::string);
 	bool updateCoin(std::vector<std::string>, ChangeService, std::string);
