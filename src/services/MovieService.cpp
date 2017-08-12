@@ -39,7 +39,7 @@ std::string MovieService::PerformAction(std::string action, std::vector<std::str
 			if (data[5] == REDUCED) {
 				if (data.size() == 8)
 				{
-					return getReducedString(atoi(data[5].c_str()), atoi(data[6].c_str()));
+					return getReducedString(atoi(data[6].c_str()), atoi(data[7].c_str()));
 				}
 				else
 				{
