@@ -25,23 +25,27 @@ void BirthdayService::CheckBirthdayList()
 {
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{
-		if (_birthdayList[index].HasBirthday() && !_birthdayList[index].GetSendMail())
+		BirthdayDto entry = _birthdayList[index];
+
+		if (entry.HasBirthday() && !entry.GetSendMail())
 		{
 			std::stringstream information;
 			information
-				<< _birthdayList[index].GetName()
+				<< entry.GetName()
 				<< " has birthday today! It is the "
-				<< Tools::ConvertIntToStr(_birthdayList[index].GetAge())
+				<< Tools::ConvertIntToStr(entry.GetAge())
 				<< "th birthday!";
 
 			_mailController.SendMail(information.str());
 
-			_birthdayList[index].SetSendMail(true);
+			entry.SetSendMail(true);
 		}
-		else if (!_birthdayList[index].HasBirthday() && _birthdayList[index].GetSendMail())
+		else if (!entry.HasBirthday() && entry.GetSendMail())
 		{
-			_birthdayList[index].SetSendMail(false);
+			entry.SetSendMail(false);
 		}
+
+		_birthdayList[index] = entry;
 	}
 }
 
