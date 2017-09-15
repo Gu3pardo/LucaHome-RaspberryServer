@@ -12,9 +12,39 @@ clean:
 	rm -fv ./bin/*
 	update-rc.d -f lucahome remove
 	rm -fv /etc/init.d/lucahome/
+	rm -rf /etc/default/lucahome/
 	rm -fv /bin/lucahome
 
 install:
+	mkdir /etc/default/lucahome/
+	mkdir /etc/default/lucahome/log/
 	cp ./bin/lucahome /bin/lucahome
 	cp ./init/lucahome /etc/init.d
+	cp ./assets/birthdays /etc/default/lucahome/birthdays
+	cp ./assets/changes /etc/default/lucahome/changes
+	cp ./assets/coins /etc/default/lucahome/coins
+	cp ./assets/infos /etc/default/lucahome/infos
+	cp ./assets/mapcontent /etc/default/lucahome/mapcontent
+	cp ./assets/listedmenu /etc/default/lucahome/listedmenu
+	cp ./assets/menu /etc/default/lucahome/menu
+	cp ./assets/settings /etc/default/lucahome/settings
+	cp ./assets/shoppinglist /etc/default/lucahome/shoppinglist
+	cp ./assets/temperaturesettings /etc/default/lucahome/temperaturesettings
+	cp ./assets/users /etc/default/lucahome/users
+	cp ./python/mail.py /etc/default/lucahome/mail.py
+	cp ./python/mailWithImage.py /etc/default/lucahome/mailWithImage.py
+	chmod 777 /etc/default/lucahome/birthdays
+	chmod 777 /etc/default/lucahome/changes
+	chmod 777 /etc/default/lucahome/coins
+	chmod 777 /etc/default/lucahome/infos
+	chmod 777 /etc/default/lucahome/mapcontent
+	chmod 777 /etc/default/lucahome/listedmenu
+	chmod 777 /etc/default/lucahome/menu
+	chmod 777 /etc/default/lucahome/settings
+	chmod 777 /etc/default/lucahome/shoppinglist
+	chmod 777 /etc/default/lucahome/temperaturesettings
+	chmod 777 /etc/default/lucahome/users
+	chmod 777 /etc/default/lucahome/mail.py
+	chmod 777 /etc/default/lucahome/mailWithImage.py
+	chmod 777 /etc/default/lucahome
 	update-rc.d lucahome defaults

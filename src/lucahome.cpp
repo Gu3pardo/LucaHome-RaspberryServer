@@ -63,20 +63,20 @@ namespace patch {
 #define TEMPERATURE_CONTROL_TIMEOUT 60
 #define RELOAD_TIMEOUT 30 * 60
 
-#define LOG_PATH "/NAS/LucaHome/log/"
+#define LOG_PATH "/etc/default/lucahome/log/"
 #define MUSIC_PATH "/NAS/Music/"
 
-#define BIRTHDAY_FILE "/NAS/LucaHome/birthdays"
-#define CHANGE_FILE "/NAS/LucaHome/changes"
-#define COIN_FILE "/NAS/LucaHome/coins"
-#define INFORMATION_FILE "/NAS/LucaHome/infos"
-#define MAP_CONTENT_FILE "/NAS/LucaHome/mapcontent"
-#define MENU_FILE "/NAS/LucaHome/menu"
-#define LISTED_MENU_FILE "/NAS/LucaHome/listedmenu"
-#define SETTINGS_FILE "/NAS/LucaHome/settings"
-#define SHOPPING_LIST_FILE "/NAS/LucaHome/shoppinglist"
-#define TEMPERATURE_SETTINGS_FILE "/NAS/LucaHome/temperaturesettings"
-#define USER_FILE "/NAS/LucaHome/users"
+#define BIRTHDAY_FILE "/etc/default/lucahome/birthdays"
+#define CHANGE_FILE "/etc/default/lucahome/changes"
+#define COIN_FILE "/etc/default/lucahome/coins"
+#define INFORMATION_FILE "/etc/default/lucahome/infos"
+#define MAP_CONTENT_FILE "/etc/default/lucahome/mapcontent"
+#define MENU_FILE "/etc/default/lucahome/menu"
+#define LISTED_MENU_FILE "/etc/default/lucahome/listedmenu"
+#define SETTINGS_FILE "/etc/default/lucahome/settings"
+#define SHOPPING_LIST_FILE "/etc/default/lucahome/shoppinglist"
+#define TEMPERATURE_SETTINGS_FILE "/etc/default/lucahome/temperaturesettings"
+#define USER_FILE "/etc/default/lucahome/users"
 
 using namespace std;
 

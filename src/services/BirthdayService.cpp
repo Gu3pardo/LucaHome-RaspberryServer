@@ -23,29 +23,27 @@ void BirthdayService::Initialize(FileController fileController, MailController m
 
 void BirthdayService::CheckBirthdayList()
 {
-	for (int index = 0; index < _birthdayList.size(); index++)
-	{
-		BirthdayDto entry = _birthdayList[index];
+	std::vector<BirthdayDto>::iterator it = _birthdayList.begin();
 
-		if (entry.HasBirthday() && !entry.GetSendMail())
+	while (it != _birthdayList.end())
+	{
+		if ((*it).HasBirthday() && !(*it).GetSendMail())
 		{
 			std::stringstream information;
 			information
-				<< entry.GetName()
+				<< (*it).GetName()
 				<< " has birthday today! It is the "
-				<< Tools::ConvertIntToStr(entry.GetAge())
+				<< Tools::ConvertIntToStr((*it).GetAge())
 				<< "th birthday!";
 
 			_mailController.SendMail(information.str());
 
-			entry.SetSendMail(true);
+			(*it).SetSendMail(true);
 		}
-		else if (!entry.HasBirthday() && entry.GetSendMail())
+		else if (!(*it).HasBirthday() && (*it).GetSendMail())
 		{
-			entry.SetSendMail(false);
+			(*it).SetSendMail(false);
 		}
-
-		_birthdayList[index] = entry;
 	}
 }
 
