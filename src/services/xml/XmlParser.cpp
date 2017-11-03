@@ -169,6 +169,16 @@ std::vector<BirthdayDto> XmlParser::ParseBirthdayList()
 					{
 						newBirthday.SetYear(atoi(words[3].c_str()));
 					}
+					if (typeid(words.at(4)) == typeid(std::string))
+					{
+						int sendMailInteger = atoi(words[3].c_str());
+						if (sendMailInteger == 1) {
+							newBirthday.SetSendMail(true);
+						}
+						else {
+							newBirthday.SetSendMail(false);
+						}
+					}
 				}
 
 				birthdayList.push_back(newBirthday);

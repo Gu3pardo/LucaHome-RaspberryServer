@@ -10,14 +10,14 @@ BirthdayDto::BirthdayDto()
 	_sendMail = false;
 }
 
-BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year)
+BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year, bool sendMail)
 {
 	_id = id;
 	_name = name;
 	_day = day;
 	_month = month;
 	_year = year;
-	_sendMail = false;
+	_sendMail = sendMail;
 }
 
 BirthdayDto::~BirthdayDto()

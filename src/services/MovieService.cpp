@@ -104,11 +104,15 @@ void MovieService::ReloadData()
 void MovieService::loadAllMovies()
 {
 	std::vector<MovieDto> movieList;
-
 	std::vector<std::string> movieDirectories = _pathController.ScanMovieFolder();
-	// Start at index 2, cause first two entries are not valid
-	for (int movieIndex = 2; movieIndex < movieDirectories.size(); movieIndex++) {
+
+	for (int movieIndex = 0; movieIndex < movieDirectories.size(); movieIndex++) {
 		std::string currentMovieDir = movieDirectories.at(movieIndex);
+
+		if (currentMovieDir.find(".") == 0) {
+			// Invalid folder
+			continue;
+		}
 
 		std::ostringstream nfoFilePathStringStream;
 		nfoFilePathStringStream << MOVIE_PATH << currentMovieDir << "/" << NFO_LUCA_FILE;

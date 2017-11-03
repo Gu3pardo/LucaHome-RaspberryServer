@@ -20,7 +20,7 @@ private:
 
 public:
 	BirthdayDto();
-	BirthdayDto(int, std::string, int, int, int);
+	BirthdayDto(int, std::string, int, int, int, bool);
 	~BirthdayDto();
 
 	void SetId(int);

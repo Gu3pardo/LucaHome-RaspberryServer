@@ -45,6 +45,9 @@ void BirthdayService::CheckBirthdayList()
 			(*it).SetSendMail(false);
 		}
 	}
+
+	std::string xmldata = _xmlService.GenerateBirthdaysXml(_birthdayList);
+	_fileController.SaveFile(_birthdayFile, xmldata);
 }
 
 void BirthdayService::ReloadData()
@@ -208,7 +211,8 @@ bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData, Chan
 		newBirthdayData[NAME_INDEX],
 		atoi(newBirthdayData[DAY_INDEX].c_str()),
 		atoi(newBirthdayData[MONTH_INDEX].c_str()),
-		atoi(newBirthdayData[YEAR_INDEX].c_str()));
+		atoi(newBirthdayData[YEAR_INDEX].c_str()),
+		false);
 
 	_birthdayList.push_back(newBirthday);
 
@@ -225,7 +229,8 @@ bool BirthdayService::updateBirthday(std::vector<std::string> updateBirthdayData
 		updateBirthdayData[NAME_INDEX],
 		atoi(updateBirthdayData[DAY_INDEX].c_str()),
 		atoi(updateBirthdayData[MONTH_INDEX].c_str()),
-		atoi(updateBirthdayData[YEAR_INDEX].c_str()));
+		atoi(updateBirthdayData[YEAR_INDEX].c_str()),
+		false);
 
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{

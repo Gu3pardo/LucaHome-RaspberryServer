@@ -17,10 +17,16 @@ std::string XmlWriter::GenerateBirthdaysXml(std::vector<BirthdayDto> birthdayLis
 	xml << "<birthdays>" << std::endl;
 	for (int index = 0; index < birthdayList.size(); index++)
 	{
+		std::string sendMailFlag = "0";
+		if (birthdayList[index].GetSendMail()) {
+			sendMailFlag = "1";
+		}
+
 		xml << birthdayList[index].GetName() << ":"
 			<< Tools::ConvertIntToStr(birthdayList[index].GetDay()) << ":"
 			<< Tools::ConvertIntToStr(birthdayList[index].GetMonth()) << ":"
-			<< Tools::ConvertIntToStr(birthdayList[index].GetYear()) << ";"
+			<< Tools::ConvertIntToStr(birthdayList[index].GetYear()) << ":"
+			<< sendMailFlag << ";"
 			<< std::endl;
 	}
 	xml << "</birthdays>" << std::endl;

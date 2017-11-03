@@ -39,7 +39,6 @@ namespace patch {
 #include "services/shared/ChangeService.h"
 
 #include "services/AccessControlService.h"
-#include "services/AudioService.h"
 #include "services/AuthentificationService.h"
 #include "services/BirthdayService.h"
 #include "services/CameraService.h"
@@ -53,7 +52,6 @@ namespace patch {
 #include "services/ShoppingListService.h"
 #include "services/SystemService.h"
 #include "services/TemperatureService.h"
-#include "services/WatchdogService.h"
 
 #define BUFLEN 512
 
@@ -90,7 +88,6 @@ FileController _fileController;
 PathController _pathController;
 
 AccessControlService _accessControlService;
-AudioService _audioService;
 AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
 CameraService _cameraService;
@@ -105,7 +102,6 @@ RemoteService _remoteService;
 ShoppingListService _shoppingListService;
 SystemService _systemService;
 TemperatureService _temperatureService;
-WatchdogService _watchdogService;
 
 //TODO reactivate!
 //RCSwitch _receiverSwitch;
@@ -252,10 +248,6 @@ string executeCmd(string cmd, int source) {
 	if (category == "SHOPPINGLIST") {
 		return _shoppingListService.PerformAction(action, data, _changeService, username);
 	}
-	//----------------------Sound---------------------
-	else if (category == "SOUND") {
-		return _audioService.PerformAction(action, data);
-	}
 	//---------------------System---------------------
 	else if (category == "SYSTEM") {
 		return _systemService.PerformAction(action, data);
@@ -272,10 +264,6 @@ string executeCmd(string cmd, int source) {
 		else if (action == "RESETFAILEDLOGIN") {
 			return _authentificationService.ResetFailedLogin(username, password, data[4]);
 		}
-	}
-	//---------------------Watchdog---------------------
-	else if (category == "WATCHDOG") {
-		return _watchdogService.PerformAction(action, data);
 	}
 
 	return "Error 20:action not found";
@@ -714,7 +702,6 @@ int main(void) {
 	_remoteService.Initialize(_fileController, SETTINGS_FILE);
 	_shoppingListService.Initialize(_fileController, SHOPPING_LIST_FILE);
 
-	_audioService.Initialize(MUSIC_PATH, _remoteService.GetWakeUpSound(), _remoteService.GetAlarmSound(), _remoteService.GetRaspberry());
 	_accessControlService.Initialize(_fileController, _mailController, UserDto("AccessControl", "518716", 1, 0, 0), _remoteService.GetAccessUrl(), _remoteService.GetMediaMirrorList());
 	_cameraService.Initialize(_remoteService.GetCameraUrl(), _mailController, _pathController, _systemService);
 	_temperatureService.Initialize(_fileController, _mailController, TEMPERATURE_SETTINGS_FILE, _remoteService.GetSensor(), _remoteService.GetArea(), _remoteService.GetTemperatureGraphUrl());
