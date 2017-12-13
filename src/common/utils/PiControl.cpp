@@ -1,5 +1,11 @@
 #include "PiControl.h"
 
+int p_short = 110;									// 110 works quite OK
+int p_long = 290;									// 300 works quite OK
+int p_start = 520;									// 520 works quite OK
+
+//================= PUBLIC =================
+
 bool PiControl::Send433Mhz(int gpio, std::string codeStr, int active)
 {
 	// Validate code
@@ -95,6 +101,70 @@ bool PiControl::WriteGpio(int gpio, int status)
 	return true;
 }
 
+// Due to https://github.com/platenspeler/LamPI-2.0/blob/master/transmitters/livolo/livolo.cpp
+// keycodes #1: 0, #2: 96, #3: 120, #4: 24, #5: 80, #6: 48, #7: 108, #8: 12, #9: 72; #10: 40, #OFF: 106
+// real remote IDs: 6400; 19303; 23783
+// tested "virtual" remote IDs: 10550; 8500; 7400
+// other IDs could work too, as long as they do not exceed 16 bit
+// known issue: not all 16 bit remote ID are valid
+// have not tested other buttons, but as there is dimmer control, some keycodes could be strictly system
+// use: sendButton(remoteID, keycode), see example blink.ino; 
+
+// =======================================================================================
+//
+//
+bool PiControl::SendButton(unsigned int remoteID, unsigned char keycode, int gpio, bool action)
+{
+	if (wiringPiSetupGpio() == -1)
+	{
+		return false;
+	}
+
+	pinMode(gpio, OUTPUT);
+
+	for (int pulse = 0; pulse <= REPEAT; pulse++)
+	{
+		if (action) {
+			sendPulse(1, gpio);
+		}
+		else {
+			sendPulse(0, gpio);
+		}
+
+		for (int bitIndex = 15; bitIndex >= 0; bitIndex--) {	// transmit remoteID
+			unsigned int txPulse = remoteID & (1 << bitIndex);	// read bits from remote ID
+			if (txPulse > 0) {
+				selectPulse(1, gpio, action);
+			}
+			else {
+				selectPulse(0, gpio, action);
+			}
+		}
+
+		for (int keyCodeIndex = 6; keyCodeIndex >= 0; keyCodeIndex--) 	// XXX transmit keycode
+		{
+			unsigned char txPulse = keycode & (1 << keyCodeIndex); 	// read bits from keycode
+			if (txPulse > 0) {
+				selectPulse(1, gpio, action);
+			}
+			else {
+				selectPulse(0, gpio, action);
+			}
+		}
+	}
+
+	if (action) {
+		digitalWrite(gpio, HIGH);
+	}
+	else {
+		digitalWrite(gpio, LOW);
+	}
+
+	return true;
+}
+
+//================= PRIVATE =================
+
 void PiControl::printCode(int code[])
 {
 	printf("Sending ");
@@ -137,4 +207,69 @@ bool PiControl::sendEther(int gpio, int code[])
 		}
 	}
 	return true;
+}
+
+// =======================================================================================
+// build transmit sequence so that every high pulse is followed by low and vice versa
+void PiControl::selectPulse(unsigned char inBit, int gpio, bool action) {
+	switch (inBit) {
+	case 0:
+		if (action) {
+			sendPulse(2, gpio);
+			sendPulse(4, gpio);
+		}
+		else {
+			sendPulse(4, gpio);
+			sendPulse(2, gpio);
+		}
+		break;
+
+	case 1:
+		if (action) {
+			sendPulse(3, gpio);
+		}
+		else {
+			sendPulse(5, gpio);
+		}
+		break;
+	}
+
+}
+
+// =========================================================================================
+// transmit pulses
+// slightly corrected pulse length, use old (commented out) values if these not working for you
+void PiControl::sendPulse(unsigned char txPulse, int gpio) {
+	switch (txPulse)
+	{
+	case 0:
+		digitalWrite(gpio, LOW);
+		delayMicroseconds(p_start);
+		break;
+
+	case 1:
+		digitalWrite(gpio, HIGH);
+		delayMicroseconds(p_start);
+		break;
+
+	case 2:
+		digitalWrite(gpio, LOW);
+		delayMicroseconds(p_short);
+		break;
+
+	case 3:
+		digitalWrite(gpio, LOW);
+		delayMicroseconds(p_long);
+		break;
+
+	case 4:
+		digitalWrite(gpio, HIGH);
+		delayMicroseconds(p_short);
+		break;
+
+	case 5:
+		digitalWrite(gpio, HIGH);
+		delayMicroseconds(p_long);
+		break;
+	}
 }

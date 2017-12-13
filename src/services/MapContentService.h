@@ -4,16 +4,9 @@
 
 #include "../common/dto/MapContentDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "shared/ChangeService.h"
-
-#define GET "GET"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define ALL "ALL"
-#define MAP_CONTENT_DATA_SIZE 7
-#define REDUCED "REDUCED"
 
 #ifndef MAPCONTENTSERVICE_H
 #define MAPCONTENTSERVICE_H
@@ -27,11 +20,10 @@ private:
 	FileController _fileController;
 	XmlService _xmlService;
 
-	void load();
 	void save(ChangeService, std::string);
 
-	std::string getReducedString();
-	std::string getRestString();
+	std::string getJsonString();
+	std::string getPhpString();
 
 	bool add(std::vector<std::string>, ChangeService, std::string);
 	bool update(std::vector<std::string>, ChangeService, std::string);
@@ -44,8 +36,8 @@ public:
 	~MapContentService();
 
 	void Initialize(FileController, std::string);
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
+	void LoadData();
 };
 
 #endif

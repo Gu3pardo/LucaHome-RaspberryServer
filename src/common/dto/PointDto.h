@@ -21,7 +21,8 @@ public:
 	int GetX();
 	int GetY();
 
-	std::string GetString();
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

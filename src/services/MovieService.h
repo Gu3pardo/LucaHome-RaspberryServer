@@ -17,21 +17,10 @@
 
 #include "../common/dto/MovieDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "../controller/PathController.h"
 #include "RemoteService.h"
-
-#define GET "GET"
-#define UPDATE "UPDATE"
-#define LOAD "LOAD"
-#define COUNT "COUNT"
-#define ALL "ALL"
-#define INDEX "INDEX"
-
-#define MOVIE_DATA_SIZE 10
-#define REDUCED "REDUCED"
-
-#define NFO_LUCA_FILE "NFO.luca"
 
 #ifndef MOVIESERVICE_H
 #define MOVIESERVICE_H
@@ -43,15 +32,12 @@ private:
 	FileController _fileController;
 	PathController _pathController;
 
-	void loadAllMovies();
 	void saveMovieNFO(MovieDto, std::string);
 
-	std::string generateRestEntry(MovieDto);
-	std::string generateReducedEntry(MovieDto);
+	std::string generateJsonEntry(MovieDto);
 	int getCount();
 
-	std::string getRestString(int, int);
-	std::string getReducedString(int, int);
+	std::string getJsonString(int, int);
 
 	bool updateMovieData(std::vector<std::string>, std::string);
 
@@ -60,8 +46,8 @@ public:
 	~MovieService();
 
 	void Initialize(FileController, PathController);
-	std::string PerformAction(std::string, std::vector<std::string>, std::string, RemoteService);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>, std::string, RemoteService);
+	void LoadData();
 };
 
 #endif

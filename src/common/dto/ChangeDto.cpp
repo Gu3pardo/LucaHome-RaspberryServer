@@ -8,10 +8,10 @@ ChangeDto::ChangeDto()
 	_day = -1;
 	_month = -1;
 	_year = -1;
-	_user = "Dummy";
+	_userName = "Dummy";
 }
 
-ChangeDto::ChangeDto(std::string type, int hour, int minute, int day, int month, int year, std::string user)
+ChangeDto::ChangeDto(std::string type, int hour, int minute, int day, int month, int year, std::string userName)
 {
 	_type = type;
 	_hour = hour;
@@ -19,7 +19,7 @@ ChangeDto::ChangeDto(std::string type, int hour, int minute, int day, int month,
 	_day = day;
 	_month = month;
 	_year = year;
-	_user = user;
+	_userName = userName;
 }
 
 ChangeDto::~ChangeDto()
@@ -86,14 +86,52 @@ int ChangeDto::GetYear()
 	return _year;
 }
 
-void ChangeDto::SetUser(std::string user)
+void ChangeDto::SetUserName(std::string userName)
 {
-	_user = user;
+	_userName = userName;
 }
 
-std::string ChangeDto::GetUser()
+std::string ChangeDto::GetUserName()
 {
-	return _user;
+	return _userName;
+}
+
+std::string ChangeDto::SaveString()
+{
+	std::string str = 
+		_type + ":"
+		+ Tools::ConvertIntToStr(_hour) + ":"
+		+ Tools::ConvertIntToStr(_minute) + ":"
+		+ Tools::ConvertIntToStr(_day) + ":"
+		+ Tools::ConvertIntToStr(_month) + ":"
+		+ Tools::ConvertIntToStr(_year) + ":"
+		+ _userName + ";";
+	return str;
+}
+
+std::string ChangeDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Change\":")
+		+ std::string("{")
+		+ std::string("\"Type\":") + _type + std::string(",")
+		+ std::string("\"UserName\":") + _userName + std::string(",")
+		+ std::string("{")
+		+ std::string("\"Date\":")
+		+ std::string("{")
+		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
+		+ std::string("\"Month\":") + Tools::ConvertIntToStr(_month) + std::string(",")
+		+ std::string("\"Year\":") + Tools::ConvertIntToStr(_year)
+		+ std::string("}") + std::string(",")
+		+ std::string("\"Time\":")
+		+ std::string("{")
+		+ std::string("\"Hour\":") + Tools::ConvertIntToStr(_hour) + std::string(",")
+		+ std::string("\"Minute\":") + Tools::ConvertIntToStr(_minute)
+		+ std::string("}")
+		+ std::string("}")
+		+ std::string("}");
+	return str;
 }
 
 std::string ChangeDto::ToString()
@@ -105,6 +143,7 @@ std::string ChangeDto::ToString()
 		+ std::string("; day: ") + Tools::ConvertIntToStr(_day)
 		+ std::string("; month: ") + Tools::ConvertIntToStr(_month)
 		+ std::string("; year: ") + Tools::ConvertIntToStr(_year)
-		+ std::string("; user: ") + _user + std::string(" }");
+		+ std::string("; userName: ") + _userName 
+		+ std::string(" }");
 	return str;
 }

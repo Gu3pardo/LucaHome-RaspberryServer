@@ -1,20 +1,8 @@
-Arduino Hardware & Software
-______________________________
-
-[]		add arduino spots measuring temperature/humidity, detecting movements, 433MHz receiver and sender
-[]		on command arduino shall send current temperature/humidity to raspberry via 433MHz
-[]		below/above a temperature/humidity arduino shall send current temperature/humidity to raspberry via 433MHz
-[]		if a movement is detected arduino shall send informations to raspberry via 433MHz
-[]		powered by batteries
-[]		if the batteries are running low arduino shall send warning to raspberry via 433MHz
-
 ==============================
 
 Raspberry Hardware
 ______________________________
 
-[]		add NFC module for authentification
-[]		add number pad for authorization
 []		add LEDs for temperature module for warning of high/low temperature
 []		add 433MHz receiver for wireless communication
 [x]		add camera for making an image of a possible intruder
@@ -25,15 +13,11 @@ ______________________________
 Raspberry Server
 ______________________________
 
-[]		add NFC module for authentification
 []		implement real LEDs connections for temperature module for warning of high/low temperature
 []		add 433MHz receiver module for wireless communication
 [x]		add module to play sound for wakeup or going to bed or as alarm -> perhaps implement in Schedules!
-[]		add module to warn about high traffic on way to work
-[]		add module to inform about events nearby
 [o]		add module to warn about possible intruder sending a mail with an image of the possible intruder
 []		add module to inform about humidity
-[]		add module to remote control osmc
 
 ==============================
 

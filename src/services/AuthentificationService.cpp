@@ -37,7 +37,7 @@ std::vector<std::string> AuthentificationService::GetUserNames() {
 }
 
 bool AuthentificationService::AuthentificateUser(std::string userName, std::string password) {
-	if (userName == "DUMMY" || password == "NO_PASSWORD") {
+	if (userName == DUMMY || password == NO_PASSWORD) {
 		return false;
 	}
 
@@ -70,19 +70,13 @@ bool AuthentificationService::AuthentificateUser(std::string userName, std::stri
 }
 
 bool AuthentificationService::AuthentificateUserAction(std::string userName, std::string password, std::string action) {
-	if (userName == "DUMMY" || password == "NO_PASSWORD") {
+	if (userName == DUMMY || password == NO_PASSWORD) {
 		return false;
 	}
 
 	int actionId = -1;
 	actionId = getActionId(action);
-	if (actionId == -1 || actionId > 5) {
-		return false;
-	}
-
-	int adminAction = -1;
-	adminAction = isAdminAction(action);
-	if (adminAction == -1 || adminAction > 1) {
+	if (actionId == ACTION_LEVEL_ERROR || actionId > ACTION_LEVEL_SYSTEM) {
 		return false;
 	}
 
@@ -93,7 +87,7 @@ bool AuthentificationService::AuthentificateUserAction(std::string userName, std
 		if ((*it).GetName() == userName) {
 			if ((*it).GetPassword() == password) {
 				if ((*it).GetRole() >= actionId) {
-					if (adminAction == 1) {
+					if (isAdminAction(action)) {
 						if (isUserAdmin(userName)) {
 							authentificationSuccess = true;
 						}
@@ -114,62 +108,6 @@ bool AuthentificationService::AuthentificateUserAction(std::string userName, std
 	return authentificationSuccess;
 }
 
-bool AuthentificationService::UpdatePassword(std::string currentUserName, std::string currentUserPassword, std::string userName, std::string newPassword) {
-	if (!AuthentificateUser(currentUserName, currentUserPassword)) {
-		return false;
-	}
-
-	if (!isUserAdmin(currentUserName)) {
-		return false;
-	}
-
-	if (userName == "DUMMY" || newPassword == "NO_PASSWORD") {
-		return false;
-	}
-
-	bool error = true;
-	bool foundUser = false;
-
-	std::vector<UserDto>::iterator it = _userList.begin();
-	while (it != _userList.end()) {
-		if ((*it).GetName() == userName) {
-			foundUser = true;
-
-			if ((*it).GetPassword() != newPassword) {
-				(*it).SetPassword(newPassword);
-
-				error = false;
-
-				saveUsers();
-				loadUsers();
-			}
-
-			break;
-		}
-		else {
-			++it;
-		}
-	}
-
-	return foundUser && !error;
-}
-
-bool AuthentificationService::ResetPassword(std::string currentUserName, std::string currentUserPassword, std::string userName) {
-	if (!AuthentificateUser(currentUserName, currentUserPassword)) {
-		return false;
-	}
-
-	if (!isUserAdmin(currentUserName)) {
-		return false;
-	}
-
-	if (userName == "DUMMY") {
-		return false;
-	}
-
-	return UpdatePassword(currentUserName, currentUserPassword, userName, DEFAULT_PASSWORD);
-}
-
 bool AuthentificationService::AddUser(std::string currentUserName, std::string currentUserPassword, UserDto newUser) {
 	if (!AuthentificateUser(currentUserName, currentUserPassword)) {
 		return false;
@@ -179,7 +117,7 @@ bool AuthentificationService::AddUser(std::string currentUserName, std::string c
 		return false;
 	}
 
-	if (newUser.GetName() == "DUMMY" || newUser.GetPassword() == "NO_PASSWORD" || newUser.GetRole() == -1) {
+	if (newUser.GetName() == DUMMY || newUser.GetPassword() == NO_PASSWORD || newUser.GetRole() == -1) {
 		return false;
 	}
 
@@ -214,7 +152,7 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 		return false;
 	}
 
-	if (deleteUserName == "DUMMY") {
+	if (deleteUserName == DUMMY) {
 		return false;
 	}
 
@@ -239,15 +177,15 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 
 std::string AuthentificationService::ResetFailedLogin(std::string currentUserName, std::string currentUserPassword, std::string userToReset) {
 	if (!AuthentificateUser(currentUserName, currentUserPassword)) {
-		return "Error 15:Could not reset invalid login count";
+		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
 	if (!isUserAdmin(currentUserName)) {
-		return "Error 15:Could not reset invalid login count";
+		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
 	if (userToReset == "") {
-		return "Error 15:Could not reset invalid login count";
+		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
 	bool foundUser = false;
@@ -267,10 +205,10 @@ std::string AuthentificationService::ResetFailedLogin(std::string currentUserNam
 	}
 
 	if (!foundUser) {
-		return "Error 15:Could not reset invalid login count";
+		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
-	return "ResetFailedLogin:1";
+	return AUTHENTIFICATION_RESET_FAILED_LOGIN_COUNT_SUCCESS;
 }
 
 /*==============PRIVATE==============*/
@@ -286,41 +224,41 @@ void AuthentificationService::loadUsers() {
 }
 
 int AuthentificationService::getActionId(std::string action) {
-	if (action == "AVAILABILITY" || action == "CHECK" || action == "COUNT" || action == "GET" || action == "VALIDATE") {
-		return 1;
+	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE) {
+		return ACTION_LEVEL_LOW;
 	}
-	else if (action == "ACTIVATE" || action == "PLAY" || action == "SET" || action == "START" || action == "STOP") {
-		return 2;
+	else if (action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP) {
+		return ACTION_LEVEL_MEDIUM;
 	}
-	else if (action == "ADD" || action == "UPDATE") {
-		return 3;
+	else if (action == ADD || action == UPDATE) {
+		return ACTION_LEVEL_NORMAL;
 	}
-	else if (action == "CLEAR" || action == "DEACTIVATE" || action == "DELETE") {
-		return 4;
+	else if (action == CLEAR || action == DEACTIVATE || action == DELETE) {
+		return ACTION_LEVEL_CRIT;
 	}
-	else if (action == "SETCONTROLTASK" || action == "SYSTEM") {
-		return 5;
+	else if (action == RESETFAILEDLOGIN || action == SETCONTROLTASK || action == SYSTEM) {
+		return ACTION_LEVEL_SYSTEM;
 	}
-	return -1;
+	return ACTION_LEVEL_ERROR;
 }
 
-int AuthentificationService::isAdminAction(std::string action) {
-	if (action == "AVAILABILITY" || action == "CHECK" || action == "COUNT"
-		|| action == "GET" || action == "VALIDATE" || action == "ACTIVATE"
-		|| action == "PLAY" || action == "SET" || action == "START"
-		|| action == "STOP" || action == "ADD" || action == "UPDATE"
-		|| action == "CLEAR" || action == "DEACTIVATE"
-		|| action == "DELETE") {
-		return 0;
+bool AuthentificationService::isAdminAction(std::string action) {
+	if (action == AVAILABILITY || action == CHECK || action == COUNT
+		|| action == GET || action == VALIDATE || action == ACTIVATE
+		|| action == PLAY || action == SET || action == START
+		|| action == STOP || action == ADD || action == UPDATE
+		|| action == CLEAR || action == DEACTIVATE
+		|| action == DELETE) {
+		return false;
 	}
-	else if (action == "SETCONTROLTASK" || action == "SYSTEM") {
-		return 1;
+	else if (action == RESETFAILEDLOGIN || action == SETCONTROLTASK || action == SYSTEM) {
+		return true;
 	}
-	return -1;
+	return true;
 }
 
 bool AuthentificationService::isUserAdmin(std::string userName) {
-	if (userName == "DUMMY") {
+	if (userName == DUMMY) {
 		return false;
 	}
 
@@ -329,13 +267,7 @@ bool AuthentificationService::isUserAdmin(std::string userName) {
 	std::vector<UserDto>::iterator it = _userList.begin();
 	while (it != _userList.end()) {
 		if ((*it).GetName() == userName) {
-			if ((*it).IsAdmin() == 1) {
-				isAdmin = true;
-			}
-			else {
-				isAdmin = false;
-			}
-
+			isAdmin = (*it).IsAdmin();
 			break;
 		}
 		else {
@@ -347,7 +279,7 @@ bool AuthentificationService::isUserAdmin(std::string userName) {
 }
 
 int AuthentificationService::getInvalidLoginCount(std::string userName) {
-	if (userName == "DUMMY") {
+	if (userName == DUMMY) {
 		return -1;
 	}
 

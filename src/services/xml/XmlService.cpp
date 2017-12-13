@@ -102,15 +102,13 @@ std::vector<MenuDto> XmlService::GetMenuList(std::string content)
 }
 
 std::string XmlService::GenerateSettingsXml(
-	int port, int datagpio, int receivergpio, int raspberry, std::string alarmSound,
-	std::string wakeUpSound, std::vector<std::string> areas, std::vector<std::string> sensors,
-	std::vector<std::string> urls, std::string accessurl, std::vector<std::string> mediamirror,
-	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules)
+	int port, int datagpio, int raspberry, 
+	std::vector<std::string> areas, std::vector<std::string> sensors, std::vector<std::string> urls, std::vector<std::string> mediamirror,
+	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules, 
+	std::vector<WirelessSwitchDto> switches)
 {
 	XmlWriter writer;
-	return writer.GenerateSettingsXml(
-		port, datagpio, receivergpio, raspberry, alarmSound, wakeUpSound, areas, sensors, urls,
-		accessurl, mediamirror, sockets, gpios, schedules);
+	return writer.GenerateSettingsXml(port, datagpio, raspberry, areas, sensors, urls, mediamirror, sockets, gpios, schedules, switches);
 }
 
 int XmlService::GetPort(std::string content)
@@ -197,6 +195,12 @@ std::vector<WirelessSocketDto> XmlService::GetSocketList(std::string content)
 	return parser.ParseSocketList();
 }
 
+std::vector<WirelessSwitchDto> XmlService::GetSwitchList(std::string content)
+{
+	XmlParser parser(content);
+	return parser.ParseSwitchList();
+}
+
 std::string XmlService::GenerateShoppingListXml(std::vector<ShoppingEntryDto> shoppingList)
 {
 	XmlWriter writer;
@@ -269,16 +273,4 @@ std::vector<UserDto> XmlService::GetUserList(std::string content)
 {
 	XmlParser parser(content);
 	return parser.ParseUserList();
-}
-
-std::string XmlService::GenerateLoggerXml(std::vector<LogDto> logList)
-{
-	XmlWriter writer;
-	return writer.GenerateLoggerXml(logList);
-}
-
-std::vector<LogDto> XmlService::GetLogList(std::string content)
-{
-	XmlParser parser(content);
-	return parser.ParseLogList();
 }

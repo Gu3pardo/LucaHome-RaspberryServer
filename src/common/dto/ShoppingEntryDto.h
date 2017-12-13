@@ -35,6 +35,8 @@ class ShoppingEntryDto
 	void DecreaseQuantity(int);
 	int GetQuantity();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

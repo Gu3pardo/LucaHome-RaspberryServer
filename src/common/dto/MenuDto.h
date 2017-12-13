@@ -41,6 +41,8 @@ class MenuDto
 	void SetDescription(std::string);
 	std::string GetDescription();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

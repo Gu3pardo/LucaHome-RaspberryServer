@@ -14,95 +14,70 @@ void ShoppingListService::Initialize(FileController fileController, std::string 
 {
 	_fileController = fileController;
 	_shoppingListFile = shoppingListFile;
-	loadShoppingList();
+	LoadData();
 }
 
-std::string ShoppingListService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string ShoppingListService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data.size() == 5) {
-			if (data[4] == REDUCED) {
-				return getReducedString();
-			}
-			else if (data[4] == ALL) {
-				return getShoppingList();
-			}
-			else
-			{
-				return "Error 155:Parameter not found for shopping entry";
-			}
+		if (actionParameter == ALL) {
+			return getJsonString();
 		}
-		else
-		{
-			return "Error 151:Wrong word size for shopping entry";
+		else if (actionParameter == PHP) {
+			return getPhpString();
 		}
+		return  SHOPPING_ERROR_NR_156;
 	}
+
 	else if (action == ADD)
 	{
 		if (data.size() == SHOPPING_ENTRY_DATA_SIZE)
 		{
 			if (addShoppingEntry(data, changeService, username))
 			{
-				return "addEntry:1";
+				return SHOPPING_ADD_SUCCESS;
 			}
-			else
-			{
-				return "Error 150:Could not add shopping entry";
-			}
+			return SHOPPING_ERROR_NR_150;
 		}
-		else
-		{
-			return "Error 151:Wrong word size for shopping entry";
-		}
+		return SHOPPING_ERROR_NR_151;
 	}
+
 	else if (action == UPDATE)
 	{
 		if (data.size() == SHOPPING_ENTRY_DATA_SIZE)
 		{
 			if (updateShoppingEntry(data, changeService, username))
 			{
-				return "updateEntry:1";
+				return SHOPPING_UPDATE_SUCCESS;
 			}
-			else
-			{
-				return "Error 152:Could not update shopping entry";
-			}
+			return SHOPPING_ERROR_NR_152;
 		}
-		else
-		{
-			return "Error 151:Wrong word size for shopping entry";
-		}
+		return SHOPPING_ERROR_NR_151;
 	}
+
 	else if (action == DELETE)
 	{
 		if (deleteShoppingEntry(atoi(data[4].c_str()), changeService, username))
 		{
-			return "deleteEntry:1";
+			return SHOPPING_DELETE_SUCCESS;
 		}
-		else
-		{
-			return "Error 153:Could not delete shopping entry";
-		}
+		return SHOPPING_ERROR_NR_153;
 	}
-	else
-	{
-		return "Error 154:Action not found action for shopping entry";
-	}
+
+	return SHOPPING_ERROR_NR_154;
 }
 
-void ShoppingListService::ReloadData()
-{
-	loadShoppingList();
-}
-
-/*==============PRIVATE==============*/
-
-void ShoppingListService::loadShoppingList()
+void ShoppingListService::LoadData()
 {
 	std::string shoppingListFileContent = _fileController.ReadFile(_shoppingListFile);
 	_shoppingList = _xmlService.GetShoppingList(shoppingListFileContent);
 }
+
+/*==============PRIVATE==============*/
 
 void ShoppingListService::saveShoppingList(ChangeService changeService, std::string username)
 {
@@ -111,26 +86,24 @@ void ShoppingListService::saveShoppingList(ChangeService changeService, std::str
 	changeService.UpdateChange("ShoppingList", username);
 }
 
-std::string ShoppingListService::getShoppingList()
+std::string ShoppingListService::getJsonString()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _shoppingList.size(); index++)
 	{
-		out << "{shopping_entry:"
-			<< "{id:" << Tools::ConvertIntToStr(_shoppingList[index].GetId()) << "};"
-			<< "{name:" << _shoppingList[index].GetName() << "};"
-			<< "{group:" << _shoppingList[index].GetGroup() << "};"
-			<< "{quantity:" << Tools::ConvertIntToStr(_shoppingList[index].GetQuantity()) << "};"
-			<< "};";
+		ShoppingEntryDto shoppingEntry = _shoppingList[index];
+		data << shoppingEntry.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
-std::string ShoppingListService::getReducedString()
+std::string ShoppingListService::getPhpString()
 {
 	std::stringstream out;
 
@@ -150,27 +123,34 @@ std::string ShoppingListService::getReducedString()
 
 bool ShoppingListService::addShoppingEntry(std::vector<std::string> newEntryData, ChangeService changeService, std::string username)
 {
-	ShoppingEntryDto newEntry(atoi(newEntryData[4].c_str()), newEntryData[5], newEntryData[6], atoi(newEntryData[7].c_str()));
+	ShoppingEntryDto newEntry(
+		atoi(newEntryData[SHOPPING_ENTRY_ID_INDEX].c_str()),
+		newEntryData[SHOPPING_ENTRY_NAME_INDEX],
+		newEntryData[SHOPPING_ENTRY_GROUP_INDEX],
+		atoi(newEntryData[SHOPPING_ENTRY_QUANTITY_INDEX].c_str()));
+
 	_shoppingList.push_back(newEntry);
 
 	saveShoppingList(changeService, username);
-	loadShoppingList();
+	LoadData();
 
 	return true;
 }
 
 bool ShoppingListService::updateShoppingEntry(std::vector<std::string> updateEntryData, ChangeService changeService, std::string username)
 {
-	ShoppingEntryDto updateEntry(atoi(updateEntryData[4].c_str()), updateEntryData[5], updateEntryData[6], atoi(updateEntryData[7].c_str()));
+	int id = atoi(updateEntryData[SHOPPING_ENTRY_ID_INDEX].c_str());
 
 	for (int index = 0; index < _shoppingList.size(); index++)
 	{
-		if (_shoppingList[index].GetId() == updateEntry.GetId())
+		if (_shoppingList[index].GetId() == id)
 		{
-			_shoppingList[index] = updateEntry;
+			_shoppingList[index].SetName(updateEntryData[SHOPPING_ENTRY_NAME_INDEX]);
+			_shoppingList[index].SetGroup(updateEntryData[SHOPPING_ENTRY_GROUP_INDEX]);
+			_shoppingList[index].SetQuantity(atoi(updateEntryData[SHOPPING_ENTRY_QUANTITY_INDEX].c_str()));
 
 			saveShoppingList(changeService, username);
-			loadShoppingList();
+			LoadData();
 
 			return true;
 		}
@@ -188,7 +168,7 @@ bool ShoppingListService::deleteShoppingEntry(int id, ChangeService changeServic
 			it = _shoppingList.erase(it);
 
 			saveShoppingList(changeService, username);
-			loadShoppingList();
+			LoadData();
 
 			return true;
 		}

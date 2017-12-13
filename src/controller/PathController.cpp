@@ -14,7 +14,7 @@ std::vector<std::string> PathController::ScanCameraFolder()
 	struct dirent *dirEntry;
 	std::vector<std::string> imageEntries;
 
-	const char *motionPathChar = CAMERA_SAVE_PATH;
+	const char *motionPathChar = NAS_PATH_CAMERA;
 
 	if ((dir = opendir(motionPathChar)) != NULL)
 	{
@@ -42,17 +42,17 @@ std::vector<std::string> PathController::ScanCameraFolder()
 
 std::vector<std::string> PathController::ScanLibraryFolder()
 {
-	return scanForSubDir(LIBRARY_PATH);
+	return scanForSubDir(NAS_PAH_LIBRARY);
 }
 
 std::vector<std::string> PathController::ScanMovieFolder()
 {
-	return scanForSubDir(MOVIE_PATH);
+	return scanForSubDir(NAS_PAH_MOVIE);
 }
 
 std::vector<std::string> PathController::ScanSeriesFolder()
 {
-	return scanForSubDir(SERIES_PATH);
+	return scanForSubDir(NAS_PATH_SERIES);
 }
 
 // Private

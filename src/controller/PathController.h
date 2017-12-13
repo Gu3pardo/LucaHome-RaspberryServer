@@ -25,18 +25,7 @@
 #include <dirent.h>
 
 #include "../common/utils/Tools.h"
-
-#define CAMERA_SAVE_PATH "/NAS/Camera/"
-#define LIBRARY_PATH "/NAS/Library/"
-#define LUCAHOME_PATH "/NAS/LucaHome/"
-#define MOVIE_PATH "/NAS/Movies/"
-#define SERIES_PATH "/NAS/Series/"
-
-#define IS_FOLDER 0x4
-#define IS_FILE 0x8
-
-#define JPG_ENDING ".jpg"
-#define SWF_ENDING ".swf"
+#include "../common/Constants.h"
 
 #ifndef PATHCONTROLLER_H
 #define PATHCONTROLLER_H

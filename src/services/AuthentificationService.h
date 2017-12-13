@@ -16,11 +16,9 @@
 #include <unistd.h>
 
 #include "../common/dto/UserDto.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "xml/XmlService.h"
-
-#define DEFAULT_PASSWORD "0000"
-#define MAX_INVALID_LOGIN_COUNT 5
 
 #ifndef AUTHENTIFICATIONSERVICE_H
 #define AUTHENTIFICATIONSERVICE_H
@@ -40,7 +38,7 @@ private:
 	void loadUsers();
 
 	int getActionId(std::string);
-	int isAdminAction(std::string);
+	bool isAdminAction(std::string);
 
 	bool isUserAdmin(std::string);
 	int getInvalidLoginCount(std::string);
@@ -56,9 +54,6 @@ public:
 
 	bool AuthentificateUser(std::string, std::string);
 	bool AuthentificateUserAction(std::string, std::string, std::string);
-
-	bool UpdatePassword(std::string, std::string, std::string, std::string);
-	bool ResetPassword(std::string, std::string, std::string);
 
 	bool AddUser(std::string, std::string, UserDto);
 	bool DeleteUser(std::string, std::string, std::string);

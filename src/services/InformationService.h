@@ -17,13 +17,9 @@
 
 #include "../common/dto/InformationDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define REST "REST"
-#define REDUCED "REDUCED"
-#define INFORMATION_DATA_SIZE 5
 
 #ifndef INFORMATIONSERVICE_H
 #define INFORMATIONSERVICE_H
@@ -37,18 +33,16 @@ private:
 	FileController _fileController;
 	XmlService _xmlService;
 
-	void loadInformations();
-
-	std::string getRestString();
-	std::string getReducedString();
+	std::string getJsonString();
+	std::string getPhpString();
 
 public:
 	InformationService();
 	~InformationService();
 
 	void Initialize(FileController, std::string);
-	std::string PerformAction(std::string, std::vector<std::string>);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>);
+	void LoadData();
 };
 
 #endif

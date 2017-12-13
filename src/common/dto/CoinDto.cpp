@@ -60,6 +60,31 @@ double CoinDto::GetAmount()
 	return _amount;
 }
 
+std::string CoinDto::SaveString()
+{
+	std::string str = 
+		Tools::ConvertIntToStr(_id) + ":"
+		+ _user + ":"
+		+ _type + ":"
+		+ Tools::ConvertDoubleToStr(_amount) + ";";
+	return str;
+}
+
+std::string CoinDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Coin\":")
+		+ std::string("{")
+		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"User\":") + _user + std::string(",")
+		+ std::string("\"Type\":") + _type + std::string(",")
+		+ std::string("\"Amount\":") + Tools::ConvertDoubleToStr(_amount)
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string CoinDto::ToString()
 {
 	std::string str =

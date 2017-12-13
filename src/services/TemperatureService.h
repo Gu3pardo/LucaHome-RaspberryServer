@@ -24,17 +24,10 @@
 #include <unistd.h>
 
 #include "../common/utils/PiControl.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "../controller/MailController.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define REDUCED "REDUCED"
-#define REST "REST"
-#define SETCONTROLTASK "SETCONTROLTASK"
-#define ON "ON"
-#define OFF "OFF"
-#define MENU_DATA_SIZE 11
 
 #ifndef TEMPERATURESERVICE_H
 #define TEMPERATURESERVICE_H
@@ -65,7 +58,6 @@ class TemperatureService
 
 	bool _temperatureControlActive;
 
-	void loadSettings();
 	void saveSettings();
 
 	double loadTemperature();
@@ -74,8 +66,8 @@ class TemperatureService
 	void enableLED(int);
 
 	double getValue();
-	std::string getRestString();
-	std::string getReducedString();
+	std::string getJsonString();
+	std::string getPhpString();
 
   public:
 	TemperatureService();
@@ -84,8 +76,8 @@ class TemperatureService
 	void Initialize(FileController, MailController, std::string, std::string, std::string, std::string);
 	void ControlTemperature();
 	bool GetTemperatureControlActive();
-	std::string PerformAction(std::string, std::vector<std::string>);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>);
+	void LoadData();
 };
 
 #endif

@@ -84,6 +84,39 @@ std::string MenuDto::GetDescription()
 	return _description;
 }
 
+std::string MenuDto::SaveString()
+{
+	std::string str = 
+		"<" + _weekday + ">"
+		+ Tools::ConvertIntToStr(_day) + ":"
+		+ Tools::ConvertIntToStr(_month) + ":"
+		+ Tools::ConvertIntToStr(_year) + ":"
+		+ _title + ":"
+		+ _description
+		+ "</" + _weekday + ">";
+	return str;
+}
+
+std::string MenuDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Menu\":")
+		+ std::string("{")
+		+ std::string("\"Title\":") + _title + std::string(",")
+		+ std::string("\"Description\":") + _description + std::string(",")
+		+ std::string("\"Weekday\":") + _weekday + std::string(",")
+		+ std::string("\"Date\":")
+		+ std::string("{")
+		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
+		+ std::string("\"Month\":") + Tools::ConvertIntToStr(_month) + std::string(",")
+		+ std::string("\"Year\":") + Tools::ConvertIntToStr(_year)
+		+ std::string("}")
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string MenuDto::ToString()
 {
 	std::string str =

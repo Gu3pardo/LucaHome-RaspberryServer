@@ -18,20 +18,10 @@
 #include "../common/dto/ListedMenuDto.h"
 #include "../common/dto/MenuDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define CLEAR "CLEAR"
-#define MENU "MENU"
-#define LISTEDMENU "LISTEDMENU"
-#define MENU_DATA_SIZE 11
-#define LISTEDMENU_DATA_SIZE 9
-#define REDUCED "REDUCED"
 
 #ifndef MENUSERVICE_H
 #define MENUSERVICE_H
@@ -50,8 +40,8 @@ private:
 	void loadMenu();
 	void saveMenu(ChangeService, std::string);
 
-	std::string getMenu();
-	std::string getReducedString();
+	std::string getMenuJsonString();
+	std::string getMenuPhpString();
 
 	bool updateMenu(std::vector<std::string>, ChangeService, std::string);
 	bool clearMenu(std::string, ChangeService, std::string);
@@ -59,8 +49,8 @@ private:
 	void loadListedMenu();
 	void saveListedMenu(ChangeService, std::string);
 
-	std::string getListedMenu();
-	std::string getListedMenuReduced();
+	std::string getListedMenuJsonString();
+	std::string getListedMenuPhpString();
 
 	bool addListedMenu(std::vector<std::string>, ChangeService, std::string);
 	bool updateListedMenu(std::vector<std::string>, ChangeService, std::string);
@@ -71,8 +61,8 @@ public:
 	~MenuService();
 
 	void Initialize(FileController, std::string, std::string);
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
+	void LoadData();
 };
 
 #endif

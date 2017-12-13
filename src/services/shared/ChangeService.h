@@ -14,14 +14,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
 #include "../../common/dto/ChangeDto.h"
+#include "../../common/Constants.h"
 #include "../../controller/FileController.h"
 #include "../xml/XmlService.h"
-
-#define CHANGE_DATA_SIZE 5
-#define GET "GET"
-#define REST "REST"
-#define REDUCED "REDUCED"
 
 #ifndef CHANGESERVICE_H
 #define CHANGESERVICE_H
@@ -35,8 +32,8 @@ class ChangeService
 	FileController _fileController;
 	XmlService _xmlService;
 
-	std::string getRestString();
-	std::string getString();
+	std::string getJsonString();
+	std::string getPhpString();
 
   public:
 	ChangeService();
@@ -44,9 +41,9 @@ class ChangeService
 
 	void Initialize(FileController, std::string);
 	void UpdateChange(std::string, std::string);
-	void ReloadData();
+	void LoadData();
 
-	std::string PerformAction(std::string, std::vector<std::string>);
+	std::string PerformAction(std::vector<std::string>);
 };
 
 #endif

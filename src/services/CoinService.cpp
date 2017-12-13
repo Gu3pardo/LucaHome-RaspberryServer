@@ -15,108 +15,72 @@ void CoinService::Initialize(FileController fileController, std::string coinFile
 	_fileController = fileController;
 	_coinFile = coinFile;
 
-	loadCoins();
+	LoadData();
 }
 
-void CoinService::ReloadData()
+void CoinService::LoadData()
 {
-	loadCoins();
+	std::string coinFileContent = _fileController.ReadFile(_coinFile);
+	_coinList = _xmlService.GetCoinList(coinFileContent);
 }
 
-std::string CoinService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string CoinService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		std::string parameter = data[4];
-		std::string parameterType = data[5];
-
-		if (parameter == ALL)
+		if (actionParameter == ALL)
 		{
-			if (parameterType == REDUCED)
-			{
-				return getReducedStringAll();
-			}
-			else
-			{
-				return getRestStringAll();
-			}
+			return getJsonStringAll();
 		}
-		else if (parameter == FOR_USER)
+		else if (actionParameter == FOR_USER)
 		{
-			if (parameterType == REDUCED)
-			{
-				return getReducedStringUser(username);
-			}
-			else
-			{
-				return getRestStringUser(username);
-			}
+			return getJsonStringUser(username);
 		}
-		else
-		{
-			return "Error 202:Wrong action parameter for coin";
-		}
+		return COIN_ERROR_NR_202;
 	}
+
 	else if (action == ADD)
 	{
 		if (data.size() == COIN_DATA_SIZE)
 		{
 			if (addCoin(data, changeService, username))
 			{
-				return "addCoin:1";
+				return COIN_ADD_SUCCESS;
 			}
-			else
-			{
-				return "Error 203:Could not add coin";
-			}
+			return COIN_ERROR_NR_203;
 		}
-		else
-		{
-			return "Error 201:Wrong data size for birthday";
-		}
+		return COIN_ERROR_NR_201;
 	}
+
 	else if (action == UPDATE)
 	{
 		if (data.size() == COIN_DATA_SIZE)
 		{
 			if (updateCoin(data, changeService, username))
 			{
-				return "updateCoin:1";
+				return COIN_UPDATE_SUCCESS;
 			}
-			else
-			{
-				return "Error 204:Could not update coin";
-			}
+			return COIN_ERROR_NR_204;
 		}
-		else
-		{
-			return "Error 201:Wrong data size for birthday";
-		}
+		return COIN_ERROR_NR_201;
 	}
+
 	else if (action == DELETE)
 	{
-		if (deleteCoin(atoi(data[ID_INDEX].c_str()), changeService, username))
+		if (deleteCoin(atoi(data[COIN_ID_INDEX].c_str()), changeService, username))
 		{
-			return "deleteCoin:1";
+			return COIN_DELETE_SUCCESS;
 		}
-		else
-		{
-			return "Error 205:Could not delete coin";
-		}
+		return COIN_ERROR_NR_205;
 	}
-	else
-	{
-		return "Error 200:Action not found for coin";
-	}
+
+	return COIN_ERROR_NR_200;
 }
 
 /*==============PRIVATE==============*/
-
-void CoinService::loadCoins()
-{
-	std::string coinFileContent = _fileController.ReadFile(_coinFile);
-	_coinList = _xmlService.GetCoinList(coinFileContent);
-}
 
 void CoinService::saveCoins(ChangeService changeService, std::string username)
 {
@@ -126,90 +90,40 @@ void CoinService::saveCoins(ChangeService changeService, std::string username)
 	changeService.UpdateChange("Coins", username);
 }
 
-std::string CoinService::getRestStringAll()
+std::string CoinService::getJsonStringAll()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _coinList.size(); index++)
 	{
 		CoinDto coin = _coinList[index];
-
-		out << "{coin:"
-			<< "{Id:" << Tools::ConvertIntToStr(coin.GetId()) << "};"
-			<< "{User:" << coin.GetUser() << "};"
-			<< "{Type:" << coin.GetType() << "};"
-			<< "{Amount:" << Tools::ConvertDoubleToStr(coin.GetAmount()) << "};"
-			<< "};";
+		data << coin.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
-std::string CoinService::getRestStringUser(std::string username)
+std::string CoinService::getJsonStringUser(std::string username)
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _coinList.size(); index++)
 	{
 		CoinDto coin = _coinList[index];
 
 		if (coin.GetUser() == username)
 		{
-			out << "{coin:"
-				<< "{Id:" << Tools::ConvertIntToStr(coin.GetId()) << "};"
-				<< "{User:" << coin.GetUser() << "};"
-				<< "{Type:" << coin.GetType() << "};"
-				<< "{Amount:" << Tools::ConvertDoubleToStr(coin.GetAmount()) << "};"
-				<< "};";
+			data << coin.JsonString() << ",";
 		}
 	}
 
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string CoinService::getReducedStringAll()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _coinList.size(); index++)
-	{
-		CoinDto coin = _coinList[index];
-
-		out << "coin::"
-			<< Tools::ConvertIntToStr(coin.GetId()) << "::"
-			<< coin.GetUser() << "::"
-			<< coin.GetType() << "::"
-			<< Tools::ConvertDoubleToStr(coin.GetAmount()) << ";";
-	}
-
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string CoinService::getReducedStringUser(std::string username)
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _coinList.size(); index++)
-	{
-		CoinDto coin = _coinList[index];
-
-		if (coin.GetUser() == username)
-		{
-			out << "coin::"
-				<< Tools::ConvertIntToStr(coin.GetId()) << "::"
-				<< coin.GetUser() << "::"
-				<< coin.GetType() << "::"
-				<< Tools::ConvertDoubleToStr(coin.GetAmount()) << ";";
-		}
-	}
-
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -217,35 +131,33 @@ std::string CoinService::getReducedStringUser(std::string username)
 bool CoinService::addCoin(std::vector<std::string> newCoinData, ChangeService changeService, std::string username)
 {
 	CoinDto newCoin(
-		atoi(newCoinData[ID_INDEX].c_str()),
-		newCoinData[NAME_INDEX].c_str(),
-		newCoinData[TYPE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(newCoinData[AMOUNT_INDEX].c_str()));
+		atoi(newCoinData[COIN_ID_INDEX].c_str()),
+		newCoinData[COIN_NAME_INDEX].c_str(),
+		newCoinData[COIN_TYPE_INDEX].c_str(),
+		Tools::ConvertStrToDouble(newCoinData[COIN_AMOUNT_INDEX].c_str()));
 
 	_coinList.push_back(newCoin);
 
 	saveCoins(changeService, username);
-	loadCoins();
+	LoadData();
 
 	return true;
 }
 
 bool CoinService::updateCoin(std::vector<std::string> updateCoinData, ChangeService changeService, std::string username)
 {
-	CoinDto updateCoin(
-		atoi(updateCoinData[ID_INDEX].c_str()),
-		updateCoinData[NAME_INDEX].c_str(),
-		updateCoinData[TYPE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(updateCoinData[AMOUNT_INDEX].c_str()));
+	int id = atoi(updateCoinData[COIN_ID_INDEX].c_str());
 
 	for (int index = 0; index < _coinList.size(); index++)
 	{
-		if (_coinList[index].GetId() == updateCoin.GetId())
+		if (_coinList[index].GetId() == id)
 		{
-			_coinList[index] = updateCoin;
+			_coinList[index].SetUser(updateCoinData[COIN_NAME_INDEX].c_str());
+			_coinList[index].SetType(updateCoinData[COIN_TYPE_INDEX].c_str());
+			_coinList[index].SetAmount(Tools::ConvertStrToDouble(updateCoinData[COIN_AMOUNT_INDEX].c_str()));
 
 			saveCoins(changeService, username);
-			loadCoins();
+			LoadData();
 
 			return true;
 		}
@@ -264,7 +176,7 @@ bool CoinService::deleteCoin(int id, ChangeService changeService, std::string us
 			it = _coinList.erase(it);
 
 			saveCoins(changeService, username);
-			loadCoins();
+			LoadData();
 
 			return true;
 		}

@@ -38,6 +38,8 @@ public:
 	void IncreaseWatched();
 	int GetWatched();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

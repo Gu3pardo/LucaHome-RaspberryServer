@@ -3,17 +3,19 @@
 ListedMenuDto::ListedMenuDto()
 {
 	_id = -1;
+	_title = "N.A.";
 	_description = "N.A.";
 	_rating = 0;
-	_lastSuggestion = 0;
+	_useCounter = 0;
 }
 
-ListedMenuDto::ListedMenuDto(int id, std::string description, int rating, int lastSuggestion)
+ListedMenuDto::ListedMenuDto(int id, std::string title, std::string description, int rating, int useCounter)
 {
 	_id = id;
+	_title = title;
 	_description = description;
 	_rating = rating;
-	_lastSuggestion = lastSuggestion;
+	_useCounter = useCounter;
 }
 
 ListedMenuDto::~ListedMenuDto()
@@ -30,6 +32,16 @@ int ListedMenuDto::GetId()
 	return _id;
 }
 
+void ListedMenuDto::SetTitle(std::string title)
+{
+	_title = title;
+}
+
+std::string ListedMenuDto::GetTitle()
+{
+	return _title;
+}
+
 void ListedMenuDto::SetDescription(std::string description)
 {
 	_description = description;
@@ -38,6 +50,16 @@ void ListedMenuDto::SetDescription(std::string description)
 std::string ListedMenuDto::GetDescription()
 {
 	return _description;
+}
+
+void ListedMenuDto::SetUseCount(int useCounter)
+{
+	_useCounter = useCounter;
+}
+
+int ListedMenuDto::GetUseCount()
+{
+	return _useCounter;
 }
 
 void ListedMenuDto::SetRating(int rating)
@@ -50,23 +72,41 @@ int ListedMenuDto::GetRating()
 	return _rating;
 }
 
-void ListedMenuDto::SetLastSuggestion(int lastSuggestion)
+std::string ListedMenuDto::SaveString()
 {
-	_lastSuggestion = lastSuggestion;
+	std::string str = 
+		Tools::ConvertIntToStr(_id) + ":"
+		+ _title + ":"
+		+ _description + ":"
+		+ Tools::ConvertIntToStr(_useCounter) + ":"
+		+ Tools::ConvertIntToStr(_rating) + ";";
+	return str;
 }
 
-int ListedMenuDto::IsLastSuggestion()
+std::string ListedMenuDto::JsonString()
 {
-	return _lastSuggestion;
+	std::string str =
+		std::string("{")
+		+ std::string("\"ListedMenu\":")
+		+ std::string("{")
+		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Title\":") + _title + std::string(",")
+		+ std::string("\"Description\":") + _description + std::string(",")
+		+ std::string("\"UseCounter\":") + Tools::ConvertIntToStr(_useCounter) + std::string(",")
+		+ std::string("\"Rating\":") + Tools::ConvertIntToStr(_rating)
+		+ std::string("}")
+		+ std::string("}");
+	return str;
 }
 
 std::string ListedMenuDto::ToString()
 {
 	std::string str =
-		std::string("ListedMenuDto { id: ") + Tools::ConvertIntToStr(_id) 
-		+ std::string("; description: ") + _description 
+		std::string("ListedMenuDto { id: ") + Tools::ConvertIntToStr(_id)
+		+ std::string("; title: ") + _title
+		+ std::string("; description: ") + _description
+		+ std::string("; useCounter: ") + Tools::ConvertIntToStr(_useCounter)
 		+ std::string("; rating: ") + Tools::ConvertIntToStr(_rating)
-		+ std::string("; isLastSuggestion: ") + Tools::ConvertIntToStr(_lastSuggestion)
 		+ std::string(" }");
 	return str;
 }

@@ -15,6 +15,24 @@ int Tools::ConvertStrToInt(std::string str)
 	return number;
 }
 
+bool Tools::ConvertIntToBool(int number)
+{
+	if (number == 0) {
+		return false;
+	}
+	return true;
+}
+
+int Tools::ConvertBoolToInt(bool boolean)
+{
+	if (boolean)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
 std::string Tools::ConvertDoubleToStr(double number)
 {
 	std::ostringstream numberStringStream;
@@ -50,6 +68,21 @@ bool Tools::ConvertStrToBool(std::string str)
 	bool boolean;
 	ss >> boolean;
 	return boolean;
+}
+
+std::string Tools::ConvertUnsignedCharToStr(unsigned char unsignedChar)
+{
+	std::ostringstream unsignedCharStringStream;
+	unsignedCharStringStream << unsignedChar;
+	return unsignedCharStringStream.str();
+}
+
+unsigned char Tools::ConvertStrToUnsignedChar(std::string str)
+{
+	std::stringstream ss(str);
+	unsigned char unsignedChar;
+	ss >> unsignedChar;
+	return unsignedChar;
 }
 
 bool Tools::HasEnding(std::string fullString, std::string ending)

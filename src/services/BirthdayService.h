@@ -17,25 +17,11 @@
 
 #include "../common/dto/BirthdayDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "../controller/MailController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define REDUCED "REDUCED"
-#define BIRTHDAY_DATA_SIZE 9
-#define SETCONTROLTASK "SETCONTROLTASK"
-#define ON "ON"
-#define OFF "OFF"
-#define ID_INDEX 4
-#define NAME_INDEX 5
-#define DAY_INDEX 6
-#define MONTH_INDEX 7
-#define YEAR_INDEX 8
 
 #ifndef BIRTHDAYSERVICE_H
 #define BIRTHDAYSERVICE_H
@@ -52,11 +38,10 @@ class BirthdayService
 	MailController _mailController;
 	XmlService _xmlService;
 
-	void loadBirthdays();
 	void saveBirthdays(ChangeService, std::string);
 
-	std::string getReducedString();
-	std::string getBirthdays();
+	std::string getJsonString();
+	std::string getPhpString();
 
 	bool addBirthday(std::vector<std::string>, ChangeService, std::string);
 	bool updateBirthday(std::vector<std::string>, ChangeService, std::string);
@@ -68,9 +53,9 @@ class BirthdayService
 
 	void Initialize(FileController, MailController, std::string);
 	void CheckBirthdayList();
-	void ReloadData();
+	void LoadData();
 
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
 
 	bool GetBirthdayControlActive();
 };

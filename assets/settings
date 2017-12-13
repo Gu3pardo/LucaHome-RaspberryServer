@@ -2,13 +2,7 @@
 
 <datagpio>17</datagpio>
 
-<receivergpio>0</receivergpio>
-
 <raspberry>1</raspberry>
-
-<alarmsound></alarmsound>
-
-<wakeupsound></wakeupsound>
 
 <areas>
 </areas>
@@ -32,3 +26,6 @@
 
 <schedules>
 </schedules>
+
+<switches>
+</switches>

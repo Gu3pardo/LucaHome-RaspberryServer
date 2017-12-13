@@ -18,31 +18,31 @@ void BirthdayService::Initialize(FileController fileController, MailController m
 
 	_birthdayFile = birthdayFile;
 
-	loadBirthdays();
+	LoadData();
 }
 
 void BirthdayService::CheckBirthdayList()
 {
-	std::vector<BirthdayDto>::iterator it = _birthdayList.begin();
-
-	while (it != _birthdayList.end())
+	for (int index = 0; index < _birthdayList.size(); index++)
 	{
-		if ((*it).HasBirthday() && !(*it).GetSendMail())
+		BirthdayDto birthday = _birthdayList[index];
+
+		if (birthday.HasBirthday() && birthday.GetRemindMe() && !birthday.GetSendMail())
 		{
 			std::stringstream information;
 			information
-				<< (*it).GetName()
+				<< birthday.GetName()
 				<< " has birthday today! It is the "
-				<< Tools::ConvertIntToStr((*it).GetAge())
+				<< Tools::ConvertIntToStr(birthday.GetAge())
 				<< "th birthday!";
 
 			_mailController.SendMail(information.str());
 
-			(*it).SetSendMail(true);
+			_birthdayList[index].SetSendMail(true);
 		}
-		else if (!(*it).HasBirthday() && (*it).GetSendMail())
+		else if (!birthday.HasBirthday() && birthday.GetSendMail())
 		{
-			(*it).SetSendMail(false);
+			_birthdayList[index].SetSendMail(false);
 		}
 	}
 
@@ -50,93 +50,83 @@ void BirthdayService::CheckBirthdayList()
 	_fileController.SaveFile(_birthdayFile, xmldata);
 }
 
-void BirthdayService::ReloadData()
+void BirthdayService::LoadData()
 {
-	loadBirthdays();
+	std::string birthdayFileContent = _fileController.ReadFile(_birthdayFile);
+	_birthdayList = _xmlService.GetBirthdayList(birthdayFileContent);
 }
 
-std::string BirthdayService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string BirthdayService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data.size() == 6)
+		if (actionParameter == ALL)
 		{
-			if (data[5] == REDUCED)
-			{
-				return getReducedString();
-			}
+			return getJsonString();
 		}
-
-		return getBirthdays();
+		else if (actionParameter == PHP)
+		{
+			return getPhpString();
+		}
+		return BIRTHDAY_ERROR_NR_37;
 	}
+
 	else if (action == ADD)
 	{
 		if (data.size() == BIRTHDAY_DATA_SIZE)
 		{
 			if (addBirthday(data, changeService, username))
 			{
-				return "addbirthday:1";
+				return BIRTHDAY_ADD_SUCCESS;
 			}
-			else
-			{
-				return "Error 30:Could not add birthday";
-			}
+			return BIRTHDAY_ERROR_NR_30;
 		}
-		else
-		{
-			return "Error 33:Wrong word size for birthday";
-		}
+		return BIRTHDAY_ERROR_NR_33;
 	}
+
 	else if (action == UPDATE)
 	{
 		if (data.size() == BIRTHDAY_DATA_SIZE)
 		{
 			if (updateBirthday(data, changeService, username))
 			{
-				return "updatebirthday:1";
+				return BIRTHDAY_UPDATE_SUCCESS;
 			}
-			else
-			{
-				return "Error 31:Could not update birthday";
-			}
+			return BIRTHDAY_ERROR_NR_31;
 		}
-		else
-		{
-			return "Error 33:Wrong word size for birthday";
-		}
+		return BIRTHDAY_ERROR_NR_33;
 	}
+
 	else if (action == DELETE)
 	{
-		if (deleteBirthday(atoi(data[ID_INDEX].c_str()), changeService, username))
+		if (deleteBirthday(atoi(data[BIRTHDAY_ID_INDEX].c_str()), changeService, username))
 		{
-			return "deletebirthday:1";
+			return BIRTHDAY_DELETE_SUCCESS;
 		}
-		else
-		{
-			return "Error 32:Could not delete birthday";
-		}
+		return BIRTHDAY_ERROR_NR_32;
 	}
+
 	else if (action == SETCONTROLTASK)
 	{
-		if (data[4] == ON)
+		std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
+		if (actionParameter == ON)
 		{
 			_birthdayControlActive = true;
-			return "setBirthdayControl:1:1";
+			return BIRTHDAY_ACTIVATE_CONTROL_SUCCESS;
 		}
-		else if (data[4] == OFF)
+		else if (actionParameter == OFF)
 		{
 			_birthdayControlActive = false;
-			return "setBirthdayControl:0:1";
+			return BIRTHDAY_DEACTIVATE_CONTROL_SUCCESS;
 		}
-		else
-		{
-			return "Error 36:Invalid data for birthday";
-		}
+		return BIRTHDAY_ERROR_NR_36;
 	}
-	else
-	{
-		return "Error 34:Action not found for birthday";
-	}
+
+	return BIRTHDAY_ERROR_NR_34;
 }
 
 bool BirthdayService::GetBirthdayControlActive()
@@ -146,12 +136,6 @@ bool BirthdayService::GetBirthdayControlActive()
 
 /*==============PRIVATE==============*/
 
-void BirthdayService::loadBirthdays()
-{
-	std::string birthdayFileContent = _fileController.ReadFile(_birthdayFile);
-	_birthdayList = _xmlService.GetBirthdayList(birthdayFileContent);
-}
-
 void BirthdayService::saveBirthdays(ChangeService changeService, std::string username)
 {
 	std::string xmldata = _xmlService.GenerateBirthdaysXml(_birthdayList);
@@ -160,30 +144,24 @@ void BirthdayService::saveBirthdays(ChangeService changeService, std::string use
 	changeService.UpdateChange("Birthdays", username);
 }
 
-std::string BirthdayService::getBirthdays()
+std::string BirthdayService::getJsonString()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{
 		BirthdayDto birthday = _birthdayList[index];
-
-		out
-			<< "{birthday:"
-			<< "{id:" << Tools::ConvertIntToStr(birthday.GetId()) << "};"
-			<< "{name:" << birthday.GetName() << "};"
-			<< "{day:" << Tools::ConvertIntToStr(birthday.GetDay()) << "};"
-			<< "{month:" << Tools::ConvertIntToStr(birthday.GetMonth()) << "};"
-			<< "{year:" << Tools::ConvertIntToStr(birthday.GetYear()) << "};"
-			<< "};";
+		data << birthday.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
-std::string BirthdayService::getReducedString()
+std::string BirthdayService::getPhpString()
 {
 	std::stringstream out;
 
@@ -196,7 +174,8 @@ std::string BirthdayService::getReducedString()
 			<< birthday.GetName() << "::"
 			<< Tools::ConvertIntToStr(birthday.GetDay()) << "::"
 			<< Tools::ConvertIntToStr(birthday.GetMonth()) << "::"
-			<< Tools::ConvertIntToStr(birthday.GetYear()) << ";";
+			<< Tools::ConvertIntToStr(birthday.GetYear()) << "::"
+			<< Tools::ConvertBoolToStr(birthday.GetRemindMe()) << ";";
 	}
 
 	out << "\x00" << std::endl;
@@ -207,43 +186,45 @@ std::string BirthdayService::getReducedString()
 bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData, ChangeService changeService, std::string username)
 {
 	BirthdayDto newBirthday(
-		atoi(newBirthdayData[ID_INDEX].c_str()),
-		newBirthdayData[NAME_INDEX],
-		atoi(newBirthdayData[DAY_INDEX].c_str()),
-		atoi(newBirthdayData[MONTH_INDEX].c_str()),
-		atoi(newBirthdayData[YEAR_INDEX].c_str()),
+		atoi(newBirthdayData[BIRTHDAY_ID_INDEX].c_str()),
+		newBirthdayData[BIRTHDAY_NAME_INDEX],
+		atoi(newBirthdayData[BIRTHDAY_DAY_INDEX].c_str()),
+		atoi(newBirthdayData[BIRTHDAY_MONTH_INDEX].c_str()),
+		atoi(newBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()),
+		Tools::ConvertStrToBool(newBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()),
 		false);
 
 	_birthdayList.push_back(newBirthday);
 
 	saveBirthdays(changeService, username);
-	loadBirthdays();
+	LoadData();
 
 	return true;
 }
 
 bool BirthdayService::updateBirthday(std::vector<std::string> updateBirthdayData, ChangeService changeService, std::string username)
 {
-	BirthdayDto updateBirthday(
-		atoi(updateBirthdayData[ID_INDEX].c_str()),
-		updateBirthdayData[NAME_INDEX],
-		atoi(updateBirthdayData[DAY_INDEX].c_str()),
-		atoi(updateBirthdayData[MONTH_INDEX].c_str()),
-		atoi(updateBirthdayData[YEAR_INDEX].c_str()),
-		false);
+	int updateBirthdayId = atoi(updateBirthdayData[BIRTHDAY_ID_INDEX].c_str());
 
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{
-		if (_birthdayList[index].GetId() == updateBirthday.GetId())
+		if (_birthdayList[index].GetId() == updateBirthdayId)
 		{
-			_birthdayList[index] = updateBirthday;
+			_birthdayList[index].SetName(updateBirthdayData[BIRTHDAY_NAME_INDEX]);
+
+			_birthdayList[index].SetDay(atoi(updateBirthdayData[BIRTHDAY_DAY_INDEX].c_str()));
+			_birthdayList[index].SetMonth(atoi(updateBirthdayData[BIRTHDAY_MONTH_INDEX].c_str()));
+			_birthdayList[index].SetYear(atoi(updateBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()));
+
+			_birthdayList[index].SetRemindMe(Tools::ConvertStrToBool(updateBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()));
 
 			saveBirthdays(changeService, username);
-			loadBirthdays();
+			LoadData();
 
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -258,7 +239,7 @@ bool BirthdayService::deleteBirthday(int id, ChangeService changeService, std::s
 			it = _birthdayList.erase(it);
 
 			saveBirthdays(changeService, username);
-			loadBirthdays();
+			LoadData();
 
 			return true;
 		}

@@ -16,22 +16,10 @@
 #include <unistd.h>
 
 #include "../common/dto/CoinDto.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define ALL "ALL"
-#define FOR_USER "FOR_USER"
-#define REDUCED "REDUCED"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define COIN_DATA_SIZE 8
-#define ID_INDEX 4
-#define NAME_INDEX 5
-#define TYPE_INDEX 6
-#define AMOUNT_INDEX 7
 
 #ifndef COINSERVICE_H
 #define COINSERVICE_H
@@ -45,13 +33,10 @@ private:
 	FileController _fileController;
 	XmlService _xmlService;
 
-	void loadCoins();
 	void saveCoins(ChangeService, std::string);
 
-	std::string getRestStringAll();
-	std::string getRestStringUser(std::string);
-	std::string getReducedStringAll();
-	std::string getReducedStringUser(std::string);
+	std::string getJsonStringAll();
+	std::string getJsonStringUser(std::string);
 
 	bool addCoin(std::vector<std::string>, ChangeService, std::string);
 	bool updateCoin(std::vector<std::string>, ChangeService, std::string);
@@ -62,8 +47,8 @@ public:
 	~CoinService();
 
 	void Initialize(FileController, std::string);
-	void ReloadData();
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
+	void LoadData();
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
 };
 
 #endif

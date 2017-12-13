@@ -14,450 +14,365 @@ void RemoteService::Initialize(FileController fileController, std::string settin
 {
 	_fileController = fileController;
 	_settingsFile = settingsFile;
-	loadSettings();
+	LoadData();
 }
 
-std::string RemoteService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	//--------------------GET--------------------
 	if (action == GET)
 	{
-		if (data[4] == RASPBERRY)
+		if (actionParameter == RASPBERRY)
 		{
 			return Tools::ConvertIntToStr(GetRaspberry());
 		}
-		else if (data[4] == AREA)
+		else if (actionParameter == AREA)
 		{
 			return GetArea();
 		}
-		else if (data[4] == SENSOR)
+		else if (actionParameter == SENSOR)
 		{
 			return GetSensor();
 		}
-		else if (data[4] == URL)
+		else if (actionParameter == URL)
 		{
-			if (data[5] == MAIN)
+			if (data[REMOTE_PARAMETER_INDEX] == MAIN)
 			{
 				return GetUrl();
 			}
-			else if (data[5] == CAMERA)
+			else if (data[REMOTE_PARAMETER_INDEX] == CAMERA)
 			{
 				return GetCameraUrl();
 			}
-			else if (data[5] == TEMPERATURE)
+			else if (data[REMOTE_PARAMETER_INDEX] == TEMPERATURE)
 			{
 				return GetTemperatureGraphUrl();
 			}
-			else
-			{
-				return "Error 120:Action not found for remote";
-			}
+			return REMOTE_ERROR_NR_120;
 		}
-		else if (data[4] == GPIO)
+		else if (actionParameter == GPIO)
 		{
-			if (data.size() == 6)
-			{
-				if (data[5] == REDUCED)
-				{
-					return getGpiosReducedString();
-				}
-			}
-
-			return getGpiosRestString();
+			return getJsonStringGpios();
 		}
-		else if (data[4] == SCHEDULE)
+		else if (actionParameter == SCHEDULE)
 		{
-			if (data.size() == 6)
-			{
-				if (data[5] == REDUCED)
-				{
-					return getSchedulesReducedString();
-				}
-			}
-
-			return getSchedulesRestString();
+			return getJsonStringSchedules();
 		}
-		else if (data[4] == SOCKET)
+		else if (actionParameter == SOCKET)
 		{
-			if (data.size() == 6)
-			{
-				if (data[5] == REDUCED)
-				{
-					return getSocketsReducedString();
-				}
-			}
-
-			return getSocketsRestString();
+			return getJsonStringSockets();
 		}
-		else
+		else if (actionParameter == SWITCH)
 		{
-			return "Error 120:Action not found for remote";
+			return getJsonStringSwitches();
 		}
+		return REMOTE_ERROR_NR_120;
 	}
+
 	//--------------------ADD--------------------
 	else if (action == ADD)
 	{
-		if (data[4] == GPIO)
+		if (actionParameter == GPIO)
 		{
-			if (data.size() == 8)
+			if (data.size() == GPIO_DATA_SIZE)
 			{
 				if (addGpio(data, changeService, username))
 				{
-					return "addgpio:1";
+					return GPIO_ADD_SUCCESS;
 				}
-				else
-				{
-					return "Error 51:Could not add gpio";
-				}
+				return GPIO_ERROR_NR_51;
 			}
-			else
-			{
-				return "Error 55:Wrong word size for gpio";
-			}
+			return GPIO_ERROR_NR_55;
 		}
-		else if (data[4] == SCHEDULE)
+		else if (actionParameter == SCHEDULE)
 		{
-			if (data.size() == 16)
+			if (data.size() == SCHEDULE_DATA_SIZE)
 			{
 				if (addSchedule(data, changeService, username))
 				{
-					return "addschedule:1";
+					return SCHEDULE_ADD_SUCCESS;
 				}
-				else
-				{
-					return "Error 61:Could not add schedule";
-				}
+				return SCHEDULE_ERROR_NR_61;
 			}
-			else
-			{
-				return "Error 65:Wrong word size for schedule";
-			}
+			return SCHEDULE_ERROR_NR_65;
 		}
-		else if (data[4] == SOCKET)
+		else if (actionParameter == SOCKET)
 		{
-			if (data.size() == 9)
+			if (data.size() == SOCKET_DATA_SIZE)
 			{
 				if (addSocket(data, changeService, username))
 				{
-					return "addsocket:1";
+					return SOCKET_ADD_SUCCESS;
 				}
-				else
-				{
-					return "Error 71:Could not add socket";
-				}
+				return SOCKET_ERROR_NR_71;
 			}
-			else
-			{
-				return "Error 75:Wrong word size for socket";
-			}
+			return SOCKET_ERROR_NR_75;
 		}
-		else
+		else if (actionParameter == SWITCH)
 		{
-			return "Error 120:Action not found for remote";
+			if (data.size() == SWITCH_DATA_SIZE)
+			{
+				if (addSwitch(data, changeService, username))
+				{
+					return SWITCH_ADD_SUCCESS;
+				}
+				return SWITCH_ERROR_NR_81;
+			}
+			return SWITCH_ERROR_NR_85;
 		}
+		return REMOTE_ERROR_NR_120;
 	}
+
 	//-------------------UPDATE------------------
 	else if (action == UPDATE)
 	{
-		if (data[4] == GPIO)
+		if (actionParameter == GPIO)
 		{
-			if (data.size() == 8)
+			if (data.size() == GPIO_DATA_SIZE)
 			{
 				if (updateGpio(data, changeService, username))
 				{
-					return "updategpio:1";
+					return GPIO_UPDATE_SUCCESS;
 				}
-				else
-				{
-					return "Error 51:Could not update gpio";
-				}
+				return GPIO_ERROR_NR_52;
 			}
-			else
-			{
-				return "Error 55:Wrong word size for gpio";
-			}
+			return GPIO_ERROR_NR_55;
 		}
-		else if (data[4] == SCHEDULE)
+		else if (actionParameter == SCHEDULE)
 		{
-			if (data.size() == 16)
+			if (data.size() == SCHEDULE_DATA_SIZE)
 			{
 				if (updateSchedule(data, changeService, username))
 				{
-					return "updateschedule:1";
+					return SCHEDULE_UPDATE_SUCCESS;
 				}
-				else
-				{
-					return "Error 61:Could not update schedule";
-				}
+				return SCHEDULE_ERROR_NR_62;
 			}
-			else
-			{
-				return "Error 65:Wrong word size for schedule";
-			}
+			return SCHEDULE_ERROR_NR_65;
 		}
-		else if (data[4] == SOCKET)
+		else if (actionParameter == SOCKET)
 		{
-			if (data.size() == 9)
+			if (data.size() == SOCKET_DATA_SIZE)
 			{
 				if (updateSocket(data, changeService, username))
 				{
-					return "updatesocket:1";
+					return SOCKET_UPDATE_SUCCESS;
 				}
-				else
-				{
-					return "Error 71:Could update add socket";
-				}
+				return SOCKET_ERROR_NR_72;
 			}
-			else
-			{
-				return "Error 75:Wrong word size for socket";
-			}
+			return SOCKET_ERROR_NR_75;
 		}
-		else
+		else if (actionParameter == SWITCH)
 		{
-			return "Error 120:Action not found for remote";
+			if (data.size() == SWITCH_DATA_SIZE)
+			{
+				if (updateSwitch(data, changeService, username))
+				{
+					return SWITCH_UPDATE_SUCCESS;
+				}
+				return SWITCH_ERROR_NR_82;
+			}
+			return SWITCH_ERROR_NR_85;
 		}
+		return REMOTE_ERROR_NR_120;
 	}
+
 	//-------------------DELETE------------------
 	else if (action == DELETE)
 	{
-		if (data[4] == GPIO)
+		if (actionParameter == GPIO)
 		{
-			if (deleteGpio(data[5], changeService, username))
+			if (deleteGpio(data[GPIO_NAME_INDEX], changeService, username))
 			{
-				return "deletegpio:1";
+				return GPIO_DELETE_SUCCESS;
 			}
-			else
-			{
-				return "Error 52:Could not delete gpio";
-			}
+			return GPIO_ERROR_NR_53;
 		}
-		else if (data[4] == SCHEDULE)
+		else if (actionParameter == SCHEDULE)
 		{
-			if (deleteSchedule(data[5], changeService, username))
+			if (deleteSchedule(data[SCHEDULE_NAME_INDEX], changeService, username))
 			{
-				return "deleteschedule:1";
+				return SCHEDULE_DELETE_SUCCESS;
 			}
-			else
-			{
-				return "Error 62:Could not delete schedule";
-			}
+			return SCHEDULE_ERROR_NR_63;
 		}
-		else if (data[4] == SOCKET)
+		else if (actionParameter == SOCKET)
 		{
-			if (deleteSocket(data[5], changeService, username))
+			if (deleteSocket(data[SOCKET_NAME_INDEX], changeService, username))
 			{
-				return "deletesocket:1";
+				return SOCKET_DELETE_SUCCESS;
 			}
-			else
-			{
-				return "Error 72:Could not delete socket";
-			}
+			return SOCKET_ERROR_NR_73;
 		}
-		else
+		else if (actionParameter == SWITCH)
 		{
-			return "Error 120:Action not found for remote";
+			if (deleteSwitch(data[SWITCH_NAME_INDEX], changeService, username))
+			{
+				return SWITCH_DELETE_SUCCESS;
+			}
+			return SWITCH_ERROR_NR_83;
 		}
+		return REMOTE_ERROR_NR_120;
 	}
+
 	//--------------------SET--------------------
 	else if (action == SET)
 	{
-		if (data[4] == GPIO)
+		if (actionParameter == GPIO)
 		{
-			if (data.size() == 7)
+			if (data.size() == GPIO_SET_SIZE)
 			{
-				if (data[5] == ALL)
+				int newState = atoi(data[GPIO_SET_STATE_INDEX].c_str());
+
+				if (data[REMOTE_PARAMETER_INDEX] == ALL)
 				{
-					if (atoi(data[6].c_str()) == 1)
+					if (newState == 1)
 					{
 						if (setAllGpios(1, changeService, username))
 						{
-							return "activateAllGpios:1";
+							return GPIO_ACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 53:Could not activate all gpios";
-						}
+						return GPIO_ERROR_NR_54;
 					}
-					else if (atoi(data[6].c_str()) == 0)
+					else if (newState == 0)
 					{
 						if (setAllGpios(0, changeService, username))
 						{
-							return "deactivateAllGpios:1";
+							return GPIO_DEACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 54:Could not deactivate all gpios";
-						}
+						return GPIO_ERROR_NR_56;
 					}
-					else
-					{
-						return "Error 56:Invalid state for gpio";
-					}
+					return GPIO_ERROR_NR_57;
 				}
 				else
 				{
-					if (setGpio(data[5], atoi(data[6].c_str()), changeService, username))
+					if (setGpio(data[GPIO_NAME_INDEX], newState, changeService, username))
 					{
-						return "setgpio:1";
+						return GPIO_SET_SUCCESS;
 					}
-					else
-					{
-						return "Error 50:Could not set gpio";
-					}
+					return GPIO_ERROR_NR_50;
 				}
 			}
-			else
-			{
-				return "Error 55:Wrong word size for gpio";
-			}
+			return GPIO_ERROR_NR_55;
 		}
-		else if (data[4] == SCHEDULE)
+
+		else if (actionParameter == SCHEDULE)
 		{
-			if (data.size() == 7)
+			if (data.size() == SCHEDULE_SET_SIZE)
 			{
-				if (data[5] == ALL)
+				int newState = atoi(data[SCHEDULE_SET_STATE_INDEX].c_str());
+
+				if (data[REMOTE_PARAMETER_INDEX] == ALL)
 				{
-					if (atoi(data[6].c_str()) == 1)
+					if (newState == 1)
 					{
 						if (setAllSchedules(1, changeService, username))
 						{
-							return "activateAllSchedules:1";
+							return SCHEDULE_ACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 63:Could not activate all schedules";
-						}
+						return SCHEDULE_ERROR_NR_64;
 					}
-					else if (atoi(data[6].c_str()) == 0)
+					else if (newState == 0)
 					{
 						if (setAllSchedules(0, changeService, username))
 						{
-							return "deactivateAllSchedules:1";
+							return SCHEDULE_DEACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 64:Could not deactivate all schedules";
-						}
+						return SCHEDULE_ERROR_NR_66;
 					}
-					else
-					{
-						return "Error 56:Invalid state for gpio";
-					}
+					return SCHEDULE_ERROR_NR_67;
 				}
 				else
 				{
-					if (setSchedule(data[5], atoi(data[6].c_str()), changeService, username))
+					if (setSchedule(data[SCHEDULE_NAME_INDEX], newState, changeService, username))
 					{
-						return "setschedule:1";
+						return SCHEDULE_SET_SUCCESS;
 					}
-					else
-					{
-						return "Error 60:Could not set schedule";
-					}
+					return SCHEDULE_ERROR_NR_60;
 				}
 			}
-			else
-			{
-				return "Error 65:Wrong word size for schedule";
-			}
+			return SCHEDULE_ERROR_NR_65;
 		}
-		else if (data[4] == SOCKET)
+
+		else if (actionParameter == SOCKET)
 		{
-			if (data.size() == 7)
+			if (data.size() == SOCKET_SET_SIZE)
 			{
-				if (data[5] == ALL)
+				int newState = atoi(data[SOCKET_SET_STATE_INDEX].c_str());
+
+				if (data[REMOTE_PARAMETER_INDEX] == ALL)
 				{
-					if (atoi(data[6].c_str()) == 1)
+					if (newState == 1)
 					{
 						if (setAllSockets(1, changeService, username))
 						{
-							return "activateAllSockets:1";
+							return SOCKET_ACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 73:Could not activate all sockets";
-						}
+						return SOCKET_ERROR_NR_74;
 					}
-					else if (atoi(data[6].c_str()) == 0)
+					else if (newState == 0)
 					{
 						if (setAllSockets(0, changeService, username))
 						{
-							return "deactivateAllSockets:1";
+							return SOCKET_DEACTIVATE_ALL_SUCCESS;
 						}
-						else
-						{
-							return "Error 74:Could not deactivate all sockets";
-						}
+						return SOCKET_ERROR_NR_76;
 					}
-					else
-					{
-						return "Error 56:Invalid state for gpio";
-					}
-				}
-				else if (data[5] == SOUND)
-				{
-					if (atoi(data[6].c_str()) == 1)
-					{
-						if (setSoundSocket(1, changeService, username))
-						{
-							return "activateSoundSocket:1";
-						}
-						else
-						{
-							return "Error 76:Could not activate sound socket";
-						}
-					}
-					else if (atoi(data[6].c_str()) == 0)
-					{
-						if (setSoundSocket(0, changeService, username))
-						{
-							return "deactivateSoundSocket:1";
-						}
-						else
-						{
-							return "Error 77:Could not deactivate sound socket";
-						}
-					}
-					else
-					{
-						return "Error 56:Invalid state for gpio";
-					}
+					return SOCKET_ERROR_NR_77;
 				}
 				else
 				{
-					if (setSocket(data[5], atoi(data[6].c_str()), changeService, username))
+					if (setSocket(data[SOCKET_NAME_INDEX], newState, changeService, username))
 					{
-						return "setsocket:1";
+						return SOCKET_SET_SUCCESS;
 					}
-					else
-					{
-						return "Error 70:Could not set socket";
-					}
+					return SOCKET_ERROR_NR_70;
 				}
 			}
-			else
+			return SOCKET_ERROR_NR_75;
+		}
+		return REMOTE_ERROR_NR_120;
+	}
+
+	//--------------------TOGGLE--------------------
+	else if (action == TOGGLE)
+	{
+		if (actionParameter == SWITCH)
+		{
+			if (data.size() == SWITCH_TOGGLE_SIZE)
 			{
-				return "Error 75:Wrong word size for socket";
+				if (data[REMOTE_PARAMETER_INDEX] == ALL)
+				{
+					if (toggleAllSwitches(changeService, username))
+					{
+						return SWITCH_TOGGLE_ALL_SUCCESS;
+					}
+					return SWITCH_ERROR_NR_84;
+				}
+				else
+				{
+					if (toggleSwitch(data[SOCKET_NAME_INDEX], changeService, username))
+					{
+						return SWITCH_TOGGLE_SUCCESS;
+					}
+					return SWITCH_ERROR_NR_80;
+				}
 			}
 		}
-		else
-		{
-			return "Error 120:Action not found for remote";
-		}
 	}
+
 	//-------------------ERROR-------------------
-	else
-	{
-		return "Error 120:Action not found for remote";
-	}
+	return REMOTE_ERROR_NR_120;
 }
 
 bool RemoteService::ActivateSockets(std::vector<std::string> socketList, ChangeService changeService, std::string username)
 {
 	if (socketList.size() == 1)
 	{
-		if (socketList[0] == "Error 44:No sockets available")
+		if (socketList[0] == SOCKET_ERROR_NR_78)
 		{
 			return false;
 		}
@@ -467,15 +382,13 @@ bool RemoteService::ActivateSockets(std::vector<std::string> socketList, ChangeS
 
 	for (int socketIndex = 0; socketIndex < socketList.size(); socketIndex++)
 	{
+		std::string socketName = socketList[socketIndex];
+
 		for (int index = 0; index < _socketList.size(); index++)
 		{
-			if (_socketList[index].GetName() == socketList[socketIndex])
+			if (_socketList[index].GetName() == socketName)
 			{
-				success &= _socketList[index].SetState(1, _datagpio);
-
-				saveSettings(changeService, username);
-				loadSettings();
-
+				success &= setSocket(socketName, 1, changeService, username);
 				break;
 			}
 		}
@@ -492,11 +405,6 @@ int RemoteService::GetRaspberry()
 int RemoteService::GetPort()
 {
 	return _port;
-}
-
-int RemoteService::GetReceiverGpio()
-{
-	return _receivergpio;
 }
 
 std::vector<ScheduleDto> RemoteService::GetScheduleList()
@@ -519,11 +427,6 @@ std::string RemoteService::GetUrl()
 	return _url;
 }
 
-std::string RemoteService::GetAccessUrl()
-{
-	return _accessurl;
-}
-
 std::string RemoteService::GetCameraUrl()
 {
 	std::stringstream url;
@@ -543,44 +446,13 @@ std::string RemoteService::GetTemperatureGraphUrl()
 	return url.str();
 }
 
-std::string RemoteService::GetAlarmSound()
-{
-	return _alarmSound;
-}
-
-std::string RemoteService::GetWakeUpSound()
-{
-	return _wakeUpSound;
-}
-
-void RemoteService::ReloadData()
-{
-	loadSettings();
-}
-
-/*==============PRIVATE==============*/
-
-void RemoteService::saveSettings(ChangeService changeService,
-								 std::string username)
-{
-	std::string xmldata = _xmlService.GenerateSettingsXml(
-		_port, _datagpio, _receivergpio, _raspberry, _alarmSound, _wakeUpSound, _areaList,
-		_sensorList, _urlList, _accessurl, _mediaMirrorList, _socketList, _gpioList, _scheduleList);
-	_fileController.SaveFile(_settingsFile, xmldata);
-	changeService.UpdateChange("Settings", username);
-}
-
-void RemoteService::loadSettings()
+void RemoteService::LoadData()
 {
 	std::string settingsFileContent = _fileController.ReadFile(_settingsFile);
 
 	_port = _xmlService.GetPort(settingsFileContent);
 	_datagpio = _xmlService.GetDatagpio(settingsFileContent);
-	_receivergpio = _xmlService.GetReceivergpio(settingsFileContent);
 	_raspberry = _xmlService.GetRaspberry(settingsFileContent);
-
-	_alarmSound = _xmlService.GetAlarmSound(settingsFileContent);
-	_wakeUpSound = _xmlService.GetWakeUpSound(settingsFileContent);
 
 	_areaList = _xmlService.GetAreaList(settingsFileContent);
 	_area = _areaList.at(_raspberry - 1);
@@ -591,13 +463,32 @@ void RemoteService::loadSettings()
 	_urlList = _xmlService.GetUrlList(settingsFileContent);
 	_url = _urlList.at(_raspberry - 1);
 
-	_accessurl = _xmlService.GetAccessUrl(settingsFileContent);
-
 	_mediaMirrorList = _xmlService.GetMediaMirrorList(settingsFileContent);
 
 	_gpioList = _xmlService.GetGpioList(settingsFileContent);
 	_scheduleList = _xmlService.GetScheduleList(settingsFileContent);
 	_socketList = _xmlService.GetSocketList(settingsFileContent);
+	_switchList = _xmlService.GetSwitchList(settingsFileContent);
+}
+
+/*==============PRIVATE==============*/
+
+void RemoteService::saveSettings(ChangeService changeService, std::string username)
+{
+	std::string xmldata = _xmlService.GenerateSettingsXml(
+		_port,
+		_datagpio,
+		_raspberry,
+		_areaList,
+		_sensorList,
+		_urlList,
+		_mediaMirrorList,
+		_socketList,
+		_gpioList,
+		_scheduleList,
+		_switchList);
+	_fileController.SaveFile(_settingsFile, xmldata);
+	changeService.UpdateChange("Settings", username);
 }
 
 //--------------------------Data-------------------------//
@@ -630,52 +521,24 @@ std::vector<std::string> RemoteService::getUrlList()
 
 //-------------------------Gpios-------------------------//
 
-std::string RemoteService::getGpiosString()
-{
-	std::stringstream out;
-	for (int index = 0; index < _gpioList.size(); index++)
-	{
-		out << _gpioList[index].ToString();
-	}
-	return out.str();
-}
-
 std::vector<GpioDto> RemoteService::getGpioList()
 {
 	return _gpioList;
 }
 
-std::string RemoteService::getGpiosRestString()
+std::string RemoteService::getJsonStringGpios()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _gpioList.size(); index++)
 	{
-		out << "{gpio:"
-			<< "{Name:" << _gpioList[index].GetName() << "};"
-			<< "{Gpio:" << Tools::ConvertIntToStr(_gpioList[index].GetGpio()) << "};"
-			<< "{State:" << Tools::ConvertIntToStr(_gpioList[index].GetState()) << "};"
-			<< "};";
+		GpioDto gpio = _gpioList[index];
+		data << gpio.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string RemoteService::getGpiosReducedString()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _gpioList.size(); index++)
-	{
-		out << "gpio::"
-			<< _gpioList[index].GetName() << "::"
-			<< Tools::ConvertIntToStr(_gpioList[index].GetGpio()) << "::"
-			<< Tools::ConvertIntToStr(_gpioList[index].GetState()) << ";";
-	}
-
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -691,7 +554,7 @@ bool RemoteService::setGpio(std::string name, int state, ChangeService changeSer
 			success = _gpioList[index].SetState(state);
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			break;
 		}
@@ -702,27 +565,31 @@ bool RemoteService::setGpio(std::string name, int state, ChangeService changeSer
 
 bool RemoteService::addGpio(std::vector<std::string> newGpioData, ChangeService changeService, std::string username)
 {
-	GpioDto newGpio(newGpioData[5], atoi(newGpioData[6].c_str()), atoi(newGpioData[7].c_str()));
+	GpioDto newGpio(
+		newGpioData[GPIO_NAME_INDEX],
+		atoi(newGpioData[GPIO_GPIO_INDEX].c_str()),
+		atoi(newGpioData[GPIO_STATE_INDEX].c_str()));
 	_gpioList.push_back(newGpio);
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return true;
 }
 
 bool RemoteService::updateGpio(std::vector<std::string> updateGpioData, ChangeService changeService, std::string username)
 {
-	GpioDto updateGpio(updateGpioData[5], atoi(updateGpioData[6].c_str()), atoi(updateGpioData[7].c_str()));
+	std::string name = updateGpioData[GPIO_NAME_INDEX];
 
 	for (int index = 0; index < _gpioList.size(); index++)
 	{
-		if (_gpioList[index].GetName() == updateGpio.GetName())
+		if (_gpioList[index].GetName() == name)
 		{
-			_gpioList[index] = updateGpio;
+			_gpioList[index].SetGpio(atoi(updateGpioData[GPIO_GPIO_INDEX].c_str()));
+			_gpioList[index].SetState(atoi(updateGpioData[GPIO_STATE_INDEX].c_str()));
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -742,7 +609,7 @@ bool RemoteService::deleteGpio(std::string name, ChangeService changeService, st
 			it = _gpioList.erase(it);
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -765,70 +632,26 @@ bool RemoteService::setAllGpios(int state, ChangeService changeService, std::str
 	}
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return success;
 }
 
 //-----------------------Schedules-----------------------//
 
-std::string RemoteService::getSchedulesString()
+std::string RemoteService::getJsonStringSchedules()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
+
+	std::stringstream data;
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		out << _scheduleList[index].ToString();
-	}
-	return out.str();
-}
-
-std::string RemoteService::getSchedulesRestString()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _scheduleList.size(); index++)
-	{
-		out << "{schedule:"
-			<< "{Name:" << _scheduleList[index].GetName() << "};"
-			<< "{Socket:" << _scheduleList[index].GetSocket() << "};"
-			<< "{Gpio:" << _scheduleList[index].GetGpio() << "};"
-			<< "{Weekday:" << Tools::ConvertIntToStr(_scheduleList[index].GetWeekday()) << "};"
-			<< "{Hour:" << Tools::ConvertIntToStr(_scheduleList[index].GetHour()) << "};"
-			<< "{Minute:" << Tools::ConvertIntToStr(_scheduleList[index].GetMinute()) << "};"
-			<< "{OnOff:" << Tools::ConvertIntToStr(_scheduleList[index].GetOnoff()) << "};"
-			<< "{IsTimer:" << Tools::ConvertIntToStr(_scheduleList[index].GetIsTimer()) << "};"
-			<< "{PlaySound:" << Tools::ConvertIntToStr(_scheduleList[index].GetPlaySound()) << "};"
-			<< "{Raspberry:" << Tools::ConvertIntToStr(_scheduleList[index].GetPlayRaspberry()) << "};"
-			<< "{State:" << Tools::ConvertIntToStr(_scheduleList[index].GetStatus()) << "};"
-			<< "};";
+		ScheduleDto schedule = _scheduleList[index];
+		data << schedule.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string RemoteService::getSchedulesReducedString()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _scheduleList.size(); index++)
-	{
-		out << "schedule::"
-			<< _scheduleList[index].GetName() << "::"
-			<< _scheduleList[index].GetSocket() << "::"
-			<< _scheduleList[index].GetGpio() << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetWeekday()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetHour()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetMinute()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetOnoff()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetIsTimer()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetPlaySound()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetPlayRaspberry()) << "::"
-			<< Tools::ConvertIntToStr(_scheduleList[index].GetStatus()) << ";";
-	}
-
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -841,11 +664,11 @@ bool RemoteService::setSchedule(std::string name, int state, ChangeService chang
 	{
 		if (_scheduleList[index].GetName() == name)
 		{
-			_scheduleList[index].SetStatus(state);
+			_scheduleList[index].SetState(state);
 			success = true;
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			break;
 		}
@@ -854,52 +677,48 @@ bool RemoteService::setSchedule(std::string name, int state, ChangeService chang
 	return success;
 }
 
-bool RemoteService::addSchedule(std::vector<std::string> newScheduleData,
-								ChangeService changeService, std::string username)
+bool RemoteService::addSchedule(std::vector<std::string> newScheduleData, ChangeService changeService, std::string username)
 {
 	ScheduleDto newSchedule(
-		newScheduleData[5],
-		newScheduleData[6],
-		newScheduleData[7],
-		atoi(newScheduleData[8].c_str()),
-		atoi(newScheduleData[9].c_str()),
-		atoi(newScheduleData[10].c_str()),
-		atoi(newScheduleData[11].c_str()),
-		atoi(newScheduleData[12].c_str()),
-		atoi(newScheduleData[13].c_str()),
-		atoi(newScheduleData[14].c_str()),
-		atoi(newScheduleData[15].c_str()));
+		newScheduleData[SCHEDULE_NAME_INDEX],
+		newScheduleData[SCHEDULE_SOCKET_INDEX],
+		newScheduleData[SCHEDULE_GPIO_INDEX],
+		newScheduleData[SCHEDULE_SWITCH_INDEX],
+		atoi(newScheduleData[SCHEDULE_WEEKDAY_INDEX].c_str()),
+		atoi(newScheduleData[SCHEDULE_HOUR_INDEX].c_str()),
+		atoi(newScheduleData[SCHEDULE_MINUTE_INDEX].c_str()),
+		atoi(newScheduleData[SCHEDULE_ONOFF_INDEX].c_str()),
+		Tools::ConvertStrToBool(newScheduleData[SCHEDULE_ISTIMER_INDEX].c_str()),
+		atoi(newScheduleData[SCHEDULE_STATE_INDEX].c_str()));
+
 	_scheduleList.push_back(newSchedule);
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return true;
 }
 
 bool RemoteService::updateSchedule(std::vector<std::string> updateScheduleData, ChangeService changeService, std::string username)
 {
-	ScheduleDto updateSchedule(
-		updateScheduleData[5],
-		updateScheduleData[6],
-		updateScheduleData[7],
-		atoi(updateScheduleData[8].c_str()),
-		atoi(updateScheduleData[9].c_str()),
-		atoi(updateScheduleData[10].c_str()),
-		atoi(updateScheduleData[11].c_str()),
-		atoi(updateScheduleData[12].c_str()),
-		atoi(updateScheduleData[13].c_str()),
-		atoi(updateScheduleData[14].c_str()),
-		atoi(updateScheduleData[15].c_str()));
+	std::string name = updateScheduleData[SCHEDULE_NAME_INDEX];
 
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		if (_scheduleList[index].GetName() == updateSchedule.GetName())
+		if (_scheduleList[index].GetName() == name)
 		{
-			_scheduleList[index] = updateSchedule;
+			_scheduleList[index].SetSocket(updateScheduleData[SCHEDULE_SOCKET_INDEX]);
+			_scheduleList[index].SetGpio(updateScheduleData[SCHEDULE_GPIO_INDEX]);
+			_scheduleList[index].SetSwitch(updateScheduleData[SCHEDULE_SWITCH_INDEX]);
+			_scheduleList[index].SetWeekday(atoi(updateScheduleData[SCHEDULE_WEEKDAY_INDEX].c_str()));
+			_scheduleList[index].SetHour(atoi(updateScheduleData[SCHEDULE_HOUR_INDEX].c_str()));
+			_scheduleList[index].SetMinute(atoi(updateScheduleData[SCHEDULE_MINUTE_INDEX].c_str()));
+			_scheduleList[index].SetOnoff(atoi(updateScheduleData[SCHEDULE_ONOFF_INDEX].c_str()));
+			_scheduleList[index].SetIsTimer(Tools::ConvertStrToBool(updateScheduleData[SCHEDULE_ISTIMER_INDEX].c_str()));
+			_scheduleList[index].SetState(atoi(updateScheduleData[SCHEDULE_STATE_INDEX].c_str()));
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -919,7 +738,7 @@ bool RemoteService::deleteSchedule(std::string name, ChangeService changeService
 			it = _scheduleList.erase(it);
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -939,114 +758,103 @@ bool RemoteService::setAllSchedules(int state, ChangeService changeService, std:
 
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		success &= _scheduleList[index].SetStatus(state);
+		success &= _scheduleList[index].SetState(state);
 	}
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return success;
 }
 
 //------------------------Sockets------------------------//
 
-std::string RemoteService::getSocketsString()
-{
-	std::stringstream out;
-	for (int index = 0; index < _socketList.size(); index++)
-	{
-		out << _socketList[index].ToString();
-	}
-	return out.str();
-}
-
 std::vector<WirelessSocketDto> RemoteService::getSocketList()
 {
 	return _socketList;
 }
 
-std::string RemoteService::getSocketsRestString()
+std::string RemoteService::getJsonStringSockets()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _socketList.size(); index++)
 	{
-		out << "{socket:"
-			<< "{Name:" << _socketList[index].GetName() << "};"
-			<< "{Area:" << _socketList[index].GetArea() << "};"
-			<< "{Code:" << _socketList[index].GetCode() << "};"
-			<< "{State:" << Tools::ConvertIntToStr(_socketList[index].GetState()) << "};"
-			<< "};";
+		WirelessSocketDto wirelessSocket = _socketList[index];
+		data << wirelessSocket.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string RemoteService::getSocketsReducedString()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _socketList.size(); index++)
-	{
-		out << "socket::"
-			<< _socketList[index].GetName() << "::"
-			<< _socketList[index].GetArea() << "::"
-			<< _socketList[index].GetCode() << "::"
-			<< Tools::ConvertIntToStr(_socketList[index].GetState()) << ";";
-	}
-
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
 bool RemoteService::setSocket(std::string name, int state, ChangeService changeService, std::string username)
 {
-	bool success = false;
-	bool foundSocket = false;
-
 	for (int index = 0; index < _socketList.size(); index++)
 	{
 		if (_socketList[index].GetName() == name)
 		{
-			success = _socketList[index].SetState(state, _datagpio);
-			foundSocket = true;
+
+			time_t now;
+			struct tm now_info;
+			now = time(0);
+			localtime_r(&now, &now_info);
+
+			bool success = _socketList[index].SetState(state, _datagpio,
+				now_info.tm_hour, now_info.tm_min,
+				now_info.tm_mday, (now_info.tm_mon + 1), (now_info.tm_year + 1900),
+				username);
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
-			break;
+			return success;
 		}
 	}
 
-	return success && foundSocket;
+	return false;
 }
 
 bool RemoteService::addSocket(std::vector<std::string> newSocketData, ChangeService changeService, std::string username)
 {
-	WirelessSocketDto newSocket(newSocketData[5], newSocketData[6], newSocketData[7], atoi(newSocketData[8].c_str()));
+	WirelessSocketDto newSocket(
+		newSocketData[SOCKET_NAME_INDEX],
+		newSocketData[SOCKET_AREA_INDEX],
+		newSocketData[SOCKET_CODE_INDEX],
+		atoi(newSocketData[SOCKET_STATE_INDEX].c_str()),
+		0, 0,
+		1, 1, 1970,
+		"NULL");
+
 	_socketList.push_back(newSocket);
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return true;
 }
 
 bool RemoteService::updateSocket(std::vector<std::string> updateSocketData, ChangeService changeService, std::string username)
 {
-	WirelessSocketDto updateSocket(updateSocketData[5], updateSocketData[6], updateSocketData[7], atoi(updateSocketData[8].c_str()));
+	std::string socketName = updateSocketData[SOCKET_NAME_INDEX];
 
 	for (int index = 0; index < _socketList.size(); index++)
 	{
-		if (_socketList[index].GetName() == updateSocket.GetName())
+		if (_socketList[index].GetName() == socketName)
 		{
-			_socketList[index] = updateSocket;
+			_socketList[index].SetArea(updateSocketData[SOCKET_AREA_INDEX]);
+			_socketList[index].SetCode(updateSocketData[SOCKET_CODE_INDEX]);
+			_socketList[index].SetState(
+				atoi(updateSocketData[SOCKET_STATE_INDEX].c_str()), _datagpio,
+				_socketList[index].GetLastTriggeredHour(), _socketList[index].GetLastTriggeredMinute(),
+				_socketList[index].GetLastTriggeredDay(), _socketList[index].GetLastTriggeredMonth(), _socketList[index].GetLastTriggeredYear(),
+				_socketList[index].GetLastTriggeredUserName());
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -1066,7 +874,7 @@ bool RemoteService::deleteSocket(std::string name, ChangeService changeService, 
 			it = _socketList.erase(it);
 
 			saveSettings(changeService, username);
-			loadSettings();
+			LoadData();
 
 			return true;
 		}
@@ -1084,36 +892,143 @@ bool RemoteService::setAllSockets(int state, ChangeService changeService, std::s
 
 	for (int index = 0; index < _socketList.size(); index++)
 	{
-		success &= _socketList[index].SetState(state, _datagpio);
+		success &= setSocket(_socketList[index].GetName(), state, changeService, username);
 	}
 
 	saveSettings(changeService, username);
-	loadSettings();
+	LoadData();
 
 	return success;
 }
 
-bool RemoteService::setSoundSocket(int state, ChangeService changeService, std::string username)
+//------------------------Switches------------------------//
+
+std::vector<WirelessSwitchDto> RemoteService::getSwitchList()
 {
-	bool success = true;
-	bool foundSocket = false;
+	return _switchList;
+}
 
-	for (int index = 0; index < _socketList.size(); index++)
+std::string RemoteService::getJsonStringSwitches()
+{
+	std::stringstream out;
+	out << "\"Data\":[";
+
+	std::stringstream data;
+	for (int index = 0; index < _switchList.size(); index++)
 	{
-		if (_socketList[index].GetArea() == _area)
+		WirelessSwitchDto wirelessSwitch = _switchList[index];
+		data << wirelessSwitch.JsonString() << ",";
+	}
+
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+
+	return out.str();
+}
+
+bool RemoteService::toggleSwitch(std::string name, ChangeService changeService, std::string username)
+{
+	for (int index = 0; index < _switchList.size(); index++)
+	{
+		if (_switchList[index].GetName() == name)
 		{
-			if (_socketList[index].GetName().find("Sound") != std::string::npos)
-			{
-				success = _socketList[index].SetState(state, _datagpio);
-				foundSocket = true;
 
-				saveSettings(changeService, username);
-				loadSettings();
+			time_t now;
+			struct tm now_info;
+			now = time(0);
+			localtime_r(&now, &now_info);
 
-				break;
-			}
+			bool success = _switchList[index].ToggleSwitch(
+				_datagpio,
+				now_info.tm_hour, now_info.tm_min,
+				now_info.tm_mday, (now_info.tm_mon + 1), (now_info.tm_year + 1900),
+				username);
+
+			saveSettings(changeService, username);
+			LoadData();
+
+			return success;
 		}
 	}
 
-	return success && foundSocket;
+	return false;
+}
+
+bool RemoteService::addSwitch(std::vector<std::string> newSwitchData, ChangeService changeService, std::string username)
+{
+	WirelessSwitchDto newSwitch(
+		newSwitchData[SWITCH_NAME_INDEX],
+		newSwitchData[SWITCH_AREA_INDEX],
+		atoi(newSwitchData[SWITCH_REMOTE_ID_INDEX].c_str()),
+		newSwitchData[SWITCH_KEYCODE_INDEX],
+		0,
+		0, 0,
+		1, 1, 1970,
+		"NULL");
+
+	_switchList.push_back(newSwitch);
+
+	saveSettings(changeService, username);
+	LoadData();
+
+	return true;
+}
+
+bool RemoteService::updateSwitch(std::vector<std::string> updateSwitchData, ChangeService changeService, std::string username)
+{
+	std::string switchName = updateSwitchData[SWITCH_NAME_INDEX];
+
+	for (int index = 0; index < _switchList.size(); index++)
+	{
+		if (_switchList[index].GetName() == switchName)
+		{
+			_switchList[index].SetArea(updateSwitchData[SWITCH_AREA_INDEX]);
+			_switchList[index].SetRemoteId(Tools::ConvertStrToInt(updateSwitchData[SWITCH_REMOTE_ID_INDEX].c_str()));
+			_switchList[index].SetKeyCode(Tools::ConvertStrToUnsignedChar(updateSwitchData[SWITCH_KEYCODE_INDEX].c_str()));
+
+			saveSettings(changeService, username);
+			LoadData();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool RemoteService::deleteSwitch(std::string name, ChangeService changeService, std::string username)
+{
+	std::vector<WirelessSwitchDto>::iterator it = _switchList.begin();
+
+	while (it != _switchList.end())
+	{
+		if ((*it).GetName() == name)
+		{
+			it = _switchList.erase(it);
+
+			saveSettings(changeService, username);
+			LoadData();
+
+			return true;
+		}
+		else
+		{
+			++it;
+		}
+	}
+	return false;
+}
+
+bool RemoteService::toggleAllSwitches(ChangeService changeService, std::string username)
+{
+	bool success = true;
+
+	for (int index = 0; index < _switchList.size(); index++)
+	{
+		success &= toggleSwitch(_switchList[index].GetName(), changeService, username);
+	}
+
+	saveSettings(changeService, username);
+	LoadData();
+
+	return success;
 }

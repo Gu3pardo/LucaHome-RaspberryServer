@@ -70,12 +70,37 @@ int ShoppingEntryDto::GetQuantity()
 	return _quantity;
 }
 
-std::string ShoppingEntryDto::ToString()
+std::string ShoppingEntryDto::SaveString()
 {
 	std::string str = 
+		Tools::ConvertIntToStr(_id) + ":"
+		+ _name + ":"
+		+ _group + ":"
+		+ Tools::ConvertIntToStr(_quantity) + ";";
+	return str;
+}
+
+std::string ShoppingEntryDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"ShoppingEntry\":")
+		+ std::string("{")
+		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Name\":") + _name + std::string(",")
+		+ std::string("\"Group\":") + _group + std::string(",")
+		+ std::string("\"Quantity\":") + Tools::ConvertIntToStr(_quantity)
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
+std::string ShoppingEntryDto::ToString()
+{
+	std::string str =
 		std::string("ShoppingEntryDto { id: ") + Tools::ConvertIntToStr(_id)
-		+ std::string("; name: ") + _name 
-		+ std::string("; group: ") + _group 
+		+ std::string("; name: ") + _name
+		+ std::string("; group: ") + _group
 		+ std::string("; quantity: ") + Tools::ConvertIntToStr(_quantity)
 		+ std::string(" }");
 	return str;

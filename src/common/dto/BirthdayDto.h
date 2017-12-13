@@ -16,11 +16,12 @@ private:
 	int _day;
 	int _month;
 	int _year;
+	bool _remindMe;
 	bool _sendMail;
 
 public:
 	BirthdayDto();
-	BirthdayDto(int, std::string, int, int, int, bool);
+	BirthdayDto(int, std::string, int, int, int, bool, bool);
 	~BirthdayDto();
 
 	void SetId(int);
@@ -41,9 +42,14 @@ public:
 	int GetAge();
 	bool HasBirthday();
 
+	void SetRemindMe(bool);
+	bool GetRemindMe();
+
 	void SetSendMail(bool);
 	bool GetSendMail();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

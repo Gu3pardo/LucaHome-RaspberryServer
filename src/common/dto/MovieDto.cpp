@@ -77,6 +77,35 @@ int MovieDto::GetWatched()
 	return _watched;
 }
 
+std::string MovieDto::SaveString()
+{
+	std::stringstream streamString;
+
+	streamString
+		<< "{Description: " << _description << "};" << std::endl
+		<< "{Genre: " << _genre << "};" << std::endl
+		<< "{Rating: " << Tools::ConvertIntToStr(_rating) << "};" << std::endl
+		<< "{Watched: " << Tools::ConvertIntToStr(_watched) << "};";
+
+	return streamString.str();
+}
+
+std::string MovieDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Movie\":")
+		+ std::string("{")
+		+ std::string("\"Title\":") + _title + std::string(",")
+		+ std::string("\"Genre\":") + _genre + std::string(",")
+		+ std::string("\"Description\":") + _description + std::string(",")
+		+ std::string("\"Rating\":") + Tools::ConvertIntToStr(_rating) + std::string(",")
+		+ std::string("\"Watched\":") + Tools::ConvertIntToStr(_watched)
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string MovieDto::ToString()
 {
 	std::string str =

@@ -25,10 +25,7 @@
 #include <dirent.h>
 
 #include "../common/utils/Tools.h"
-
-#define SYSTEM "SYSTEM"
-#define REBOOT "REBOOT"
-#define SHUTDOWN "SHUTDOWN"
+#include "../common/Constants.h"
 
 #ifndef SYSTEMSERVICE_H
 #define SYSTEMSERVICE_H
@@ -43,7 +40,7 @@ class SystemService
 	SystemService();
 	~SystemService();
 
-	std::string PerformAction(std::string, std::vector<std::string>);
+	std::string PerformAction(std::vector<std::string>);
 	int IsProcessRunning(std::string);
 };
 

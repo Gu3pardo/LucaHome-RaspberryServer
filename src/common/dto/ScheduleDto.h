@@ -14,18 +14,17 @@ class ScheduleDto
 	std::string _name;
 	std::string _socket;
 	std::string _gpio;
+	std::string _switch;
 	int _weekday;
 	int _hour;
 	int _minute;
 	int _onoff;
 	bool _isTimer;
-	int _playSound;
-	int _playRaspberry;
-	int _status;
+	int _state;
 
   public:
 	ScheduleDto();
-	ScheduleDto(std::string, std::string, std::string, int, int, int, int, int, int, int, int);
+	ScheduleDto(std::string, std::string, std::string, std::string, int, int, int, int, bool, int);
 	~ScheduleDto();
 
 	void SetName(std::string);
@@ -36,6 +35,9 @@ class ScheduleDto
 
 	void SetGpio(std::string);
 	std::string GetGpio();
+
+	void SetSwitch(std::string);
+	std::string GetSwitch();
 
 	void SetWeekday(int);
 	int GetWeekday();
@@ -52,15 +54,11 @@ class ScheduleDto
 	void SetIsTimer(int);
 	int GetIsTimer();
 
-	void SetPlaySound(int);
-	int GetPlaySound();
+	bool SetState(int);
+	int GetState();
 
-	void SetPlayRaspberry(int);
-	int GetPlayRaspberry();
-
-	bool SetStatus(int);
-	int GetStatus();
-
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

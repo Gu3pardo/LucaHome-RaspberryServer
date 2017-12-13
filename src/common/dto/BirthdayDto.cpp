@@ -4,19 +4,21 @@ BirthdayDto::BirthdayDto()
 {
 	_id = -1;
 	_name = "Dummy";
-	_day = 2;
+	_day = 1;
 	_month = 1;
-	_year = 1990;
+	_year = 1970;
+	_remindMe = false;
 	_sendMail = false;
 }
 
-BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year, bool sendMail)
+BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year, bool remindMe, bool sendMail)
 {
 	_id = id;
 	_name = name;
 	_day = day;
 	_month = month;
 	_year = year;
+	_remindMe = remindMe;
 	_sendMail = sendMail;
 }
 
@@ -128,13 +130,55 @@ bool BirthdayDto::GetSendMail() {
 	return _sendMail;
 }
 
+void BirthdayDto::SetRemindMe(bool remindMe) {
+	_remindMe = remindMe;
+}
+
+bool BirthdayDto::GetRemindMe() {
+	return _remindMe;
+}
+
+std::string BirthdayDto::SaveString()
+{
+	std::string str = 
+		_name + ":"
+		+ Tools::ConvertIntToStr(_day) + ":"
+		+ Tools::ConvertIntToStr(_month) + ":"
+		+ Tools::ConvertIntToStr(_year) + ":"
+		+ Tools::ConvertBoolToStr(_remindMe) + ":"
+		+ Tools::ConvertBoolToStr(_sendMail) + ";";
+
+	return str;
+}
+
+std::string BirthdayDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Birthday\":")
+		+ std::string("{")
+		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Name\":") + _name + std::string(",")
+		+ std::string("\"RemindMe\":") + Tools::ConvertBoolToStr(_remindMe) + std::string(",")
+		+ std::string("\"SendMail\":") + Tools::ConvertBoolToStr(_sendMail) + std::string(",")
+		+ std::string("\"Date\":") 
+		+ std::string("{")
+		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
+		+ std::string("\"Month\":") + Tools::ConvertIntToStr(_month) + std::string(",")
+		+ std::string("\"Year\":") + Tools::ConvertIntToStr(_year)
+		+ std::string("}")
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string BirthdayDto::ToString()
 {
-	std::string str = std::string("BirthdayDto { id: ") + Tools::ConvertIntToStr(_id) 
-		+ std::string("; name: ") + _name 
-		+ std::string("; day: ") + Tools::ConvertIntToStr(_day) 
-		+ std::string("; month: ") + Tools::ConvertIntToStr(_month) 
-		+ std::string("; year: ") + Tools::ConvertIntToStr(_year) 
+	std::string str = std::string("BirthdayDto { id: ") + Tools::ConvertIntToStr(_id)
+		+ std::string("; name: ") + _name
+		+ std::string("; day: ") + Tools::ConvertIntToStr(_day)
+		+ std::string("; month: ") + Tools::ConvertIntToStr(_month)
+		+ std::string("; year: ") + Tools::ConvertIntToStr(_year)
 		+ std::string(" }");
 	return str;
 }

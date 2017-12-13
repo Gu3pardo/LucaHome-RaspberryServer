@@ -17,7 +17,7 @@ class ChangeDto
 	int _day;
 	int _month;
 	int _year;
-	std::string _user;
+	std::string _userName;
 
   public:
 	ChangeDto();
@@ -42,9 +42,11 @@ class ChangeDto
 	void SetYear(int);
 	int GetYear();
 
-	void SetUser(std::string);
-	std::string GetUser();
+	void SetUserName(std::string);
+	std::string GetUserName();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

@@ -10,34 +10,27 @@ SystemService::~SystemService()
 
 //--------------------------Public-----------------------//
 
-std::string SystemService::PerformAction(std::string action, std::vector<std::string> data)
+std::string SystemService::PerformAction(std::vector<std::string> data)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == SYSTEM)
 	{
-		if (data[4] == REBOOT)
+		if (actionParameter == REBOOT)
 		{
 			reboot();
-			return "reboot:1";
+			return SYSTEM_REBOOT_SUCCESS;
 		}
-		else
-		{
-			return "Error 181:Invalid data for system";
-		}
-	}
-	else if (action == SYSTEM)
-	{
-		if (data[4] == SHUTDOWN)
+		else if (actionParameter == SHUTDOWN)
 		{
 			shutdown();
-			return "shutdown:1";
+			return SYSTEM_SHUTDOWN_SUCCESS;
 		}
-		else
-		{
-			return "Error 181:Invalid data for system";
-		}
+		return SYSTEM_ERROR_NR_181;
 	}
 
-	return "Error 180:Action not found for system";
+	return SYSTEM_ERROR_NR_180;
 }
 
 // Answer from:
@@ -99,12 +92,12 @@ int SystemService::IsProcessRunning(std::string processName)
 
 std::string SystemService::reboot()
 {
-	std::string command = "sudo shutdown -r now";
+	std::string command = CMD_SUDO_REBOOT;
 	return Tools::SendSystemCommandGetResult(command);
 }
 
 std::string SystemService::shutdown()
 {
-	std::string command = "sudo shutdown -h now";
+	std::string command = CMD_SUDO_SHUTDOWN;
 	return Tools::SendSystemCommandGetResult(command);
 }

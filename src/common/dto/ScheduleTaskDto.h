@@ -10,14 +10,14 @@
 
 class ScheduleTaskDto
 {
-  private:
+private:
 	std::string _schedule;
 	time_t _time;
 	int _weekday;
 	int _done;
 	int _active;
 
-  public:
+public:
 	ScheduleTaskDto();
 	ScheduleTaskDto(std::string, time_t, int);
 	~ScheduleTaskDto();

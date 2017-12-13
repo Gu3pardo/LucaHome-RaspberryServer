@@ -24,11 +24,17 @@ public:
 	static std::string ConvertIntToStr(int);
 	static int ConvertStrToInt(std::string);
 
+	static bool ConvertIntToBool(int);
+	static int ConvertBoolToInt(bool);
+
 	static std::string ConvertDoubleToStr(double);
 	static double ConvertStrToDouble(std::string);
 
 	static std::string ConvertBoolToStr(bool);
 	static bool ConvertStrToBool(std::string);
+
+	static std::string ConvertUnsignedCharToStr(unsigned char);
+	static unsigned char ConvertStrToUnsignedChar(std::string);
 
 	static bool HasEnding(std::string, std::string);
 

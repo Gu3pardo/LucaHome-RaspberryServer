@@ -11,15 +11,22 @@
 
 class WirelessSocketDto
 {
-  private:
+  protected:
 	std::string _name;
 	std::string _area;
 	std::string _code;
 	int _state;
 
+	int _lastTriggerHour;
+	int _lastTriggerMinute;
+	int _lastTriggerDay;
+	int _lastTriggerMonth;
+	int _lastTriggerYear;
+	std::string _lastTriggerUserName;
+
   public:
 	WirelessSocketDto();
-	WirelessSocketDto(std::string, std::string, std::string, int);
+	WirelessSocketDto(std::string, std::string, std::string, int, int, int, int, int, int, std::string);
 	~WirelessSocketDto();
 
 	void SetName(std::string);
@@ -31,9 +38,18 @@ class WirelessSocketDto
 	void SetCode(std::string);
 	std::string GetCode();
 
-	bool SetState(int, int);
+	int GetLastTriggeredHour();
+	int GetLastTriggeredMinute();
+	int GetLastTriggeredDay();
+	int GetLastTriggeredMonth();
+	int GetLastTriggeredYear();
+	std::string GetLastTriggeredUserName();
+
+	bool SetState(int, int, int, int, int, int, int, std::string);
 	int GetState();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

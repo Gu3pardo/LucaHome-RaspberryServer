@@ -42,6 +42,7 @@ public:
 	std::string GetMediaServerVersion();
 	std::string GetWpfApplicationVersion();
 
+	std::string JsonString();
 	std::string ToString();
 };
 

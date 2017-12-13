@@ -17,17 +17,10 @@
 
 #include "../common/dto/ShoppingEntryDto.h"
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define SHOPPING_ENTRY_DATA_SIZE 8
-#define ALL "ALL"
-#define REDUCED "REDUCED"
 
 #ifndef SHOPPING_LIST_SERVICE_H
 #define SHOPPING_LIST_SERVICE_H
@@ -41,11 +34,10 @@ private:
 	FileController _fileController;
 	XmlService _xmlService;
 
-	void loadShoppingList();
 	void saveShoppingList(ChangeService, std::string);
 
-	std::string getShoppingList();
-	std::string getReducedString();
+	std::string getJsonString();
+	std::string getPhpString();
 
 	bool addShoppingEntry(std::vector<std::string>, ChangeService, std::string);
 	bool updateShoppingEntry(std::vector<std::string>, ChangeService, std::string);
@@ -56,8 +48,8 @@ public:
 	~ShoppingListService();
 
 	void Initialize(FileController, std::string);
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
-	void ReloadData();
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
+	void LoadData();
 };
 
 #endif

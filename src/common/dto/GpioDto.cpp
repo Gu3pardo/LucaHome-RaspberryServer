@@ -49,6 +49,29 @@ int GpioDto::GetState()
 	return _state;
 }
 
+std::string GpioDto::SaveString()
+{
+	std::string str = 
+		_name + ":"
+		+ Tools::ConvertIntToStr(_gpio) + ":"
+		+ Tools::ConvertIntToStr(_state) + ";";
+	return str;
+}
+
+std::string GpioDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Gpio\":")
+		+ std::string("{")
+		+ std::string("\"Name\":") + _name + std::string(",")
+		+ std::string("\"Gpio\":") + Tools::ConvertIntToStr(_gpio) + std::string(",")
+		+ std::string("\"State\":") + Tools::ConvertIntToStr(_state)
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string GpioDto::ToString()
 {
 	std::string str = std::string("GpioDto { name: ") + _name 

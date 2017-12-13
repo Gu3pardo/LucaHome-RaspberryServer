@@ -13,7 +13,6 @@
 #include "../../common/dto/GpioDto.h"
 #include "../../common/dto/InformationDto.h"
 #include "../../common/dto/ListedMenuDto.h"
-#include "../../common/dto/LogDto.h"
 #include "../../common/dto/MapContentDto.h"
 #include "../../common/dto/MenuDto.h"
 #include "../../common/dto/PointDto.h"
@@ -21,6 +20,7 @@
 #include "../../common/dto/ShoppingEntryDto.h"
 #include "../../common/dto/UserDto.h"
 #include "../../common/dto/WirelessSocketDto.h"
+#include "../../common/dto/WirelessSwitchDto.h"
 
 #ifndef XMLPARSER_H
 #define XMLPARSER_H
@@ -52,9 +52,9 @@ public:
 	MenuDto ParseMenuDay(std::string, std::string);
 	std::vector<ScheduleDto> ParseScheduleList();
 	std::vector<WirelessSocketDto> ParseSocketList();
+	std::vector<WirelessSwitchDto> ParseSwitchList();
 	std::vector<ShoppingEntryDto> ParseShoppingList();
 	std::vector<UserDto> ParseUserList();
-	std::vector<LogDto> ParseLogList();
 };
 
 #endif

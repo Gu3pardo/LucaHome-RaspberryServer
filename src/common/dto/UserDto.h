@@ -14,25 +14,18 @@ class UserDto
 	std::string _name;
 	std::string _password;
 	int _role;
-	int _isAdmin;
+	bool _isAdmin;
 	int _invalidLoginCount;
 
   public:
 	UserDto();
-	UserDto(std::string, std::string, int, int, int);
+	UserDto(std::string, std::string, int, bool, int);
 	~UserDto();
 
-	void SetName(std::string);
 	std::string GetName();
-
-	void SetPassword(std::string);
 	std::string GetPassword();
-
-	void SetRole(int);
 	int GetRole();
-
-	void SetIsAdmin(int);
-	int IsAdmin();
+	bool IsAdmin();
 
 	void SetInvalidLoginCount(int);
 	void IncreaseInvalidLoginCount();

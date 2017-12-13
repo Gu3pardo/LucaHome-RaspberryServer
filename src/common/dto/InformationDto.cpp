@@ -96,6 +96,29 @@ std::string InformationDto::GetWpfApplicationVersion()
 	return _wpfApplicationVersion;
 }
 
+std::string InformationDto::JsonString()
+{
+	std::string str =
+		std::string("{")
+		+ std::string("\"Information\":")
+		+ std::string("{")
+		+ std::string("\"Author\":") + _author + std::string(",")
+		+ std::string("\"Company\":") + _company + std::string(",")
+		+ std::string("\"Contact\":") + _contact + std::string(",")
+		+ std::string("\"BuildDate\":") + _buildDate + std::string(",")
+		+ std::string("\"ServerVersion\":") + _serverVersion + std::string(",")
+		+ std::string("\"WebsiteVersion\":") + _websiteVersion + std::string(",")
+		+ std::string("\"TemperatureLoggerVersion\":") + _temperatureLoggerVersion + std::string(",")
+		+ std::string("\"AndroidApplicationVersion\":") + _androidApplicationVersion + std::string(",")
+		+ std::string("\"AndroidWearableVersion\":") + _androidWearableVersion + std::string(",")
+		+ std::string("\"AndroidAccessApplicationVersion\":") + _androidAccessApplicationVersion + std::string(",")
+		+ std::string("\"MediaServerVersion\":") + _mediaServerVersion + std::string(",")
+		+ std::string("\"WpfApplicationVersion\":") + _wpfApplicationVersion
+		+ std::string("}")
+		+ std::string("}");
+	return str;
+}
+
 std::string InformationDto::ToString()
 {
 	std::string str =

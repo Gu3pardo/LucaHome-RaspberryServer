@@ -33,6 +33,8 @@ public:
 	void SetAmount(double);
 	double GetAmount();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

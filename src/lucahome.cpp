@@ -29,8 +29,8 @@ namespace patch {
 
 #include "common/dto/ScheduleDto.h"
 #include "common/dto/ScheduleTaskDto.h"
-#include "common/utils/Logger.h"
 #include "common/utils/Tools.h"
+#include "common/Constants.h"
 
 #include "controller/FileController.h"
 #include "controller/MailController.h"
@@ -38,7 +38,6 @@ namespace patch {
 
 #include "services/shared/ChangeService.h"
 
-#include "services/AccessControlService.h"
 #include "services/AuthentificationService.h"
 #include "services/BirthdayService.h"
 #include "services/CameraService.h"
@@ -47,7 +46,6 @@ namespace patch {
 #include "services/MapContentService.h"
 #include "services/MenuService.h"
 #include "services/MovieService.h"
-#include "services/ReceiverService.h"
 #include "services/RemoteService.h"
 #include "services/ShoppingListService.h"
 #include "services/SystemService.h"
@@ -55,39 +53,16 @@ namespace patch {
 
 #define BUFLEN 512
 
-#define BIRTHDAY_CHECK_TIMEOUT 2 * 60 * 60
-#define MOTION_CONTROL_TIMEOUT 15
-#define SCHEDULE_CONTROL_TIMEOUT 10
-#define TEMPERATURE_CONTROL_TIMEOUT 60
-#define RELOAD_TIMEOUT 30 * 60
-
-#define LOG_PATH "/etc/default/lucahome/log/"
-#define MUSIC_PATH "/NAS/Music/"
-
-#define BIRTHDAY_FILE "/etc/default/lucahome/birthdays"
-#define CHANGE_FILE "/etc/default/lucahome/changes"
-#define COIN_FILE "/etc/default/lucahome/coins"
-#define INFORMATION_FILE "/etc/default/lucahome/infos"
-#define MAP_CONTENT_FILE "/etc/default/lucahome/mapcontent"
-#define MENU_FILE "/etc/default/lucahome/menu"
-#define LISTED_MENU_FILE "/etc/default/lucahome/listedmenu"
-#define SETTINGS_FILE "/etc/default/lucahome/settings"
-#define SHOPPING_LIST_FILE "/etc/default/lucahome/shoppinglist"
-#define TEMPERATURE_SETTINGS_FILE "/etc/default/lucahome/temperaturesettings"
-#define USER_FILE "/etc/default/lucahome/users"
-
 using namespace std;
 
 bool _updatedSchedules;
 vector<ScheduleDto> _scheduleList;
 vector<ScheduleTaskDto> _scheduleTaskList;
 
-Logger _logger;
 MailController _mailController;
 FileController _fileController;
 PathController _pathController;
 
-AccessControlService _accessControlService;
 AuthentificationService _authentificationService;
 BirthdayService _birthdayService;
 CameraService _cameraService;
@@ -97,7 +72,6 @@ InformationService _informationService;
 MenuService _menuService;
 MapContentService _mapContentService;
 MovieService _movieService;
-ReceiverService _receiverService;
 RemoteService _remoteService;
 ShoppingListService _shoppingListService;
 SystemService _systemService;
@@ -112,52 +86,57 @@ pthread_mutex_t gpiosMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t moviesMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t schedulesMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t switchesMutex = PTHREAD_MUTEX_INITIALIZER;
 
 string executeCmd(string cmd, int source) {
-	if (cmd.length() < 20) {
-		return "Error 21:statement too short";
+	if (cmd.length() < CMD_MIN_LENGTH) {
+		return COMMAND_ERROR_NR_21;
 	}
-	if (source != 1 && source != 2) {
-		return "Error 14:Invalid source";
+	if (source != CMD_SOURCE_EXTERNAL && source != CMD_SOURCE_SCHEDULER) {
+		return AUTHENTIFICATION_ERROR_NR_14;
 	}
 
 	vector < string > data = Tools::Explode(":", cmd);
 	if (data.size() < 1) {
-		return "Error 13:No username";
+		return AUTHENTIFICATION_ERROR_NR_13;
 	}
 	if (data.size() < 2) {
-		return "Error 12:No password";
+		return AUTHENTIFICATION_ERROR_NR_12;
 	}
 	if (data.size() < 3) {
-		return "Error 24:No category";
+		return COMMAND_ERROR_NR_24;
 	}
 	if (data.size() < 4) {
-		return "Error 23:No action";
+		return COMMAND_ERROR_NR_23;
+	}
+	if (data.size() < 5) {
+		return COMMAND_ERROR_NR_25;
 	}
 
-	string username = data[0];
-	string password = data[1];
-	string category = data[2];
-	string action = data[3];
+	string username = data[USER_NAME_INDEX];
+	string password = data[PASSWORD_INDEX];
+	string category = data[CATEGORY_INDEX];
+	string action = data[ACTION_INDEX];
+	string actionParameter = data[ACTION_PARAMETER_INDEX];
 
 	if (username == "") {
-		return "Error 13:No username";
+		return AUTHENTIFICATION_ERROR_NR_13;
 	}
 	if (password == "") {
-		return "Error 12:No password";
+		return AUTHENTIFICATION_ERROR_NR_12;
 	}
 	if (category == "") {
-		return "Error 24:No category";
+		return COMMAND_ERROR_NR_24;
 	}
 	if (action == "") {
-		return "Error 23:No action";
+		return COMMAND_ERROR_NR_23;
 	}
-	if (data[4] == "") {
-		return "Error 25:No action parameter";
+	if (actionParameter == "") {
+		return COMMAND_ERROR_NR_25;
 	}
 
-	if (username == "Scheduler" && source != 2) {
-		return "Error 26:scheduler not allowed from external source";
+	if (username == SCHEDULER && source != CMD_SOURCE_SCHEDULER) {
+		return COMMAND_ERROR_NR_26;
 	}
 
 	// TODO activate if logger is wished
@@ -165,108 +144,93 @@ string executeCmd(string cmd, int source) {
 
 	//---------------Authentificate user--------------
 	if (!_authentificationService.AuthentificateUser(username, password)) {
-		return "Error 10:Authentification failed";
+		return AUTHENTIFICATION_ERROR_NR_10;
 	}
 	if (!_authentificationService.AuthentificateUserAction(username, password, action)) {
-		return "Error 11:UserAction cannot be performed:No rights";
+		return AUTHENTIFICATION_ERROR_NR_11;
 	}
 
 	//----------------------ALL-----------------------
-	if (category == "ALL") {
-		if (action == "RELOAD") {
-			_birthdayService.ReloadData();
-			_changeService.ReloadData();
-			_coinService.ReloadData();
-			_informationService.ReloadData();
-			_mapContentService.ReloadData();
-			_menuService.ReloadData();
-			_movieService.ReloadData();
-			_remoteService.ReloadData();
-			_shoppingListService.ReloadData();
-			_temperatureService.ReloadData();
-			return "reloadall:1";
+	if (category == ALL) {
+		if (action == RELOAD) {
+			_birthdayService.LoadData();
+			_changeService.LoadData();
+			_coinService.LoadData();
+			_informationService.LoadData();
+			_mapContentService.LoadData();
+			_menuService.LoadData();
+			_movieService.LoadData();
+			_remoteService.LoadData();
+			_shoppingListService.LoadData();
+			_temperatureService.LoadData();
+			return COMMAND_RELOAD_SUCCESS;
 		}
 	}
 
-	//-----------------Access Control-----------------
-	else if (category == "ACCESS") {
-		if (action == "ACTIVATE" && data[4] == "ALARM") {
-			return _accessControlService.ActivateAlarm();
-		}
-		else if (action == "CHECK" && data[4] == "CODE") {
-			return _accessControlService.CheckCode(data[5]);
-		}
-		else if (action == "PLAY" && data[4] == "ALARM") {
-			return _accessControlService.PlayAlarm();
-		}
-		else if (action == "STOP" && data[4] == "ALARM") {
-			return _accessControlService.StopAlarm();
-		}
-	}
 	//--------------------Birthday--------------------
-	else if (category == "BIRTHDAY") {
-		return _birthdayService.PerformAction(action, data, _changeService, username);
+	else if (category == BIRTHDAY) {
+		return _birthdayService.PerformAction(data, _changeService, username);
 	}
 	//---------------------Camera---------------------
-	else if (category == "CAMERA") {
-		return _cameraService.PerformAction(action, data);
+	else if (category == CAMERA) {
+		return _cameraService.PerformAction(data);
 	}
 	//---------------------Changes--------------------
-	else if (category == "CHANGE") {
-		return _changeService.PerformAction(action, data);
+	else if (category == CHANGE) {
+		return _changeService.PerformAction(data);
 	}
 	//----------------------Coins---------------------
-	else if (category == "COINS") {
-		return _coinService.PerformAction(action, data, _changeService, username);
+	else if (category == COINS) {
+		return _coinService.PerformAction(data, _changeService, username);
 	}
 	//------------------Informations------------------
-	else if (category == "INFORMATION") {
-		return _informationService.PerformAction(action, data);
+	else if (category == INFORMATION) {
+		return _informationService.PerformAction(data);
 	}
 	//-------------------MapContent-------------------
-	else if (category == "MAPCONTENT") {
-		return _mapContentService.PerformAction(action, data, _changeService, username);
+	else if (category == MAPCONTENT) {
+		return _mapContentService.PerformAction(data, _changeService, username);
 	}
 	//----------------------Menu----------------------
-	else if (category == "MENU") {
-		return _menuService.PerformAction(action, data, _changeService, username);
+	else if (category == MENU) {
+		return _menuService.PerformAction(data, _changeService, username);
 	}
 	//---------------------Movies---------------------
-	else if (category == "MOVIE") {
-		return _movieService.PerformAction(action, data, username, _remoteService);
+	else if (category == MOVIE) {
+		return _movieService.PerformAction(data, username, _remoteService);
 	}
 	//---------------------Remote---------------------
-	else if (category == "REMOTE") {
-		if (data[4] == "SCHEDULE") {
-			if (action == "ADD" || action == "DELETE" || action == "SET") {
+	else if (category == REMOTE) {
+		if (actionParameter == SCHEDULE) {
+			if (action == ADD || action == DELETE || action == SET) {
 				_updatedSchedules = true;
 			}
 		}
-		return _remoteService.PerformAction(action, data, _changeService, username);
+		return _remoteService.PerformAction(data, _changeService, username);
 	}
 	//------------------ShoppingList------------------
-	if (category == "SHOPPINGLIST") {
-		return _shoppingListService.PerformAction(action, data, _changeService, username);
+	if (category == SHOPPINGLIST) {
+		return _shoppingListService.PerformAction(data, _changeService, username);
 	}
 	//---------------------System---------------------
-	else if (category == "SYSTEM") {
-		return _systemService.PerformAction(action, data);
+	else if (category == SYSTEM) {
+		return _systemService.PerformAction(data);
 	}
 	//--------------------Temperature-----------------
-	else if (category == "TEMPERATURE") {
-		return _temperatureService.PerformAction(action, data);
+	else if (category == TEMPERATURE) {
+		return _temperatureService.PerformAction(data);
 	}
 	//----------------------User----------------------
-	else if (category == "USER") {
-		if (action == "VALIDATE") {
-			return "validateuser:1";
+	else if (category == USER) {
+		if (action == VALIDATE) {
+			return USER_VALIDATE_SUCCESS;
 		}
-		else if (action == "RESETFAILEDLOGIN") {
-			return _authentificationService.ResetFailedLogin(username, password, data[4]);
+		else if (action == RESETFAILEDLOGIN) {
+			return _authentificationService.ResetFailedLogin(username, password, actionParameter);
 		}
 	}
 
-	return "Error 20:action not found";
+	return COMMAND_ERROR_NR_20;
 }
 
 void *server(void *arg) {
@@ -314,18 +278,20 @@ void *server(void *arg) {
 			pthread_mutex_lock(&schedulesMutex);
 			pthread_mutex_lock(&gpiosMutex);
 			pthread_mutex_lock(&socketsMutex);
+			pthread_mutex_lock(&switchesMutex);
 
 			// Parse and execute request
-			string response = executeCmd(message, 1);
+			string response = executeCmd(message, CMD_SOURCE_EXTERNAL);
 
 			if (_updatedSchedules) {
 				_scheduleList = _remoteService.GetScheduleList();
 				_updatedSchedules = false;
 			}
 
-			_remoteService.ReloadData();
-			_changeService.ReloadData();
+			_remoteService.LoadData();
+			_changeService.LoadData();
 
+			pthread_mutex_unlock(&switchesMutex);
 			pthread_mutex_unlock(&socketsMutex);
 			pthread_mutex_unlock(&gpiosMutex);
 			pthread_mutex_unlock(&schedulesMutex);
@@ -374,7 +340,7 @@ void *scheduler(void *arg) {
 			for (int s = 0; s < _scheduleList.size(); s++) {
 				if (_scheduleList[s].GetName() == (*it).GetSchedule()) {
 					found = 1;
-					if (!_scheduleList[s].GetStatus()) {
+					if (!_scheduleList[s].GetState()) {
 						active = 0;
 					}
 				}
@@ -406,7 +372,7 @@ void *scheduler(void *arg) {
 				}
 			}
 
-			if (!found && _scheduleList[s].GetStatus()) {
+			if (!found && _scheduleList[s].GetState()) {
 				time_t newtime = time(0);
 				struct tm tasktime;
 				localtime_r(&newtime, &tasktime);
@@ -439,15 +405,15 @@ void *scheduler(void *arg) {
 
 				for (int s = 0; s < _scheduleList.size(); s++) {
 					if (schedule == _scheduleList[s].GetName()) {
-						if (_scheduleList[s].GetStatus()) {
+						if (_scheduleList[s].GetState()) {
 							if (_scheduleList[s].GetSocket() != "") {
 								stringstream socket_out;
-								socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:" << _scheduleList[s].GetSocket() << ":" << _scheduleList[s].GetOnoff();
+								socket_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:SOCKET:" << _scheduleList[s].GetSocket() << ":" << _scheduleList[s].GetOnoff();
 
 								pthread_mutex_lock(&socketsMutex);
 
-								string response = executeCmd(socket_out.str(), 2);
-								if (response != "setsocket:1") {
+								string response = executeCmd(socket_out.str(), CMD_SOURCE_SCHEDULER);
+								if (response != SOCKET_SET_SUCCESS) {
 									syslog(LOG_INFO, "Setting socket %s by scheduler failed!", _scheduleList[s].GetSocket().c_str());
 								}
 
@@ -456,74 +422,38 @@ void *scheduler(void *arg) {
 
 							if (_scheduleList[s].GetGpio() != "") {
 								stringstream gpio_out;
-								gpio_out << "Scheduler:435435:REMOTE:SET:GPIO:" << _scheduleList[s].GetGpio() << ":" << _scheduleList[s].GetOnoff();
+								gpio_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:GPIO:" << _scheduleList[s].GetGpio() << ":" << _scheduleList[s].GetOnoff();
 
 								pthread_mutex_lock(&gpiosMutex);
 
-								string response = executeCmd(gpio_out.str(), 2);
-								if (response != "setgpio:1") {
+								string response = executeCmd(gpio_out.str(), CMD_SOURCE_SCHEDULER);
+								if (response != GPIO_SET_SUCCESS) {
 									syslog(LOG_INFO, "Setting gpio %s by scheduler failed!", _scheduleList[s].GetGpio().c_str());
 								}
 
 								pthread_mutex_unlock(&gpiosMutex);
 							}
 
-							if (_scheduleList[s].GetPlaySound() == 1 && _scheduleList[s].GetIsTimer() != 1) {
-								if (_scheduleList[s].GetPlayRaspberry() == _remoteService.GetRaspberry()) {
-									stringstream sound_out;
-									sound_out << "Scheduler:435435:SOUND:PLAY:WAKEUP";
+							if (_scheduleList[s].GetSwitch() != "") {
+								stringstream switch_out;
+								switch_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:TOGGLE:SWITCH:" << _scheduleList[s].GetSwitch();
 
-									stringstream socket_out;
-									socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:1";
+								pthread_mutex_lock(&switchesMutex);
 
-									pthread_mutex_lock(&socketsMutex);
-
-									string responseSocket = executeCmd(socket_out.str(), 2);
-									if (responseSocket != "activateSoundSocket:1") {
-										syslog(LOG_INFO, "Activating sound socket failed! %s", responseSocket.c_str());
-									}
-									else {
-										string responseSound = executeCmd(sound_out.str(), 2);
-										if (responseSound != _remoteService.GetWakeUpSound().c_str()) {
-											syslog(LOG_INFO, "Playing wakeup failed! %s | %s", _remoteService.GetWakeUpSound().c_str(), responseSound.c_str());
-										}
-									}
-
-									pthread_mutex_unlock(&socketsMutex);
+								string response = executeCmd(switch_out.str(), CMD_SOURCE_SCHEDULER);
+								if (response != SWITCH_TOGGLE_SUCCESS) {
+									syslog(LOG_INFO, "Toggling switch %s by scheduler failed!", _scheduleList[s].GetSwitch().c_str());
 								}
+
+								pthread_mutex_unlock(&switchesMutex);
 							}
 
 							if (_scheduleList[s].GetIsTimer() == 1) {
-								if (_scheduleList[s].GetPlaySound() == 1) {
-									if (_scheduleList[s].GetPlayRaspberry() == _remoteService.GetRaspberry()) {
-										stringstream sound_out;
-										sound_out << "Scheduler:435435:SOUND:STOP:WAKEUP";
-
-										stringstream socket_out;
-										socket_out << "Scheduler:435435:REMOTE:SET:SOCKET:SOUND:0";
-
-										pthread_mutex_lock(&socketsMutex);
-
-										string responseSocket = executeCmd(socket_out.str(), 2);
-										if (responseSocket != "deactivateSoundSocket:0") {
-											syslog(LOG_INFO, "Deactivating sound socket failed! %s", responseSocket.c_str());
-										}
-										else {
-											string responseSound = executeCmd(sound_out.str(), 2);
-											if (responseSound != "stopplaying:1") {
-												syslog(LOG_INFO, "Stopping wakeup failed! %s | %s", _remoteService.GetWakeUpSound().c_str(), responseSound.c_str());
-											}
-										}
-
-										pthread_mutex_unlock(&socketsMutex);
-									}
-								}
-
 								stringstream schedule_delete_out;
-								schedule_delete_out << "Scheduler:435435:REMOTE:DELETE:SCHEDULE:" << _scheduleList[s].GetName();
+								schedule_delete_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:DELETE:SCHEDULE:" << _scheduleList[s].GetName();
 
-								string response = executeCmd(schedule_delete_out.str(), 2);
-								if (response != "deleteschedule:1") {
+								string response = executeCmd(schedule_delete_out.str(), CMD_SOURCE_SCHEDULER);
+								if (response != SCHEDULE_DELETE_SUCCESS) {
 									syslog(LOG_INFO, "Deleting schedule %s by scheduler failed!", _scheduleList[s].GetName().c_str());
 								}
 							}
@@ -543,55 +473,17 @@ void *scheduler(void *arg) {
 	pthread_exit(NULL);
 }
 
-void *receiver(void *arg) {
-	syslog(LOG_INFO, "Receiver started!");
-
-	int receivergpio = _remoteService.GetReceiverGpio();
-
-	bool foundValidGpio = false;
-	//TODO: enable receiver later to test feature! only if receiver is mounted on RPi and store data to assets!
-	if (receivergpio > 0 && receivergpio < 30) {
-		foundValidGpio = true;
-
-		//TODO reactivate!
-		//_receiverSwitch = RCSwitch();
-		//_receiverSwitch.enableReceive(receivergpio);
-	}
-	else {
-		syslog(LOG_INFO, "receivergpio has invalid value: %d", receivergpio);
-	}
-
-	if (wiringPiSetup() == -1) {
-		syslog(LOG_INFO, "wiringPiSetup failed, exiting...");
-		foundValidGpio = false;
-	}
-
-	while (foundValidGpio) {
-		//TODO reactivate!
-		/*if (_receiverSwitch.available()) {
-		 int value = _receiverSwitch.getReceivedValue();
-
-		 if (value == 0) {
-		 syslog(LOG_INFO, "Received value with unknown encoding!");
-		 } else {
-		 _receiverService.performAction(value);
-		 }
-
-		 _receiverSwitch.resetAvailable();
-		 }*/
-	}
-
-	syslog(LOG_INFO, "Exiting *receiver");
-	pthread_exit(NULL);
-}
-
 void *birthdayControl(void *arg) {
 	syslog(LOG_INFO, "BirthdayControl started!");
 
 	while (1) {
+		pthread_mutex_lock(&birthdaysMutex);
+
 		if (_birthdayService.GetBirthdayControlActive()) {
 			_birthdayService.CheckBirthdayList();
 		}
+
+		pthread_mutex_unlock(&birthdaysMutex);
 
 		sleep(BIRTHDAY_CHECK_TIMEOUT);
 	}
@@ -604,8 +496,7 @@ void *cameraStartControl(void *arg) {
 	syslog(LOG_INFO, "CameraStartControl started!");
 
 	while (1) {
-		if (_cameraService.GetStartCamera()
-			&& !_cameraService.GetStopCamera()) {
+		if (_cameraService.GetStartCamera() && !_cameraService.GetStopCamera()) {
 			_cameraService.StartMotion();
 		}
 
@@ -620,8 +511,7 @@ void *cameraStopControl(void *arg) {
 	syslog(LOG_INFO, "CameraStopControl started!");
 
 	while (1) {
-		if (!_cameraService.GetStartCamera()
-			&& _cameraService.GetStopCamera()) {
+		if (!_cameraService.GetStartCamera() && _cameraService.GetStopCamera()) {
 			_cameraService.StopMotion();
 		}
 
@@ -666,16 +556,32 @@ void *reloader(void *arg) {
 	syslog(LOG_INFO, "Reloader started!");
 
 	while (1) {
-		_birthdayService.ReloadData();
-		_changeService.ReloadData();
-		_coinService.ReloadData();
-		_informationService.ReloadData();
-		_mapContentService.ReloadData();
-		_menuService.ReloadData();
-		_movieService.ReloadData();
-		_remoteService.ReloadData();
-		_shoppingListService.ReloadData();
-		_temperatureService.ReloadData();
+		pthread_mutex_lock(&changesMutex);
+		pthread_mutex_lock(&birthdaysMutex);
+		pthread_mutex_lock(&moviesMutex);
+		pthread_mutex_lock(&schedulesMutex);
+		pthread_mutex_lock(&gpiosMutex);
+		pthread_mutex_lock(&socketsMutex);
+		pthread_mutex_lock(&switchesMutex);
+
+		_birthdayService.LoadData();
+		_changeService.LoadData();
+		_coinService.LoadData();
+		_informationService.LoadData();
+		_mapContentService.LoadData();
+		_menuService.LoadData();
+		_movieService.LoadData();
+		_remoteService.LoadData();
+		_shoppingListService.LoadData();
+		_temperatureService.LoadData();
+
+		pthread_mutex_unlock(&changesMutex);
+		pthread_mutex_unlock(&birthdaysMutex);
+		pthread_mutex_unlock(&moviesMutex);
+		pthread_mutex_unlock(&schedulesMutex);
+		pthread_mutex_unlock(&gpiosMutex);
+		pthread_mutex_unlock(&socketsMutex);
+		pthread_mutex_unlock(&switchesMutex);
 
 		sleep(RELOAD_TIMEOUT);
 	}
@@ -702,11 +608,8 @@ int main(void) {
 	_remoteService.Initialize(_fileController, SETTINGS_FILE);
 	_shoppingListService.Initialize(_fileController, SHOPPING_LIST_FILE);
 
-	_accessControlService.Initialize(_fileController, _mailController, UserDto("AccessControl", "518716", 1, 0, 0), _remoteService.GetAccessUrl(), _remoteService.GetMediaMirrorList());
 	_cameraService.Initialize(_remoteService.GetCameraUrl(), _mailController, _pathController, _systemService);
 	_temperatureService.Initialize(_fileController, _mailController, TEMPERATURE_SETTINGS_FILE, _remoteService.GetSensor(), _remoteService.GetArea(), _remoteService.GetTemperatureGraphUrl());
-
-	_logger.Initialize(_fileController, LOG_PATH);
 
 	std::ostringstream startMessage;
 	startMessage << "Starting LucaHome at " << _remoteService.GetArea();
@@ -715,11 +618,10 @@ int main(void) {
 	_updatedSchedules = false;
 	_scheduleList = _remoteService.GetScheduleList();
 
-	pthread_t scheduleThread, serverThread, receiverThread, temperatureThread, birthdayThread, cameraStartThread, cameraStopThread, motionThread, reloadThread;
+	pthread_t scheduleThread, serverThread, temperatureThread, birthdayThread, cameraStartThread, cameraStopThread, motionThread, reloadThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
 	pthread_create(&scheduleThread, NULL, scheduler, NULL);
-	pthread_create(&receiverThread, NULL, receiver, NULL);
 	pthread_create(&temperatureThread, NULL, temperatureControl, NULL);
 	pthread_create(&birthdayThread, NULL, birthdayControl, NULL);
 	pthread_create(&cameraStartThread, NULL, cameraStartControl, NULL);
@@ -729,7 +631,6 @@ int main(void) {
 
 	pthread_join(serverThread, NULL);
 	pthread_join(scheduleThread, NULL);
-	pthread_join(receiverThread, NULL);
 	pthread_join(temperatureThread, NULL);
 	pthread_join(birthdayThread, NULL);
 	pthread_join(cameraStartThread, NULL);
@@ -737,6 +638,7 @@ int main(void) {
 	pthread_join(motionThread, NULL);
 	pthread_join(reloadThread, NULL);
 
+	pthread_mutex_destroy(&switchesMutex);
 	pthread_mutex_destroy(&socketsMutex);
 	pthread_mutex_destroy(&gpiosMutex);
 	pthread_mutex_destroy(&schedulesMutex);

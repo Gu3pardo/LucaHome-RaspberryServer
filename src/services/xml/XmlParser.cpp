@@ -171,13 +171,13 @@ std::vector<BirthdayDto> XmlParser::ParseBirthdayList()
 					}
 					if (typeid(words.at(4)) == typeid(std::string))
 					{
-						int sendMailInteger = atoi(words[3].c_str());
-						if (sendMailInteger == 1) {
-							newBirthday.SetSendMail(true);
-						}
-						else {
-							newBirthday.SetSendMail(false);
-						}
+						bool remindMe = Tools::ConvertStrToBool(words[4].c_str());
+						newBirthday.SetRemindMe(remindMe);
+					}
+					if (typeid(words.at(5)) == typeid(std::string))
+					{
+						bool sendMail = Tools::ConvertStrToBool(words[5].c_str());
+						newBirthday.SetSendMail(sendMail);
 					}
 				}
 
@@ -232,7 +232,7 @@ std::vector<ChangeDto> XmlParser::ParseChangeList()
 					}
 					if (typeid(words.at(6)) == typeid(std::string))
 					{
-						newChange.SetUser(words[6]);
+						newChange.SetUserName(words[6]);
 					}
 				}
 
@@ -350,15 +350,19 @@ std::vector<ListedMenuDto> XmlParser::ParseListedMenuList()
 					}
 					if (typeid(words.at(1)) == typeid(std::string))
 					{
-						newListedMenu.SetDescription(words[1]);
+						newListedMenu.SetTitle(words[1]);
 					}
 					if (typeid(words.at(2)) == typeid(std::string))
 					{
-						newListedMenu.SetRating(atoi(words[2].c_str()));
+						newListedMenu.SetDescription(words[2]);
 					}
 					if (typeid(words.at(3)) == typeid(std::string))
 					{
-						newListedMenu.SetLastSuggestion(atoi(words[3].c_str()));
+						newListedMenu.SetUseCount(atoi(words[3].c_str()));
+					}
+					if (typeid(words.at(4)) == typeid(std::string))
+					{
+						newListedMenu.SetRating(atoi(words[4].c_str()));
 					}
 				}
 
@@ -385,13 +389,14 @@ std::vector<MapContentDto> XmlParser::ParseMapContentList()
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 
 				int id = -1;
+				std::string type = "";
+				int typeId = -1;
 				int x = -1;
 				int y = -1;
-				int type = -1;
-				std::vector<std::string> schedules;
-				std::vector<std::string> sockets;
-				std::string temperatureArea = "";
-				int visibility = -1;
+				std::string name = "";
+				std::string shortName = "";
+				std::string area = "";
+				bool visibility = true;
 
 				if (typeid(words.at(0)) == typeid(std::string))
 				{
@@ -399,36 +404,40 @@ std::vector<MapContentDto> XmlParser::ParseMapContentList()
 				}
 				if (typeid(words.at(1)) == typeid(std::string))
 				{
-					std::vector<std::string> coordinates = Tools::Explode("|", words[1]);
+					type = words[1].c_str();
+				}
+				if (typeid(words.at(2)) == typeid(std::string))
+				{
+					typeId = atoi(words[2].c_str());
+				}
+				if (typeid(words.at(3)) == typeid(std::string))
+				{
+					std::vector<std::string> coordinates = Tools::Explode("|", words[3]);
 					if (typeid(coordinates.at(0)) == typeid(std::string) && typeid(coordinates.at(1)) == typeid(std::string))
 					{
 						x = atoi(coordinates[0].c_str());
 						y = atoi(coordinates[1].c_str());
 					}
 				}
-				if (typeid(words.at(2)) == typeid(std::string))
-				{
-					type = atoi(words[2].c_str());
-				}
-				if (typeid(words.at(3)) == typeid(std::string))
-				{
-					schedules = Tools::Explode("|", words[3]);
-				}
 				if (typeid(words.at(4)) == typeid(std::string))
 				{
-					sockets = Tools::Explode("|", words[4]);
+					name = words[4].c_str();
 				}
 				if (typeid(words.at(5)) == typeid(std::string))
 				{
-					temperatureArea = words[5].c_str();
+					shortName = words[5].c_str();
 				}
 				if (typeid(words.at(6)) == typeid(std::string))
 				{
-					visibility = atoi(words[6].c_str());
+					area = words[6].c_str();
+				}
+				if (typeid(words.at(7)) == typeid(std::string))
+				{
+					visibility = Tools::ConvertStrToBool(words[7].c_str());
 				}
 
 				PointDto position = PointDto(x, y);
-				MapContentDto newEntry = MapContentDto(id, position, type, schedules, sockets, temperatureArea, visibility);
+				MapContentDto newEntry = MapContentDto(id, type, typeId, position, name, shortName, area, visibility);
 
 				mapContentList.push_back(newEntry);
 			}
@@ -519,35 +528,32 @@ std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 					}
 					if (typeid(words.at(3)) == typeid(std::string))
 					{
-						newSchedule.SetWeekday(atoi(words[3].c_str()));
+						newSchedule.SetSwitch(words[3]);
 					}
 					if (typeid(words.at(4)) == typeid(std::string))
 					{
-						newSchedule.SetHour(atoi(words[4].c_str()));
+						newSchedule.SetWeekday(atoi(words[4].c_str()));
 					}
 					if (typeid(words.at(5)) == typeid(std::string))
 					{
-						newSchedule.SetMinute(atoi(words[5].c_str()));
+						newSchedule.SetHour(atoi(words[5].c_str()));
 					}
 					if (typeid(words.at(6)) == typeid(std::string))
 					{
-						newSchedule.SetOnoff(atoi(words[6].c_str()));
+						newSchedule.SetMinute(atoi(words[6].c_str()));
 					}
 					if (typeid(words.at(7)) == typeid(std::string))
 					{
-						newSchedule.SetIsTimer(atoi(words[7].c_str()));
+						newSchedule.SetOnoff(atoi(words[7].c_str()));
 					}
 					if (typeid(words.at(8)) == typeid(std::string))
 					{
-						newSchedule.SetPlaySound(atoi(words[8].c_str()));
+						bool isTimer = Tools::ConvertStrToBool(words[8].c_str());
+						newSchedule.SetIsTimer(isTimer);
 					}
 					if (typeid(words.at(9)) == typeid(std::string))
 					{
-						newSchedule.SetPlayRaspberry(atoi(words[9].c_str()));
-					}
-					if (typeid(words.at(10)) == typeid(std::string))
-					{
-						newSchedule.SetStatus(atoi(words[10].c_str()));
+						newSchedule.SetState(atoi(words[9].c_str()));
 					}
 				}
 
@@ -590,7 +596,7 @@ std::vector<WirelessSocketDto> XmlParser::ParseSocketList()
 					}
 					if (typeid(words.at(3)) == typeid(std::string))
 					{
-						newSocket.SetState(atoi(words[3].c_str()), 0);
+						newSocket.SetState(atoi(words[3].c_str()), 0, atoi(words[4].c_str()), atoi(words[5].c_str()), atoi(words[6].c_str()), atoi(words[7].c_str()), atoi(words[8].c_str()), words[9].c_str());
 					}
 				}
 
@@ -600,6 +606,38 @@ std::vector<WirelessSocketDto> XmlParser::ParseSocketList()
 	}
 
 	return socketList;
+}
+
+std::vector<WirelessSwitchDto> XmlParser::ParseSwitchList()
+{
+	std::string entries = FindTag("switches");
+	std::vector<WirelessSwitchDto> switchList;
+
+	if (entries.length() > 0)
+	{
+		std::vector<std::string> lines = Tools::Explode(";", entries);
+		for (int l = 0; l < lines.size(); l++)
+		{
+			if (lines[l].length() > 0)
+			{
+				std::vector<std::string> words = Tools::Explode(":", lines[l]);
+				WirelessSwitchDto newSwitch(
+					words[0],
+					words[1],
+					atoi(words[3].c_str()),
+					words[4],
+					0,
+					atoi(words[5].c_str()), atoi(words[6].c_str()),
+					atoi(words[7].c_str()), atoi(words[8].c_str()), atoi(words[9].c_str()),
+					words[10]
+				);
+
+				switchList.push_back(newSwitch);
+			}
+		}
+	}
+
+	return switchList;
 }
 
 std::vector<ShoppingEntryDto> XmlParser::ParseShoppingList()
@@ -674,33 +712,4 @@ std::vector<UserDto> XmlParser::ParseUserList()
 	}
 
 	return userList;
-}
-
-std::vector<LogDto> XmlParser::ParseLogList()
-{
-	std::string entries = FindTag("logs");
-	std::vector<LogDto> logList;
-
-	if (entries.length() > 0)
-	{
-		std::vector<std::string> lines = Tools::Explode(";", entries);
-		for (int l = 0; l < lines.size(); l++)
-		{
-			if (lines[l].length() > 0)
-			{
-				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				if (words.size() == 4)
-				{
-					LogDto log = LogDto(
-						words[0].c_str(),
-						words[1].c_str(),
-						words[2].c_str(),
-						words[3].c_str());
-
-					logList.push_back(log);
-				}
-			}
-		}
-	}
-	return logList;
 }

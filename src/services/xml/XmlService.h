@@ -14,7 +14,6 @@
 #include "../../common/dto/GpioDto.h"
 #include "../../common/dto/InformationDto.h"
 #include "../../common/dto/ListedMenuDto.h"
-#include "../../common/dto/LogDto.h"
 #include "../../common/dto/MapContentDto.h"
 #include "../../common/dto/MenuDto.h"
 #include "../../common/dto/PointDto.h"
@@ -22,6 +21,7 @@
 #include "../../common/dto/ShoppingEntryDto.h"
 #include "../../common/dto/UserDto.h"
 #include "../../common/dto/WirelessSocketDto.h"
+#include "../../common/dto/WirelessSwitchDto.h"
 
 #ifndef XMLSERVICE_H
 #define XMLSERVICE_H
@@ -52,10 +52,9 @@ public:
 	std::vector<MenuDto> GetMenuList(std::string);
 
 	static std::string GenerateSettingsXml(
-		int, int, int, int, std::string, std::string, std::vector<std::string>,
-		std::vector<std::string>, std::vector<std::string>, std::string,
-		std::vector<std::string>, std::vector<WirelessSocketDto>, std::vector<GpioDto>,
-		std::vector<ScheduleDto>);
+		int, int, int, 
+		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, 
+		std::vector<WirelessSocketDto>, std::vector<GpioDto>, std::vector<ScheduleDto>, std::vector<WirelessSwitchDto>);
 	int GetPort(std::string);
 	int GetDatagpio(std::string);
 	int GetReceivergpio(std::string);
@@ -70,6 +69,7 @@ public:
 	std::vector<GpioDto> GetGpioList(std::string);
 	std::vector<ScheduleDto> GetScheduleList(std::string);
 	std::vector<WirelessSocketDto> GetSocketList(std::string);
+	std::vector<WirelessSwitchDto> GetSwitchList(std::string);
 
 	static std::string GenerateShoppingListXml(std::vector<ShoppingEntryDto>);
 	std::vector<ShoppingEntryDto> GetShoppingList(std::string);
@@ -84,9 +84,6 @@ public:
 
 	static std::string GenerateUsersXml(std::vector<UserDto>);
 	std::vector<UserDto> GetUserList(std::string);
-
-	static std::string GenerateLoggerXml(std::vector<LogDto>);
-	std::vector<LogDto> GetLogList(std::string);
 };
 
 #endif

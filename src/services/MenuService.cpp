@@ -16,144 +16,107 @@ void MenuService::Initialize(FileController fileController, std::string menuFile
 	_menuFile = menuFile;
 	_listedMenuFile = listedMenuFile;
 
-	loadMenu();
-	loadListedMenu();
+	LoadData();
 }
 
-std::string MenuService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string MenuService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data[4] == MENU)
+		if (actionParameter == MENU)
 		{
-			if (data.size() == 6) {
-				if (data[5] == REDUCED) {
-					return getReducedString();
-				}
-			}
-
-			return getMenu();
+			return getMenuJsonString();
 		}
-		else if (data[4] == LISTEDMENU)
+		else if (actionParameter == MENU_PHP)
 		{
-			if (data.size() == 6) {
-				if (data[5] == REDUCED) {
-					return getListedMenuReduced();
-				}
-			}
-			else {
-			return getListedMenu();
-			}
+			return getMenuPhpString();
 		}
-		else
+		else if (actionParameter == LISTEDMENU)
 		{
-			return "Error 165:Invalid data for menu";
+			return getListedMenuJsonString();
 		}
+		else if (actionParameter == LISTEDMENU_PHP)
+		{
+			return getListedMenuPhpString();
+		}
+		return MENU_ERROR_NR_165;
 	}
+
 	else if (action == ADD)
 	{
-		if (data[4] == LISTEDMENU)
+		if (actionParameter == LISTEDMENU)
 		{
 			if (data.size() == MENU_DATA_SIZE)
 			{
 				if (addListedMenu(data, changeService, username))
 				{
-					return "addlistedmenu:1";
+					return LISTED_MENU_ADD_SUCCESS;
 				}
-				else
-				{
-					return "Error 169:Could not add listedmenu";
-				}
+				return LISTED_MENU_ERROR_NR_169;
 			}
-			else
-			{
-				return "Error 160:Wrong word size for menu";
-			}
+			return MENU_ERROR_NR_160;
 		}
-		else
-		{
-			return "Error 165:Invalid data for menu";
-		}
+		return MENU_ERROR_NR_165;
 	}
+
 	else if (action == UPDATE)
 	{
-		if (data[4] == MENU)
+		if (actionParameter == MENU)
 		{
 			if (data.size() == MENU_DATA_SIZE)
 			{
 				if (updateMenu(data, changeService, username))
 				{
-					return "updateMenu:1";
+					return MENU_UPDATE_SUCCESS;
 				}
-				else
-				{
-					return "Error 161:Could not update menu";
-				}
+				return MENU_ERROR_NR_161;
 			}
-			else
-			{
-				return "Error 160:Wrong word size for menu";
-			}
+			return MENU_ERROR_NR_160;
 		}
-		else if (data[4] == LISTEDMENU)
+		else if (actionParameter == LISTEDMENU)
 		{
 			if (data.size() == LISTEDMENU_DATA_SIZE)
 			{
 				if (updateListedMenu(data, changeService, username))
 				{
-					return "updateListedMenu:1";
+					return LISTED_MENU_UPDATE_SUCCESS;
 				}
-				else
-				{
-					return "Error 166:Could not update listedmenu";
-				}
+				return LISTED_MENU_ERROR_NR_166;
 			}
-			else
-			{
-				return "Error 167:Wrong word size for listedmenu";
-			}
+			return LISTED_MENU_ERROR_NR_167;
 		}
-		else
-		{
-			return "Error 165:Invalid data for menu";
-		}
+		return MENU_ERROR_NR_165;
 	}
+
 	else if (action == DELETE)
 	{
-		if (data[4] == LISTEDMENU)
+		if (actionParameter == LISTEDMENU)
 		{
-			if (deleteListedMenu(atoi(data[5].c_str()), changeService, username))
+			if (deleteListedMenu(atoi(data[LISTEDMENU_ID_INDEX].c_str()), changeService, username))
 			{
-				return "deletelistedmenu:1";
+				return LISTED_MENU_DELETE_SUCCESS;
 			}
-			else
-			{
-				return "Error 168:Could not delete listedmenu";
-			}
+			return LISTED_MENU_ERROR_NR_168;
 		}
-		else
-		{
-			return "Error 165:Invalid data for menu";
-		}
+		return MENU_ERROR_NR_165;
 	}
+
 	else if (action == CLEAR)
 	{
-		if (clearMenu(data[4].c_str(), changeService, username))
+		if (clearMenu(actionParameter.c_str(), changeService, username))
 		{
-			return "clearMenu:1";
+			return MENU_CLEAR_SUCCESS;
 		}
-		else
-		{
-			return "Error 162:Could not clear menu";
-		}
+		return MENU_ERROR_NR_162;
 	}
-	else
-	{
-		return "Error 163:Action not found for menu";
-	}
+
+	return MENU_ERROR_NR_163;
 }
 
-void MenuService::ReloadData()
+void MenuService::LoadData()
 {
 	loadMenu();
 	loadListedMenu();
@@ -175,28 +138,24 @@ void MenuService::saveMenu(ChangeService changeService, std::string username)
 	changeService.UpdateChange("Menu", username);
 }
 
-std::string MenuService::getMenu()
+std::string MenuService::getMenuJsonString()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _menuList.size(); index++)
 	{
-		out << "{menu:"
-			<< "{weekday:" << _menuList[index].GetWeekday() << "};"
-			<< "{day:" << Tools::ConvertIntToStr(_menuList[index].GetDay()) << "};"
-			<< "{month:" << Tools::ConvertIntToStr(_menuList[index].GetMonth()) << "};"
-			<< "{year:" << Tools::ConvertIntToStr(_menuList[index].GetYear()) << "};"
-			<< "{title:" << _menuList[index].GetTitle() << "};"
-			<< "{description:" << _menuList[index].GetDescription() << "};"
-			<< "};";
+		MenuDto menu = _menuList[index];
+		data << menu.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
-std::string MenuService::getReducedString()
+std::string MenuService::getMenuPhpString()
 {
 	std::stringstream out;
 
@@ -218,19 +177,18 @@ std::string MenuService::getReducedString()
 
 bool MenuService::updateMenu(std::vector<std::string> updateMenuData, ChangeService changeService, std::string username)
 {
+	std::string weekday = updateMenuData[MENU_WEEKDAY_INDEX].c_str();
 
 	for (int index = 0; index < _menuList.size(); index++)
 	{
-		if (_menuList[index].GetWeekday() == updateMenuData[5])
+		if (_menuList[index].GetWeekday() == weekday)
 		{
-			MenuDto updateMenu(
-				updateMenuData[5],
-				atoi(updateMenuData[6].c_str()),
-				atoi(updateMenuData[7].c_str()),
-				atoi(updateMenuData[8].c_str()),
-				updateMenuData[9],
-				updateMenuData[10]);
-			_menuList[index] = updateMenu;
+			_menuList[index].SetDay(atoi(updateMenuData[MENU_DAY_INDEX].c_str()));
+			_menuList[index].SetMonth(atoi(updateMenuData[MENU_MONTH_INDEX].c_str()));
+			_menuList[index].SetYear(atoi(updateMenuData[MENU_YEAR_INDEX].c_str()));
+
+			_menuList[index].SetTitle(updateMenuData[MENU_TITLE_INDEX].c_str());
+			_menuList[index].SetDescription(updateMenuData[MENU_DESCRIPTION_INDEX].c_str());
 
 			saveMenu(changeService, username);
 			loadMenu();
@@ -244,7 +202,6 @@ bool MenuService::updateMenu(std::vector<std::string> updateMenuData, ChangeServ
 
 bool MenuService::clearMenu(std::string weekday, ChangeService changeService, std::string username)
 {
-
 	for (int index = 0; index < _menuList.size(); index++)
 	{
 		if (_menuList[index].GetWeekday() == weekday)
@@ -276,26 +233,24 @@ void MenuService::loadListedMenu()
 	_listedMenuList = _xmlService.GetListedMenuList(listedmenuFileContent);
 }
 
-std::string MenuService::getListedMenu()
+std::string MenuService::getListedMenuJsonString()
 {
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = 0; index < _listedMenuList.size(); index++)
 	{
-		out << "{listedmenu:"
-			<< "{id:" << Tools::ConvertIntToStr(_listedMenuList[index].GetId()) << "};"
-			<< "{description:" << _listedMenuList[index].GetDescription() << "};"
-			<< "{rating:" << Tools::ConvertIntToStr(_listedMenuList[index].GetRating()) << "};"
-			<< "{lastSuggestion:" << Tools::ConvertIntToStr(_listedMenuList[index].IsLastSuggestion()) << "};"
-			<< "};";
+		ListedMenuDto listedMenu = _listedMenuList[index];
+		data << listedMenu.JsonString() << ",";
 	}
 
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
-std::string MenuService::getListedMenuReduced()
+std::string MenuService::getListedMenuPhpString()
 {
 	std::stringstream out;
 
@@ -303,9 +258,10 @@ std::string MenuService::getListedMenuReduced()
 	{
 		out << "listedmenu::"
 			<< Tools::ConvertIntToStr(_listedMenuList[index].GetId()) << "::"
+			<< _listedMenuList[index].GetTitle() << "::"
 			<< _listedMenuList[index].GetDescription() << "::"
 			<< Tools::ConvertIntToStr(_listedMenuList[index].GetRating()) << "::"
-			<< Tools::ConvertIntToStr(_listedMenuList[index].IsLastSuggestion()) << ";";
+			<< Tools::ConvertIntToStr(_listedMenuList[index].GetUseCount()) << ";";
 	}
 
 	out << "\x00" << std::endl;
@@ -316,10 +272,11 @@ std::string MenuService::getListedMenuReduced()
 bool MenuService::addListedMenu(std::vector<std::string> newListedMenuData, ChangeService changeService, std::string username)
 {
 	ListedMenuDto newListedMenu(
-		atoi(newListedMenuData[5].c_str()),
-		newListedMenuData[6],
-		atoi(newListedMenuData[7].c_str()),
-		atoi(newListedMenuData[8].c_str()));
+		atoi(newListedMenuData[LISTEDMENU_ID_INDEX].c_str()),
+		newListedMenuData[LISTEDMENU_TITLE_INDEX],
+		newListedMenuData[LISTEDMENU_DESCRIPTION_INDEX],
+		atoi(newListedMenuData[LISTEDMENU_RATING_INDEX].c_str()),
+		atoi(newListedMenuData[LISTEDMENU_USE_COUNTER_INDEX].c_str()));
 	_listedMenuList.push_back(newListedMenu);
 
 	saveListedMenu(changeService, username);
@@ -330,17 +287,16 @@ bool MenuService::addListedMenu(std::vector<std::string> newListedMenuData, Chan
 
 bool MenuService::updateListedMenu(std::vector<std::string> updateListedMenuData, ChangeService changeService, std::string username)
 {
-	ListedMenuDto updatedListedMenu(
-		atoi(updateListedMenuData[5].c_str()),
-		updateListedMenuData[6],
-		atoi(updateListedMenuData[7].c_str()),
-		atoi(updateListedMenuData[8].c_str()));
+	int id = atoi(updateListedMenuData[LISTEDMENU_ID_INDEX].c_str());
 
 	for (int index = 0; index < _listedMenuList.size(); index++)
 	{
-		if (_listedMenuList[index].GetId() == updatedListedMenu.GetId())
+		if (_listedMenuList[index].GetId() == id)
 		{
-			_listedMenuList[index] = updatedListedMenu;
+			_listedMenuList[index].SetTitle(updateListedMenuData[LISTEDMENU_TITLE_INDEX].c_str());
+			_listedMenuList[index].SetDescription(updateListedMenuData[LISTEDMENU_DESCRIPTION_INDEX].c_str());
+			_listedMenuList[index].SetRating(atoi(updateListedMenuData[LISTEDMENU_RATING_INDEX].c_str()));
+			_listedMenuList[index].SetUseCount(atoi(updateListedMenuData[LISTEDMENU_USE_COUNTER_INDEX].c_str()));
 
 			saveListedMenu(changeService, username);
 			loadListedMenu();
@@ -351,8 +307,7 @@ bool MenuService::updateListedMenu(std::vector<std::string> updateListedMenuData
 	return false;
 }
 
-bool MenuService::deleteListedMenu(int id, ChangeService changeService,
-	std::string username)
+bool MenuService::deleteListedMenu(int id, ChangeService changeService, std::string username)
 {
 	std::vector<ListedMenuDto>::iterator it = _listedMenuList.begin();
 	while (it != _listedMenuList.end())

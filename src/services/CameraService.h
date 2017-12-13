@@ -25,6 +25,7 @@
 #include <dirent.h>
 
 #include "../common/utils/Tools.h"
+#include "../common/Constants.h"
 #include "../controller/MailController.h"
 #include "../controller/PathController.h"
 #include "SystemService.h"
@@ -53,9 +54,8 @@ class CameraService
 	std::string startCamera();
 	std::string stopCamera();
 
-	std::string getData();
-
-	std::string getMotionEventsRestString();
+	std::string getDataJsonString();
+	std::string getMotionEventsJsonString();
 
   public:
 	CameraService();
@@ -63,7 +63,7 @@ class CameraService
 
 	void Initialize(std::string, MailController, PathController, SystemService);
 
-	std::string PerformAction(std::string, std::vector<std::string>);
+	std::string PerformAction(std::vector<std::string>);
 
 	void Check();
 

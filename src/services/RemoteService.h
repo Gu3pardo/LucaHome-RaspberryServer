@@ -18,28 +18,11 @@
 #include "../common/dto/GpioDto.h"
 #include "../common/dto/ScheduleDto.h"
 #include "../common/dto/WirelessSocketDto.h"
+#include "../common/dto/WirelessSwitchDto.h"
+#include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
-
-#define GET "GET"
-#define SET "SET"
-#define ADD "ADD"
-#define UPDATE "UPDATE"
-#define DELETE "DELETE"
-#define GPIO "GPIO"
-#define SCHEDULE "SCHEDULE"
-#define SOCKET "SOCKET"
-#define ALL "ALL"
-#define SOUND "SOUND"
-#define RASPBERRY "RASPBERRY"
-#define AREA "AREA"
-#define SENSOR "SENSOR"
-#define URL "URL"
-#define MAIN "MAIN"
-#define CAMERA "CAMERA"
-#define TEMPERATURE "TEMPERATURE"
-#define REDUCED "REDUCED"
 
 #ifndef REMOTESERVICE_H
 #define REMOTESERVICE_H
@@ -50,11 +33,7 @@ private:
 
 	int _port;
 	int _datagpio;
-	int _receivergpio;
 	int _raspberry;
-
-	std::string _alarmSound;
-	std::string _wakeUpSound;
 
 	std::string _area;
 	std::vector<std::string> _areaList;
@@ -65,19 +44,17 @@ private:
 	std::string _url;
 	std::vector<std::string> _urlList;
 
-	std::string _accessurl;
-
 	std::vector<std::string> _mediaMirrorList;
 
 	std::vector<GpioDto> _gpioList;
 	std::vector<ScheduleDto> _scheduleList;
 	std::vector<WirelessSocketDto> _socketList;
+	std::vector<WirelessSwitchDto> _switchList;
 
 	FileController _fileController;
 	XmlService _xmlService;
 
 	void saveSettings(ChangeService, std::string);
-	void loadSettings();
 
 	int getDataGpio();
 
@@ -86,10 +63,8 @@ private:
 
 	std::vector<std::string> getUrlList();
 
-	std::string getGpiosString();
 	std::vector<GpioDto> getGpioList();
-	std::string getGpiosRestString();
-	std::string getGpiosReducedString();
+	std::string getJsonStringGpios();
 
 	bool setGpio(std::string, int, ChangeService, std::string);
 	bool addGpio(std::vector<std::string>, ChangeService, std::string);
@@ -97,9 +72,7 @@ private:
 	bool deleteGpio(std::string, ChangeService, std::string);
 	bool setAllGpios(int, ChangeService, std::string);
 
-	std::string getSchedulesString();
-	std::string getSchedulesRestString();
-	std::string getSchedulesReducedString();
+	std::string getJsonStringSchedules();
 
 	bool setSchedule(std::string, int, ChangeService, std::string);
 	bool addSchedule(std::vector<std::string>, ChangeService, std::string);
@@ -107,17 +80,23 @@ private:
 	bool deleteSchedule(std::string, ChangeService, std::string);
 	bool setAllSchedules(int, ChangeService, std::string);
 
-	std::string getSocketsString();
 	std::vector<WirelessSocketDto> getSocketList();
-	std::string getSocketsRestString();
-	std::string getSocketsReducedString();
+	std::string getJsonStringSockets();
 
 	bool setSocket(std::string, int, ChangeService, std::string);
 	bool addSocket(std::vector<std::string>, ChangeService, std::string);
 	bool updateSocket(std::vector<std::string>, ChangeService, std::string);
 	bool deleteSocket(std::string, ChangeService, std::string);
 	bool setAllSockets(int, ChangeService, std::string);
-	bool setSoundSocket(int, ChangeService, std::string);
+
+	std::vector<WirelessSwitchDto> getSwitchList();
+	std::string getJsonStringSwitches();
+
+	bool toggleSwitch(std::string, ChangeService, std::string);
+	bool addSwitch(std::vector<std::string>, ChangeService, std::string);
+	bool updateSwitch(std::vector<std::string>, ChangeService, std::string);
+	bool deleteSwitch(std::string, ChangeService, std::string);
+	bool toggleAllSwitches(ChangeService, std::string);
 
 public:
 	RemoteService();
@@ -125,27 +104,23 @@ public:
 
 	void Initialize(FileController, std::string);
 
-	std::string PerformAction(std::string, std::vector<std::string>, ChangeService, std::string);
+	std::string PerformAction(std::vector<std::string>, ChangeService, std::string);
 
 	bool ActivateSockets(std::vector<std::string>, ChangeService, std::string);
 
 	int GetRaspberry();
 	int GetPort();
-	int GetReceiverGpio();
 
 	std::vector<ScheduleDto> GetScheduleList();
 
 	std::string GetArea();
 	std::string GetSensor();
 	std::string GetUrl();
-	std::string GetAccessUrl();
 	std::string GetCameraUrl();
 	std::vector<std::string> GetMediaMirrorList();
 	std::string GetTemperatureGraphUrl();
-	std::string GetAlarmSound();
-	std::string GetWakeUpSound();
 
-	void ReloadData();
+	void LoadData();
 };
 
 #endif

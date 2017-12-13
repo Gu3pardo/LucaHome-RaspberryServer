@@ -12,32 +12,30 @@ class MapContentDto {
 
 private:
 	int _id;
+	std::string _type;
+	int _typeId;
 	PointDto _position;
-	int _type;
-	std::vector<std::string> _schedules;
-	std::vector<std::string> _sockets;
-	std::string _temperatureArea;
-	int _visibility;
+	std::string _name;
+	std::string _shortName;
+	std::string _area;
+	bool _visibility;
 
 public:
 	MapContentDto();
-	MapContentDto(int, PointDto, int, std::vector<std::string>, std::vector<std::string>, std::string, int);
+	MapContentDto(int, std::string, int, PointDto, std::string, std::string, std::string, bool);
 	~MapContentDto();
 
 	int GetId();
+	std::string GetType();
+	int GetTypeId();
 	PointDto GetPosition();
-	int GetType();
-	std::vector<std::string> GetSchedules();
-	std::vector<std::string> GetSockets();
-	std::string GetTemperatureArea();
-	int GetVisibility();
+	std::string GetName();
+	std::string GetShortName();
+	std::string GetArea();
+	bool GetVisibility();
 
-	std::string GetSchedulesString();
-	std::string GetSocketsString();
-
-	std::string GetRestString();
-	std::string GetFileString();
-
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

@@ -30,6 +30,8 @@ public:
 	bool SetState(int);
 	int GetState();
 
+	std::string SaveString();
+	std::string JsonString();
 	std::string ToString();
 };
 

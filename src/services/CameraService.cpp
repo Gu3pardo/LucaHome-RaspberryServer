@@ -26,104 +26,69 @@ void CameraService::Initialize(std::string cameraUrl, MailController mailControl
 	_alreadyDetectedMotionEvents = _pathController.ScanCameraFolder();
 }
 
-std::string CameraService::PerformAction(std::string action,
-	std::vector<std::string> data)
+std::string CameraService::PerformAction(std::vector<std::string> data)
 {
-	if (action == "START")
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
+	if (action == START && actionParameter == MOTION)
 	{
-		if (data[4] == "MOTION")
-		{
-			startCamera();
-			return "startMotion:1";
-		}
-		else
-		{
-			return "Error 171:Invalid data for camera";
-		}
+		startCamera();
+		return CAMERA_START_MOTION_SUCCESS;
 	}
-	else if (action == "STOP")
+
+	else if (action == STOP && actionParameter == MOTION)
 	{
-		if (data[4] == "MOTION")
-		{
-			stopCamera();
-			return "stopMotion:1";
-		}
-		else
-		{
-			return "Error 171:Invalid data for camera";
-		}
+		stopCamera();
+		return CAMERA_STOP_MOTION_SUCCESS;
 	}
-	else if (action == "GET")
+
+	else if (action == SETCONTROLTASK && actionParameter == ON)
 	{
-		if (data[4] == "MOTION")
-		{
-			if (data[5] == "STATE")
-			{
-				if (IsMotionRunning())
-				{
-					return "STATE:ON";
-				}
-				else
-				{
-					return "STATE:OFF";
-				}
-			}
-			else if (data[5] == "CONTROL")
-			{
-				if (_motionControlActive)
-				{
-					return "CONTROL:ON";
-				}
-				else
-				{
-					return "CONTROL:OFF";
-				}
-			}
-			else if (data[5] == "DATA")
-			{
-				return getData();
-			}
-			else
-			{
-				return "Error 172:Invalid data5 for camera";
-			}
-		}
-		else
-		{
-			return "Error 171:Invalid data for camera";
-		}
+		_motionControlActive = true;
+		return CAMERA_ACTIVATE_MOTION_CONTROL_SUCCESS;
 	}
-	else if (action == "SETCONTROLTASK")
+
+	else if (action == SETCONTROLTASK && actionParameter == OFF)
 	{
-		if (data[4] == "ON")
-		{
-			_motionControlActive = true;
-			return "setMotionControl:1:1";
-		}
-		else if (data[4] == "OFF")
-		{
-			_motionControlActive = false;
-			return "setMotionControl:0:1";
-		}
-		else
-		{
-			return "Error 171:Invalid data for camera";
-		}
+		_motionControlActive = false;
+		return CAMERA_DEACTIVATE_MOTION_CONTROL_SUCCESS;
 	}
-	else if (action == "ACTIVATE")
+
+	else if (action == GET && actionParameter == MOTION)
 	{
-		if (data[4] == "CAMERACONTROL")
+		std::string commandParameter = data[CAMERA_CMD_PARAMETER_INDEX];
+
+		if (commandParameter == STATE &&  IsMotionRunning())
 		{
-			_motionControlActive = true;
-			return "setMotionControl:1:1";
+			return ACTIVE;
 		}
+		else if (commandParameter == STATE && !IsMotionRunning())
+		{
+			return INACTIVE;
+		}
+
+		else if (commandParameter == CONTROL && _motionControlActive)
+		{
+			return ACTIVE;
+		}
+		else if (commandParameter == CONTROL && !_motionControlActive)
+		{
+			return INACTIVE;
+		}
+
+		else if (commandParameter == DATA)
+		{
+			return getDataJsonString();
+		}
+
 		else
 		{
-			return "Error 171:Invalid data for camera";
+			return CAMERA_ERROR_NR_172;
 		}
 	}
 
-	return "Error 170:Action not found for camera";
+	return CAMERA_ERROR_NR_170;
 }
 
 void CameraService::Check()
@@ -137,7 +102,7 @@ void CameraService::Check()
 	{
 		if (currentMotionEventsCount > alreadyDetectedMotionEventsCount)
 		{
-			int maxImagesToSend = 10;
+			int maxImagesToSend = CAMERA_IMAGES_TO_SEND;
 			int difference = currentMotionEventsCount - alreadyDetectedMotionEventsCount;
 			int startIndex = 0;
 
@@ -152,9 +117,7 @@ void CameraService::Check()
 				std::string currentMotionEventImage = currentMotionEvents[index];
 				bool alreadySentImage = false;
 
-				for (int controlIndex = 0;
-					controlIndex < _alreadySentEvents.size();
-					controlIndex++)
+				for (int controlIndex = 0; controlIndex < _alreadySentEvents.size(); controlIndex++)
 				{
 					if (_alreadySentEvents[controlIndex] == currentMotionEventImage)
 					{
@@ -169,7 +132,7 @@ void CameraService::Check()
 				}
 
 				std::stringstream imagePath;
-				imagePath << "../../../NAS/Camera/" << currentMotionEventImage;
+				imagePath << "../../.." << NAS_PATH_CAMERA << currentMotionEventImage;
 
 				_mailController.SendMailWithImage(imagePath.str());
 				_alreadySentEvents.push_back(currentMotionEvents[index]);
@@ -198,22 +161,13 @@ bool CameraService::GetStopCamera()
 bool CameraService::IsMotionRunning()
 {
 	return _isMotionRunning;
-	// not working... disabled for now...
-	/*std::string motionProcessName = "motion";
-	 int motionPid = _systemService.IsProcessRunning(motionProcessName);
-
-	 if (motionPid != -1) {
-	 return true;
-	 }
-
-	 return false;*/
 }
 
 std::string CameraService::StartMotion()
 {
 	if (IsMotionRunning())
 	{
-		return "startMotion:0:motionAlreadyRunning";
+		return CAMERA_ERROR_NR_173;
 	}
 
 	_isMotionRunning = true;
@@ -221,17 +175,17 @@ std::string CameraService::StartMotion()
 	_startCamera = false;
 	_stopCamera = false;
 
-	std::string command = "sudo motion";
+	std::string command = CMD_SUDO_MOTION;
 	Tools::SendSystemCommandGetResult(command);
 
-	return "startMotion:1";
+	return CAMERA_START_MOTION_SUCCESS;
 }
 
 std::string CameraService::StopMotion()
 {
 	if (!IsMotionRunning())
 	{
-		return "stopMotion:0:motionNotRunning";
+		return CAMERA_ERROR_NR_174;
 	}
 
 	_isMotionRunning = false;
@@ -239,10 +193,10 @@ std::string CameraService::StopMotion()
 	_startCamera = false;
 	_stopCamera = false;
 
-	std::string command = "sudo killall motion";
+	std::string command = CMD_SUDO_KILLALL_MOTION;
 	Tools::SendSystemCommandGetResult(command);
 
-	return "stopMotion:1";
+	return CAMERA_STOP_MOTION_SUCCESS;
 }
 
 //--------------------------Private-----------------------//
@@ -251,20 +205,20 @@ std::string CameraService::startCamera()
 {
 	if (IsMotionRunning())
 	{
-		return "startCamera:0:motionAlreadyRunning";
+		return CAMERA_ERROR_NR_173;
 	}
 
 	_startCamera = true;
 	_stopCamera = false;
 
-	return "startCamera:1";
+	return CAMERA_START_CAMERA_SUCCESS;
 }
 
 std::string CameraService::stopCamera()
 {
 	if (!IsMotionRunning())
 	{
-		return "stopCamera:0:motionNotRunning";
+		return CAMERA_ERROR_NR_174;
 	}
 
 	_startCamera = false;
@@ -272,64 +226,72 @@ std::string CameraService::stopCamera()
 
 	_motionControlActive = false;
 
-	return "stopCamera:1";
+	return CAMERA_STOP_CAMERA_SUCCESS;
 }
 
-std::string CameraService::getData()
-{
-	std::stringstream data;
-	data << "{MotionData:";
-
-	if (IsMotionRunning())
-	{
-		data << "{State:1};";
-	}
-	else
-	{
-		data << "{State:0};";
-	}
-
-	data << "{URL:" << _cameraUrl << "};";
-
-	data << getMotionEventsRestString();
-
-	if (_motionControlActive)
-	{
-		data << "{Control:1};";
-	}
-	else
-	{
-		data << "{Control:0};";
-	}
-
-	data << "};";
-
-	return data.str();
-}
-
-std::string CameraService::getMotionEventsRestString()
+std::string CameraService::getDataJsonString()
 {
 	std::stringstream out;
-	out << "{MotionEvents:";
+	out << "{\"MotionData\":";
+
+	out << "{\"State\":";
+	if (IsMotionRunning())
+	{
+		out << "ON},";
+	}
+	else
+	{
+		out << "OFF},";
+	}
+
+	out << "{\"Control\":";
+	if (_motionControlActive)
+	{
+		out << "ON},";
+	}
+	else
+	{
+		out << "OFF},";
+	}
+
+	out << "{\"URL\":" << _cameraUrl << "},"
+		<< "{" << getMotionEventsJsonString() << "}"
+		<< "}";
+
+	return out.str();
+}
+
+std::string CameraService::getMotionEventsJsonString()
+{
+	std::stringstream out;
+	out << "\"Data\":[";
 
 	_motionEvents = _pathController.ScanCameraFolder();
 
-	int maxEventCount = 10;
-	int startIndex = 0;
-
+	int maxEventCount = CAMERA_EVENTS_MAX_COUNT;
 	int motionEventCount = _motionEvents.size();
 
+	int startIndex = 0;
 	if (motionEventCount > maxEventCount)
 	{
 		startIndex = motionEventCount - maxEventCount;
 	}
 
+	std::stringstream data;
 	for (int index = startIndex; index < _motionEvents.size(); index++)
 	{
-		out << "{Event:" << _motionEvents[index] << "},";
+		std::string motionEventString =
+			std::string("{")
+			+ std::string("\"Event\":")
+			+ std::string("{")
+			+ std::string("\"FileName\":") + _motionEvents[index]
+			+ std::string("}")
+			+ std::string("}");
+
+		data << motionEventString << ",";
 	}
 
-	out << "};"
-		<< "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]";
+
 	return out.str();
 }

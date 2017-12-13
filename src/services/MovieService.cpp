@@ -14,94 +14,61 @@ void MovieService::Initialize(FileController fileController, PathController path
 {
 	_fileController = fileController;
 	_pathController = pathController;
-	loadAllMovies();
+	LoadData();
 }
 
-std::string MovieService::PerformAction(std::string action, std::vector<std::string> data, std::string username, RemoteService remoteService)
+std::string MovieService::PerformAction(std::vector<std::string> data, std::string username, RemoteService remoteService)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data[4] == COUNT)
+		if (actionParameter == COUNT)
 		{
 			return Tools::ConvertIntToStr(getCount());
 		}
-		else if (data[4] == ALL)
+		else if (actionParameter == ALL)
 		{
-			if (data[5] == REDUCED) {
-				return getReducedString(0, getCount() - 1);
-			}
-			else {
-				return getRestString(0, getCount() - 1);
-			}
+			return getJsonString(0, getCount() - 1);
 		}
-		else if (data[4] == INDEX)
+		else if (actionParameter == INDEX)
 		{
-			if (data[5] == REDUCED) {
-				if (data.size() == 8)
-				{
-					return getReducedString(atoi(data[6].c_str()), atoi(data[7].c_str()));
-				}
-				else
-				{
-					return "Error 47:Wrong word size for movie";
-				}
+			if (data.size() == MOVIE_DATA_INDEX_SIZE)
+			{
+				return getJsonString(atoi(data[MOVIE_DATA_LOW_INDEX].c_str()), atoi(data[MOVIE_DATA_HIGH_INDEX].c_str()));
 			}
-			else {
-				if (data.size() == 7)
-				{
-					return getRestString(atoi(data[5].c_str()), atoi(data[6].c_str()));
-				}
-				else
-				{
-					return "Error 47:Wrong word size for movie";
-				}
-			}
+			return MOVIE_ERROR_NR_47;
 		}
 	}
+
 	else if (action == UPDATE)
 	{
 		if (data.size() == MOVIE_DATA_SIZE)
 		{
 			if (updateMovieData(data, username))
 			{
-				return "updatemovie:1";
+				return MOVIE_UPDATE_SUCCESS;
 			}
-			else
-			{
-				return "Error 42:Could not update movie";
-			}
+			return MOVIE_ERROR_NR_42;
 		}
-		else
-		{
-			return "Error 47:Wrong word size for movie";
-		}
+		return MOVIE_ERROR_NR_47;
 	}
+
 	else if (action == LOAD)
 	{
-		if (data[4] == ALL)
+		if (actionParameter == ALL)
 		{
-			loadAllMovies();
-			return "loadAllMovies:1";
+			LoadData();
+			return MOVIE_LOAD_SUCCESS;
 		}
-		else
-		{
-			return "Error 400:Parameter not found for movie";
-		}
+		return MOVIE_ERROR_NR_400;
 	}
-	else
-	{
-		return "Error 48:Action not found for movie";
-	}
+
+	return MOVIE_ERROR_NR_48;
 }
 
-void MovieService::ReloadData()
-{
-	loadAllMovies();
-}
-
-/*==============PRIVATE==============*/
-
-void MovieService::loadAllMovies()
+void MovieService::LoadData()
 {
 	std::vector<MovieDto> movieList;
 	std::vector<std::string> movieDirectories = _pathController.ScanMovieFolder();
@@ -115,7 +82,7 @@ void MovieService::loadAllMovies()
 		}
 
 		std::ostringstream nfoFilePathStringStream;
-		nfoFilePathStringStream << MOVIE_PATH << currentMovieDir << "/" << NFO_LUCA_FILE;
+		nfoFilePathStringStream << NAS_PAH_MOVIE << currentMovieDir << "/" << NFO_LUCA_FILE;
 		std::string nfoFilePath = nfoFilePathStringStream.str();
 
 		MovieDto newMovie = MovieDto();
@@ -155,45 +122,30 @@ void MovieService::loadAllMovies()
 	_movieList = movieList;
 }
 
+/*==============PRIVATE==============*/
+
 void MovieService::saveMovieNFO(MovieDto movie, std::string username)
 {
 	std::ostringstream nfoFilePathStringStream;
-	nfoFilePathStringStream << MOVIE_PATH << movie.GetTitle() << "/" << NFO_LUCA_FILE;
+	nfoFilePathStringStream << NAS_PAH_MOVIE << movie.GetTitle() << "/" << NFO_LUCA_FILE;
 	std::string nfoFilePath = nfoFilePathStringStream.str();
-
-	std::stringstream fileContent;
-	fileContent
-		<< "{Description: " << movie.GetDescription() << "};" << std::endl
-		<< "{Genre: " << movie.GetGenre() << "};" << std::endl
-		<< "{Rating: " << Tools::ConvertIntToStr(movie.GetRating()) << "};" << std::endl
-		<< "{Watched: " << Tools::ConvertIntToStr(movie.GetWatched()) << "};";
-
-	_fileController.SaveFile(nfoFilePath, fileContent.str());
+	_fileController.SaveFile(nfoFilePath, movie.SaveString());
 }
 
-std::string MovieService::generateRestEntry(MovieDto movie)
+std::string MovieService::generateJsonEntry(MovieDto movie)
 {
-	std::stringstream out;
-	out << "{movie:"
-		<< "{Title:" << movie.GetTitle() << "};"
-		<< "{Genre:" << movie.GetGenre() << "};"
-		<< "{Description:" << movie.GetDescription() << "};"
-		<< "{Rating:" << Tools::ConvertIntToStr(movie.GetRating()) << "};"
-		<< "{Watched:" << Tools::ConvertIntToStr(movie.GetWatched()) << "};"
-		<< "};";
-	return out.str();
-}
-
-std::string MovieService::generateReducedEntry(MovieDto movie)
-{
-	std::stringstream out;
-	out << "movie::"
-		<< movie.GetTitle() << "::"
-		<< movie.GetGenre() << "::"
-		<< movie.GetDescription() << "::"
-		<< Tools::ConvertIntToStr(movie.GetRating()) << "::"
-		<< Tools::ConvertIntToStr(movie.GetWatched()) << ";";
-	return out.str();
+	std::string str =
+		std::string("{")
+		+ std::string("\"MovieDto\":")
+		+ std::string("{")
+		+ std::string("\"Title\":") + movie.GetTitle() + std::string(",")
+		+ std::string("\"Genre\":") + movie.GetGenre() + std::string(",")
+		+ std::string("\"Description\":") + movie.GetDescription() + std::string(",")
+		+ std::string("\"Rating\":") + Tools::ConvertIntToStr(movie.GetRating()) + std::string(",")
+		+ std::string("\"Watched\":") + Tools::ConvertIntToStr(movie.GetWatched())
+		+ std::string("}")
+		+ std::string("}");
+	return str;
 }
 
 int MovieService::getCount()
@@ -201,11 +153,11 @@ int MovieService::getCount()
 	return _movieList.size();
 }
 
-std::string MovieService::getRestString(int start, int end)
+std::string MovieService::getJsonString(int start, int end)
 {
 	if (start > _movieList.size() - 1)
 	{
-		return "Error 45:Start index higher then last index value";
+		return MOVIE_ERROR_NR_45;
 	}
 
 	if (end > _movieList.size() - 1)
@@ -214,56 +166,33 @@ std::string MovieService::getRestString(int start, int end)
 	}
 
 	std::stringstream out;
+	out << "\"Data\":[";
 
+	std::stringstream data;
 	for (int index = start; index < end; index++)
 	{
-		out << generateRestEntry(_movieList[index]);
-	}
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string MovieService::getReducedString(int start, int end)
-{
-	if (start > _movieList.size() - 1)
-	{
-		return "Error 45:Start index higher then last index value";
+		data << generateJsonEntry(_movieList[index]) << ",";
 	}
 
-	if (end > _movieList.size() - 1)
-	{
-		end = _movieList.size() - 1;
-	}
-
-	std::stringstream out;
-
-	for (int index = start; index < end; index++)
-	{
-		out << generateReducedEntry(_movieList[index]);
-	}
-	out << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
 
 	return out.str();
 }
 
 bool MovieService::updateMovieData(std::vector<std::string> movieData, std::string username)
 {
-	std::vector<std::string> socketList = Tools::Explode("|", movieData[9]);
+	std::string title = movieData[MOVIE_DATA_TITLE_INDEX];
 
 	for (int index = 0; index < _movieList.size(); index++)
 	{
-		if (_movieList[index].GetTitle() == movieData[4])
+		if (_movieList[index].GetTitle() == title)
 		{
-			MovieDto updateMovie(
-				movieData[4],
-				movieData[5],
-				movieData[6],
-				atoi(movieData[7].c_str()),
-				atoi(movieData[8].c_str()));
+			_movieList[index].SetDescription(movieData[MOVIE_DATA_DESCRIPTION_INDEX]);
+			_movieList[index].SetGenre(movieData[MOVIE_DATA_GENRE_INDEX]);
+			_movieList[index].SetRating(atoi(movieData[MOVIE_DATA_RATING_INDEX].c_str()));
+			_movieList[index].SetWatched(atoi(movieData[MOVIE_DATA_WATCHED_INDEX].c_str()));
 
-			_movieList[index] = updateMovie;
-			saveMovieNFO(updateMovie, username);
+			saveMovieNFO(_movieList[index], username);
 
 			return true;
 		}

@@ -15,89 +15,72 @@ void MapContentService::Initialize(FileController fileController, std::string ma
 	_fileController = fileController;
 	_mapContentFile = mapContentFile;
 
-	load();
+	LoadData();
 }
 
-std::string MapContentService::PerformAction(std::string action, std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string MapContentService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data[4] == ALL)
+		if (actionParameter == ALL)
 		{
-			if (data.size() == 6) {
-				if (data[5] == REDUCED) {
-					return getReducedString();
-				}
-			}
-
-			return getRestString();
+			return getJsonString();
 		}
+		else if (actionParameter == PHP)
+		{
+			return getPhpString();
+		}
+		return MAP_CONTENT_ERROR_NR_146;
 	}
+
 	else if (action == ADD)
 	{
 		if (data.size() == MAP_CONTENT_DATA_SIZE)
 		{
 			if (add(data, changeService, username))
 			{
-				return "addmapcontent:1";
+				return MAP_CONTENT_ADD_SUCCESS;
 			}
-			else
-			{
-				return "Error 140:Could not add mapcontent";
-			}
+			return MAP_CONTENT_ERROR_NR_140;
 		}
-		else
-		{
-			return "Error 141:Wrong word size for mapcontent";
-		}
+		return MAP_CONTENT_ERROR_NR_141;
 	}
+
 	else if (action == UPDATE)
 	{
 		if (data.size() == MAP_CONTENT_DATA_SIZE)
 		{
 			if (update(data, changeService, username))
 			{
-				return "updatemapcontent:1";
+				return MAP_CONTENT_UPDATE_SUCCESS;
 			}
-			else
-			{
-				return "Error 142:Could not update mapcontent";
-			}
+			return MAP_CONTENT_ERROR_NR_142;
 		}
-		else
-		{
-			return "Error 141:Wrong word size for mapcontent";
-		}
+		return MAP_CONTENT_ERROR_NR_141;
 	}
+
 	else if (action == DELETE)
 	{
-		if (deleteEntry(atoi(data[4].c_str()), changeService, username))
+		if (deleteEntry(atoi(actionParameter.c_str()), changeService, username))
 		{
-			return "deletemapcontent:1";
+			return MAP_CONTENT_DELETE_SUCCESS;
 		}
-		else
-		{
-			return "Error 143:Could not delete mapcontent";
-		}
+		return MAP_CONTENT_ERROR_NR_143;
 	}
-	else
-	{
-		return "Error 144:Action not found for mapcontent";
-	}
+
+	return MAP_CONTENT_ERROR_NR_144;
 }
 
-void MapContentService::ReloadData()
-{
-	load();
-}
-
-/*==============PRIVATE==============*/
-
-void MapContentService::load()
+void MapContentService::LoadData()
 {
 	std::string _mapcontentFileContent = _fileController.ReadFile(_mapContentFile);
 	_mapContentList = _xmlService.GetMapContentList(_mapcontentFileContent);
 }
+
+/*==============PRIVATE==============*/
 
 void MapContentService::save(ChangeService changeService, std::string username)
 {
@@ -106,7 +89,24 @@ void MapContentService::save(ChangeService changeService, std::string username)
 	changeService.UpdateChange("MapContent", username);
 }
 
-std::string MapContentService::getReducedString()
+std::string MapContentService::getJsonString()
+{
+	std::stringstream out;
+	out << "\"Data\":[";
+
+	std::stringstream data;
+	for (int index = 0; index < _mapContentList.size(); index++)
+	{
+		MapContentDto mapContent = _mapContentList[index];
+		data << mapContent.JsonString() << ",";
+	}
+
+	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+
+	return out.str();
+}
+
+std::string MapContentService::getPhpString()
 {
 	std::stringstream out;
 
@@ -114,27 +114,15 @@ std::string MapContentService::getReducedString()
 	{
 		out << "mapcontent::"
 			<< Tools::ConvertIntToStr(_mapContentList[index].GetId()) << "::"
-			<< _mapContentList[index].GetPosition().GetString() << "::"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetType()) << "::"
-			<< _mapContentList[index].GetSchedulesString() << "::"
-			<< _mapContentList[index].GetSocketsString() << "::"
-			<< _mapContentList[index].GetTemperatureArea() << ".:"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetVisibility()) << ";";
+			<< _mapContentList[index].GetType() << "::"
+			<< Tools::ConvertIntToStr(_mapContentList[index].GetTypeId()) << "::"
+			<< _mapContentList[index].GetPosition().SaveString() << "::"
+			<< _mapContentList[index].GetName() << "::"
+			<< _mapContentList[index].GetShortName() << "::"
+			<< _mapContentList[index].GetArea() << ".:"
+			<< Tools::ConvertBoolToStr(_mapContentList[index].GetVisibility()) << ";";
 	}
 
-	out << "\x00" << std::endl;
-
-	return out.str();
-}
-
-std::string MapContentService::getRestString()
-{
-	std::stringstream out;
-
-	for (int index = 0; index < _mapContentList.size(); index++)
-	{
-		out << _mapContentList[index].GetRestString();
-	}
 	out << "\x00" << std::endl;
 
 	return out.str();
@@ -147,7 +135,7 @@ bool MapContentService::add(std::vector<std::string> words, ChangeService change
 	_mapContentList.push_back(newEntry);
 
 	save(changeService, username);
-	load();
+	LoadData();
 
 	return true;
 }
@@ -164,7 +152,7 @@ bool MapContentService::update(std::vector<std::string> words, ChangeService cha
 			_mapContentList[index] = updatedEntry;
 
 			save(changeService, username);
-			load();
+			LoadData();
 
 			return true;
 		}
@@ -184,7 +172,7 @@ bool MapContentService::deleteEntry(int id, ChangeService changeService,
 			it = _mapContentList.erase(it);
 
 			save(changeService, username);
-			load();
+			LoadData();
 
 			return true;
 		}
@@ -199,50 +187,56 @@ bool MapContentService::deleteEntry(int id, ChangeService changeService,
 MapContentDto MapContentService::createMapContent(std::vector<std::string> words)
 {
 	int id = -1;
+	std::string type = "";
+	int typeId = -1;
 	int x = -1;
 	int y = -1;
-	int type = -1;
-	std::vector<std::string> schedules;
-	std::vector<std::string> sockets;
-	std::string temperatureArea = "";
-	int visibility = -1;
+	std::string name = "";
+	std::string shortName = "";
+	std::string area = "";
+	bool visibility = true;
 
-	if (typeid(words.at(0)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_ID_INDEX)) == typeid(std::string))
 	{
-		id = atoi(words[0].c_str());
+		id = atoi(words[MAP_CONTENT_ID_INDEX].c_str());
 	}
-	if (typeid(words.at(1)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_TYPE_INDEX)) == typeid(std::string))
 	{
-		std::vector<std::string> coordinates = Tools::Explode("|", words[1]);
-		if (typeid(coordinates.at(0)) == typeid(std::string) && typeid(coordinates.at(1)) == typeid(std::string))
+		type = words[MAP_CONTENT_TYPE_INDEX].c_str();
+	}
+	if (typeid(words.at(MAP_CONTENT_TYPE_ID_INDEX)) == typeid(std::string))
+	{
+		typeId = atoi(words[MAP_CONTENT_TYPE_ID_INDEX].c_str());
+	}
+	if (typeid(words.at(MAP_CONTENT_COORDINATES_INDEX)) == typeid(std::string))
+	{
+		std::vector<std::string> coordinates = Tools::Explode("|", words[MAP_CONTENT_COORDINATES_INDEX]);
+		if (typeid(coordinates.at(MAP_CONTENT_COORDINATES_X_INDEX)) == typeid(std::string)
+			&& typeid(coordinates.at(MAP_CONTENT_COORDINATES_Y_INDEX)) == typeid(std::string))
 		{
-			x = atoi(coordinates[0].c_str());
-			y = atoi(coordinates[1].c_str());
+			x = atoi(coordinates[MAP_CONTENT_COORDINATES_X_INDEX].c_str());
+			y = atoi(coordinates[MAP_CONTENT_COORDINATES_Y_INDEX].c_str());
 		}
 	}
-	if (typeid(words.at(2)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_NAME_INDEX)) == typeid(std::string))
 	{
-		type = atoi(words[2].c_str());
+		name = words[MAP_CONTENT_NAME_INDEX].c_str();
 	}
-	if (typeid(words.at(3)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_SHORT_NAME_INDEX)) == typeid(std::string))
 	{
-		schedules = Tools::Explode("|", words[3]);
+		shortName = words[MAP_CONTENT_SHORT_NAME_INDEX].c_str();
 	}
-	if (typeid(words.at(4)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_AREA_INDEX)) == typeid(std::string))
 	{
-		sockets = Tools::Explode("|", words[4]);
+		area = words[MAP_CONTENT_AREA_INDEX].c_str();
 	}
-	if (typeid(words.at(5)) == typeid(std::string))
+	if (typeid(words.at(MAP_CONTENT_VISIBILITY_INDEX)) == typeid(std::string))
 	{
-		temperatureArea = words[5].c_str();
-	}
-	if (typeid(words.at(6)) == typeid(std::string))
-	{
-		visibility = atoi(words[6].c_str());
+		visibility = Tools::ConvertStrToBool(words[MAP_CONTENT_VISIBILITY_INDEX].c_str());
 	}
 
 	PointDto position = PointDto(x, y);
-	MapContentDto mapContent = MapContentDto(id, position, type, schedules, sockets, temperatureArea, visibility);
+	MapContentDto mapContent = MapContentDto(id, type, typeId, position, name, shortName, area, visibility);
 
 	return mapContent;
 }

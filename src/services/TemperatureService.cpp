@@ -27,7 +27,7 @@ void TemperatureService::Initialize(FileController fileController, MailControlle
 	_mailController = mailController;
 
 	_settingsFile = settingsFile;
-	loadSettings();
+	LoadData();
 
 	std::ostringstream path;
 	path << "/sys/bus/w1/devices/" << sensorId << "/w1_slave";
@@ -53,7 +53,7 @@ void TemperatureService::ControlTemperature()
 	if (currentTemperature < _minTemp)
 	{
 		std::ostringstream data;
-		data << "Current temperature at " << _temperatureArea << " is too low! " << currentTemperature << "�C!";
+		data << "Current temperature at " << _temperatureArea << " is too low! " << currentTemperature << "°C!";
 
 		sendWarningMail(data.str());
 		enableLED(_ledErrorLowTemp);
@@ -61,7 +61,7 @@ void TemperatureService::ControlTemperature()
 	else if (currentTemperature > _maxTemp)
 	{
 		std::ostringstream data;
-		data << "Current temperature at " << _temperatureArea << " is too high! " << currentTemperature << "�C!";
+		data << "Current temperature at " << _temperatureArea << " is too high! " << currentTemperature << "°C!";
 
 		sendWarningMail(data.str());
 		enableLED(_ledErrorHighTemp);
@@ -73,51 +73,40 @@ void TemperatureService::ControlTemperature()
 	}
 }
 
-std::string TemperatureService::PerformAction(std::string action, std::vector<std::string> data)
+std::string TemperatureService::PerformAction(std::vector<std::string> data)
 {
+	std::string action = data[ACTION_INDEX];
+	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
+
 	if (action == GET)
 	{
-		if (data.size() == 5)
+		if (actionParameter == ALL)
 		{
-			if (data[4] == REST)
-			{
-				return getRestString();
-			}
-			else if (data[4] == REDUCED)
-			{
-				return getReducedString();
-			}
-			else
-			{
-				return "Error 132:Wrong action parameter for temperature";
-			}
+			return getJsonString();
 		}
-		else
+		else if (actionParameter == PHP)
 		{
-			return "Error 131:Wrong data size for temperature";
+			return getPhpString();
 		}
+		return TEMPERATURE_ERROR_NR_132;
 	}
+
 	else if (action == SETCONTROLTASK)
 	{
-		if (data[4] == ON)
+		if (actionParameter == ON)
 		{
 			_temperatureControlActive = true;
-			return "setTemperatureControl:1:1";
+			return TEMPERATURE_ACTIVATE_CONTROL_SUCCESS;
 		}
-		else if (data[4] == OFF)
+		else if (actionParameter == OFF)
 		{
 			_temperatureControlActive = false;
-			return "setTemperatureControl:0:1";
+			return TEMPERATURE_DEACTIVATE_CONTROL_SUCCESS;
 		}
-		else
-		{
-			return "Error 133:Invalid data for temperature";
-		}
+		return TEMPERATURE_ERROR_NR_133;
 	}
-	else
-	{
-		return "Error 130:Action not found for temperature";
-	}
+
+	return TEMPERATURE_ERROR_NR_130;
 }
 
 bool TemperatureService::GetTemperatureControlActive()
@@ -125,14 +114,7 @@ bool TemperatureService::GetTemperatureControlActive()
 	return _temperatureControlActive;
 }
 
-void TemperatureService::ReloadData()
-{
-	loadSettings();
-}
-
-/*==============PRIVATE==============*/
-
-void TemperatureService::loadSettings()
+void TemperatureService::LoadData()
 {
 	std::string settingsFileContent = _fileController.ReadFile(_settingsFile);
 
@@ -145,6 +127,8 @@ void TemperatureService::loadSettings()
 
 	_temperatureControlActive = _xmlService.IsTempControlActive(settingsFileContent);
 }
+
+/*==============PRIVATE==============*/
 
 void TemperatureService::saveSettings()
 {
@@ -219,38 +203,37 @@ double TemperatureService::getValue()
 {
 	if (!_isInitialized)
 	{
-		return -1;
+		return -273.15;
 	}
 
 	return loadTemperature();
 }
 
-std::string TemperatureService::getRestString()
+std::string TemperatureService::getJsonString()
 {
 	if (!_isInitialized)
 	{
-		return "";
+		return TEMPERATURE_ERROR_NR_134;
 	}
 
-	std::stringstream out;
-
-	out << "{temperature:"
-		<< "{value:" << loadTemperature() << "};"
-		<< "{area:" << _temperatureArea << "};"
-		<< "{sensorPath:" << _sensorPath << "};"
-		<< "{graphPath:" << _graphPath << "};"
-		<< "};";
-
-	out << "\x00" << std::endl;
-
-	return out.str();
+	std::string str =
+		std::string("{")
+		+ std::string("\"Temperature\":")
+		+ std::string("{")
+		+ std::string("\"Value\":") + Tools::ConvertDoubleToStr(loadTemperature()) + std::string(",")
+		+ std::string("\"Area\":") + _temperatureArea + std::string(",")
+		+ std::string("\"SensorPath\":") + _sensorPath + std::string(",")
+		+ std::string("\"GraphPath\":") + _graphPath
+		+ std::string("}")
+		+ std::string("}");
+	return str;
 }
 
-std::string TemperatureService::getReducedString()
+std::string TemperatureService::getPhpString()
 {
 	if (!_isInitialized)
 	{
-		return "";
+		return "temperature::-273.15::NA::NA::NA;";
 	}
 
 	std::stringstream out;
@@ -265,3 +248,4 @@ std::string TemperatureService::getReducedString()
 
 	return out.str();
 }
+
