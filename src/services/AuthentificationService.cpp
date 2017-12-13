@@ -227,7 +227,7 @@ int AuthentificationService::getActionId(std::string action) {
 	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE) {
 		return ACTION_LEVEL_LOW;
 	}
-	else if (action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP) {
+	else if (action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP || action == TOGGLE) {
 		return ACTION_LEVEL_MEDIUM;
 	}
 	else if (action == ADD || action == UPDATE) {
@@ -245,7 +245,7 @@ int AuthentificationService::getActionId(std::string action) {
 bool AuthentificationService::isAdminAction(std::string action) {
 	if (action == AVAILABILITY || action == CHECK || action == COUNT
 		|| action == GET || action == VALIDATE || action == ACTIVATE
-		|| action == PLAY || action == SET || action == START
+		|| action == PLAY || action == SET || action == START || action == TOGGLE
 		|| action == STOP || action == ADD || action == UPDATE
 		|| action == CLEAR || action == DEACTIVATE
 		|| action == DELETE) {
