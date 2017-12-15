@@ -110,7 +110,7 @@ std::string CoinService::getJsonStringAll()
 std::string CoinService::getJsonStringUser(std::string username)
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _coinList.size(); index++)
@@ -123,7 +123,7 @@ std::string CoinService::getJsonStringUser(std::string username)
 		}
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

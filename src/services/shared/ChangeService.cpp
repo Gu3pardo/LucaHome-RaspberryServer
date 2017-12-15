@@ -75,7 +75,7 @@ std::string ChangeService::PerformAction(std::vector<std::string> data)
 std::string ChangeService::getJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _changeList.size(); index++)
@@ -84,7 +84,7 @@ std::string ChangeService::getJsonString()
 		data << change.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

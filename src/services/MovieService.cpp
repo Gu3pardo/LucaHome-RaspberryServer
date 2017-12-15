@@ -154,7 +154,7 @@ std::string MovieService::getJsonString(int start, int end, bool stepByStepAllMo
 
 	std::stringstream out;
 	if ((stepByStepAllMovies && start == 0) || !stepByStepAllMovies) {
-		out << "[";
+		out << "{\"Data\":[";
 	}
 
 	std::stringstream data;
@@ -164,7 +164,7 @@ std::string MovieService::getJsonString(int start, int end, bool stepByStepAllMo
 	}
 
 	if ((stepByStepAllMovies && end == maxIndex) || !stepByStepAllMovies) {
-		out << data.str().substr(0, data.str().size() - 1) << "]";
+		out << data.str().substr(0, data.str().size() - 1) << "]}";
 	}
 	else {
 		out << data.str();

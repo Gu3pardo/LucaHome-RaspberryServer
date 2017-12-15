@@ -147,7 +147,7 @@ void BirthdayService::saveBirthdays(ChangeService changeService, std::string use
 std::string BirthdayService::getJsonString()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _birthdayList.size(); index++)
@@ -156,7 +156,7 @@ std::string BirthdayService::getJsonString()
 		data << birthday.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

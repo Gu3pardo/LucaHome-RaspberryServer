@@ -92,7 +92,7 @@ void MapContentService::save(ChangeService changeService, std::string username)
 std::string MapContentService::getJsonString()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _mapContentList.size(); index++)
@@ -101,7 +101,7 @@ std::string MapContentService::getJsonString()
 		data << mapContent.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

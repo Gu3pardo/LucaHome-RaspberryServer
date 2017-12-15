@@ -89,7 +89,7 @@ void ShoppingListService::saveShoppingList(ChangeService changeService, std::str
 std::string ShoppingListService::getJsonString()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _shoppingList.size(); index++)
@@ -98,7 +98,7 @@ std::string ShoppingListService::getJsonString()
 		data << shoppingEntry.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

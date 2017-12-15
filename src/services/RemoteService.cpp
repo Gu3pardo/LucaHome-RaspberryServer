@@ -529,7 +529,7 @@ std::vector<GpioDto> RemoteService::getGpioList()
 std::string RemoteService::getJsonStringGpios()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _gpioList.size(); index++)
@@ -538,7 +538,7 @@ std::string RemoteService::getJsonStringGpios()
 		data << gpio.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -642,7 +642,7 @@ bool RemoteService::setAllGpios(int state, ChangeService changeService, std::str
 std::string RemoteService::getJsonStringSchedules()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _scheduleList.size(); index++)
@@ -651,7 +651,7 @@ std::string RemoteService::getJsonStringSchedules()
 		data << schedule.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -777,7 +777,7 @@ std::vector<WirelessSocketDto> RemoteService::getSocketList()
 std::string RemoteService::getJsonStringSockets()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _socketList.size(); index++)
@@ -786,7 +786,7 @@ std::string RemoteService::getJsonStringSockets()
 		data << wirelessSocket.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -911,7 +911,7 @@ std::vector<WirelessSwitchDto> RemoteService::getSwitchList()
 std::string RemoteService::getJsonStringSwitches()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _switchList.size(); index++)
@@ -920,7 +920,7 @@ std::string RemoteService::getJsonStringSwitches()
 		data << wirelessSwitch.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }

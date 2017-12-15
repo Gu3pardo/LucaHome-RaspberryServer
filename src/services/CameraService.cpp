@@ -59,7 +59,7 @@ std::string CameraService::PerformAction(std::vector<std::string> data)
 	{
 		std::string commandParameter = data[CAMERA_CMD_PARAMETER_INDEX];
 
-		if (commandParameter == STATE &&  IsMotionRunning())
+		if (commandParameter == STATE && IsMotionRunning())
 		{
 			return ACTIVE;
 		}
@@ -241,22 +241,24 @@ std::string CameraService::getDataJsonString()
 	}
 	else
 	{
-		out << "\"OFF\"},";
+		out << "\"OFF\",";
 	}
 
-	out << "{\"Control\":";
+	out << "\"Control\":";
 	if (_motionControlActive)
 	{
 		out << "\"ON\"},";
 	}
 	else
 	{
-		out << "\"OFF\"},";
+		out << "\"OFF\",";
 	}
 
-	out << "{\"URL\":\"" << _cameraUrl << "\"},"
-		<< "{" << getMotionEventsJsonString() << "}"
-		<< "}";
+	out << "\"URL\":\"" << _cameraUrl << "\",";
+
+	out << "\"Events\":" << getMotionEventsJsonString();
+
+	out << "}" << "}";
 
 	return out.str();
 }

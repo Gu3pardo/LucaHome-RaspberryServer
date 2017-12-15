@@ -141,7 +141,7 @@ void MenuService::saveMenu(ChangeService changeService, std::string username)
 std::string MenuService::getMenuJsonString()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _menuList.size(); index++)
@@ -150,7 +150,7 @@ std::string MenuService::getMenuJsonString()
 		data << menu.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }
@@ -230,7 +230,7 @@ void MenuService::loadListedMenu()
 std::string MenuService::getListedMenuJsonString()
 {
 	std::stringstream out;
-	out << "[";
+	out << "{\"Data\":[";
 
 	std::stringstream data;
 	for (int index = 0; index < _listedMenuList.size(); index++)
@@ -239,7 +239,7 @@ std::string MenuService::getListedMenuJsonString()
 		data << listedMenu.JsonString() << ",";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
 
 	return out.str();
 }
