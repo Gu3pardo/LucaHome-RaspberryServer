@@ -237,24 +237,24 @@ std::string CameraService::getDataJsonString()
 	out << "{\"State\":";
 	if (IsMotionRunning())
 	{
-		out << "ON},";
+		out << "\"ON\"},";
 	}
 	else
 	{
-		out << "OFF},";
+		out << "\"OFF\"},";
 	}
 
 	out << "{\"Control\":";
 	if (_motionControlActive)
 	{
-		out << "ON},";
+		out << "\"ON\"},";
 	}
 	else
 	{
-		out << "OFF},";
+		out << "\"OFF\"},";
 	}
 
-	out << "{\"URL\":" << _cameraUrl << "},"
+	out << "{\"URL\":\"" << _cameraUrl << "\"},"
 		<< "{" << getMotionEventsJsonString() << "}"
 		<< "}";
 
@@ -264,7 +264,7 @@ std::string CameraService::getDataJsonString()
 std::string CameraService::getMotionEventsJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	_motionEvents = _pathController.ScanCameraFolder();
 
@@ -284,8 +284,8 @@ std::string CameraService::getMotionEventsJsonString()
 			std::string("{")
 			+ std::string("\"Event\":")
 			+ std::string("{")
-			+ std::string("\"FileName\":") + _motionEvents[index]
-			+ std::string("}")
+			+ std::string("\"FileName\":\"") + _motionEvents[index]
+			+ std::string("\"}")
 			+ std::string("}");
 
 		data << motionEventString << ",";

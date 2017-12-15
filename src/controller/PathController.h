@@ -39,7 +39,6 @@ public:
 	~PathController();
 
 	std::vector<std::string> ScanCameraFolder();
-	std::vector<std::string> ScanLibraryFolder();
 	std::vector<std::string> ScanMovieFolder();
 	std::vector<std::string> ScanSeriesFolder();
 };

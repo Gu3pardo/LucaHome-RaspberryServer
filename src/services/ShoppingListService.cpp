@@ -89,7 +89,7 @@ void ShoppingListService::saveShoppingList(ChangeService changeService, std::str
 std::string ShoppingListService::getJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _shoppingList.size(); index++)
@@ -109,11 +109,7 @@ std::string ShoppingListService::getPhpString()
 
 	for (int index = 0; index < _shoppingList.size(); index++)
 	{
-		out << "shopping_entry::"
-			<< Tools::ConvertIntToStr(_shoppingList[index].GetId()) << "::"
-			<< _shoppingList[index].GetName() << "::"
-			<< _shoppingList[index].GetGroup() << "::"
-			<< Tools::ConvertIntToStr(_shoppingList[index].GetQuantity()) << ";";
+		out << _shoppingList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;

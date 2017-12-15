@@ -98,7 +98,7 @@ std::string ChangeDto::GetUserName()
 
 std::string ChangeDto::SaveString()
 {
-	std::string str = 
+	std::string str =
 		_type + ":"
 		+ Tools::ConvertIntToStr(_hour) + ":"
 		+ Tools::ConvertIntToStr(_minute) + ":"
@@ -115,8 +115,8 @@ std::string ChangeDto::JsonString()
 		std::string("{")
 		+ std::string("\"Change\":")
 		+ std::string("{")
-		+ std::string("\"Type\":") + _type + std::string(",")
-		+ std::string("\"UserName\":") + _userName + std::string(",")
+		+ std::string("\"Type\":\"") + _type + std::string("\",")
+		+ std::string("\"UserName\":\"") + _userName + std::string("\",")
 		+ std::string("{")
 		+ std::string("\"Date\":")
 		+ std::string("{")
@@ -134,16 +134,32 @@ std::string ChangeDto::JsonString()
 	return str;
 }
 
+std::string ChangeDto::PhpString()
+{
+	std::stringstream out;
+
+	out << "change::"
+		<< _type << "::"
+		<< Tools::ConvertIntToStr(_hour) << "::"
+		<< Tools::ConvertIntToStr(_minute) << "::"
+		<< Tools::ConvertIntToStr(_day) << "::"
+		<< Tools::ConvertIntToStr(_month) << "::"
+		<< Tools::ConvertIntToStr(_year) << "::"
+		<< _userName << ";";
+
+	return out.str();
+}
+
 std::string ChangeDto::ToString()
 {
 	std::string str =
-		std::string("ChangeDto { type: ") + _type 
-		+ std::string("; hour: ") + Tools::ConvertIntToStr(_hour) 
+		std::string("ChangeDto { type: ") + _type
+		+ std::string("; hour: ") + Tools::ConvertIntToStr(_hour)
 		+ std::string("; minute: ") + Tools::ConvertIntToStr(_minute)
 		+ std::string("; day: ") + Tools::ConvertIntToStr(_day)
 		+ std::string("; month: ") + Tools::ConvertIntToStr(_month)
 		+ std::string("; year: ") + Tools::ConvertIntToStr(_year)
-		+ std::string("; userName: ") + _userName 
+		+ std::string("; userName: ") + _userName
 		+ std::string(" }");
 	return str;
 }

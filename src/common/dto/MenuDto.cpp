@@ -86,7 +86,7 @@ std::string MenuDto::GetDescription()
 
 std::string MenuDto::SaveString()
 {
-	std::string str = 
+	std::string str =
 		"<" + _weekday + ">"
 		+ Tools::ConvertIntToStr(_day) + ":"
 		+ Tools::ConvertIntToStr(_month) + ":"
@@ -103,9 +103,9 @@ std::string MenuDto::JsonString()
 		std::string("{")
 		+ std::string("\"Menu\":")
 		+ std::string("{")
-		+ std::string("\"Title\":") + _title + std::string(",")
-		+ std::string("\"Description\":") + _description + std::string(",")
-		+ std::string("\"Weekday\":") + _weekday + std::string(",")
+		+ std::string("\"Title\":\"") + _title + std::string("\",")
+		+ std::string("\"Description\":\"") + _description + std::string("\",")
+		+ std::string("\"Weekday\":\"") + _weekday + std::string("\",")
 		+ std::string("\"Date\":")
 		+ std::string("{")
 		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
@@ -117,12 +117,27 @@ std::string MenuDto::JsonString()
 	return str;
 }
 
+std::string MenuDto::PhpString()
+{
+	std::stringstream out;
+
+	out << "menu::"
+		<< _weekday << "::"
+		<< Tools::ConvertIntToStr(_day) << "::"
+		<< Tools::ConvertIntToStr(_month) << "::"
+		<< Tools::ConvertIntToStr(_year) << "::"
+		<< _title << "::"
+		<< _description << ";";
+
+	return out.str();
+}
+
 std::string MenuDto::ToString()
 {
 	std::string str =
-		std::string("MenuDto { title: ") + _title 
-		+ std::string("; description: ") + _description 
-		+ std::string("; weekday: ") + _weekday 
+		std::string("MenuDto { title: ") + _title
+		+ std::string("; description: ") + _description
+		+ std::string("; weekday: ") + _weekday
 		+ std::string("; day: ") + Tools::ConvertIntToStr(_day)
 		+ std::string("; month: ") + Tools::ConvertIntToStr(_month)
 		+ std::string("; year: ") + Tools::ConvertIntToStr(_year)

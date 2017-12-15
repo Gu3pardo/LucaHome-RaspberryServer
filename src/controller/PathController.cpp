@@ -40,11 +40,6 @@ std::vector<std::string> PathController::ScanCameraFolder()
 	return imageEntries;
 }
 
-std::vector<std::string> PathController::ScanLibraryFolder()
-{
-	return scanForSubDir(NAS_PAH_LIBRARY);
-}
-
 std::vector<std::string> PathController::ScanMovieFolder()
 {
 	return scanForSubDir(NAS_PAH_MOVIE);

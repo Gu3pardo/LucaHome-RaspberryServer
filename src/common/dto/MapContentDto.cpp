@@ -85,17 +85,33 @@ std::string MapContentDto::JsonString() {
 		+ std::string("\"MapContent\":")
 		+ std::string("{")
 		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
-		+ std::string("\"Type\":") + _type + std::string(",")
+		+ std::string("\"Type\":\"") + _type + std::string("\",")
 		+ std::string("\"TypeId\":") + Tools::ConvertIntToStr(_typeId) + std::string(",")
-		+ std::string("\"Name\":") + _name + std::string(",")
-		+ std::string("\"ShortName\":") + _shortName + std::string(",")
-		+ std::string("\"Area\":") + _area + std::string(",")
+		+ std::string("\"Name\":\"") + _name + std::string("\",")
+		+ std::string("\"ShortName\":\"") + _shortName + std::string("\",")
+		+ std::string("\"Area\":\"") + _area + std::string("\",")
 		+ std::string("\"Visibility\":") + Tools::ConvertBoolToStr(_visibility) + std::string(",")
 		+ std::string("\"Position\":")
 		+ _position.JsonString() + ":"
 		+ std::string("}")
 		+ std::string("}");
 	return str;
+}
+
+std::string MapContentDto::PhpString() {
+	std::stringstream out;
+
+	out << "mapcontent::"
+		<< Tools::ConvertIntToStr(_id) << "::"
+		<< _type << "::"
+		<< Tools::ConvertIntToStr(_typeId) << "::"
+		<< _position.SaveString() << "::"
+		<< _name << "::"
+		<< _shortName << "::"
+		<< _area << "::"
+		<< Tools::ConvertBoolToStr(_visibility) << ";";
+
+	return out.str();
 }
 
 std::string MapContentDto::ToString() {

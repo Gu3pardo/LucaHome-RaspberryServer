@@ -368,9 +368,10 @@
 #define MOVIE_DATA_RATING_INDEX 7
 #define MOVIE_DATA_WATCHED_INDEX 8
 #define MOVIE_DATA_SIZE 9
-#define MOVIE_DATA_INDEX_SIZE 7
 #define MOVIE_DATA_LOW_INDEX 5
 #define MOVIE_DATA_HIGH_INDEX 6
+#define MOVIE_DATA_ADDITIONAL_INDEX 7
+#define MOVIE_DATA_INDEX_SIZE 8
 
 #define REMOTE_PARAMETER_INDEX 5
 
@@ -423,12 +424,11 @@
 /*************** PATH DEFINITIONS **************/
 /***********************************************/
 
-#define NAS_PATH_CAMERA "/NAS/Camera/"
-#define NAS_PAH_LIBRARY "/NAS/Library/"
-#define NAS_PAH_LUCAHOME "/NAS/LucaHome/"
-#define NAS_PAH_MOVIE "/NAS/Movies/"
-#define NAS_PATH_MUSIC "/NAS/Music/"
-#define NAS_PATH_SERIES "/NAS/Series/"
+#define NAS_PATH_CAMERA "/mnt/NAS/Camera/"
+#define NAS_PAH_LUCAHOME "/mnt/NAS/LucaHome/"
+#define NAS_PAH_MOVIE "/mnt/NAS/Movies/"
+#define NAS_PATH_MUSIC "/mnt/NAS/Music/"
+#define NAS_PATH_SERIES "/mnt/NAS/Series/"
 
 /***********************************************/
 /************* FILE PATH DEFINITIONS ***********/

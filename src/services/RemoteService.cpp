@@ -529,7 +529,7 @@ std::vector<GpioDto> RemoteService::getGpioList()
 std::string RemoteService::getJsonStringGpios()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _gpioList.size(); index++)
@@ -642,7 +642,7 @@ bool RemoteService::setAllGpios(int state, ChangeService changeService, std::str
 std::string RemoteService::getJsonStringSchedules()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _scheduleList.size(); index++)
@@ -777,7 +777,7 @@ std::vector<WirelessSocketDto> RemoteService::getSocketList()
 std::string RemoteService::getJsonStringSockets()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _socketList.size(); index++)
@@ -911,7 +911,7 @@ std::vector<WirelessSwitchDto> RemoteService::getSwitchList()
 std::string RemoteService::getJsonStringSwitches()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _switchList.size(); index++)

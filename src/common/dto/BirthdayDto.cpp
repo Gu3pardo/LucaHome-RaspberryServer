@@ -158,10 +158,10 @@ std::string BirthdayDto::JsonString()
 		+ std::string("\"Birthday\":")
 		+ std::string("{")
 		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
-		+ std::string("\"Name\":") + _name + std::string(",")
+		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"RemindMe\":") + Tools::ConvertBoolToStr(_remindMe) + std::string(",")
 		+ std::string("\"SendMail\":") + Tools::ConvertBoolToStr(_sendMail) + std::string(",")
-		+ std::string("\"Date\":") 
+		+ std::string("\"Date\":")
 		+ std::string("{")
 		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
 		+ std::string("\"Month\":") + Tools::ConvertIntToStr(_month) + std::string(",")
@@ -170,6 +170,21 @@ std::string BirthdayDto::JsonString()
 		+ std::string("}")
 		+ std::string("}");
 	return str;
+}
+
+std::string BirthdayDto::PhpString()
+{
+	std::stringstream out;
+
+	out << "birthday::"
+		<< Tools::ConvertIntToStr(_id) << "::"
+		<< _name << "::"
+		<< Tools::ConvertIntToStr(_day) << "::"
+		<< Tools::ConvertIntToStr(_month) << "::"
+		<< Tools::ConvertIntToStr(_year) << "::"
+		<< Tools::ConvertBoolToStr(_remindMe) << ";";
+
+	return out.str();
 }
 
 std::string BirthdayDto::ToString()

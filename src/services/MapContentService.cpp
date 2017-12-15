@@ -92,7 +92,7 @@ void MapContentService::save(ChangeService changeService, std::string username)
 std::string MapContentService::getJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _mapContentList.size(); index++)
@@ -112,15 +112,7 @@ std::string MapContentService::getPhpString()
 
 	for (int index = 0; index < _mapContentList.size(); index++)
 	{
-		out << "mapcontent::"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetId()) << "::"
-			<< _mapContentList[index].GetType() << "::"
-			<< Tools::ConvertIntToStr(_mapContentList[index].GetTypeId()) << "::"
-			<< _mapContentList[index].GetPosition().SaveString() << "::"
-			<< _mapContentList[index].GetName() << "::"
-			<< _mapContentList[index].GetShortName() << "::"
-			<< _mapContentList[index].GetArea() << ".:"
-			<< Tools::ConvertBoolToStr(_mapContentList[index].GetVisibility()) << ";";
+		out << _mapContentList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;

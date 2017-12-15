@@ -50,6 +50,7 @@ public:
 
 	std::string SaveString();
 	std::string JsonString();
+	std::string PhpString();
 	std::string ToString();
 };
 

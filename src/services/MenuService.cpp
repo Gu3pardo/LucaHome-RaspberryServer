@@ -141,7 +141,7 @@ void MenuService::saveMenu(ChangeService changeService, std::string username)
 std::string MenuService::getMenuJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _menuList.size(); index++)
@@ -161,13 +161,7 @@ std::string MenuService::getMenuPhpString()
 
 	for (int index = 0; index < _menuList.size(); index++)
 	{
-		out << "menu::"
-			<< _menuList[index].GetWeekday() << "::"
-			<< Tools::ConvertIntToStr(_menuList[index].GetDay()) << "::"
-			<< Tools::ConvertIntToStr(_menuList[index].GetMonth()) << "::"
-			<< Tools::ConvertIntToStr(_menuList[index].GetYear()) << "::"
-			<< _menuList[index].GetTitle() << "::"
-			<< _menuList[index].GetDescription() << ";";
+		out << _menuList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;
@@ -236,7 +230,7 @@ void MenuService::loadListedMenu()
 std::string MenuService::getListedMenuJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _listedMenuList.size(); index++)
@@ -256,12 +250,7 @@ std::string MenuService::getListedMenuPhpString()
 
 	for (int index = 0; index < _listedMenuList.size(); index++)
 	{
-		out << "listedmenu::"
-			<< Tools::ConvertIntToStr(_listedMenuList[index].GetId()) << "::"
-			<< _listedMenuList[index].GetTitle() << "::"
-			<< _listedMenuList[index].GetDescription() << "::"
-			<< Tools::ConvertIntToStr(_listedMenuList[index].GetRating()) << "::"
-			<< Tools::ConvertIntToStr(_listedMenuList[index].GetUseCount()) << ";";
+		out << _listedMenuList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;

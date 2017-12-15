@@ -30,13 +30,14 @@ std::string MovieService::PerformAction(std::vector<std::string> data, std::stri
 		}
 		else if (actionParameter == ALL)
 		{
-			return getJsonString(0, getCount() - 1);
+			return getJsonString(0, getCount() - 1, false);
 		}
 		else if (actionParameter == INDEX)
 		{
 			if (data.size() == MOVIE_DATA_INDEX_SIZE)
 			{
-				return getJsonString(atoi(data[MOVIE_DATA_LOW_INDEX].c_str()), atoi(data[MOVIE_DATA_HIGH_INDEX].c_str()));
+				std::string additionalParameter = data[MOVIE_DATA_ADDITIONAL_INDEX];
+				return getJsonString(atoi(data[MOVIE_DATA_LOW_INDEX].c_str()), atoi(data[MOVIE_DATA_HIGH_INDEX].c_str()), (additionalParameter == ALL));
 			}
 			return MOVIE_ERROR_NR_47;
 		}
@@ -132,49 +133,44 @@ void MovieService::saveMovieNFO(MovieDto movie, std::string username)
 	_fileController.SaveFile(nfoFilePath, movie.SaveString());
 }
 
-std::string MovieService::generateJsonEntry(MovieDto movie)
-{
-	std::string str =
-		std::string("{")
-		+ std::string("\"MovieDto\":")
-		+ std::string("{")
-		+ std::string("\"Title\":") + movie.GetTitle() + std::string(",")
-		+ std::string("\"Genre\":") + movie.GetGenre() + std::string(",")
-		+ std::string("\"Description\":") + movie.GetDescription() + std::string(",")
-		+ std::string("\"Rating\":") + Tools::ConvertIntToStr(movie.GetRating()) + std::string(",")
-		+ std::string("\"Watched\":") + Tools::ConvertIntToStr(movie.GetWatched())
-		+ std::string("}")
-		+ std::string("}");
-	return str;
-}
-
 int MovieService::getCount()
 {
 	return _movieList.size();
 }
 
-std::string MovieService::getJsonString(int start, int end)
+std::string MovieService::getJsonString(int start, int end, bool stepByStepAllMovies)
 {
-	if (start > _movieList.size() - 1)
+	int maxIndex = getCount() - 1;
+
+	if (start > maxIndex)
 	{
 		return MOVIE_ERROR_NR_45;
 	}
 
-	if (end > _movieList.size() - 1)
+	if (end > maxIndex)
 	{
-		end = _movieList.size() - 1;
+		end = maxIndex;
 	}
 
 	std::stringstream out;
-	out << "\"Data\":[";
-
-	std::stringstream data;
-	for (int index = start; index < end; index++)
-	{
-		data << generateJsonEntry(_movieList[index]) << ",";
+	if ((stepByStepAllMovies && start == 0) || !stepByStepAllMovies) {
+		out << "[";
 	}
 
-	out << data.str().substr(0, data.str().size() - 1) << "]" << "\x00" << std::endl;
+	std::stringstream data;
+	for (int index = start; index <= end; index++)
+	{
+		data << _movieList[index].JsonString() << ",";
+	}
+
+	if ((stepByStepAllMovies && end == maxIndex) || !stepByStepAllMovies) {
+		out << data.str().substr(0, data.str().size() - 1) << "]";
+	}
+	else {
+		out << data.str();
+	}
+
+	out << "\x00" << std::endl;
 
 	return out.str();
 }

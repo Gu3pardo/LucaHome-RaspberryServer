@@ -34,10 +34,9 @@ private:
 
 	void saveMovieNFO(MovieDto, std::string);
 
-	std::string generateJsonEntry(MovieDto);
 	int getCount();
 
-	std::string getJsonString(int, int);
+	std::string getJsonString(int, int, bool);
 
 	bool updateMovieData(std::vector<std::string>, std::string);
 

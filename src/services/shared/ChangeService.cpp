@@ -95,16 +95,7 @@ std::string ChangeService::getPhpString()
 
 	for (int index = 0; index < _changeList.size(); index++)
 	{
-		ChangeDto change = _changeList[index];
-
-		out << "change::"
-			<< change.GetType() << "::"
-			<< Tools::ConvertIntToStr(change.GetHour()) << "::"
-			<< Tools::ConvertIntToStr(change.GetMinute()) << "::"
-			<< Tools::ConvertIntToStr(change.GetDay()) << "::"
-			<< Tools::ConvertIntToStr(change.GetMonth()) << "::"
-			<< Tools::ConvertIntToStr(change.GetYear()) << "::"
-			<< change.GetUserName() << ";";
+		out << _changeList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;

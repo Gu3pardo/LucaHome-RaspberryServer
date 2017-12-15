@@ -74,7 +74,7 @@ int ListedMenuDto::GetRating()
 
 std::string ListedMenuDto::SaveString()
 {
-	std::string str = 
+	std::string str =
 		Tools::ConvertIntToStr(_id) + ":"
 		+ _title + ":"
 		+ _description + ":"
@@ -90,13 +90,27 @@ std::string ListedMenuDto::JsonString()
 		+ std::string("\"ListedMenu\":")
 		+ std::string("{")
 		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
-		+ std::string("\"Title\":") + _title + std::string(",")
-		+ std::string("\"Description\":") + _description + std::string(",")
+		+ std::string("\"Title\":\"") + _title + std::string("\",")
+		+ std::string("\"Description\":\"") + _description + std::string("\",")
 		+ std::string("\"UseCounter\":") + Tools::ConvertIntToStr(_useCounter) + std::string(",")
 		+ std::string("\"Rating\":") + Tools::ConvertIntToStr(_rating)
 		+ std::string("}")
 		+ std::string("}");
 	return str;
+}
+
+std::string ListedMenuDto::PhpString()
+{
+	std::stringstream out;
+
+	out << "listedmenu::"
+		<< Tools::ConvertIntToStr(_id) << "::"
+		<< _title << "::"
+		<< _description << "::"
+		<< Tools::ConvertIntToStr(_useCounter) << "::"
+		<< Tools::ConvertIntToStr(_rating) << ";";
+
+	return out.str();
 }
 
 std::string ListedMenuDto::ToString()

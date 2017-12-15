@@ -221,10 +221,10 @@ std::string TemperatureService::getJsonString()
 		+ std::string("\"Temperature\":")
 		+ std::string("{")
 		+ std::string("\"Value\":") + Tools::ConvertDoubleToStr(loadTemperature()) + std::string(",")
-		+ std::string("\"Area\":") + _temperatureArea + std::string(",")
-		+ std::string("\"SensorPath\":") + _sensorPath + std::string(",")
-		+ std::string("\"GraphPath\":") + _graphPath
-		+ std::string("}")
+		+ std::string("\"Area\":\"") + _temperatureArea + std::string("\",")
+		+ std::string("\"SensorPath\":\"") + _sensorPath + std::string("\",")
+		+ std::string("\"GraphPath\":\"") + _graphPath
+		+ std::string("\"}")
 		+ std::string("}");
 	return str;
 }

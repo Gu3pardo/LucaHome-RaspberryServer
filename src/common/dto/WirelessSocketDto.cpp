@@ -141,9 +141,9 @@ std::string WirelessSocketDto::JsonString()
 		std::string("{")
 		+ std::string("\"WirelessSocket\":")
 		+ std::string("{")
-		+ std::string("\"Name\":") + _name + std::string(",")
-		+ std::string("\"Area\":") + _area + std::string(",")
-		+ std::string("\"Code\":") + _code + std::string(",")
+		+ std::string("\"Name\":\"") + _name + std::string("\",")
+		+ std::string("\"Area\":\"") + _area + std::string("\",")
+		+ std::string("\"Code\":\"") + _code + std::string("\",")
 		+ std::string("\"State\":") + Tools::ConvertIntToStr(_state) + std::string(",")
 		+ std::string("\"LastTrigger\":")
 		+ std::string("{")
@@ -152,8 +152,8 @@ std::string WirelessSocketDto::JsonString()
 		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_lastTriggerDay) + std::string(",")
 		+ std::string("\"Month\":") + Tools::ConvertIntToStr(_lastTriggerMonth) + std::string(",")
 		+ std::string("\"Year\":") + Tools::ConvertIntToStr(_lastTriggerYear) + std::string(",")
-		+ std::string("\"UserName\":") + _lastTriggerUserName
-		+ std::string("}")
+		+ std::string("\"UserName\":\"") + _lastTriggerUserName
+		+ std::string("\"}")
 		+ std::string("}")
 		+ std::string("}");
 	return str;

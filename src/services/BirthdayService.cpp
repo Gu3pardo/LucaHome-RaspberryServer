@@ -147,7 +147,7 @@ void BirthdayService::saveBirthdays(ChangeService changeService, std::string use
 std::string BirthdayService::getJsonString()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _birthdayList.size(); index++)
@@ -167,15 +167,7 @@ std::string BirthdayService::getPhpString()
 
 	for (int index = 0; index < _birthdayList.size(); index++)
 	{
-		BirthdayDto birthday = _birthdayList[index];
-
-		out << "birthday::"
-			<< Tools::ConvertIntToStr(birthday.GetId()) << "::"
-			<< birthday.GetName() << "::"
-			<< Tools::ConvertIntToStr(birthday.GetDay()) << "::"
-			<< Tools::ConvertIntToStr(birthday.GetMonth()) << "::"
-			<< Tools::ConvertIntToStr(birthday.GetYear()) << "::"
-			<< Tools::ConvertBoolToStr(birthday.GetRemindMe()) << ";";
+		out << _birthdayList[index].PhpString();
 	}
 
 	out << "\x00" << std::endl;

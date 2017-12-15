@@ -33,9 +33,6 @@ private:
 	FileController _fileController;
 	XmlService _xmlService;
 
-	std::string getJsonString();
-	std::string getPhpString();
-
 public:
 	InformationService();
 	~InformationService();

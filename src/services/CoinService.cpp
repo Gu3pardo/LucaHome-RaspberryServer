@@ -93,7 +93,7 @@ void CoinService::saveCoins(ChangeService changeService, std::string username)
 std::string CoinService::getJsonStringAll()
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _coinList.size(); index++)
@@ -110,7 +110,7 @@ std::string CoinService::getJsonStringAll()
 std::string CoinService::getJsonStringUser(std::string username)
 {
 	std::stringstream out;
-	out << "\"Data\":[";
+	out << "[";
 
 	std::stringstream data;
 	for (int index = 0; index < _coinList.size(); index++)

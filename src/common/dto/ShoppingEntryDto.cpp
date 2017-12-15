@@ -72,7 +72,7 @@ int ShoppingEntryDto::GetQuantity()
 
 std::string ShoppingEntryDto::SaveString()
 {
-	std::string str = 
+	std::string str =
 		Tools::ConvertIntToStr(_id) + ":"
 		+ _name + ":"
 		+ _group + ":"
@@ -87,12 +87,25 @@ std::string ShoppingEntryDto::JsonString()
 		+ std::string("\"ShoppingEntry\":")
 		+ std::string("{")
 		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
-		+ std::string("\"Name\":") + _name + std::string(",")
-		+ std::string("\"Group\":") + _group + std::string(",")
+		+ std::string("\"Name\":\"") + _name + std::string("\",")
+		+ std::string("\"Group\":\"") + _group + std::string("\",")
 		+ std::string("\"Quantity\":") + Tools::ConvertIntToStr(_quantity)
 		+ std::string("}")
 		+ std::string("}");
 	return str;
+}
+
+std::string ShoppingEntryDto::PhpString()
+{
+	std::stringstream out;
+
+	out << "shopping_entry::"
+		<< Tools::ConvertIntToStr(_id) << "::"
+		<< _name << "::"
+		<< _group << "::"
+		<< Tools::ConvertIntToStr(_quantity) << ";";
+
+	return out.str();
 }
 
 std::string ShoppingEntryDto::ToString()
