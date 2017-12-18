@@ -92,7 +92,7 @@ std::string MapContentDto::JsonString() {
 		+ std::string("\"Area\":\"") + _area + std::string("\",")
 		+ std::string("\"Visibility\":") + Tools::ConvertBoolToStr(_visibility) + std::string(",")
 		+ std::string("\"Position\":")
-		+ _position.JsonString() + ":"
+		+ _position.JsonString()
 		+ std::string("}")
 		+ std::string("}");
 	return str;
