@@ -2,8 +2,8 @@
 
 PointDto::PointDto()
 {
-	_x = -1;
-	_y = -1;
+	_x = 0;
+	_y = 0;
 }
 
 PointDto::PointDto(int x, int y)

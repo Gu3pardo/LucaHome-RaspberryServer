@@ -2,7 +2,7 @@
 
 BirthdayDto::BirthdayDto()
 {
-	_id = -1;
+	_id = 0;
 	_name = "Dummy";
 	_day = 1;
 	_month = 1;

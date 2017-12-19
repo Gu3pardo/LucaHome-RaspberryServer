@@ -6,12 +6,12 @@ ScheduleDto::ScheduleDto()
 	_socket = "N.A.";
 	_gpio = "N.A.";
 	_switch = "N.A.";
-	_weekday = -1;
-	_hour = -1;
-	_minute = -1;
-	_onoff = -1;
+	_weekday = 0;
+	_hour = 0;
+	_minute = 0;
+	_onoff = 0;
 	_isTimer = false;
-	_state = -1;
+	_state = 0;
 }
 
 ScheduleDto::ScheduleDto(

@@ -2,7 +2,7 @@
 
 ListedMenuDto::ListedMenuDto()
 {
-	_id = -1;
+	_id = 0;
 	_title = "N.A.";
 	_description = "N.A.";
 	_rating = 0;

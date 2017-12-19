@@ -3,9 +3,9 @@
 MenuDto::MenuDto()
 {
 	_weekday = "N.A.";
-	_day = -1;
-	_month = -1;
-	_year = -1;
+	_day = 0;
+	_month = 0;
+	_year = 0;
 	_title = "N.A.";
 	_description = "N.A.";
 }

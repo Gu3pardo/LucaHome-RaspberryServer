@@ -3,11 +3,11 @@
 ChangeDto::ChangeDto()
 {
 	_type = "Dummy";
-	_hour = -1;
-	_minute = -1;
-	_day = -1;
-	_month = -1;
-	_year = -1;
+	_hour = 0;
+	_minute = 0;
+	_day = 1;
+	_month = 1;
+	_year = 1970;
 	_userName = "Dummy";
 }
 

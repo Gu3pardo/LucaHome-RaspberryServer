@@ -224,7 +224,7 @@ void AuthentificationService::loadUsers() {
 }
 
 int AuthentificationService::getActionId(std::string action) {
-	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE) {
+	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE || action == RELOAD) {
 		return ACTION_LEVEL_LOW;
 	}
 	else if (action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP || action == TOGGLE) {
@@ -248,7 +248,7 @@ bool AuthentificationService::isAdminAction(std::string action) {
 		|| action == PLAY || action == SET || action == START || action == TOGGLE
 		|| action == STOP || action == ADD || action == UPDATE
 		|| action == CLEAR || action == DEACTIVATE
-		|| action == DELETE) {
+		|| action == DELETE || action == RELOAD) {
 		return false;
 	}
 	else if (action == RESETFAILEDLOGIN || action == SETCONTROLTASK || action == SYSTEM) {

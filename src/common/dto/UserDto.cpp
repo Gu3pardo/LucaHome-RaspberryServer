@@ -4,9 +4,9 @@ UserDto::UserDto()
 {
 	_name = "DUMMY";
 	_password = "NO_PASSWORD";
-	_role = -1;
+	_role = 0;
 	_isAdmin = false;
-	_invalidLoginCount = -1;
+	_invalidLoginCount = 0;
 }
 
 UserDto::UserDto(std::string name, std::string password, int role, bool isAdmin, int invalidLoginCount)

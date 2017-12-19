@@ -1,9 +1,9 @@
 #include "MapContentDto.h"
 
 MapContentDto::MapContentDto() {
-	_id = -1;
+	_id = 0;
 	_type = "";
-	_typeId = -1;
+	_typeId = 0;
 	_position = PointDto();
 	_name = "";
 	_shortName = "";

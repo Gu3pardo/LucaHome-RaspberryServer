@@ -3,8 +3,8 @@
 WirelessSwitchDto::WirelessSwitchDto()
 	: WirelessSocketDto()
 {
-	_remoteId = -1;
-	_keycode = -1;
+	_remoteId = 1;
+	_keycode = 1;
 	_action = false;
 }
 

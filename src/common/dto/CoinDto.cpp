@@ -2,9 +2,9 @@
 
 CoinDto::CoinDto()
 {
-	_id = -1;
+	_id = 0;
 	_user = "Dummy";
-	_type = "Dummy";
+	_type = "BTC";
 	_amount = 0;
 }
 

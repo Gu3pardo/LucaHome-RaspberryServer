@@ -5,13 +5,13 @@ WirelessSocketDto::WirelessSocketDto()
 	_name = "N.A.";
 	_area = "N.A.";
 	_code = "N.A.";
-	_state = -1;
+	_state = 0;
 
-	_lastTriggerHour = -1;
-	_lastTriggerMinute = -1;
-	_lastTriggerDay = -1;
-	_lastTriggerMonth = -1;
-	_lastTriggerYear = -1;
+	_lastTriggerHour = 0;
+	_lastTriggerMinute = 0;
+	_lastTriggerDay = 1;
+	_lastTriggerMonth = 1;
+	_lastTriggerYear = 1970;
 	_lastTriggerUserName = "N.A.";
 }
 

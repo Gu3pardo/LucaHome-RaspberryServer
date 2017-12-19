@@ -3,8 +3,8 @@
 GpioDto::GpioDto()
 {
 	_name = "N.A.";
-	_gpio = -1;
-	_state = -1;
+	_gpio = 0;
+	_state = 0;
 }
 
 GpioDto::GpioDto(std::string name, int gpio, int state)

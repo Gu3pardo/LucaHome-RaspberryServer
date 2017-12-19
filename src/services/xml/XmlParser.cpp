@@ -148,39 +148,14 @@ std::vector<BirthdayDto> XmlParser::ParseBirthdayList()
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 
-				BirthdayDto newBirthday;
-				newBirthday.SetId(l);
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newBirthday.SetName(words[0]);
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newBirthday.SetDay(atoi(words[1].c_str()));
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newBirthday.SetMonth(atoi(words[2].c_str()));
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newBirthday.SetYear(atoi(words[3].c_str()));
-					}
-					if (typeid(words.at(4)) == typeid(std::string))
-					{
-						bool remindMe = Tools::ConvertStrToBool(words[4].c_str());
-						newBirthday.SetRemindMe(remindMe);
-					}
-					if (typeid(words.at(5)) == typeid(std::string))
-					{
-						bool sendMail = Tools::ConvertStrToBool(words[5].c_str());
-						newBirthday.SetSendMail(sendMail);
-					}
-				}
-
+				BirthdayDto newBirthday(
+					l,
+					words[0],
+					atoi(words[1].c_str()),
+					atoi(words[2].c_str()),
+					atoi(words[3].c_str()),
+					Tools::ConvertStrToBool(words[4].c_str()),
+					Tools::ConvertStrToBool(words[5].c_str()));
 				birthdayList.push_back(newBirthday);
 			}
 		}
@@ -202,40 +177,14 @@ std::vector<ChangeDto> XmlParser::ParseChangeList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				ChangeDto newChange;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newChange.SetType(words[0]);
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newChange.SetHour(atoi(words[1].c_str()));
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newChange.SetMinute(atoi(words[2].c_str()));
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newChange.SetDay(atoi(words[3].c_str()));
-					}
-					if (typeid(words.at(4)) == typeid(std::string))
-					{
-						newChange.SetMonth(atoi(words[4].c_str()));
-					}
-					if (typeid(words.at(5)) == typeid(std::string))
-					{
-						newChange.SetYear(atoi(words[5].c_str()));
-					}
-					if (typeid(words.at(6)) == typeid(std::string))
-					{
-						newChange.SetUserName(words[6]);
-					}
-				}
-
+				ChangeDto newChange(
+					words[0],
+					atoi(words[1].c_str()),
+					atoi(words[2].c_str()),
+					atoi(words[3].c_str()),
+					atoi(words[4].c_str()),
+					atoi(words[5].c_str()),
+					words[6]);
 				changeList.push_back(newChange);
 			}
 		}
@@ -257,29 +206,11 @@ std::vector<CoinDto> XmlParser::ParseCoinList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				CoinDto newCoin;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newCoin.SetId(atoi(words[0].c_str()));
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newCoin.SetUser(words[1]);
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newCoin.SetType(words[2]);
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						double amount = Tools::ConvertStrToDouble(words[3].c_str());
-						newCoin.SetAmount(amount);
-					}
-				}
-
+				CoinDto newCoin(
+					atoi(words[0].c_str()),
+					words[1],
+					words[2],
+					Tools::ConvertStrToDouble(words[3].c_str()));
 				coinList.push_back(newCoin);
 			}
 		}
@@ -301,24 +232,10 @@ std::vector<GpioDto> XmlParser::ParseGpioList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				GpioDto newGpio;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newGpio.SetName(words[0]);
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newGpio.SetGpio(atoi(words[1].c_str()));
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newGpio.SetState(atoi(words[2].c_str()));
-					}
-				}
-
+				GpioDto newGpio(
+					words[0],
+					atoi(words[1].c_str()),
+					atoi(words[2].c_str()));
 				gpioList.push_back(newGpio);
 			}
 		}
@@ -340,32 +257,12 @@ std::vector<ListedMenuDto> XmlParser::ParseListedMenuList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				ListedMenuDto newListedMenu;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newListedMenu.SetId(atoi(words[0].c_str()));
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newListedMenu.SetTitle(words[1]);
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newListedMenu.SetDescription(words[2]);
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newListedMenu.SetUseCount(atoi(words[3].c_str()));
-					}
-					if (typeid(words.at(4)) == typeid(std::string))
-					{
-						newListedMenu.SetRating(atoi(words[4].c_str()));
-					}
-				}
-
+				ListedMenuDto newListedMenu(
+					atoi(words[0].c_str()),
+					words[1],
+					words[2],
+					atoi(words[3].c_str()),
+					atoi(words[4].c_str()));
 				listedMenuList.push_back(newListedMenu);
 			}
 		}
@@ -510,53 +407,18 @@ std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				ScheduleDto newSchedule;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newSchedule.SetName(words[0]);
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newSchedule.SetSocket(words[1]);
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newSchedule.SetGpio(words[2]);
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newSchedule.SetSwitch(words[3]);
-					}
-					if (typeid(words.at(4)) == typeid(std::string))
-					{
-						newSchedule.SetWeekday(atoi(words[4].c_str()));
-					}
-					if (typeid(words.at(5)) == typeid(std::string))
-					{
-						newSchedule.SetHour(atoi(words[5].c_str()));
-					}
-					if (typeid(words.at(6)) == typeid(std::string))
-					{
-						newSchedule.SetMinute(atoi(words[6].c_str()));
-					}
-					if (typeid(words.at(7)) == typeid(std::string))
-					{
-						newSchedule.SetOnoff(atoi(words[7].c_str()));
-					}
-					if (typeid(words.at(8)) == typeid(std::string))
-					{
-						bool isTimer = Tools::ConvertStrToBool(words[8].c_str());
-						newSchedule.SetIsTimer(isTimer);
-					}
-					if (typeid(words.at(9)) == typeid(std::string))
-					{
-						newSchedule.SetState(atoi(words[9].c_str()));
-					}
-				}
-
+				ScheduleDto newSchedule(
+					words[0],
+					words[1],
+					words[2],
+					words[3],
+					atoi(words[4].c_str()),
+					atoi(words[5].c_str()),
+					atoi(words[6].c_str()),
+					atoi(words[7].c_str()),
+					Tools::ConvertStrToBool(words[8].c_str()),
+					atoi(words[9].c_str())
+				);
 				scheduleList.push_back(newSchedule);
 			}
 		}
@@ -578,28 +440,18 @@ std::vector<WirelessSocketDto> XmlParser::ParseSocketList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				WirelessSocketDto newSocket;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newSocket.SetName(words[0]);
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newSocket.SetArea(words[1]);
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newSocket.SetCode(words[2]);
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newSocket.SetState(atoi(words[3].c_str()), 0, atoi(words[4].c_str()), atoi(words[5].c_str()), atoi(words[6].c_str()), atoi(words[7].c_str()), atoi(words[8].c_str()), words[9].c_str());
-					}
-				}
-
+				WirelessSocketDto newSocket(
+					words[0],
+					words[1],
+					words[2],
+					atoi(words[3].c_str()),
+					atoi(words[4].c_str()),
+					atoi(words[5].c_str()),
+					atoi(words[6].c_str()),
+					atoi(words[7].c_str()),
+					atoi(words[8].c_str()),
+					words[9]
+				);
 				socketList.push_back(newSocket);
 			}
 		}
@@ -631,7 +483,6 @@ std::vector<WirelessSwitchDto> XmlParser::ParseSwitchList()
 					atoi(words[7].c_str()), atoi(words[8].c_str()), atoi(words[9].c_str()),
 					words[10]
 				);
-
 				switchList.push_back(newSwitch);
 			}
 		}
@@ -653,28 +504,11 @@ std::vector<ShoppingEntryDto> XmlParser::ParseShoppingList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				ShoppingEntryDto newEntry;
-
-				for (int w = 0; w < words.size(); w++)
-				{
-					if (typeid(words.at(0)) == typeid(std::string))
-					{
-						newEntry.SetId(atoi(words[0].c_str()));
-					}
-					if (typeid(words.at(1)) == typeid(std::string))
-					{
-						newEntry.SetName(words[1]);
-					}
-					if (typeid(words.at(2)) == typeid(std::string))
-					{
-						newEntry.SetGroup(words[2]);
-					}
-					if (typeid(words.at(3)) == typeid(std::string))
-					{
-						newEntry.SetQuantity(atoi(words[3].c_str()));
-					}
-				}
-
+				ShoppingEntryDto newEntry(
+					atoi(words[0].c_str()),
+					words[1],
+					words[2],
+					atoi(words[3].c_str()));
 				shoppingList.push_back(newEntry);
 			}
 		}
@@ -696,17 +530,13 @@ std::vector<UserDto> XmlParser::ParseUserList()
 			if (lines[l].length() > 0)
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
-				if (words.size() == 5)
-				{
-					UserDto user(
-						words[0].c_str(),
-						words[1].c_str(),
-						atoi(words[2].c_str()),
-						atoi(words[3].c_str()),
-						atoi(words[4].c_str()));
-
-					userList.push_back(user);
-				}
+				UserDto user(
+					words[0].c_str(),
+					words[1].c_str(),
+					atoi(words[2].c_str()),
+					atoi(words[3].c_str()),
+					atoi(words[4].c_str()));
+				userList.push_back(user);
 			}
 		}
 	}
