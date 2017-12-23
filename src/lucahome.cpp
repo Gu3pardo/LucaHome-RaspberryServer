@@ -45,6 +45,7 @@ namespace patch {
 #include "services/InformationService.h"
 #include "services/MapContentService.h"
 #include "services/MenuService.h"
+#include "services/MeterDataService.h"
 #include "services/MovieService.h"
 #include "services/RemoteService.h"
 #include "services/ShoppingListService.h"
@@ -70,6 +71,7 @@ ChangeService _changeService;
 CoinService _coinService;
 InformationService _informationService;
 MenuService _menuService;
+MeterDataService _meterDataService;
 MapContentService _mapContentService;
 MovieService _movieService;
 RemoteService _remoteService;
@@ -159,6 +161,7 @@ string executeCmd(string cmd, int source) {
 			_informationService.LoadData();
 			_mapContentService.LoadData();
 			_menuService.LoadData();
+			_meterDataService.LoadData();
 			_movieService.LoadData();
 			_remoteService.LoadData();
 			_shoppingListService.LoadData();
@@ -194,6 +197,10 @@ string executeCmd(string cmd, int source) {
 	//----------------------Menu----------------------
 	else if (category == MENU) {
 		return _menuService.PerformAction(data, _changeService, username);
+	}
+	//--------------------MeterData-------------------
+	else if (category == METERDATA) {
+		return _meterDataService.PerformAction(data, _changeService, username);
 	}
 	//---------------------Movies---------------------
 	else if (category == MOVIE) {
@@ -570,6 +577,7 @@ void *reloader(void *arg) {
 		_informationService.LoadData();
 		_mapContentService.LoadData();
 		_menuService.LoadData();
+		_meterDataService.LoadData();
 		_movieService.LoadData();
 		_remoteService.LoadData();
 		_shoppingListService.LoadData();
@@ -604,6 +612,7 @@ int main(void) {
 	_informationService.Initialize(_fileController, INFORMATION_FILE);
 	_mapContentService.Initialize(_fileController, MAP_CONTENT_FILE);
 	_menuService.Initialize(_fileController, MENU_FILE, LISTED_MENU_FILE);
+	_meterDataService.Initialize(_fileController, METERDATA_FILE);
 	_movieService.Initialize(_fileController, _pathController);
 	_remoteService.Initialize(_fileController, SETTINGS_FILE);
 	_shoppingListService.Initialize(_fileController, SHOPPING_LIST_FILE);

@@ -11,7 +11,9 @@
 
 class WirelessSocketDto
 {
-  protected:
+protected:
+	int _typeId;
+
 	std::string _name;
 	std::string _area;
 	std::string _code;
@@ -24,10 +26,13 @@ class WirelessSocketDto
 	int _lastTriggerYear;
 	std::string _lastTriggerUserName;
 
-  public:
+public:
 	WirelessSocketDto();
-	WirelessSocketDto(std::string, std::string, std::string, int, int, int, int, int, int, std::string);
+	WirelessSocketDto(int, std::string, std::string, std::string, int, int, int, int, int, int, std::string);
 	~WirelessSocketDto();
+
+	void SetTypeId(int);
+	int GetTypeId();
 
 	void SetName(std::string);
 	std::string GetName();

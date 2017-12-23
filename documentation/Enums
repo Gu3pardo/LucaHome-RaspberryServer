@@ -10,9 +10,10 @@ MapContentType
 9	Menu
 10	ShoppingList
 11	Camera
+12	Meter
 
 Users
-1	Availability		Check			Count		Get			Validate
+1	Availability		Check			Count		Get			Validate	Reload
 2	Activate			Play			Set			Start		Stop		Toggle
 3	Add					Update
 4	Clear				Deactivate		Delete

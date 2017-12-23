@@ -1,4 +1,4 @@
-SOURCE = ./src/lucahome.cpp ./src/common/dto/BirthdayDto.cpp ./src/common/dto/ChangeDto.cpp ./src/common/dto/CoinDto.cpp ./src/common/dto/GpioDto.cpp ./src/common/dto/InformationDto.cpp ./src/common/dto/ListedMenuDto.cpp ./src/common/dto/MapContentDto.cpp ./src/common/dto/MenuDto.cpp ./src/common/dto/MovieDto.cpp ./src/common/dto/PointDto.cpp ./src/common/dto/ScheduleDto.cpp ./src/common/dto/ScheduleTaskDto.cpp ./src/common/dto/ShoppingEntryDto.cpp  ./src/common/dto/UserDto.cpp ./src/common/dto/WirelessSocketDto.cpp ./src/common/dto/WirelessSwitchDto.cpp ./src/common/utils/PiControl.cpp ./src/common/utils/Tools.cpp ./src/controller/FileController.cpp ./src/controller/MailController.cpp ./src/controller/PathController.cpp ./src/services/shared/ChangeService.cpp ./src/services/xml/XmlParser.cpp ./src/services/xml/XmlService.cpp ./src/services/xml/XmlWriter.cpp ./src/services/AuthentificationService.cpp ./src/services/BirthdayService.cpp ./src/services/CameraService.cpp ./src/services/CoinService.cpp ./src/services/InformationService.cpp ./src/services/MapContentService.cpp ./src/services/MenuService.cpp ./src/services/MovieService.cpp ./src/services/RemoteService.cpp ./src/services/ShoppingListService.cpp ./src/services/SystemService.cpp ./src/services/TemperatureService.cpp -lwiringPi -lpthread
+SOURCE = ./src/lucahome.cpp ./src/common/dto/BirthdayDto.cpp ./src/common/dto/ChangeDto.cpp ./src/common/dto/CoinDto.cpp ./src/common/dto/GpioDto.cpp ./src/common/dto/InformationDto.cpp ./src/common/dto/ListedMenuDto.cpp ./src/common/dto/MapContentDto.cpp ./src/common/dto/MenuDto.cpp ./src/common/dto/MeterData.cpp ./src/common/dto/MovieDto.cpp ./src/common/dto/PointDto.cpp ./src/common/dto/ScheduleDto.cpp ./src/common/dto/ScheduleTaskDto.cpp ./src/common/dto/ShoppingEntryDto.cpp  ./src/common/dto/UserDto.cpp ./src/common/dto/WirelessSocketDto.cpp ./src/common/dto/WirelessSwitchDto.cpp ./src/common/utils/PiControl.cpp ./src/common/utils/Tools.cpp ./src/controller/FileController.cpp ./src/controller/MailController.cpp ./src/controller/PathController.cpp ./src/services/shared/ChangeService.cpp ./src/services/xml/XmlParser.cpp ./src/services/xml/XmlService.cpp ./src/services/xml/XmlWriter.cpp ./src/services/AuthentificationService.cpp ./src/services/BirthdayService.cpp ./src/services/CameraService.cpp ./src/services/CoinService.cpp ./src/services/InformationService.cpp ./src/services/MapContentService.cpp ./src/services/MenuService.cpp ./src/services/MeterDataService.cpp ./src/services/MovieService.cpp ./src/services/RemoteService.cpp ./src/services/ShoppingListService.cpp ./src/services/SystemService.cpp ./src/services/TemperatureService.cpp -lwiringPi -lpthread
 APP = ./bin/lucahome
 CC = g++ -std=c++11
 
@@ -26,6 +26,7 @@ install:
 	cp ./assets/mapcontent /etc/default/lucahome/mapcontent
 	cp ./assets/listedmenu /etc/default/lucahome/listedmenu
 	cp ./assets/menu /etc/default/lucahome/menu
+	cp ./assets/meterdata /etc/default/lucahome/meterdata
 	cp ./assets/settings /etc/default/lucahome/settings
 	cp ./assets/shoppinglist /etc/default/lucahome/shoppinglist
 	cp ./assets/temperaturesettings /etc/default/lucahome/temperaturesettings
@@ -39,6 +40,7 @@ install:
 	chmod 777 /etc/default/lucahome/mapcontent
 	chmod 777 /etc/default/lucahome/listedmenu
 	chmod 777 /etc/default/lucahome/menu
+	chmod 777 /etc/default/lucahome/meterdata
 	chmod 777 /etc/default/lucahome/settings
 	chmod 777 /etc/default/lucahome/shoppinglist
 	chmod 777 /etc/default/lucahome/temperaturesettings

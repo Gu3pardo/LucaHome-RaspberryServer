@@ -83,7 +83,7 @@ void MovieService::LoadData()
 		}
 
 		std::ostringstream nfoFilePathStringStream;
-		nfoFilePathStringStream << NAS_PAH_MOVIE << currentMovieDir << "/" << NFO_LUCA_FILE;
+		nfoFilePathStringStream << NAS_PATH_MOVIE << currentMovieDir << "/" << NFO_LUCA_FILE;
 		std::string nfoFilePath = nfoFilePathStringStream.str();
 
 		MovieDto newMovie = MovieDto();
@@ -128,7 +128,7 @@ void MovieService::LoadData()
 void MovieService::saveMovieNFO(MovieDto movie, std::string username)
 {
 	std::ostringstream nfoFilePathStringStream;
-	nfoFilePathStringStream << NAS_PAH_MOVIE << movie.GetTitle() << "/" << NFO_LUCA_FILE;
+	nfoFilePathStringStream << NAS_PATH_MOVIE << movie.GetTitle() << "/" << NFO_LUCA_FILE;
 	std::string nfoFilePath = nfoFilePathStringStream.str();
 	_fileController.SaveFile(nfoFilePath, movie.SaveString());
 }

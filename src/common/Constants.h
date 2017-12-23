@@ -51,6 +51,10 @@
 #define MENU_UPDATE_SUCCESS "MENU:UPDATE:SUCCESS"
 #define MENU_CLEAR_SUCCESS "MENU:CLEAR:SUCCESS"
 
+#define METER_DATA_ADD_SUCCESS "METER_DATA:ADD:SUCCESS"
+#define METER_DATA_UPDATE_SUCCESS "METER_DATA:UPDATE:SUCCESS"
+#define METER_DATA_DELETE_SUCCESS "METER_DATA:DELETE:SUCCESS"
+
 #define MOVIE_UPDATE_SUCCESS "MOVIE:UPDATE:SUCCESS"
 #define MOVIE_LOAD_SUCCESS "MOVIE:LOAD:SUCCESS"
 
@@ -200,6 +204,14 @@
 #define SYSTEM_ERROR_NR_180 "Error 180:Action not found for system"
 #define SYSTEM_ERROR_NR_181 "Error 181:Invalid data for system"
 
+#define METER_DATA_ERROR_NR_190 "Error 190:Wrong word size for meterdata"
+#define METER_DATA_ERROR_NR_191 "Error 191:Could not add meterdata"
+#define METER_DATA_ERROR_NR_192 "Error 192:Could not update meterdata"
+#define METER_DATA_ERROR_NR_193 "Error 193:Could not delete meterdata"
+#define METER_DATA_ERROR_NR_194 "Error 194:Action not found for meterdata"
+#define METER_DATA_ERROR_NR_195 "Error 195:Invalid data for meterdata"
+#define METER_DATA_ERROR_NR_196 "Error 196:Wrong action parameter for meterdata"
+
 #define COIN_ERROR_NR_200 "Error 200:Action not found for coin"
 #define COIN_ERROR_NR_201 "Error 201:Wrong data size for birthday"
 #define COIN_ERROR_NR_202 "Error 202:Wrong action parameter for coin"
@@ -267,6 +279,7 @@
 #define GPIO "GPIO"
 #define INFORMATION "INFORMATION"
 #define MAPCONTENT "MAPCONTENT"
+#define METERDATA "METERDATA"
 #define MOVIE "MOVIE"
 #define RASPBERRY "RASPBERRY"
 #define REMOTE "REMOTE"
@@ -362,6 +375,20 @@
 #define MENU_DESCRIPTION_INDEX 10
 #define MENU_DATA_SIZE 11
 
+#define METER_DATA_ID_INDEX 5
+#define METER_DATA_TYPE_INDEX 6
+#define METER_DATA_TYPE_ID_INDEX 7
+#define METER_DATA_DAY_INDEX 8
+#define METER_DATA_MONTH_INDEX 9
+#define METER_DATA_YEAR_INDEX 10
+#define METER_DATA_HOUR_INDEX 11
+#define METER_DATA_MINUTE_INDEX 12
+#define METER_DATA_METER_ID_INDEX 13
+#define METER_DATA_AREA_INDEX 14
+#define METER_DATA_VALUE_INDEX 15
+#define METER_DATA_IMAGE_NAME_INDEX 16
+#define METER_DATA_SIZE 17
+
 #define MOVIE_DATA_TITLE_INDEX 4
 #define MOVIE_DATA_GENRE_INDEX 5
 #define MOVIE_DATA_DESCRIPTION_INDEX 6
@@ -395,19 +422,21 @@
 #define SHOPPING_ENTRY_QUANTITY_INDEX 7
 #define SHOPPING_ENTRY_DATA_SIZE 8
 
-#define SOCKET_NAME_INDEX 5
-#define SOCKET_AREA_INDEX 6
-#define SOCKET_CODE_INDEX 7
-#define SOCKET_STATE_INDEX 8
-#define SOCKET_DATA_SIZE 9
+#define SOCKET_TYPE_ID_INDEX 5
+#define SOCKET_NAME_INDEX 6
+#define SOCKET_AREA_INDEX 7
+#define SOCKET_CODE_INDEX 8
+#define SOCKET_STATE_INDEX 9
+#define SOCKET_DATA_SIZE 10
 #define SOCKET_SET_STATE_INDEX 6
 #define SOCKET_SET_SIZE 7
 
-#define SWITCH_NAME_INDEX 5
-#define SWITCH_AREA_INDEX 6
-#define SWITCH_REMOTE_ID_INDEX 7
-#define SWITCH_KEYCODE_INDEX 8
-#define SWITCH_DATA_SIZE 9
+#define SWITCH_TYPE_ID_INDEX 5
+#define SWITCH_NAME_INDEX 6
+#define SWITCH_AREA_INDEX 7
+#define SWITCH_REMOTE_ID_INDEX 8
+#define SWITCH_KEYCODE_INDEX 9
+#define SWITCH_DATA_SIZE 10
 #define SWITCH_TOGGLE_SIZE 6
 
 /***********************************************/
@@ -425,8 +454,9 @@
 /***********************************************/
 
 #define NAS_PATH_CAMERA "/mnt/NAS/Camera/"
-#define NAS_PAH_LUCAHOME "/mnt/NAS/LucaHome/"
-#define NAS_PAH_MOVIE "/mnt/NAS/Movies/"
+#define NAS_PATH_LUCAHOME "/mnt/NAS/LucaHome/"
+#define NAS_PATH_METER_LOG "/mnt/NAS/MeterLog/"
+#define NAS_PATH_MOVIE "/mnt/NAS/Movies/"
 #define NAS_PATH_MUSIC "/mnt/NAS/Music/"
 #define NAS_PATH_SERIES "/mnt/NAS/Series/"
 
@@ -440,6 +470,7 @@
 #define INFORMATION_FILE "/etc/default/lucahome/infos"
 #define MAP_CONTENT_FILE "/etc/default/lucahome/mapcontent"
 #define MENU_FILE "/etc/default/lucahome/menu"
+#define METERDATA_FILE "/etc/default/lucahome/meterdata"
 #define LISTED_MENU_FILE "/etc/default/lucahome/listedmenu"
 #define SETTINGS_FILE "/etc/default/lucahome/settings"
 #define SHOPPING_LIST_FILE "/etc/default/lucahome/shoppinglist"

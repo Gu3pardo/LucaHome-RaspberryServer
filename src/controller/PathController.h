@@ -33,7 +33,8 @@
 class PathController
 {
 private:
-	std::vector<std::string> scanForSubDir(std::string);
+	std::vector<std::string> scanDirForType(std::string, int);
+	std::vector<std::string> filterList(std::vector<std::string>, std::vector<std::string>);
 public:
 	PathController();
 	~PathController();
@@ -41,6 +42,7 @@ public:
 	std::vector<std::string> ScanCameraFolder();
 	std::vector<std::string> ScanMovieFolder();
 	std::vector<std::string> ScanSeriesFolder();
+	std::vector<std::string> ScanMeterLogImageFolder();
 };
 
 #endif

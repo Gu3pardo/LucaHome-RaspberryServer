@@ -15,6 +15,7 @@
 #include "../../common/dto/ListedMenuDto.h"
 #include "../../common/dto/MapContentDto.h"
 #include "../../common/dto/MenuDto.h"
+#include "../../common/dto/MeterDataDto.h"
 #include "../../common/dto/PointDto.h"
 #include "../../common/dto/ScheduleDto.h"
 #include "../../common/dto/ShoppingEntryDto.h"
@@ -37,6 +38,7 @@ public:
 	static std::string GenerateListedMenuXml(std::vector<ListedMenuDto>);
 	static std::string GenerateMapContentsXml(std::vector<MapContentDto>);
 	static std::string GenerateMenuXml(std::vector<MenuDto>);
+	static std::string GenerateMeterDataXml(std::vector<MeterDataDto>);
 	static std::string GenerateSettingsXml(
 		int, int, int, 
 		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, 

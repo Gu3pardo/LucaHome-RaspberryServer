@@ -16,7 +16,7 @@ ______________________________
 []		implement real LEDs connections for temperature module for warning of high/low temperature
 []		add 433MHz receiver module for wireless communication
 [x]		add module to play sound for wakeup or going to bed or as alarm -> perhaps implement in Schedules!
-[o]		add module to warn about possible intruder sending a mail with an image of the possible intruder
+[x]		add module to warn about possible intruder sending a mail with an image of the possible intruder
 []		add module to inform about humidity
 
 ==============================
@@ -38,7 +38,7 @@ ______________________________
 [x]			- Call data on startup
 [x]			- create notification of sockets
 [x]			- create notification of temperature
-[-]			- create notification of upcoming weather -> OBSOLETE (is done by library toolset!)
+[x]			- create notification of upcoming weather
 
 [x]		entering home WIFI shows notifications (sockets, temperature), leaving dismisses notifications
 	
@@ -73,9 +73,8 @@ ______________________________
 	
 [x]			settings contains 
 [x]				possibility to en-/disable notification and buttons of notification
-[-]				choice of raspberry to get the data from ->OBSOLETE (dynamic selection)
 [x]				choice if i want to start audio/video apps while enabling the socket
-[-]				duration of timer ->OBSOLETE (default set to 30minutes! perhaps changes in later version!)
+[]				duration of timer
 		
 [x]			changes & informations contains just the data
 
@@ -83,7 +82,6 @@ ______________________________
 		devices
 [-]			-> clicking on raspberrys shows informations (e.g. temperature/humidity) and possibilities to activate sockets,
 			movies, etc. ->OBSOLETE
-[-]			-> clicking on arduinos shows informations (e.g. temperature/humidity) ->OBSOLETE
 [x]			-> clicking on the remote devices shows a possibility to de/activate them
 
-[x]		module to start&stop sound & set volume
+[]		module to start&stop sound & set volume

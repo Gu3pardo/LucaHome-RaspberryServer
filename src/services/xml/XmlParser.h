@@ -15,6 +15,7 @@
 #include "../../common/dto/ListedMenuDto.h"
 #include "../../common/dto/MapContentDto.h"
 #include "../../common/dto/MenuDto.h"
+#include "../../common/dto/MeterDataDto.h"
 #include "../../common/dto/PointDto.h"
 #include "../../common/dto/ScheduleDto.h"
 #include "../../common/dto/ShoppingEntryDto.h"
@@ -49,6 +50,7 @@ public:
 	std::vector<ListedMenuDto> ParseListedMenuList();
 	std::vector<MapContentDto> ParseMapContentList();
 	std::vector<MenuDto> ParseMenuList();
+	std::vector<MeterDataDto> ParseMeterDataList();
 	MenuDto ParseMenuDay(std::string, std::string);
 	std::vector<ScheduleDto> ParseScheduleList();
 	std::vector<WirelessSocketDto> ParseSocketList();

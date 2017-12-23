@@ -101,6 +101,18 @@ std::vector<MenuDto> XmlService::GetMenuList(std::string content)
 	return parser.ParseMenuList();
 }
 
+std::string XmlService::GenerateMeterDataXml(std::vector<MeterDataDto> meterDataList)
+{
+	XmlWriter writer;
+	return writer.GenerateMeterDataXml(meterDataList);
+}
+
+std::vector<MeterDataDto> XmlService::GetMeterDataList(std::string content)
+{
+	XmlParser parser(content);
+	return parser.ParseMeterDataList();
+}
+
 std::string XmlService::GenerateSettingsXml(
 	int port, int datagpio, int raspberry, 
 	std::vector<std::string> areas, std::vector<std::string> sensors, std::vector<std::string> urls, std::vector<std::string> mediamirror,

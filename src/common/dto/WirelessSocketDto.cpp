@@ -2,6 +2,8 @@
 
 WirelessSocketDto::WirelessSocketDto()
 {
+	_typeId = 0;
+
 	_name = "N.A.";
 	_area = "N.A.";
 	_code = "N.A.";
@@ -15,8 +17,14 @@ WirelessSocketDto::WirelessSocketDto()
 	_lastTriggerUserName = "N.A.";
 }
 
-WirelessSocketDto::WirelessSocketDto(std::string name, std::string area, std::string code, int state, int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear, std::string lastTriggerUserName)
+WirelessSocketDto::WirelessSocketDto(
+	int typeId,
+	std::string name, std::string area, std::string code, int state,
+	int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear,
+	std::string lastTriggerUserName)
 {
+	_typeId = typeId;
+
 	_name = name;
 	_area = area;
 	_code = code;
@@ -32,6 +40,16 @@ WirelessSocketDto::WirelessSocketDto(std::string name, std::string area, std::st
 
 WirelessSocketDto::~WirelessSocketDto()
 {
+}
+
+void WirelessSocketDto::SetTypeId(int typeId)
+{
+	_typeId = typeId;
+}
+
+int WirelessSocketDto::GetTypeId()
+{
+	return _typeId;
 }
 
 void WirelessSocketDto::SetName(std::string name)
@@ -94,7 +112,10 @@ std::string WirelessSocketDto::GetLastTriggeredUserName()
 	return _lastTriggerUserName;
 }
 
-bool WirelessSocketDto::SetState(int state, int datagpio, int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear, std::string lastTriggerUserName)
+bool WirelessSocketDto::SetState(
+	int state, int datagpio,
+	int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear,
+	std::string lastTriggerUserName)
 {
 	if (datagpio != 0)
 	{
@@ -121,8 +142,9 @@ int WirelessSocketDto::GetState()
 
 std::string WirelessSocketDto::SaveString()
 {
-	std::string str = 
-		_name + ":"
+	std::string str =
+		Tools::ConvertIntToStr(_typeId) + ":"
+		+ _name + ":"
 		+ _area + ":"
 		+ _code + ":"
 		+ Tools::ConvertIntToStr(_state) + ":"
@@ -141,6 +163,7 @@ std::string WirelessSocketDto::JsonString()
 		std::string("{")
 		+ std::string("\"WirelessSocket\":")
 		+ std::string("{")
+		+ std::string("\"TypeId\":") + Tools::ConvertIntToStr(_typeId) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Area\":\"") + _area + std::string("\",")
 		+ std::string("\"Code\":\"") + _code + std::string("\",")
@@ -162,7 +185,8 @@ std::string WirelessSocketDto::JsonString()
 std::string WirelessSocketDto::ToString()
 {
 	std::string str =
-		std::string("WirelessSocketDto { name: ") + _name
+		std::string("WirelessSocketDto { typeId: ") + Tools::ConvertIntToStr(_typeId)
+		+ std::string("; name: ") + _name
 		+ std::string("; area: ") + _area
 		+ std::string("; code: ") + _code
 		+ std::string("; state: ") + Tools::ConvertIntToStr(_state)

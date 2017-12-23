@@ -92,11 +92,25 @@ std::string XmlWriter::GenerateMenuXml(std::vector<MenuDto> menu)
 	return xml.str();
 }
 
+std::string XmlWriter::GenerateMeterDataXml(std::vector<MeterDataDto> meterData)
+{
+	std::stringstream xml;
+
+	xml << "<meterdata>" << std::endl;
+	for (int index = 0; index < meterData.size(); index++)
+	{
+		xml << meterData[index].SaveString() << std::endl;
+	}
+	xml << "</meterdata>" << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::GenerateSettingsXml(
 	int port, int datagpio, int raspberry,
 	std::vector<std::string> areas, std::vector<std::string> sensors,
 	std::vector<std::string> urls, std::vector<std::string> mediamirror,
-	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules, 
+	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules,
 	std::vector<WirelessSwitchDto> switches)
 {
 	std::stringstream xml;

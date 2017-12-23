@@ -394,6 +394,40 @@ MenuDto XmlParser::ParseMenuDay(std::string weekday, std::string tagData)
 	return menu;
 }
 
+std::vector<MeterDataDto> XmlParser::ParseMeterDataList()
+{
+	std::string entries = FindTag("meterdata");
+	std::vector<MeterDataDto> meterDataList;
+
+	if (entries.length() > 0)
+	{
+		std::vector<std::string> lines = Tools::Explode(";", entries);
+		for (int l = 0; l < lines.size(); l++)
+		{
+			if (lines[l].length() > 0)
+			{
+				std::vector<std::string> words = Tools::Explode(":", lines[l]);
+				MeterDataDto newMeterData(
+					atoi(words[0].c_str()),
+					words[1],
+					atoi(words[2].c_str()),
+					atoi(words[3].c_str()),
+					atoi(words[4].c_str()),
+					atoi(words[5].c_str()),
+					atoi(words[6].c_str()),
+					atoi(words[7].c_str()),
+					words[8],
+					words[9],
+					Tools::ConvertStrToDouble(words[10].c_str()),
+					words[11]);
+				meterDataList.push_back(newMeterData);
+			}
+		}
+	}
+
+	return meterDataList;
+}
+
 std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 {
 	std::string entries = FindTag("schedules");
@@ -441,16 +475,17 @@ std::vector<WirelessSocketDto> XmlParser::ParseSocketList()
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 				WirelessSocketDto newSocket(
-					words[0],
+					atoi(words[0].c_str()),
 					words[1],
 					words[2],
-					atoi(words[3].c_str()),
+					words[3],
 					atoi(words[4].c_str()),
 					atoi(words[5].c_str()),
 					atoi(words[6].c_str()),
 					atoi(words[7].c_str()),
 					atoi(words[8].c_str()),
-					words[9]
+					atoi(words[9].c_str()),
+					words[10]
 				);
 				socketList.push_back(newSocket);
 			}
@@ -474,14 +509,15 @@ std::vector<WirelessSwitchDto> XmlParser::ParseSwitchList()
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 				WirelessSwitchDto newSwitch(
-					words[0],
+					atoi(words[0].c_str()),
 					words[1],
+					words[2],
 					atoi(words[3].c_str()),
 					words[4],
-					0,
-					atoi(words[5].c_str()), atoi(words[6].c_str()),
-					atoi(words[7].c_str()), atoi(words[8].c_str()), atoi(words[9].c_str()),
-					words[10]
+					atoi(words[5].c_str()),
+					atoi(words[6].c_str()), atoi(words[7].c_str()),
+					atoi(words[8].c_str()), atoi(words[9].c_str()), atoi(words[10].c_str()),
+					words[11]
 				);
 				switchList.push_back(newSwitch);
 			}

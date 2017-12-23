@@ -86,7 +86,7 @@ private:
 	bool setSocket(std::string, int, ChangeService, std::string);
 	bool addSocket(std::vector<std::string>, ChangeService, std::string);
 	bool updateSocket(std::vector<std::string>, ChangeService, std::string);
-	bool deleteSocket(std::string, ChangeService, std::string);
+	bool deleteSocket(int, ChangeService, std::string);
 	bool setAllSockets(int, ChangeService, std::string);
 
 	std::vector<WirelessSwitchDto> getSwitchList();
@@ -95,7 +95,7 @@ private:
 	bool toggleSwitch(std::string, ChangeService, std::string);
 	bool addSwitch(std::vector<std::string>, ChangeService, std::string);
 	bool updateSwitch(std::vector<std::string>, ChangeService, std::string);
-	bool deleteSwitch(std::string, ChangeService, std::string);
+	bool deleteSwitch(int, ChangeService, std::string);
 	bool toggleAllSwitches(ChangeService, std::string);
 
 public:

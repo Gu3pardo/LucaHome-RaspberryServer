@@ -8,8 +8,16 @@ WirelessSwitchDto::WirelessSwitchDto()
 	_action = false;
 }
 
-WirelessSwitchDto::WirelessSwitchDto(std::string name, std::string area, int remoteId, std::string keycode, int state, int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear, std::string lastTriggerUserName)
-	: WirelessSocketDto(name, area, keycode, state, lastTriggerHour, lastTriggerMinute, lastTriggerDay, lastTriggerMonth, lastTriggerYear, lastTriggerUserName)
+WirelessSwitchDto::WirelessSwitchDto(
+	int typeId,
+	std::string name, std::string area, int remoteId, std::string keycode, int state,
+	int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear,
+	std::string lastTriggerUserName)
+	: WirelessSocketDto(
+		typeId,
+		name, area, keycode, state,
+		lastTriggerHour, lastTriggerMinute, lastTriggerDay, lastTriggerMonth, lastTriggerYear,
+		lastTriggerUserName)
 {
 	_remoteId = remoteId;
 	_keycode = Tools::ConvertStrToUnsignedChar(keycode);
@@ -20,12 +28,18 @@ WirelessSwitchDto::~WirelessSwitchDto()
 {
 }
 
-bool WirelessSwitchDto::SetState(int state, int datagpio, int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear, std::string lastTriggerUserName)
+bool WirelessSwitchDto::SetState(
+	int state, int datagpio,
+	int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear,
+	std::string lastTriggerUserName)
 {
 	return false;
 }
 
-bool WirelessSwitchDto::ToggleSwitch(int datagpio, int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear, std::string lastTriggerUserName)
+bool WirelessSwitchDto::ToggleSwitch(
+	int datagpio,
+	int lastTriggerHour, int lastTriggerMinute, int lastTriggerDay, int lastTriggerMonth, int lastTriggerYear,
+	std::string lastTriggerUserName)
 {
 	if (datagpio != 0 && _remoteId != -1 && _keycode != -1) {
 		if (PiControl::SendButton(_remoteId, _keycode, datagpio, _action)) {
@@ -77,7 +91,8 @@ bool WirelessSwitchDto::GetAction()
 std::string WirelessSwitchDto::SaveString()
 {
 	std::string str =
-		_name + ":"
+		Tools::ConvertIntToStr(_typeId) + ":"
+		+ _name + ":"
 		+ _area + ":"
 		+ Tools::ConvertIntToStr(_remoteId) + ":"
 		+ Tools::ConvertUnsignedCharToStr(_keycode) + ":"
@@ -97,6 +112,7 @@ std::string WirelessSwitchDto::JsonString()
 		std::string("{")
 		+ std::string("\"WirelessSwitch\":")
 		+ std::string("{")
+		+ std::string("\"TypeId\":") + Tools::ConvertIntToStr(_typeId) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Area\":\"") + _area + std::string("\",")
 		+ std::string("\"RemoteId\":") + Tools::ConvertIntToStr(_remoteId) + std::string(",")
@@ -119,7 +135,8 @@ std::string WirelessSwitchDto::JsonString()
 std::string WirelessSwitchDto::ToString()
 {
 	std::string str =
-		std::string("WirelessSwitchDto { name: ") + _name
+		std::string("WirelessSwitchDto { typeId: ") + Tools::ConvertIntToStr(_typeId)
+		+ std::string("; name: ") + _name
 		+ std::string("; area: ") + _area
 		+ std::string("; remoteid: ") + Tools::ConvertIntToStr(_remoteId)
 		+ std::string("; keycode: ") + Tools::ConvertUnsignedCharToStr(_keycode)

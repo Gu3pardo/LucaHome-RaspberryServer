@@ -201,7 +201,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 		}
 		else if (actionParameter == SOCKET)
 		{
-			if (deleteSocket(data[SOCKET_NAME_INDEX], changeService, username))
+			if (deleteSocket(atoi(data[SOCKET_TYPE_ID_INDEX].c_str()), changeService, username))
 			{
 				return SOCKET_DELETE_SUCCESS;
 			}
@@ -209,7 +209,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 		}
 		else if (actionParameter == SWITCH)
 		{
-			if (deleteSwitch(data[SWITCH_NAME_INDEX], changeService, username))
+			if (deleteSwitch(atoi(data[SWITCH_TYPE_ID_INDEX].c_str()), changeService, username))
 			{
 				return SWITCH_DELETE_SUCCESS;
 			}
@@ -821,6 +821,7 @@ bool RemoteService::setSocket(std::string name, int state, ChangeService changeS
 bool RemoteService::addSocket(std::vector<std::string> newSocketData, ChangeService changeService, std::string username)
 {
 	WirelessSocketDto newSocket(
+		atoi(newSocketData[SOCKET_TYPE_ID_INDEX].c_str()),
 		newSocketData[SOCKET_NAME_INDEX],
 		newSocketData[SOCKET_AREA_INDEX],
 		newSocketData[SOCKET_CODE_INDEX],
@@ -839,12 +840,13 @@ bool RemoteService::addSocket(std::vector<std::string> newSocketData, ChangeServ
 
 bool RemoteService::updateSocket(std::vector<std::string> updateSocketData, ChangeService changeService, std::string username)
 {
-	std::string socketName = updateSocketData[SOCKET_NAME_INDEX];
+	int socketTypeId = atoi(updateSocketData[SOCKET_TYPE_ID_INDEX].c_str());
 
 	for (int index = 0; index < _socketList.size(); index++)
 	{
-		if (_socketList[index].GetName() == socketName)
+		if (_socketList[index].GetTypeId() == socketTypeId)
 		{
+			_socketList[index].SetName(updateSocketData[SOCKET_NAME_INDEX]);
 			_socketList[index].SetArea(updateSocketData[SOCKET_AREA_INDEX]);
 			_socketList[index].SetCode(updateSocketData[SOCKET_CODE_INDEX]);
 			_socketList[index].SetState(
@@ -863,13 +865,13 @@ bool RemoteService::updateSocket(std::vector<std::string> updateSocketData, Chan
 	return false;
 }
 
-bool RemoteService::deleteSocket(std::string name, ChangeService changeService, std::string username)
+bool RemoteService::deleteSocket(int typeId, ChangeService changeService, std::string username)
 {
 	std::vector<WirelessSocketDto>::iterator it = _socketList.begin();
 
 	while (it != _socketList.end())
 	{
-		if ((*it).GetName() == name)
+		if ((*it).GetTypeId() == typeId)
 		{
 			it = _socketList.erase(it);
 
@@ -916,8 +918,7 @@ std::string RemoteService::getJsonStringSwitches()
 	std::stringstream data;
 	for (int index = 0; index < _switchList.size(); index++)
 	{
-		WirelessSwitchDto wirelessSwitch = _switchList[index];
-		data << wirelessSwitch.JsonString() << ",";
+		data << _switchList[index].JsonString() << ",";
 	}
 
 	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
@@ -956,6 +957,7 @@ bool RemoteService::toggleSwitch(std::string name, ChangeService changeService, 
 bool RemoteService::addSwitch(std::vector<std::string> newSwitchData, ChangeService changeService, std::string username)
 {
 	WirelessSwitchDto newSwitch(
+		atoi(newSwitchData[SWITCH_TYPE_ID_INDEX].c_str()),
 		newSwitchData[SWITCH_NAME_INDEX],
 		newSwitchData[SWITCH_AREA_INDEX],
 		atoi(newSwitchData[SWITCH_REMOTE_ID_INDEX].c_str()),
@@ -975,12 +977,13 @@ bool RemoteService::addSwitch(std::vector<std::string> newSwitchData, ChangeServ
 
 bool RemoteService::updateSwitch(std::vector<std::string> updateSwitchData, ChangeService changeService, std::string username)
 {
-	std::string switchName = updateSwitchData[SWITCH_NAME_INDEX];
+	int typeId = atoi(updateSwitchData[SWITCH_TYPE_ID_INDEX].c_str());
 
 	for (int index = 0; index < _switchList.size(); index++)
 	{
-		if (_switchList[index].GetName() == switchName)
+		if (_switchList[index].GetTypeId() == typeId)
 		{
+			_switchList[index].SetName(updateSwitchData[SWITCH_NAME_INDEX]);
 			_switchList[index].SetArea(updateSwitchData[SWITCH_AREA_INDEX]);
 			_switchList[index].SetRemoteId(Tools::ConvertStrToInt(updateSwitchData[SWITCH_REMOTE_ID_INDEX].c_str()));
 			_switchList[index].SetKeyCode(Tools::ConvertStrToUnsignedChar(updateSwitchData[SWITCH_KEYCODE_INDEX].c_str()));
@@ -995,13 +998,13 @@ bool RemoteService::updateSwitch(std::vector<std::string> updateSwitchData, Chan
 	return false;
 }
 
-bool RemoteService::deleteSwitch(std::string name, ChangeService changeService, std::string username)
+bool RemoteService::deleteSwitch(int typeId, ChangeService changeService, std::string username)
 {
 	std::vector<WirelessSwitchDto>::iterator it = _switchList.begin();
 
 	while (it != _switchList.end())
 	{
-		if ((*it).GetName() == name)
+		if ((*it).GetTypeId() == typeId)
 		{
 			it = _switchList.erase(it);
 

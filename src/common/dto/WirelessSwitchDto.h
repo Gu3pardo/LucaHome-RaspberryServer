@@ -12,7 +12,7 @@ class WirelessSwitchDto : public WirelessSocketDto
 
   public:
 	WirelessSwitchDto();
-	WirelessSwitchDto(std::string, std::string, int, std::string, int, int, int, int, int, int, std::string);
+	WirelessSwitchDto(int, std::string, std::string, int, std::string, int, int, int, int, int, int, std::string);
 	virtual ~WirelessSwitchDto();
 
 	virtual bool SetState(int, int, int, int, int, int, int, std::string);
