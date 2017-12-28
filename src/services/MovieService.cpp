@@ -177,12 +177,13 @@ std::string MovieService::getJsonString(int start, int end, bool stepByStepAllMo
 
 bool MovieService::updateMovieData(std::vector<std::string> movieData, std::string username)
 {
-	std::string title = movieData[MOVIE_DATA_TITLE_INDEX];
+	int id = Tools::ConvertStrToInt(movieData[MOVIE_DATA_ID_INDEX].c_str());
 
 	for (int index = 0; index < _movieList.size(); index++)
 	{
-		if (_movieList[index].GetTitle() == title)
+		if (_movieList[index].GetId() == id)
 		{
+			_movieList[index].SetTitle(movieData[MOVIE_DATA_TITLE_INDEX]);
 			_movieList[index].SetDescription(movieData[MOVIE_DATA_DESCRIPTION_INDEX]);
 			_movieList[index].SetGenre(movieData[MOVIE_DATA_GENRE_INDEX]);
 			_movieList[index].SetRating(atoi(movieData[MOVIE_DATA_RATING_INDEX].c_str()));

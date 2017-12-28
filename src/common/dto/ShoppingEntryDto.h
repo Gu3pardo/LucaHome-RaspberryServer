@@ -10,15 +10,16 @@
 
 class ShoppingEntryDto
 {
-  private:
+private:
 	int _id;
 	std::string _name;
 	std::string _group;
 	int _quantity;
+	std::string _unit;
 
-  public:
+public:
 	ShoppingEntryDto();
-	ShoppingEntryDto(int, std::string, std::string, int);
+	ShoppingEntryDto(int, std::string, std::string, int, std::string);
 	~ShoppingEntryDto();
 
 	void SetId(int);
@@ -34,6 +35,9 @@ class ShoppingEntryDto
 	void IncreaseQuantity(int);
 	void DecreaseQuantity(int);
 	int GetQuantity();
+
+	void SetUnit(std::string);
+	std::string GetUnit();
 
 	std::string SaveString();
 	std::string JsonString();

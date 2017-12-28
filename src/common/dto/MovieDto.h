@@ -11,6 +11,7 @@
 class MovieDto {
 
 private:
+	int _id;
 	std::string _title;
 	std::string _genre;
 	std::string _description;
@@ -19,8 +20,11 @@ private:
 
 public:
 	MovieDto();
-	MovieDto(std::string, std::string, std::string, int, int);
+	MovieDto(int, std::string, std::string, std::string, int, int);
 	~MovieDto();
+
+	void SetId(int);
+	int GetId();
 
 	void SetTitle(std::string);
 	std::string GetTitle();

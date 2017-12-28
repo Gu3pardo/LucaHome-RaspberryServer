@@ -6,20 +6,22 @@ BirthdayDto::BirthdayDto()
 	_name = "Dummy";
 	_day = 1;
 	_month = 1;
-	_year = 1970;
+	_year = 1900;
+	_group = "";
 	_remindMe = false;
-	_sendMail = false;
+	_sentMail = false;
 }
 
-BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year, bool remindMe, bool sendMail)
+BirthdayDto::BirthdayDto(int id, std::string name, int day, int month, int year, std::string group, bool remindMe, bool sentMail)
 {
 	_id = id;
 	_name = name;
 	_day = day;
 	_month = month;
 	_year = year;
+	_group = group;
 	_remindMe = remindMe;
-	_sendMail = sendMail;
+	_sentMail = sentMail;
 }
 
 BirthdayDto::~BirthdayDto()
@@ -122,12 +124,22 @@ bool BirthdayDto::HasBirthday()
 	return false;
 }
 
-void BirthdayDto::SetSendMail(bool sendMail) {
-	_sendMail = sendMail;
+void BirthdayDto::SetGroup(std::string group)
+{
+	_group = group;
 }
 
-bool BirthdayDto::GetSendMail() {
-	return _sendMail;
+std::string BirthdayDto::GetGroup()
+{
+	return _group;
+}
+
+void BirthdayDto::SetSentMail(bool sentMail) {
+	_sentMail = sentMail;
+}
+
+bool BirthdayDto::GetSentMail() {
+	return _sentMail;
 }
 
 void BirthdayDto::SetRemindMe(bool remindMe) {
@@ -140,13 +152,15 @@ bool BirthdayDto::GetRemindMe() {
 
 std::string BirthdayDto::SaveString()
 {
-	std::string str = 
-		_name + ":"
+	std::string str =
+		Tools::ConvertIntToStr(_id) + ":"
+		+ _name + ":"
 		+ Tools::ConvertIntToStr(_day) + ":"
 		+ Tools::ConvertIntToStr(_month) + ":"
 		+ Tools::ConvertIntToStr(_year) + ":"
+		+ _group + ":"
 		+ Tools::ConvertBoolToStr(_remindMe) + ":"
-		+ Tools::ConvertBoolToStr(_sendMail) + ";";
+		+ Tools::ConvertBoolToStr(_sentMail) + ";";
 
 	return str;
 }
@@ -157,10 +171,11 @@ std::string BirthdayDto::JsonString()
 		std::string("{")
 		+ std::string("\"Birthday\":")
 		+ std::string("{")
-		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"RemindMe\":") + Tools::ConvertBoolToStr(_remindMe) + std::string(",")
-		+ std::string("\"SendMail\":") + Tools::ConvertBoolToStr(_sendMail) + std::string(",")
+		+ std::string("\"SentMail\":") + Tools::ConvertBoolToStr(_sentMail) + std::string(",")
+		+ std::string("\"Group\":\"") + _group + std::string("\",")
 		+ std::string("\"Date\":")
 		+ std::string("{")
 		+ std::string("\"Day\":") + Tools::ConvertIntToStr(_day) + std::string(",")
@@ -182,7 +197,9 @@ std::string BirthdayDto::PhpString()
 		<< Tools::ConvertIntToStr(_day) << "::"
 		<< Tools::ConvertIntToStr(_month) << "::"
 		<< Tools::ConvertIntToStr(_year) << "::"
-		<< Tools::ConvertBoolToStr(_remindMe) << ";";
+		<< _group << "::"
+		<< Tools::ConvertBoolToStr(_remindMe) << "::"
+		<< Tools::ConvertBoolToStr(_sentMail) << ";";
 
 	return out.str();
 }
@@ -194,6 +211,9 @@ std::string BirthdayDto::ToString()
 		+ std::string("; day: ") + Tools::ConvertIntToStr(_day)
 		+ std::string("; month: ") + Tools::ConvertIntToStr(_month)
 		+ std::string("; year: ") + Tools::ConvertIntToStr(_year)
+		+ std::string("; group: ") + _group
+		+ std::string("; remindme: ") + Tools::ConvertBoolToStr(_remindMe)
+		+ std::string("; sentmail: ") + Tools::ConvertBoolToStr(_sentMail)
 		+ std::string(" }");
 	return str;
 }

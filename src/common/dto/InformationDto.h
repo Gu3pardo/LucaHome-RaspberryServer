@@ -19,14 +19,13 @@ private:
 	std::string _websiteVersion;
 	std::string _temperatureLoggerVersion;
 	std::string _androidApplicationVersion;
-	std::string _androidWearableVersion;
 	std::string _androidAccessApplicationVersion;
 	std::string _mediaServerVersion;
 	std::string _wpfApplicationVersion;
 
 public:
 	InformationDto();
-	InformationDto(std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+	InformationDto(std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 	~InformationDto();
 
 	std::string GetAuthor();
@@ -37,7 +36,6 @@ public:
 	std::string GetWebsiteVersion();
 	std::string GetTemperatureLoggerVersion();
 	std::string GetAndroidApplicationVersion();
-	std::string GetAndroidWearableVersion();
 	std::string GetAndroidAccessApplicationVersion();
 	std::string GetMediaServerVersion();
 	std::string GetWpfApplicationVersion();

@@ -4,7 +4,7 @@ CoinDto::CoinDto()
 {
 	_id = 0;
 	_user = "Dummy";
-	_type = "BTC";
+	_type = "";
 	_amount = 0;
 }
 
@@ -76,7 +76,7 @@ std::string CoinDto::JsonString()
 		std::string("{")
 		+ std::string("\"Coin\":")
 		+ std::string("{")
-		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"User\":\"") + _user + std::string("\",")
 		+ std::string("\"Type\":\"") + _type + std::string("\",")
 		+ std::string("\"Amount\":") + Tools::ConvertDoubleToStr(_amount)

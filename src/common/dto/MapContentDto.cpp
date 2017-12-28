@@ -84,7 +84,7 @@ std::string MapContentDto::JsonString() {
 		std::string("{")
 		+ std::string("\"MapContent\":")
 		+ std::string("{")
-		+ std::string("\"ID\":") + Tools::ConvertIntToStr(_id) + std::string(",")
+		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Type\":\"") + _type + std::string("\",")
 		+ std::string("\"TypeId\":") + Tools::ConvertIntToStr(_typeId) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")

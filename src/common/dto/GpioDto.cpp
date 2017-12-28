@@ -2,13 +2,15 @@
 
 GpioDto::GpioDto()
 {
+	_typeId = 0;
 	_name = "N.A.";
 	_gpio = 0;
 	_state = 0;
 }
 
-GpioDto::GpioDto(std::string name, int gpio, int state)
+GpioDto::GpioDto(int typeId, std::string name, int gpio, int state)
 {
+	_typeId = typeId;
 	_name = name;
 	_gpio = gpio;
 	_state = state;
@@ -16,6 +18,16 @@ GpioDto::GpioDto(std::string name, int gpio, int state)
 
 GpioDto::~GpioDto()
 {
+}
+
+void GpioDto::SetTypeId(int typeId)
+{
+	_typeId = typeId;
+}
+
+int GpioDto::GetTypeId()
+{
+	return _typeId;
 }
 
 void GpioDto::SetName(std::string name)
@@ -51,8 +63,9 @@ int GpioDto::GetState()
 
 std::string GpioDto::SaveString()
 {
-	std::string str = 
-		_name + ":"
+	std::string str =
+		Tools::ConvertIntToStr(_typeId) + ":"
+		+ _name + ":"
 		+ Tools::ConvertIntToStr(_gpio) + ":"
 		+ Tools::ConvertIntToStr(_state) + ";";
 	return str;
@@ -64,6 +77,7 @@ std::string GpioDto::JsonString()
 		std::string("{")
 		+ std::string("\"Gpio\":")
 		+ std::string("{")
+		+ std::string("\"TypeId\":") + Tools::ConvertIntToStr(_typeId) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Gpio\":") + Tools::ConvertIntToStr(_gpio) + std::string(",")
 		+ std::string("\"State\":") + Tools::ConvertIntToStr(_state)
@@ -74,7 +88,9 @@ std::string GpioDto::JsonString()
 
 std::string GpioDto::ToString()
 {
-	std::string str = std::string("GpioDto { name: ") + _name 
+	std::string str =
+		std::string("GpioDto { typeid: ") + Tools::ConvertIntToStr(_typeId)
+		+ std::string("; name: ") + _name
 		+ std::string("; gpio: ") + Tools::ConvertIntToStr(_gpio)
 		+ std::string("; state: ") + Tools::ConvertIntToStr(_state)
 		+ std::string(" }");

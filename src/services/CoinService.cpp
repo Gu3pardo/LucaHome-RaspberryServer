@@ -24,7 +24,7 @@ void CoinService::LoadData()
 	_coinList = _xmlService.GetCoinList(coinFileContent);
 }
 
-std::string CoinService::PerformAction(std::vector<std::string> data, ChangeService changeService, std::string username)
+std::string CoinService::PerformAction(std::vector<std::string> data, AuthentificationService authentificationService, ChangeService changeService, std::string username)
 {
 	std::string action = data[ACTION_INDEX];
 	std::string actionParameter = data[ACTION_PARAMETER_INDEX];
@@ -33,6 +33,10 @@ std::string CoinService::PerformAction(std::vector<std::string> data, ChangeServ
 	{
 		if (actionParameter == ALL)
 		{
+			if (!authentificationService.IsUserAdmin(username)) {
+				return COIN_ERROR_NR_207;
+			}
+
 			return getJsonStringAll();
 		}
 		else if (actionParameter == FOR_USER)

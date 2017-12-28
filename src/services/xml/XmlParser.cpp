@@ -149,13 +149,14 @@ std::vector<BirthdayDto> XmlParser::ParseBirthdayList()
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 
 				BirthdayDto newBirthday(
-					l,
-					words[0],
-					atoi(words[1].c_str()),
+					atoi(words[0].c_str()),
+					words[1],
 					atoi(words[2].c_str()),
 					atoi(words[3].c_str()),
-					Tools::ConvertStrToBool(words[4].c_str()),
-					Tools::ConvertStrToBool(words[5].c_str()));
+					atoi(words[4].c_str()),
+					words[5],
+					Tools::ConvertStrToBool(words[6].c_str()),
+					Tools::ConvertStrToBool(words[7].c_str()));
 				birthdayList.push_back(newBirthday);
 			}
 		}
@@ -233,9 +234,10 @@ std::vector<GpioDto> XmlParser::ParseGpioList()
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 				GpioDto newGpio(
-					words[0],
-					atoi(words[1].c_str()),
-					atoi(words[2].c_str()));
+					atoi(words[0].c_str()),
+					words[1],
+					atoi(words[2].c_str()),
+					atoi(words[3].c_str()));
 				gpioList.push_back(newGpio);
 			}
 		}
@@ -428,6 +430,37 @@ std::vector<MeterDataDto> XmlParser::ParseMeterDataList()
 	return meterDataList;
 }
 
+std::vector<MoneyMeterDataDto> XmlParser::ParseMoneyMeterDataList()
+{
+	std::string entries = FindTag("moneymeterdata");
+	std::vector<MoneyMeterDataDto> moneyMeterDataList;
+
+	if (entries.length() > 0)
+	{
+		std::vector<std::string> lines = Tools::Explode(";", entries);
+		for (int l = 0; l < lines.size(); l++)
+		{
+			if (lines[l].length() > 0)
+			{
+				std::vector<std::string> words = Tools::Explode(":", lines[l]);
+				MoneyMeterDataDto newMoneyMeterData(
+					atoi(words[0].c_str()),
+					words[1],
+					words[2],
+					Tools::ConvertStrToDouble(words[3].c_str()),
+					words[4],
+					atoi(words[5].c_str()),
+					atoi(words[6].c_str()),
+					atoi(words[7].c_str()),
+					words[8]);
+				moneyMeterDataList.push_back(newMoneyMeterData);
+			}
+		}
+	}
+
+	return moneyMeterDataList;
+}
+
 std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 {
 	std::string entries = FindTag("schedules");
@@ -442,16 +475,17 @@ std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 			{
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 				ScheduleDto newSchedule(
-					words[0],
+					atoi(words[0].c_str()),
 					words[1],
 					words[2],
 					words[3],
-					atoi(words[4].c_str()),
+					words[4],
 					atoi(words[5].c_str()),
 					atoi(words[6].c_str()),
 					atoi(words[7].c_str()),
 					Tools::ConvertStrToBool(words[8].c_str()),
-					atoi(words[9].c_str())
+					Tools::ConvertStrToBool(words[9].c_str()),
+					Tools::ConvertStrToBool(words[10].c_str())
 				);
 				scheduleList.push_back(newSchedule);
 			}
@@ -544,7 +578,8 @@ std::vector<ShoppingEntryDto> XmlParser::ParseShoppingList()
 					atoi(words[0].c_str()),
 					words[1],
 					words[2],
-					atoi(words[3].c_str()));
+					atoi(words[3].c_str()),
+					words[4]);
 				shoppingList.push_back(newEntry);
 			}
 		}

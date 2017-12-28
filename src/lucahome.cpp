@@ -46,6 +46,7 @@ namespace patch {
 #include "services/MapContentService.h"
 #include "services/MenuService.h"
 #include "services/MeterDataService.h"
+#include "services/MoneyMeterDataService.h"
 #include "services/MovieService.h"
 #include "services/RemoteService.h"
 #include "services/ShoppingListService.h"
@@ -70,9 +71,10 @@ CameraService _cameraService;
 ChangeService _changeService;
 CoinService _coinService;
 InformationService _informationService;
+MapContentService _mapContentService;
 MenuService _menuService;
 MeterDataService _meterDataService;
-MapContentService _mapContentService;
+MoneyMeterDataService _moneyMeterDataService;
 MovieService _movieService;
 RemoteService _remoteService;
 ShoppingListService _shoppingListService;
@@ -162,6 +164,7 @@ string executeCmd(string cmd, int source) {
 			_mapContentService.LoadData();
 			_menuService.LoadData();
 			_meterDataService.LoadData();
+			_moneyMeterDataService.LoadData();
 			_movieService.LoadData();
 			_remoteService.LoadData();
 			_shoppingListService.LoadData();
@@ -184,7 +187,7 @@ string executeCmd(string cmd, int source) {
 	}
 	//----------------------Coins---------------------
 	else if (category == COINS) {
-		return _coinService.PerformAction(data, _changeService, username);
+		return _coinService.PerformAction(data, _authentificationService, _changeService, username);
 	}
 	//------------------Informations------------------
 	else if (category == INFORMATION) {
@@ -201,6 +204,10 @@ string executeCmd(string cmd, int source) {
 	//--------------------MeterData-------------------
 	else if (category == METERDATA) {
 		return _meterDataService.PerformAction(data, _changeService, username);
+	}
+	//--------------------MoneyMeterData-------------------
+	else if (category == MONEYMETERDATA) {
+		return _moneyMeterDataService.PerformAction(data, _authentificationService, _changeService, username);
 	}
 	//---------------------Movies---------------------
 	else if (category == MOVIE) {
@@ -347,7 +354,7 @@ void *scheduler(void *arg) {
 			for (int s = 0; s < _scheduleList.size(); s++) {
 				if (_scheduleList[s].GetName() == (*it).GetSchedule()) {
 					found = 1;
-					if (!_scheduleList[s].GetState()) {
+					if (!_scheduleList[s].GetIsActive()) {
 						active = 0;
 					}
 				}
@@ -379,7 +386,7 @@ void *scheduler(void *arg) {
 				}
 			}
 
-			if (!found && _scheduleList[s].GetState()) {
+			if (!found && _scheduleList[s].GetIsActive()) {
 				time_t newtime = time(0);
 				struct tm tasktime;
 				localtime_r(&newtime, &tasktime);
@@ -412,10 +419,10 @@ void *scheduler(void *arg) {
 
 				for (int s = 0; s < _scheduleList.size(); s++) {
 					if (schedule == _scheduleList[s].GetName()) {
-						if (_scheduleList[s].GetState()) {
+						if (_scheduleList[s].GetIsActive()) {
 							if (_scheduleList[s].GetSocket() != "") {
 								stringstream socket_out;
-								socket_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:SOCKET:" << _scheduleList[s].GetSocket() << ":" << _scheduleList[s].GetOnoff();
+								socket_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:SOCKET:" << _scheduleList[s].GetSocket() << ":" << Tools::ConvertBoolToStr(_scheduleList[s].GetAction());
 
 								pthread_mutex_lock(&socketsMutex);
 
@@ -429,7 +436,7 @@ void *scheduler(void *arg) {
 
 							if (_scheduleList[s].GetGpio() != "") {
 								stringstream gpio_out;
-								gpio_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:GPIO:" << _scheduleList[s].GetGpio() << ":" << _scheduleList[s].GetOnoff();
+								gpio_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:GPIO:" << _scheduleList[s].GetGpio() << ":" << Tools::ConvertBoolToStr(_scheduleList[s].GetAction());
 
 								pthread_mutex_lock(&gpiosMutex);
 
@@ -578,6 +585,7 @@ void *reloader(void *arg) {
 		_mapContentService.LoadData();
 		_menuService.LoadData();
 		_meterDataService.LoadData();
+		_moneyMeterDataService.LoadData();
 		_movieService.LoadData();
 		_remoteService.LoadData();
 		_shoppingListService.LoadData();
@@ -613,6 +621,7 @@ int main(void) {
 	_mapContentService.Initialize(_fileController, MAP_CONTENT_FILE);
 	_menuService.Initialize(_fileController, MENU_FILE, LISTED_MENU_FILE);
 	_meterDataService.Initialize(_fileController, METERDATA_FILE);
+	_moneyMeterDataService.Initialize(_fileController, MONEY_METERDATA_FILE);
 	_movieService.Initialize(_fileController, _pathController);
 	_remoteService.Initialize(_fileController, SETTINGS_FILE);
 	_shoppingListService.Initialize(_fileController, SHOPPING_LIST_FILE);

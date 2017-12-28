@@ -15,37 +15,37 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "../common/dto/CoinDto.h"
+#include "../common/dto/MoneyMeterDataDto.h"
 #include "../common/Constants.h"
 #include "../controller/FileController.h"
 #include "AuthentificationService.h"
 #include "shared/ChangeService.h"
 #include "xml/XmlService.h"
 
-#ifndef COINSERVICE_H
-#define COINSERVICE_H
+#ifndef MONEYMETERDATASERVICE_H
+#define MONEYMETERDATASERVICE_H
 
-class CoinService
+class MoneyMeterDataService
 {
 private:
-	std::string _coinFile;
-	std::vector<CoinDto> _coinList;
+	std::string _moneyMeterDataFile;
+	std::vector<MoneyMeterDataDto> _moneyMeterDataList;
 
 	FileController _fileController;
 	XmlService _xmlService;
 
-	void saveCoins(ChangeService, std::string);
+	void saveMoneyMeterData(ChangeService, std::string);
 
-	std::string getJsonStringAll();
+	std::string getJsonString();
 	std::string getJsonStringUser(std::string);
 
-	bool addCoin(std::vector<std::string>, ChangeService, std::string);
-	bool updateCoin(std::vector<std::string>, ChangeService, std::string);
-	bool deleteCoin(int, ChangeService, std::string);
+	bool addMoneyMeterData(std::vector<std::string>, ChangeService, std::string);
+	bool updateMoneyMeterData(std::vector<std::string>, ChangeService, std::string);
+	bool deleteMoneyMeterData(int, ChangeService, std::string);
 
 public:
-	CoinService();
-	~CoinService();
+	MoneyMeterDataService();
+	~MoneyMeterDataService();
 
 	void Initialize(FileController, std::string);
 	void LoadData();

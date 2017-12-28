@@ -123,7 +123,8 @@ bool ShoppingListService::addShoppingEntry(std::vector<std::string> newEntryData
 		atoi(newEntryData[SHOPPING_ENTRY_ID_INDEX].c_str()),
 		newEntryData[SHOPPING_ENTRY_NAME_INDEX],
 		newEntryData[SHOPPING_ENTRY_GROUP_INDEX],
-		atoi(newEntryData[SHOPPING_ENTRY_QUANTITY_INDEX].c_str()));
+		atoi(newEntryData[SHOPPING_ENTRY_QUANTITY_INDEX].c_str()),
+		newEntryData[SHOPPING_ENTRY_UNIT_INDEX]);
 
 	_shoppingList.push_back(newEntry);
 
@@ -144,6 +145,7 @@ bool ShoppingListService::updateShoppingEntry(std::vector<std::string> updateEnt
 			_shoppingList[index].SetName(updateEntryData[SHOPPING_ENTRY_NAME_INDEX]);
 			_shoppingList[index].SetGroup(updateEntryData[SHOPPING_ENTRY_GROUP_INDEX]);
 			_shoppingList[index].SetQuantity(atoi(updateEntryData[SHOPPING_ENTRY_QUANTITY_INDEX].c_str()));
+			_shoppingList[index].SetUnit(updateEntryData[SHOPPING_ENTRY_UNIT_INDEX]);
 
 			saveShoppingList(changeService, username);
 			LoadData();

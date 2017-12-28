@@ -27,7 +27,7 @@ void BirthdayService::CheckBirthdayList()
 	{
 		BirthdayDto birthday = _birthdayList[index];
 
-		if (birthday.HasBirthday() && birthday.GetRemindMe() && !birthday.GetSendMail())
+		if (birthday.HasBirthday() && birthday.GetRemindMe() && !birthday.GetSentMail())
 		{
 			std::stringstream information;
 			information
@@ -38,11 +38,11 @@ void BirthdayService::CheckBirthdayList()
 
 			_mailController.SendMail(information.str());
 
-			_birthdayList[index].SetSendMail(true);
+			_birthdayList[index].SetSentMail(true);
 		}
-		else if (!birthday.HasBirthday() && birthday.GetSendMail())
+		else if (!birthday.HasBirthday() && birthday.GetSentMail())
 		{
-			_birthdayList[index].SetSendMail(false);
+			_birthdayList[index].SetSentMail(false);
 		}
 	}
 
@@ -183,7 +183,8 @@ bool BirthdayService::addBirthday(std::vector<std::string> newBirthdayData, Chan
 		atoi(newBirthdayData[BIRTHDAY_DAY_INDEX].c_str()),
 		atoi(newBirthdayData[BIRTHDAY_MONTH_INDEX].c_str()),
 		atoi(newBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()),
-		Tools::ConvertStrToBool(newBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()),
+		newBirthdayData[BIRTHDAY_GROUP_INDEX],
+		Tools::ConvertStrToBool(newBirthdayData[BIRTHDAY_REMINDME_INDEX].c_str()),
 		false);
 
 	_birthdayList.push_back(newBirthday);
@@ -208,7 +209,9 @@ bool BirthdayService::updateBirthday(std::vector<std::string> updateBirthdayData
 			_birthdayList[index].SetMonth(atoi(updateBirthdayData[BIRTHDAY_MONTH_INDEX].c_str()));
 			_birthdayList[index].SetYear(atoi(updateBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()));
 
-			_birthdayList[index].SetRemindMe(Tools::ConvertStrToBool(updateBirthdayData[BIRTHDAY_YEAR_INDEX].c_str()));
+			_birthdayList[index].SetGroup(updateBirthdayData[BIRTHDAY_GROUP_INDEX]);
+
+			_birthdayList[index].SetRemindMe(Tools::ConvertStrToBool(updateBirthdayData[BIRTHDAY_REMINDME_INDEX].c_str()));
 
 			saveBirthdays(changeService, username);
 			LoadData();

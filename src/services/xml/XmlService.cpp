@@ -58,7 +58,6 @@ InformationDto XmlService::GetInformation(std::string content)
 		parser.FindTag("websiteversion"),
 		parser.FindTag("temperaturelogversion"),
 		parser.FindTag("appversion"),
-		parser.FindTag("wearappversion"),
 		parser.FindTag("accessappversion"),
 		parser.FindTag("mediaserverversion"),
 		parser.FindTag("wpfapplicationversion"));
@@ -111,6 +110,18 @@ std::vector<MeterDataDto> XmlService::GetMeterDataList(std::string content)
 {
 	XmlParser parser(content);
 	return parser.ParseMeterDataList();
+}
+
+std::string XmlService::GenerateMoneyMeterDataXml(std::vector<MoneyMeterDataDto> moneyMeterDataList)
+{
+	XmlWriter writer;
+	return writer.GenerateMoneyMeterDataXml(moneyMeterDataList);
+}
+
+std::vector<MoneyMeterDataDto> XmlService::GetMoneyMeterDataList(std::string content)
+{
+	XmlParser parser(content);
+	return parser.ParseMoneyMeterDataList();
 }
 
 std::string XmlService::GenerateSettingsXml(

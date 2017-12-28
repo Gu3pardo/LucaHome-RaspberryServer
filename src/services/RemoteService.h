@@ -69,16 +69,16 @@ private:
 	bool setGpio(std::string, int, ChangeService, std::string);
 	bool addGpio(std::vector<std::string>, ChangeService, std::string);
 	bool updateGpio(std::vector<std::string>, ChangeService, std::string);
-	bool deleteGpio(std::string, ChangeService, std::string);
+	bool deleteGpio(int, ChangeService, std::string);
 	bool setAllGpios(int, ChangeService, std::string);
 
 	std::string getJsonStringSchedules();
 
-	bool setSchedule(std::string, int, ChangeService, std::string);
+	bool setSchedule(int, bool, ChangeService, std::string);
 	bool addSchedule(std::vector<std::string>, ChangeService, std::string);
 	bool updateSchedule(std::vector<std::string>, ChangeService, std::string);
-	bool deleteSchedule(std::string, ChangeService, std::string);
-	bool setAllSchedules(int, ChangeService, std::string);
+	bool deleteSchedule(int, ChangeService, std::string);
+	bool setAllSchedules(bool, ChangeService, std::string);
 
 	std::vector<WirelessSocketDto> getSocketList();
 	std::string getJsonStringSockets();

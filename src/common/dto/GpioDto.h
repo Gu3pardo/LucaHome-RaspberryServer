@@ -12,14 +12,18 @@
 class GpioDto
 {
 private:
+	int _typeId;
 	std::string _name;
 	int _gpio;
 	int _state;
 
 public:
 	GpioDto();
-	GpioDto(std::string, int, int);
+	GpioDto(int, std::string, int, int);
 	~GpioDto();
+
+	void SetTypeId(int);
+	int GetTypeId();
 
 	void SetName(std::string);
 	std::string GetName();

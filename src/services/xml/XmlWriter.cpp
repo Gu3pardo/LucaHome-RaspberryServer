@@ -106,6 +106,20 @@ std::string XmlWriter::GenerateMeterDataXml(std::vector<MeterDataDto> meterData)
 	return xml.str();
 }
 
+std::string XmlWriter::GenerateMoneyMeterDataXml(std::vector<MoneyMeterDataDto> moneyMeterData)
+{
+	std::stringstream xml;
+
+	xml << "<moneymeterdata>" << std::endl;
+	for (int index = 0; index < moneyMeterData.size(); index++)
+	{
+		xml << moneyMeterData[index].SaveString() << std::endl;
+	}
+	xml << "</moneymeterdata>" << std::endl;
+
+	return xml.str();
+}
+
 std::string XmlWriter::GenerateSettingsXml(
 	int port, int datagpio, int raspberry,
 	std::vector<std::string> areas, std::vector<std::string> sensors,

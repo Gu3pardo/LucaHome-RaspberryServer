@@ -88,7 +88,7 @@ bool AuthentificationService::AuthentificateUserAction(std::string userName, std
 			if ((*it).GetPassword() == password) {
 				if ((*it).GetRole() >= actionId) {
 					if (isAdminAction(action)) {
-						if (isUserAdmin(userName)) {
+						if (IsUserAdmin(userName)) {
 							authentificationSuccess = true;
 						}
 					}
@@ -113,7 +113,7 @@ bool AuthentificationService::AddUser(std::string currentUserName, std::string c
 		return false;
 	}
 
-	if (!isUserAdmin(currentUserName)) {
+	if (!IsUserAdmin(currentUserName)) {
 		return false;
 	}
 
@@ -148,7 +148,7 @@ bool AuthentificationService::DeleteUser(std::string currentUserName, std::strin
 		return false;
 	}
 
-	if (!isUserAdmin(currentUserName)) {
+	if (!IsUserAdmin(currentUserName)) {
 		return false;
 	}
 
@@ -180,7 +180,7 @@ std::string AuthentificationService::ResetFailedLogin(std::string currentUserNam
 		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
-	if (!isUserAdmin(currentUserName)) {
+	if (!IsUserAdmin(currentUserName)) {
 		return AUTHENTIFICATION_ERROR_NR_15;
 	}
 
@@ -209,6 +209,27 @@ std::string AuthentificationService::ResetFailedLogin(std::string currentUserNam
 	}
 
 	return AUTHENTIFICATION_RESET_FAILED_LOGIN_COUNT_SUCCESS;
+}
+
+bool AuthentificationService::IsUserAdmin(std::string userName) {
+	if (userName == DUMMY) {
+		return false;
+	}
+
+	bool isAdmin = false;
+
+	std::vector<UserDto>::iterator it = _userList.begin();
+	while (it != _userList.end()) {
+		if ((*it).GetName() == userName) {
+			isAdmin = (*it).IsAdmin();
+			break;
+		}
+		else {
+			++it;
+		}
+	}
+
+	return isAdmin;
 }
 
 /*==============PRIVATE==============*/
@@ -255,27 +276,6 @@ bool AuthentificationService::isAdminAction(std::string action) {
 		return true;
 	}
 	return true;
-}
-
-bool AuthentificationService::isUserAdmin(std::string userName) {
-	if (userName == DUMMY) {
-		return false;
-	}
-
-	bool isAdmin = false;
-
-	std::vector<UserDto>::iterator it = _userList.begin();
-	while (it != _userList.end()) {
-		if ((*it).GetName() == userName) {
-			isAdmin = (*it).IsAdmin();
-			break;
-		}
-		else {
-			++it;
-		}
-	}
-
-	return isAdmin;
 }
 
 int AuthentificationService::getInvalidLoginCount(std::string userName) {

@@ -2,6 +2,7 @@
 
 ScheduleDto::ScheduleDto()
 {
+	_id = 0;
 	_name = "N.A.";
 	_socket = "N.A.";
 	_gpio = "N.A.";
@@ -9,12 +10,13 @@ ScheduleDto::ScheduleDto()
 	_weekday = 0;
 	_hour = 0;
 	_minute = 0;
-	_onoff = 0;
+	_action = false;
 	_isTimer = false;
-	_state = 0;
+	_isActive = false;
 }
 
 ScheduleDto::ScheduleDto(
+	int id,
 	std::string name,
 	std::string socket,
 	std::string gpio,
@@ -22,10 +24,11 @@ ScheduleDto::ScheduleDto(
 	int weekday,
 	int hour,
 	int minute,
-	int onoff,
+	bool action,
 	bool isTimer,
-	int state)
+	bool isActive)
 {
+	_id = id;
 	_name = name;
 	_socket = socket;
 	_gpio = gpio;
@@ -33,13 +36,23 @@ ScheduleDto::ScheduleDto(
 	_weekday = weekday;
 	_hour = hour;
 	_minute = minute;
-	_onoff = onoff;
+	_action = action;
 	_isTimer = isTimer;
-	_state = state;
+	_isActive = isActive;
 }
 
 ScheduleDto::~ScheduleDto()
 {
+}
+
+void ScheduleDto::SetId(int id)
+{
+	_id = id;
+}
+
+int ScheduleDto::GetId()
+{
+	return _id;
 }
 
 void ScheduleDto::SetName(std::string name)
@@ -112,50 +125,50 @@ int ScheduleDto::GetMinute()
 	return _minute;
 }
 
-void ScheduleDto::SetOnoff(int onoff)
+void ScheduleDto::SetAction(bool action)
 {
-	_onoff = onoff;
+	_action = action;
 }
 
-int ScheduleDto::GetOnoff()
+bool ScheduleDto::GetAction()
 {
-	return _onoff;
+	return _action;
 }
 
-void ScheduleDto::SetIsTimer(int isTimer)
+void ScheduleDto::SetIsTimer(bool isTimer)
 {
 	_isTimer = isTimer;
 }
 
-int ScheduleDto::GetIsTimer()
+bool ScheduleDto::GetIsTimer()
 {
 	return _isTimer;
 }
 
-bool ScheduleDto::SetState(int state)
+void ScheduleDto::SetIsActive(bool isActive)
 {
-	_state = state;
-	return true;
+	_isActive = isActive;
 }
 
-int ScheduleDto::GetState()
+bool ScheduleDto::GetIsActive()
 {
-	return _state;
+	return _isActive;
 }
 
 std::string ScheduleDto::SaveString()
 {
-	std::string str = 
-		_name + ":"
+	std::string str =
+		Tools::ConvertIntToStr(_id) + ":"
+		+ _name + ":"
 		+ _socket + ":"
 		+ _gpio + ":"
 		+ _switch + ":"
 		+ Tools::ConvertIntToStr(_weekday) + ":"
 		+ Tools::ConvertIntToStr(_hour) + ":"
 		+ Tools::ConvertIntToStr(_minute) + ":"
-		+ Tools::ConvertIntToStr(_onoff) + ":"
+		+ Tools::ConvertBoolToStr(_action) + ":"
 		+ Tools::ConvertBoolToStr(_isTimer) + ":"
-		+ Tools::ConvertIntToStr(_state) + ";";
+		+ Tools::ConvertBoolToStr(_isActive) + ";";
 	return str;
 }
 
@@ -165,6 +178,7 @@ std::string ScheduleDto::JsonString()
 		std::string("{")
 		+ std::string("\"Schedule\":")
 		+ std::string("{")
+		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Socket\":\"") + _socket + std::string("\",")
 		+ std::string("\"Gpio\":\"") + _gpio + std::string("\",")
@@ -172,9 +186,9 @@ std::string ScheduleDto::JsonString()
 		+ std::string("\"Weekday\":") + Tools::ConvertIntToStr(_weekday) + std::string(",")
 		+ std::string("\"Hour\":") + Tools::ConvertIntToStr(_hour) + std::string(",")
 		+ std::string("\"Minute\":") + Tools::ConvertIntToStr(_minute) + std::string(",")
-		+ std::string("\"OnOff\":") + Tools::ConvertIntToStr(_onoff) + std::string(",")
+		+ std::string("\"Action\":") + Tools::ConvertIntToStr(_action) + std::string(",")
 		+ std::string("\"IsTimer\":") + Tools::ConvertBoolToStr(_isTimer) + std::string(",")
-		+ std::string("\"State\":") + Tools::ConvertIntToStr(_state)
+		+ std::string("\"IsActive\":") + Tools::ConvertIntToStr(_isActive)
 		+ std::string("}")
 		+ std::string("}");
 	return str;
@@ -182,16 +196,17 @@ std::string ScheduleDto::JsonString()
 
 std::string ScheduleDto::ToString()
 {
-	std::string str = std::string("ScheduleDto { name: ") + _name
+	std::string str = std::string("ScheduleDto { id: ") + Tools::ConvertIntToStr(_id)
+		+ std::string("; name: ") + _name
 		+ std::string("; socket: ") + _socket
 		+ std::string("; gpio: ") + _gpio
 		+ std::string("; switch: ") + _switch
 		+ std::string("; weekday: ") + Tools::ConvertIntToStr(_weekday)
 		+ std::string("; time: ") + Tools::ConvertIntToStr(_hour)
 		+ std::string(":") + Tools::ConvertIntToStr(_minute)
-		+ std::string("; onoff: ") + Tools::ConvertIntToStr(_onoff)
+		+ std::string("; action: ") + Tools::ConvertIntToStr(_action)
 		+ std::string("; isTimer: ") + Tools::ConvertBoolToStr(_isTimer)
-		+ std::string("; state: ") + Tools::ConvertIntToStr(_state)
+		+ std::string("; isActive: ") + Tools::ConvertIntToStr(_isActive)
 		+ std::string(" }");
 	return str;
 }

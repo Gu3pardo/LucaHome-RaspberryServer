@@ -2,6 +2,7 @@
 
 MovieDto::MovieDto()
 {
+	_id = 0;
 	_title = "N.A.";
 	_genre = "N.A.";
 	_description = "N.A.";
@@ -9,8 +10,9 @@ MovieDto::MovieDto()
 	_watched = 0;
 }
 
-MovieDto::MovieDto(std::string title, std::string genre, std::string description, int rating, int watched)
+MovieDto::MovieDto(int id, std::string title, std::string genre, std::string description, int rating, int watched)
 {
+	_id = id;
 	_title = title;
 	_genre = genre;
 	_description = description;
@@ -20,6 +22,16 @@ MovieDto::MovieDto(std::string title, std::string genre, std::string description
 
 MovieDto::~MovieDto()
 {
+}
+
+void MovieDto::SetId(int id)
+{
+	_id = id;
+}
+
+int MovieDto::GetId()
+{
+	return _id;
 }
 
 void MovieDto::SetTitle(std::string title)
@@ -96,6 +108,7 @@ std::string MovieDto::JsonString()
 		std::string("{")
 		+ std::string("\"Movie\":")
 		+ std::string("{")
+		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Title\":\"") + _title + std::string("\",")
 		+ std::string("\"Genre\":\"") + _genre + std::string("\",")
 		+ std::string("\"Description\":\"") + _description + std::string("\",")

@@ -17,6 +17,7 @@
 #include "../../common/dto/MapContentDto.h"
 #include "../../common/dto/MenuDto.h"
 #include "../../common/dto/MeterDataDto.h"
+#include "../../common/dto/MoneyMeterDataDto.h"
 #include "../../common/dto/PointDto.h"
 #include "../../common/dto/ScheduleDto.h"
 #include "../../common/dto/ShoppingEntryDto.h"
@@ -55,9 +56,12 @@ public:
 	static std::string GenerateMeterDataXml(std::vector<MeterDataDto>);
 	std::vector<MeterDataDto> GetMeterDataList(std::string);
 
+	static std::string GenerateMoneyMeterDataXml(std::vector<MoneyMeterDataDto>);
+	std::vector<MoneyMeterDataDto> GetMoneyMeterDataList(std::string);
+
 	static std::string GenerateSettingsXml(
-		int, int, int, 
-		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, 
+		int, int, int,
+		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>,
 		std::vector<WirelessSocketDto>, std::vector<GpioDto>, std::vector<ScheduleDto>, std::vector<WirelessSwitchDto>);
 	int GetPort(std::string);
 	int GetDatagpio(std::string);

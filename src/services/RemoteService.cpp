@@ -185,7 +185,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 	{
 		if (actionParameter == GPIO)
 		{
-			if (deleteGpio(data[GPIO_NAME_INDEX], changeService, username))
+			if (deleteGpio(Tools::ConvertStrToInt(data[GPIO_TYPE_ID_INDEX].c_str()), changeService, username))
 			{
 				return GPIO_DELETE_SUCCESS;
 			}
@@ -193,7 +193,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 		}
 		else if (actionParameter == SCHEDULE)
 		{
-			if (deleteSchedule(data[SCHEDULE_NAME_INDEX], changeService, username))
+			if (deleteSchedule(Tools::ConvertStrToInt(data[SCHEDULE_ID_INDEX].c_str()), changeService, username))
 			{
 				return SCHEDULE_DELETE_SUCCESS;
 			}
@@ -287,7 +287,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 				}
 				else
 				{
-					if (setSchedule(data[SCHEDULE_NAME_INDEX], newState, changeService, username))
+					if (setSchedule(Tools::ConvertStrToInt(data[SCHEDULE_ID_INDEX].c_str()), newState, changeService, username))
 					{
 						return SCHEDULE_SET_SUCCESS;
 					}
@@ -566,6 +566,7 @@ bool RemoteService::setGpio(std::string name, int state, ChangeService changeSer
 bool RemoteService::addGpio(std::vector<std::string> newGpioData, ChangeService changeService, std::string username)
 {
 	GpioDto newGpio(
+		atoi(newGpioData[GPIO_TYPE_ID_INDEX].c_str()),
 		newGpioData[GPIO_NAME_INDEX],
 		atoi(newGpioData[GPIO_GPIO_INDEX].c_str()),
 		atoi(newGpioData[GPIO_STATE_INDEX].c_str()));
@@ -579,12 +580,13 @@ bool RemoteService::addGpio(std::vector<std::string> newGpioData, ChangeService 
 
 bool RemoteService::updateGpio(std::vector<std::string> updateGpioData, ChangeService changeService, std::string username)
 {
-	std::string name = updateGpioData[GPIO_NAME_INDEX];
+	int typeId = Tools::ConvertStrToInt(updateGpioData[GPIO_TYPE_ID_INDEX].c_str());
 
 	for (int index = 0; index < _gpioList.size(); index++)
 	{
-		if (_gpioList[index].GetName() == name)
+		if (_gpioList[index].GetTypeId() == typeId)
 		{
+			_gpioList[index].SetName(updateGpioData[GPIO_NAME_INDEX]);
 			_gpioList[index].SetGpio(atoi(updateGpioData[GPIO_GPIO_INDEX].c_str()));
 			_gpioList[index].SetState(atoi(updateGpioData[GPIO_STATE_INDEX].c_str()));
 
@@ -598,13 +600,13 @@ bool RemoteService::updateGpio(std::vector<std::string> updateGpioData, ChangeSe
 	return false;
 }
 
-bool RemoteService::deleteGpio(std::string name, ChangeService changeService, std::string username)
+bool RemoteService::deleteGpio(int typeId, ChangeService changeService, std::string username)
 {
 	std::vector<GpioDto>::iterator it = _gpioList.begin();
 
 	while (it != _gpioList.end())
 	{
-		if ((*it).GetName() == name)
+		if ((*it).GetTypeId() == typeId)
 		{
 			it = _gpioList.erase(it);
 
@@ -656,15 +658,15 @@ std::string RemoteService::getJsonStringSchedules()
 	return out.str();
 }
 
-bool RemoteService::setSchedule(std::string name, int state, ChangeService changeService, std::string username)
+bool RemoteService::setSchedule(int id, bool isActice, ChangeService changeService, std::string username)
 {
 	bool success = false;
 
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		if (_scheduleList[index].GetName() == name)
+		if (_scheduleList[index].GetId() == id)
 		{
-			_scheduleList[index].SetState(state);
+			_scheduleList[index].SetIsActive(isActice);
 			success = true;
 
 			saveSettings(changeService, username);
@@ -680,6 +682,7 @@ bool RemoteService::setSchedule(std::string name, int state, ChangeService chang
 bool RemoteService::addSchedule(std::vector<std::string> newScheduleData, ChangeService changeService, std::string username)
 {
 	ScheduleDto newSchedule(
+		atoi(newScheduleData[SCHEDULE_ID_INDEX].c_str()),
 		newScheduleData[SCHEDULE_NAME_INDEX],
 		newScheduleData[SCHEDULE_SOCKET_INDEX],
 		newScheduleData[SCHEDULE_GPIO_INDEX],
@@ -687,9 +690,9 @@ bool RemoteService::addSchedule(std::vector<std::string> newScheduleData, Change
 		atoi(newScheduleData[SCHEDULE_WEEKDAY_INDEX].c_str()),
 		atoi(newScheduleData[SCHEDULE_HOUR_INDEX].c_str()),
 		atoi(newScheduleData[SCHEDULE_MINUTE_INDEX].c_str()),
-		atoi(newScheduleData[SCHEDULE_ONOFF_INDEX].c_str()),
+		Tools::ConvertStrToBool(newScheduleData[SCHEDULE_ACTION_INDEX].c_str()),
 		Tools::ConvertStrToBool(newScheduleData[SCHEDULE_ISTIMER_INDEX].c_str()),
-		atoi(newScheduleData[SCHEDULE_STATE_INDEX].c_str()));
+		Tools::ConvertStrToBool(newScheduleData[SCHEDULE_ISACTIVE_INDEX].c_str()));
 
 	_scheduleList.push_back(newSchedule);
 
@@ -701,11 +704,11 @@ bool RemoteService::addSchedule(std::vector<std::string> newScheduleData, Change
 
 bool RemoteService::updateSchedule(std::vector<std::string> updateScheduleData, ChangeService changeService, std::string username)
 {
-	std::string name = updateScheduleData[SCHEDULE_NAME_INDEX];
+	int id = atoi(updateScheduleData[SCHEDULE_ID_INDEX].c_str());
 
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		if (_scheduleList[index].GetName() == name)
+		if (_scheduleList[index].GetId() == id)
 		{
 			_scheduleList[index].SetSocket(updateScheduleData[SCHEDULE_SOCKET_INDEX]);
 			_scheduleList[index].SetGpio(updateScheduleData[SCHEDULE_GPIO_INDEX]);
@@ -713,9 +716,9 @@ bool RemoteService::updateSchedule(std::vector<std::string> updateScheduleData, 
 			_scheduleList[index].SetWeekday(atoi(updateScheduleData[SCHEDULE_WEEKDAY_INDEX].c_str()));
 			_scheduleList[index].SetHour(atoi(updateScheduleData[SCHEDULE_HOUR_INDEX].c_str()));
 			_scheduleList[index].SetMinute(atoi(updateScheduleData[SCHEDULE_MINUTE_INDEX].c_str()));
-			_scheduleList[index].SetOnoff(atoi(updateScheduleData[SCHEDULE_ONOFF_INDEX].c_str()));
+			_scheduleList[index].SetAction(Tools::ConvertStrToBool(updateScheduleData[SCHEDULE_ACTION_INDEX].c_str()));
 			_scheduleList[index].SetIsTimer(Tools::ConvertStrToBool(updateScheduleData[SCHEDULE_ISTIMER_INDEX].c_str()));
-			_scheduleList[index].SetState(atoi(updateScheduleData[SCHEDULE_STATE_INDEX].c_str()));
+			_scheduleList[index].SetIsActive(Tools::ConvertStrToBool(updateScheduleData[SCHEDULE_ISACTIVE_INDEX].c_str()));
 
 			saveSettings(changeService, username);
 			LoadData();
@@ -727,13 +730,13 @@ bool RemoteService::updateSchedule(std::vector<std::string> updateScheduleData, 
 	return false;
 }
 
-bool RemoteService::deleteSchedule(std::string name, ChangeService changeService, std::string username)
+bool RemoteService::deleteSchedule(int id, ChangeService changeService, std::string username)
 {
 	std::vector<ScheduleDto>::iterator it = _scheduleList.begin();
 
 	while (it != _scheduleList.end())
 	{
-		if ((*it).GetName() == name)
+		if ((*it).GetId() == id)
 		{
 			it = _scheduleList.erase(it);
 
@@ -751,20 +754,17 @@ bool RemoteService::deleteSchedule(std::string name, ChangeService changeService
 	return false;
 }
 
-bool RemoteService::setAllSchedules(int state, ChangeService changeService, std::string username)
+bool RemoteService::setAllSchedules(bool isActive, ChangeService changeService, std::string username)
 {
-	Tools::ConvertIntToStr(state).c_str();
-	bool success = true;
-
 	for (int index = 0; index < _scheduleList.size(); index++)
 	{
-		success &= _scheduleList[index].SetState(state);
+		_scheduleList[index].SetIsActive(isActive);
 	}
 
 	saveSettings(changeService, username);
 	LoadData();
 
-	return success;
+	return true;
 }
 
 //------------------------Sockets------------------------//

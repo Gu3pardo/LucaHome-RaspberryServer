@@ -11,21 +11,26 @@
 class ScheduleDto
 {
   private:
-	std::string _name;
-	std::string _socket;
-	std::string _gpio;
-	std::string _switch;
-	int _weekday;
-	int _hour;
-	int _minute;
-	int _onoff;
-	bool _isTimer;
-	int _state;
+
+	  int _id;
+	  std::string _name;
+	  std::string _socket;
+	  std::string _gpio;
+	  std::string _switch;
+	  int _weekday;
+	  int _hour;
+	  int _minute;
+	  bool _action;
+	  bool _isTimer;
+	  bool _isActive;
 
   public:
 	ScheduleDto();
-	ScheduleDto(std::string, std::string, std::string, std::string, int, int, int, int, bool, int);
+	ScheduleDto(int, std::string, std::string, std::string, std::string, int, int, int, bool, bool, bool);
 	~ScheduleDto();
+
+	void SetId(int);
+	int GetId();
 
 	void SetName(std::string);
 	std::string GetName();
@@ -48,14 +53,14 @@ class ScheduleDto
 	void SetMinute(int);
 	int GetMinute();
 
-	void SetOnoff(int);
-	int GetOnoff();
+	void SetAction(bool);
+	bool GetAction();
 
-	void SetIsTimer(int);
-	int GetIsTimer();
+	void SetIsTimer(bool);
+	bool GetIsTimer();
 
-	bool SetState(int);
-	int GetState();
+	void SetIsActive(bool);
+	bool GetIsActive();
 
 	std::string SaveString();
 	std::string JsonString();

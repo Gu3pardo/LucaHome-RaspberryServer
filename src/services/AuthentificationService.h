@@ -39,8 +39,6 @@ private:
 
 	int getActionId(std::string);
 	bool isAdminAction(std::string);
-
-	bool isUserAdmin(std::string);
 	int getInvalidLoginCount(std::string);
 
 public:
@@ -57,6 +55,8 @@ public:
 
 	bool AddUser(std::string, std::string, UserDto);
 	bool DeleteUser(std::string, std::string, std::string);
+
+	bool IsUserAdmin(std::string);
 
 	std::string ResetFailedLogin(std::string, std::string, std::string);
 };

@@ -13,7 +13,6 @@ InformationDto::InformationDto(
 	std::string websiteVersion,
 	std::string temperatureLoggerVersion,
 	std::string androidApplicationVersion,
-	std::string androidWearableVersion,
 	std::string androidAccessApplicationVersion,
 	std::string mediaServerVersion,
 	std::string wpfApplicationVersion)
@@ -26,7 +25,6 @@ InformationDto::InformationDto(
 	_websiteVersion = websiteVersion;
 	_temperatureLoggerVersion = temperatureLoggerVersion;
 	_androidApplicationVersion = androidApplicationVersion;
-	_androidWearableVersion = androidWearableVersion;
 	_androidAccessApplicationVersion = androidAccessApplicationVersion;
 	_mediaServerVersion = mediaServerVersion;
 	_wpfApplicationVersion = wpfApplicationVersion;
@@ -76,11 +74,6 @@ std::string InformationDto::GetAndroidApplicationVersion()
 	return _androidApplicationVersion;
 }
 
-std::string InformationDto::GetAndroidWearableVersion()
-{
-	return _androidWearableVersion;
-}
-
 std::string InformationDto::GetAndroidAccessApplicationVersion()
 {
 	return _androidAccessApplicationVersion;
@@ -110,7 +103,6 @@ std::string InformationDto::JsonString()
 		+ std::string("\"WebsiteVersion\":\"") + _websiteVersion + std::string("\",")
 		+ std::string("\"TemperatureLoggerVersion\":\"") + _temperatureLoggerVersion + std::string("\",")
 		+ std::string("\"AndroidApplicationVersion\":\"") + _androidApplicationVersion + std::string("\",")
-		+ std::string("\"AndroidWearableVersion\":\"") + _androidWearableVersion + std::string("\",")
 		+ std::string("\"AndroidAccessApplicationVersion\":\"") + _androidAccessApplicationVersion + std::string("\",")
 		+ std::string("\"MediaServerVersion\":\"") + _mediaServerVersion + std::string("\",")
 		+ std::string("\"WpfApplicationVersion\":\"") + _wpfApplicationVersion
@@ -131,7 +123,6 @@ std::string InformationDto::PhpString()
 		<< "information::" << "Website Version::" << _websiteVersion << ";"
 		<< "information::" << "Temperature Logger Version::" << _temperatureLoggerVersion << ";"
 		<< "information::" << "Android Application Version::" << _androidApplicationVersion << ";"
-		<< "information::" << "Android Wear Version::" << _androidWearableVersion << ";"
 		<< "information::" << "Android Access Application Version::" << _androidAccessApplicationVersion << ";"
 		<< "information::" << "Media Server Version::" << _mediaServerVersion << ";"
 		<< "information::" << "WPF Application Version::" << _wpfApplicationVersion << ";";
@@ -152,7 +143,6 @@ std::string InformationDto::ToString()
 		+ std::string("; WebsiteVersion: ") + _websiteVersion
 		+ std::string("; TemperatureLoggerVersion: ") + _temperatureLoggerVersion
 		+ std::string("; AndroidApplicationVersion: ") + _androidApplicationVersion
-		+ std::string("; AndroidWearableVersion: ") + _androidWearableVersion
 		+ std::string("; AndroidAccessApplicationVersion: ") + _androidAccessApplicationVersion
 		+ std::string("; MediaServerVersion: ") + _mediaServerVersion
 		+ std::string("; WpfApplicationVersion: ") + _wpfApplicationVersion
