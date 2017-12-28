@@ -445,14 +445,15 @@ std::vector<MoneyMeterDataDto> XmlParser::ParseMoneyMeterDataList()
 				std::vector<std::string> words = Tools::Explode(":", lines[l]);
 				MoneyMeterDataDto newMoneyMeterData(
 					atoi(words[0].c_str()),
-					words[1],
+					atoi(words[1].c_str()),
 					words[2],
-					Tools::ConvertStrToDouble(words[3].c_str()),
-					words[4],
-					atoi(words[5].c_str()),
+					words[3],
+					Tools::ConvertStrToDouble(words[4].c_str()),
+					words[5],
 					atoi(words[6].c_str()),
 					atoi(words[7].c_str()),
-					words[8]);
+					atoi(words[8].c_str()),
+					words[9]);
 				moneyMeterDataList.push_back(newMoneyMeterData);
 			}
 		}
