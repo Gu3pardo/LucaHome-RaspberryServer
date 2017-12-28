@@ -131,6 +131,7 @@ bool MoneyMeterDataService::addMoneyMeterData(std::vector<std::string> newMoneyM
 {
 	MoneyMeterDataDto newMoneyMeterData(
 		atoi(newMoneyMeterDataData[MONEY_METER_DATA_ID_INDEX].c_str()),
+		atoi(newMoneyMeterDataData[MONEY_METER_DATA_TYPE_ID_INDEX].c_str()),
 		newMoneyMeterDataData[MONEY_METER_DATA_BANK_INDEX],
 		newMoneyMeterDataData[MONEY_METER_DATA_PLAN_INDEX],
 		Tools::ConvertStrToDouble(newMoneyMeterDataData[MONEY_METER_DATA_AMOUNT_INDEX].c_str()),
@@ -156,6 +157,8 @@ bool MoneyMeterDataService::updateMoneyMeterData(std::vector<std::string> update
 	{
 		if (_moneyMeterDataList[index].GetId() == updateMoneyMeterDataId)
 		{
+			_moneyMeterDataList[index].SetTypeId(Tools::ConvertStrToInt(updateMoneyMeterDataData[MONEY_METER_DATA_TYPE_ID_INDEX].c_str()));
+
 			_moneyMeterDataList[index].SetBank(updateMoneyMeterDataData[MONEY_METER_DATA_BANK_INDEX]);
 			_moneyMeterDataList[index].SetPlan(updateMoneyMeterDataData[MONEY_METER_DATA_PLAN_INDEX]);
 

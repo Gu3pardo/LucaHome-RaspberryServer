@@ -12,6 +12,7 @@ class MoneyMeterDataDto
 {
 private:
 	int _id;
+	int _typeId;
 	std::string _bank;
 	std::string _plan;
 	double _amount;
@@ -23,11 +24,14 @@ private:
 
 public:
 	MoneyMeterDataDto();
-	MoneyMeterDataDto(int, std::string, std::string, double, std::string, int, int, int, std::string);
+	MoneyMeterDataDto(int, int, std::string, std::string, double, std::string, int, int, int, std::string);
 	~MoneyMeterDataDto();
 
 	void SetId(int);
 	int GetId();
+
+	void SetTypeId(int);
+	int GetTypeId();
 
 	void SetBank(std::string);
 	std::string GetBank();

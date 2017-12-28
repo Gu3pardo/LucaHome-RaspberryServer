@@ -3,6 +3,7 @@
 MoneyMeterDataDto::MoneyMeterDataDto()
 {
 	_id = 0;
+	_typeId = 0;
 	_bank = "";
 	_plan = "";
 	_amount = 0.0;
@@ -15,6 +16,7 @@ MoneyMeterDataDto::MoneyMeterDataDto()
 
 MoneyMeterDataDto::MoneyMeterDataDto(
 	int id,
+	int typeId,
 	std::string bank,
 	std::string plan,
 	double amount,
@@ -23,6 +25,7 @@ MoneyMeterDataDto::MoneyMeterDataDto(
 	std::string user)
 {
 	_id = id;
+	_typeId = typeId;
 	_bank = bank;
 	_plan = plan;
 	_amount = amount;
@@ -45,6 +48,16 @@ void MoneyMeterDataDto::SetId(int id)
 int MoneyMeterDataDto::GetId()
 {
 	return _id;
+}
+
+void MoneyMeterDataDto::SetTypeId(int typeId)
+{
+	_typeId = typeId;
+}
+
+int MoneyMeterDataDto::GetTypeId()
+{
+	return _typeId;
 }
 
 void MoneyMeterDataDto::SetBank(std::string bank)
@@ -131,6 +144,7 @@ std::string MoneyMeterDataDto::SaveString()
 {
 	std::string str =
 		Tools::ConvertIntToStr(_id) + ":"
+		+ Tools::ConvertIntToStr(_typeId) + ":"
 		+ _bank + ":"
 		+ _plan + ":"
 		+ Tools::ConvertDoubleToStr(_amount) + ":"
@@ -150,6 +164,7 @@ std::string MoneyMeterDataDto::JsonString()
 		+ std::string("\"MoneyMeterData\":")
 		+ std::string("{")
 		+ std::string("\"Id\":\"") + Tools::ConvertIntToStr(_id) + std::string("\",")
+		+ std::string("\"TypeId\":\"") + Tools::ConvertIntToStr(_typeId) + std::string("\",")
 		+ std::string("\"Bank\":\"") + _bank + std::string("\",")
 		+ std::string("\"Plan\":\"") + _plan + std::string("\",")
 		+ std::string("\"Amount\":") + Tools::ConvertDoubleToStr(_amount) + std::string(",")
@@ -171,6 +186,7 @@ std::string MoneyMeterDataDto::ToString()
 {
 	std::string str =
 		std::string("MoneyMeterDataDto { id: ") + Tools::ConvertIntToStr(_id)
+		+ std::string("; typeid: ") + Tools::ConvertIntToStr(_typeId)
 		+ std::string("; bank: ") + _bank
 		+ std::string("; plan: ") + _plan
 		+ std::string("; amount: ") + Tools::ConvertDoubleToStr(_amount)
