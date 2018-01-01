@@ -1,7 +1,7 @@
 #!/bin/sh
 # Author: Jonas Schubert - GuepardoApps <guepardoapps@gmail.com>
-# Version: 5.1.0.171228
-# Date: 28.12.2017
+# Version: 5.1.2.18101
+# Date: 01.01.2018
 
 . /lib/lsb/init-functions
 
