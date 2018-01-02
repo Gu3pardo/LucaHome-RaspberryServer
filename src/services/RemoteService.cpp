@@ -325,7 +325,7 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 				}
 				else
 				{
-					if (setSocket(data[SOCKET_NAME_INDEX], newState, changeService, username))
+					if (setSocket(data[SOCKET_SET_NAME_INDEX], newState, changeService, username))
 					{
 						return SOCKET_SET_SUCCESS;
 					}
