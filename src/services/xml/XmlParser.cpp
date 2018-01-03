@@ -462,6 +462,32 @@ std::vector<MoneyMeterDataDto> XmlParser::ParseMoneyMeterDataList()
 	return moneyMeterDataList;
 }
 
+std::vector<PuckJsDto> XmlParser::ParsePuckJsList()
+{
+	std::string entries = FindTag("puckjs");
+	std::vector<PuckJsDto> puckjsDataList;
+
+	if (entries.length() > 0)
+	{
+		std::vector<std::string> lines = Tools::Explode(";", entries);
+		for (int l = 0; l < lines.size(); l++)
+		{
+			if (lines[l].length() > 0)
+			{
+				std::vector<std::string> words = Tools::Explode("::", lines[l]);
+				PuckJsDto newPuckJsDto(
+					atoi(words[0].c_str()),
+					words[1],
+					words[2],
+					words[3]);
+				puckjsDataList.push_back(newPuckJsDto);
+			}
+		}
+	}
+
+	return puckjsDataList;
+}
+
 std::vector<ScheduleDto> XmlParser::ParseScheduleList()
 {
 	std::string entries = FindTag("schedules");

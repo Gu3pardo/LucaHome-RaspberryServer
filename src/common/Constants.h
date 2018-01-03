@@ -62,6 +62,10 @@
 #define MOVIE_UPDATE_SUCCESS "MOVIE:UPDATE:SUCCESS"
 #define MOVIE_LOAD_SUCCESS "MOVIE:LOAD:SUCCESS"
 
+#define PUCKJS_ADD_SUCCESS "PUCKJS:ADD:SUCCESS"
+#define PUCKJS_UPDATE_SUCCESS "PUCKJS:UPDATE:SUCCESS"
+#define PUCKJS_DELETE_SUCCESS "PUCKJS:DELETE:SUCCESS"
+
 #define SCHEDULE_ADD_SUCCESS "SCHEDULE:ADD:SUCCESS"
 #define SCHEDULE_UPDATE_SUCCESS "SCHEDULE:UPDATE:SUCCESS"
 #define SCHEDULE_DELETE_SUCCESS "SCHEDULE:DELETE:SUCCESS"
@@ -233,6 +237,11 @@
 #define MONEY_METER_DATA_ERROR_NR_216 "Error 216:Wrong action parameter for moneymeterdata"
 #define MONEY_METER_DATA_ERROR_NR_218 "Error 218:Access permitted!User is no admin"
 
+#define PUCKJS_ERROR_NR_220 "Error 220:Wrong word size for puckjs"
+#define PUCKJS_ERROR_NR_221 "Error 221:Could not add puckjs"
+#define PUCKJS_ERROR_NR_222 "Error 222:Could not update puckjs"
+#define PUCKJS_ERROR_NR_223 "Error 223:Could not delete puckjs"
+
 /***********************************************/
 /************* COMMAND DEFINITIONS *************/
 /***********************************************/
@@ -296,6 +305,7 @@
 #define METERDATA "METERDATA"
 #define MONEYMETERDATA "MONEYMETERDATA"
 #define MOVIE "MOVIE"
+#define PUCKJS "PUCKJS"
 #define RASPBERRY "RASPBERRY"
 #define REMOTE "REMOTE"
 #define SCHEDULE "SCHEDULE"
@@ -429,6 +439,12 @@
 #define MOVIE_DATA_HIGH_INDEX 6
 #define MOVIE_DATA_ADDITIONAL_INDEX 7
 #define MOVIE_DATA_INDEX_SIZE 8
+
+#define PUCKJS_ID_INDEX 5
+#define PUCKJS_NAME_INDEX 6
+#define PUCKJS_AREA_INDEX 7
+#define PUCKJS_MAC_INDEX 8
+#define PUCKJS_DATA_SIZE 9
 
 #define REMOTE_PARAMETER_INDEX 5
 

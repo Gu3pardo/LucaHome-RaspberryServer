@@ -124,8 +124,8 @@ std::string XmlWriter::GenerateSettingsXml(
 	int port, int datagpio, int raspberry,
 	std::vector<std::string> areas, std::vector<std::string> sensors,
 	std::vector<std::string> urls, std::vector<std::string> mediamirror,
-	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules,
-	std::vector<WirelessSwitchDto> switches)
+	std::vector<GpioDto> gpios, std::vector<PuckJsDto> puckJsList, std::vector<ScheduleDto> schedules,
+	std::vector<WirelessSocketDto> sockets, std::vector<WirelessSwitchDto> switches)
 {
 	std::stringstream xml;
 
@@ -190,6 +190,13 @@ std::string XmlWriter::GenerateSettingsXml(
 		xml << switches[index].SaveString() << std::endl;
 	}
 	xml << "</switches>" << std::endl << std::endl;
+
+	xml << "<puckjs>" << std::endl;
+	for (int index = 0; index < puckJsList.size(); index++)
+	{
+		xml << puckJsList[index].SaveString() << std::endl;
+	}
+	xml << "</puckjs>" << std::endl << std::endl;
 
 	return xml.str();
 }

@@ -13,7 +13,8 @@
 <urls>
 </urls>
 
-<accessurl></accessurl>
+<accessurl>
+</accessurl>
 
 <mediamirror>
 </mediamirror>
@@ -29,3 +30,6 @@
 
 <switches>
 </switches>
+
+<puckjs>
+</puckjs>

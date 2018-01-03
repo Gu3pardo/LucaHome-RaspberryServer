@@ -125,13 +125,12 @@ std::vector<MoneyMeterDataDto> XmlService::GetMoneyMeterDataList(std::string con
 }
 
 std::string XmlService::GenerateSettingsXml(
-	int port, int datagpio, int raspberry, 
+	int port, int datagpio, int raspberry,
 	std::vector<std::string> areas, std::vector<std::string> sensors, std::vector<std::string> urls, std::vector<std::string> mediamirror,
-	std::vector<WirelessSocketDto> sockets, std::vector<GpioDto> gpios, std::vector<ScheduleDto> schedules, 
-	std::vector<WirelessSwitchDto> switches)
+	std::vector<GpioDto> gpios, std::vector<PuckJsDto> puckJsList, std::vector<ScheduleDto> schedules, std::vector<WirelessSocketDto> sockets, std::vector<WirelessSwitchDto> switches)
 {
 	XmlWriter writer;
-	return writer.GenerateSettingsXml(port, datagpio, raspberry, areas, sensors, urls, mediamirror, sockets, gpios, schedules, switches);
+	return writer.GenerateSettingsXml(port, datagpio, raspberry, areas, sensors, urls, mediamirror, gpios, puckJsList, schedules, sockets, switches);
 }
 
 int XmlService::GetPort(std::string content)
@@ -204,6 +203,12 @@ std::vector<GpioDto> XmlService::GetGpioList(std::string content)
 {
 	XmlParser parser(content);
 	return parser.ParseGpioList();
+}
+
+std::vector<PuckJsDto> XmlService::GetPuckJsList(std::string content)
+{
+	XmlParser parser(content);
+	return parser.ParsePuckJsList();
 }
 
 std::vector<ScheduleDto> XmlService::GetScheduleList(std::string content)

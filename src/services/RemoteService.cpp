@@ -57,6 +57,10 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 		{
 			return getJsonStringGpios();
 		}
+		else if (actionParameter == PUCKJS)
+		{
+			return getJsonStringPuckJsList();
+		}
 		else if (actionParameter == SCHEDULE)
 		{
 			return getJsonStringSchedules();
@@ -86,6 +90,18 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 				return GPIO_ERROR_NR_51;
 			}
 			return GPIO_ERROR_NR_55;
+		}
+		else if (actionParameter == PUCKJS)
+		{
+			if (data.size() == PUCKJS_DATA_SIZE)
+			{
+				if (addPuckJs(data, changeService, username))
+				{
+					return PUCKJS_ADD_SUCCESS;
+				}
+				return PUCKJS_ERROR_NR_221;
+			}
+			return PUCKJS_ERROR_NR_220;
 		}
 		else if (actionParameter == SCHEDULE)
 		{
@@ -141,6 +157,18 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 			}
 			return GPIO_ERROR_NR_55;
 		}
+		else if (actionParameter == PUCKJS)
+		{
+			if (data.size() == PUCKJS_DATA_SIZE)
+			{
+				if (updatePuckJs(data, changeService, username))
+				{
+					return PUCKJS_UPDATE_SUCCESS;
+				}
+				return PUCKJS_ERROR_NR_222;
+			}
+			return PUCKJS_ERROR_NR_220;
+		}
 		else if (actionParameter == SCHEDULE)
 		{
 			if (data.size() == SCHEDULE_DATA_SIZE)
@@ -190,6 +218,14 @@ std::string RemoteService::PerformAction(std::vector<std::string> data, ChangeSe
 				return GPIO_DELETE_SUCCESS;
 			}
 			return GPIO_ERROR_NR_53;
+		}
+		else if (actionParameter == PUCKJS)
+		{
+			if (deletePuckJs(Tools::ConvertStrToInt(data[PUCKJS_ID_INDEX].c_str()), changeService, username))
+			{
+				return PUCKJS_DELETE_SUCCESS;
+			}
+			return PUCKJS_ERROR_NR_223;
 		}
 		else if (actionParameter == SCHEDULE)
 		{
@@ -466,6 +502,7 @@ void RemoteService::LoadData()
 	_mediaMirrorList = _xmlService.GetMediaMirrorList(settingsFileContent);
 
 	_gpioList = _xmlService.GetGpioList(settingsFileContent);
+	_puckJsList = _xmlService.GetPuckJsList(settingsFileContent);
 	_scheduleList = _xmlService.GetScheduleList(settingsFileContent);
 	_socketList = _xmlService.GetSocketList(settingsFileContent);
 	_switchList = _xmlService.GetSwitchList(settingsFileContent);
@@ -483,9 +520,10 @@ void RemoteService::saveSettings(ChangeService changeService, std::string userna
 		_sensorList,
 		_urlList,
 		_mediaMirrorList,
-		_socketList,
 		_gpioList,
+		_puckJsList,
 		_scheduleList,
+		_socketList,
 		_switchList);
 	_fileController.SaveFile(_settingsFile, xmldata);
 	changeService.UpdateChange("Settings", username);
@@ -637,6 +675,97 @@ bool RemoteService::setAllGpios(int state, ChangeService changeService, std::str
 	LoadData();
 
 	return success;
+}
+
+//-------------------------Gpios-------------------------//
+
+std::vector<PuckJsDto> RemoteService::getPuckJsList()
+{
+	return _puckJsList;
+}
+
+std::string RemoteService::getJsonStringPuckJsList()
+{
+	std::stringstream out;
+	out << "{\"Data\":[";
+
+	std::stringstream data;
+	for (int index = 0; index < _puckJsList.size(); index++)
+	{
+		PuckJsDto puckJs = _puckJsList[index];
+		data << puckJs.JsonString() << ",";
+	}
+
+	out << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << std::endl;
+
+	return out.str();
+}
+
+bool RemoteService::addPuckJs(std::vector<std::string> newPuckJsData, ChangeService changeService, std::string username)
+{
+	std::string mac = newPuckJsData[PUCKJS_MAC_INDEX];
+	std::replace(mac.begin(), mac.end(), '_', ':');
+
+	PuckJsDto newPuckJsDto(
+		atoi(newPuckJsData[PUCKJS_ID_INDEX].c_str()),
+		newPuckJsData[PUCKJS_NAME_INDEX],
+		newPuckJsData[PUCKJS_AREA_INDEX],
+		mac);
+	_puckJsList.push_back(newPuckJsDto);
+
+	saveSettings(changeService, username);
+	LoadData();
+
+	return true;
+}
+
+bool RemoteService::updatePuckJs(std::vector<std::string> updatePuckJsData, ChangeService changeService, std::string username)
+{
+	int id = Tools::ConvertStrToInt(updatePuckJsData[PUCKJS_ID_INDEX].c_str());
+
+	for (int index = 0; index < _puckJsList.size(); index++)
+	{
+		if (_puckJsList[index].GetId() == id)
+		{
+			std::string mac = updatePuckJsData[PUCKJS_MAC_INDEX];
+			std::replace(mac.begin(), mac.end(), '_', ':');
+
+			_puckJsList[index].SetName(updatePuckJsData[PUCKJS_NAME_INDEX]);
+			_puckJsList[index].SetArea(updatePuckJsData[PUCKJS_AREA_INDEX]);
+			_puckJsList[index].SetMac(mac);
+
+			saveSettings(changeService, username);
+			LoadData();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool RemoteService::deletePuckJs(int id, ChangeService changeService, std::string username)
+{
+	std::vector<PuckJsDto>::iterator it = _puckJsList.begin();
+
+	while (it != _puckJsList.end())
+	{
+		if ((*it).GetId() == id)
+		{
+			it = _puckJsList.erase(it);
+
+			saveSettings(changeService, username);
+			LoadData();
+
+			return true;
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	return false;
 }
 
 //-----------------------Schedules-----------------------//

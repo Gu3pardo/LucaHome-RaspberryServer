@@ -19,6 +19,7 @@
 #include "../../common/dto/MeterDataDto.h"
 #include "../../common/dto/MoneyMeterDataDto.h"
 #include "../../common/dto/PointDto.h"
+#include "../../common/dto/PuckJsDto.h"
 #include "../../common/dto/ScheduleDto.h"
 #include "../../common/dto/ShoppingEntryDto.h"
 #include "../../common/dto/UserDto.h"
@@ -62,7 +63,7 @@ public:
 	static std::string GenerateSettingsXml(
 		int, int, int,
 		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>,
-		std::vector<WirelessSocketDto>, std::vector<GpioDto>, std::vector<ScheduleDto>, std::vector<WirelessSwitchDto>);
+		std::vector<GpioDto>, std::vector<PuckJsDto>, std::vector<ScheduleDto>, std::vector<WirelessSocketDto>, std::vector<WirelessSwitchDto>);
 	int GetPort(std::string);
 	int GetDatagpio(std::string);
 	int GetReceivergpio(std::string);
@@ -75,6 +76,7 @@ public:
 	std::string GetAccessUrl(std::string);
 	std::vector<std::string> GetMediaMirrorList(std::string);
 	std::vector<GpioDto> GetGpioList(std::string);
+	std::vector<PuckJsDto> GetPuckJsList(std::string);
 	std::vector<ScheduleDto> GetScheduleList(std::string);
 	std::vector<WirelessSocketDto> GetSocketList(std::string);
 	std::vector<WirelessSwitchDto> GetSwitchList(std::string);

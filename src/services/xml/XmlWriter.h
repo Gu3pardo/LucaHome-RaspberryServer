@@ -18,6 +18,7 @@
 #include "../../common/dto/MeterDataDto.h"
 #include "../../common/dto/MoneyMeterDataDto.h"
 #include "../../common/dto/PointDto.h"
+#include "../../common/dto/PuckJsDto.h"
 #include "../../common/dto/ScheduleDto.h"
 #include "../../common/dto/ShoppingEntryDto.h"
 #include "../../common/dto/UserDto.h"
@@ -44,7 +45,7 @@ public:
 	static std::string GenerateSettingsXml(
 		int, int, int, 
 		std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, std::vector<std::string>, 
-		std::vector<WirelessSocketDto>, std::vector<GpioDto>, std::vector<ScheduleDto>, std::vector<WirelessSwitchDto>);
+		std::vector<GpioDto>, std::vector<PuckJsDto>, std::vector<ScheduleDto>, std::vector<WirelessSocketDto>, std::vector<WirelessSwitchDto>);
 	static std::string GenerateShoppingListXml(std::vector<ShoppingEntryDto>);
 	static std::string GenerateTemperatureSettingsXml(int, int, int, int, int, bool);
 	static std::string GenerateUsersXml(std::vector<UserDto>);

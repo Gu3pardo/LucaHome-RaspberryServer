@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 #include "../common/dto/GpioDto.h"
+#include "../common/dto/PuckJsDto.h"
 #include "../common/dto/ScheduleDto.h"
 #include "../common/dto/WirelessSocketDto.h"
 #include "../common/dto/WirelessSwitchDto.h"
@@ -47,6 +48,7 @@ private:
 	std::vector<std::string> _mediaMirrorList;
 
 	std::vector<GpioDto> _gpioList;
+	std::vector<PuckJsDto> _puckJsList;
 	std::vector<ScheduleDto> _scheduleList;
 	std::vector<WirelessSocketDto> _socketList;
 	std::vector<WirelessSwitchDto> _switchList;
@@ -71,6 +73,14 @@ private:
 	bool updateGpio(std::vector<std::string>, ChangeService, std::string);
 	bool deleteGpio(int, ChangeService, std::string);
 	bool setAllGpios(int, ChangeService, std::string);
+
+
+	std::vector<PuckJsDto> getPuckJsList();
+	std::string getJsonStringPuckJsList();
+
+	bool addPuckJs(std::vector<std::string>, ChangeService, std::string);
+	bool updatePuckJs(std::vector<std::string>, ChangeService, std::string);
+	bool deletePuckJs(int, ChangeService, std::string);
 
 	std::string getJsonStringSchedules();
 
