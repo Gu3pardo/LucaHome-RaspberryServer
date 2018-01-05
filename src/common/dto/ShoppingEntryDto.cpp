@@ -106,7 +106,7 @@ std::string ShoppingEntryDto::JsonString()
 		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Group\":\"") + _group + std::string("\",")
-		+ std::string("\"Quantity\":") + Tools::ConvertIntToStr(_quantity) + std::string("\",")
+		+ std::string("\"Quantity\":") + Tools::ConvertIntToStr(_quantity) + std::string(",")
 		+ std::string("\"Unit\":\"") + _unit + std::string("\"")
 		+ std::string("}")
 		+ std::string("}");
