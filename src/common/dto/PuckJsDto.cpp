@@ -80,7 +80,7 @@ std::string PuckJsDto::JsonString()
 		+ std::string("\"Id\":") + Tools::ConvertIntToStr(_id) + std::string(",")
 		+ std::string("\"Name\":\"") + _name + std::string("\",")
 		+ std::string("\"Area\":\"") + _area + std::string("\",")
-		+ std::string("\"Mac\":\"") + _mac
+		+ std::string("\"Mac\":\"") + _mac + std::string("\"")
 		+ std::string("}")
 		+ std::string("}");
 	return str;

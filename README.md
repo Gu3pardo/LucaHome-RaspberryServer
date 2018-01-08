@@ -5,7 +5,7 @@
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
 [![Build](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
-[![Version](https://img.shields.io/badge/version-v5.2.1.180105-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Version](https://img.shields.io/badge/version-v5.2.2.180108-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
 
 Part of the LucaHome-Project
 
