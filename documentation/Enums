@@ -1,16 +1,20 @@
 MapContentType
-1	Socket
+1	WirelessSocket
 2	LAN
 3	MediaServer
 4	RaspberryPi
 5	NAS
-6	LightSwitch
+6	WirelessSwitch
 7	Temperature
-8	PuckJS
-9	Menu
+8	PuckJs
+9	Meal
 10	ShoppingList
 11	Camera
 12	Meter
+
+WirelessTaskType
+0	Schedule
+1	Timer
 
 Users
 1	Availability		Check			Count		Get			Validate	Reload
