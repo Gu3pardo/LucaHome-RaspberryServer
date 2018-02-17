@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="application\services\CoinService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MovieService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="crosscutting\rcswitch\RCSwitch.cpp">
+      <Filter>crosscutting\rcswitch</Filter>
+    </ClCompile>
+    <ClCompile Include="crosscutting\utils\Tools.cpp">
+      <Filter>crosscutting\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="crosscutting\utils\PiControl.cpp">
+      <Filter>crosscutting\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\controller\MailController.cpp">
+      <Filter>dataaccess\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\controller\PathController.cpp">
+      <Filter>dataaccess\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\controller\FileController.cpp">
+      <Filter>dataaccess\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\ChangeDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\CoinDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\GpioDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\MapContentDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\MealDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\MediaServerDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\MeterLogItemDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\MoneyLogItemDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\PuckJsDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\RadioStreamDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\RoomDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\RssFeedDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\ShoppingItemDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\SuggestedMealDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\SuggestedShoppingItemDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\UserDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\WirelessScheduleDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\WirelessSocketDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\WirelessSwitchDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\WirelessTimerDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\YoutubeVideoDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\ApplicationInformationDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\databases\BirthdayDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Change.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Coin.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Gpio.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\MapContent.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Meal.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\MediaServer.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\MeterLogItem.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\MoneyLogItem.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Movie.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Position.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\PuckJs.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\RadioStream.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Room.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\RssFeed.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\ShoppingItem.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\SuggestedMeal.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\SuggestedShoppingItem.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Temperature.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\User.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\WirelessSchedule.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\WirelessSocket.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\WirelessSwitch.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\WirelessTask.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\WirelessTimer.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\YoutubeVideo.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\ApplicationInformation.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Birthday.cpp">
+      <Filter>domain\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="application\server\Server.cpp">
+      <Filter>application\server</Filter>
+    </ClCompile>
+    <ClCompile Include="application\handler\CommandHandler.cpp">
+      <Filter>application\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\UserService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="application">
+      <UniqueIdentifier>{a070d766-ae62-4436-93be-77037dd06524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\services">
+      <UniqueIdentifier>{acaca5d8-7b26-4042-b688-659799a1724a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crosscutting">
+      <UniqueIdentifier>{52821572-44bb-4350-b80c-a3fc48bafce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crosscutting\rcswitch">
+      <UniqueIdentifier>{ebe3b2b3-3771-47da-b552-088c7c5c02b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crosscutting\utils">
+      <UniqueIdentifier>{088132c3-d175-4b81-9429-aa4321656b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataaccess">
+      <UniqueIdentifier>{6e64dfa8-ff16-4f8a-8fa6-e978c60ce064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataaccess\controller">
+      <UniqueIdentifier>{47002d1e-c2bf-4ca8-af02-1baef7f95c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataaccess\databases">
+      <UniqueIdentifier>{c3da4755-934e-4600-9503-316b320f78ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="domain">
+      <UniqueIdentifier>{d4b6e7d5-0010-4ead-9d25-51b1347ec23f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="domain\classes">
+      <UniqueIdentifier>{e250d8fb-97b2-44b7-b856-2053c8dd1501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\server">
+      <UniqueIdentifier>{336579d7-f594-4822-a8f9-c981e3e0cb64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\handler">
+      <UniqueIdentifier>{4875f66a-3dc1-4134-8b15-1617c3ca3472}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="application\services.h">
+      <Filter>application</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\CoinService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MovieService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\Constants.h">
+      <Filter>crosscutting</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\utils.h">
+      <Filter>crosscutting</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\rcswitch\RCSwitch.h">
+      <Filter>crosscutting\rcswitch</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\utils\PiControl.h">
+      <Filter>crosscutting\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\utils\Tools.h">
+      <Filter>crosscutting\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\controller.h">
+      <Filter>dataaccess</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases.h">
+      <Filter>dataaccess</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\controller\MailController.h">
+      <Filter>dataaccess\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\controller\PathController.h">
+      <Filter>dataaccess\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\controller\FileController.h">
+      <Filter>dataaccess\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\BirthdayDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\ChangeDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\CoinDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\GpioDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\ITemplateDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\MapContentDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\MealDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\MediaServerDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\MeterLogItemDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\MoneyLogItemDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\PuckJsDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\RadioStreamDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\RoomDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\RssFeedDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\ShoppingItemDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\SuggestedMealDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\SuggestedShoppingItemDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\UserDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\WirelessScheduleDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\WirelessSocketDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\WirelessSwitchDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\WirelessTimerDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\YoutubeVideoDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\databases\ApplicationInformationDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Birthday.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Change.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Coin.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Gpio.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\MapContent.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Meal.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\MediaServer.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\MeterLogItem.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\MoneyLogItem.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Movie.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Position.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\PuckJs.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\RadioStream.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Room.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\RssFeed.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\ShoppingItem.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\SuggestedMeal.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\SuggestedShoppingItem.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Temperature.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\User.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\WirelessSchedule.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\WirelessSocket.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\WirelessSwitch.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\WirelessTask.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\WirelessTimer.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\YoutubeVideo.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\ApplicationInformation.h">
+      <Filter>domain\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="application\server\Server.h">
+      <Filter>application\server</Filter>
+    </ClInclude>
+    <ClInclude Include="application\handler\CommandHandler.h">
+      <Filter>application\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\UserService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
