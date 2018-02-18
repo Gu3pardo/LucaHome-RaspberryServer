@@ -248,6 +248,18 @@
     <ClCompile Include="application\services\SecurityService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
+    <ClCompile Include="crosscutting\crypto\Decrypter.cpp">
+      <Filter>crosscutting\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crosscutting\crypto\Encrypter.cpp">
+      <Filter>crosscutting\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="external\sqlite3.c">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="external\shell.c">
+      <Filter>external</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="application">
@@ -279,6 +291,12 @@
     </Filter>
     <Filter Include="domain\classes">
       <UniqueIdentifier>{e250d8fb-97b2-44b7-b856-2053c8dd1501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crosscutting\crypto">
+      <UniqueIdentifier>{e4d1628a-5a38-4b13-8840-e4bdcde36317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{58082da9-c7c4-48e2-acfd-8d5fb4be1f06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -548,6 +566,21 @@
     </ClInclude>
     <ClInclude Include="application\services\SecurityService.h">
       <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\crypto\Decrypter.h">
+      <Filter>crosscutting\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\crypto.h">
+      <Filter>crosscutting</Filter>
+    </ClInclude>
+    <ClInclude Include="crosscutting\crypto\Encrypter.h">
+      <Filter>crosscutting\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="external\sqlite3.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\sqlite3ext.h">
+      <Filter>external</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

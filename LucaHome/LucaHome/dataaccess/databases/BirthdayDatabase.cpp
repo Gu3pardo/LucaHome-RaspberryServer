@@ -30,7 +30,7 @@ vector<Birthday> BirthdayDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,12 +38,12 @@ vector<Birthday> BirthdayDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string name = sqlite3_column_text(res, 2);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		int birthdayDay = sqlite3_column_int(res, 3);
 		int birthdayMonth = sqlite3_column_int(res, 4);
 		int birthdayYear = sqlite3_column_int(res, 5);
-		string group = sqlite3_column_text(res, 6);
+		string group = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
 		bool remindMe = sqlite3_column_int(res, 7) == 1;
 		bool sentMail = sqlite3_column_int(res, 8) == 1;
 
@@ -87,7 +87,7 @@ char BirthdayDatabase::Insert(int rowId, Birthday entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -117,7 +117,7 @@ char BirthdayDatabase::Update(Birthday entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -140,7 +140,7 @@ char BirthdayDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -153,7 +153,7 @@ char BirthdayDatabase::Delete(string uuid)
 
 char BirthdayDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char BirthdayDatabase::create()
@@ -176,7 +176,7 @@ char BirthdayDatabase::create()
 		+ _keySentMail + " INT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

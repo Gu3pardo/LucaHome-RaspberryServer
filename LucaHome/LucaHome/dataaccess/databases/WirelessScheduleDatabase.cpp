@@ -30,7 +30,7 @@ vector<WirelessSchedule> WirelessScheduleDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,15 +38,15 @@ vector<WirelessSchedule> WirelessScheduleDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string name = sqlite3_column_text(res, 2);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		int weekday = sqlite3_column_int(res, 3);
 		int hour = sqlite3_column_int(res, 4);
 		int minute = sqlite3_column_int(res, 5);
 		bool isActive = sqlite3_column_int(res, 6) == 1;
-		string wirelessSocketUuid = sqlite3_column_text(res, 7);
+		string wirelessSocketUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
 		bool wirelessSocketAction = sqlite3_column_int(res, 8) == 1;
-		string wirelessSwitchUuid = sqlite3_column_text(res, 9);
+		string wirelessSwitchUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 9)));
 
 		WirelessSchedule newEntry(uuid, name, weekday, hour, minute, isActive, wirelessSocketUuid, wirelessSocketAction, wirelessSwitchUuid);
 		list.push_back(newEntry);
@@ -90,7 +90,7 @@ char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -121,7 +121,7 @@ char WirelessScheduleDatabase::Update(WirelessSchedule entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -145,7 +145,7 @@ char WirelessScheduleDatabase::UpdateState(string uuid, bool newState)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -168,7 +168,7 @@ char WirelessScheduleDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -181,7 +181,7 @@ char WirelessScheduleDatabase::Delete(string uuid)
 
 char WirelessScheduleDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char WirelessScheduleDatabase::create()
@@ -205,7 +205,7 @@ char WirelessScheduleDatabase::create()
 		+ _keyWirelessSwitchUuid + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

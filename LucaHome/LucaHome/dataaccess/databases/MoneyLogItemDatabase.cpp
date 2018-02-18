@@ -30,7 +30,7 @@ vector<MoneyLogItem> MoneyLogItemDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,16 +38,16 @@ vector<MoneyLogItem> MoneyLogItemDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string typeUuid = sqlite3_column_text(res, 2);
-		string bank = sqlite3_column_text(res, 3);
-		string plan = sqlite3_column_text(res, 4);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string typeUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string bank = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+		string plan = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		double amount = sqlite3_column_double(res, 5);
-		string unit = sqlite3_column_text(res, 6);
+		string unit = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
 		int day = sqlite3_column_int(res, 7);
 		int month = sqlite3_column_int(res, 8);
 		int year = sqlite3_column_int(res, 9);
-		string user = sqlite3_column_text(res, 10);
+		string user = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 10)));
 
 		MoneyLogItem newEntry(uuid, typeUuid, bank, plan, amount, unit, day, month, year, user);
 		list.push_back(newEntry);
@@ -93,7 +93,7 @@ char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -125,7 +125,7 @@ char MoneyLogItemDatabase::Update(MoneyLogItem entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -148,7 +148,7 @@ char MoneyLogItemDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -161,7 +161,7 @@ char MoneyLogItemDatabase::Delete(string uuid)
 
 char MoneyLogItemDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char MoneyLogItemDatabase::create()
@@ -186,7 +186,7 @@ char MoneyLogItemDatabase::create()
 		+ _keyUser + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

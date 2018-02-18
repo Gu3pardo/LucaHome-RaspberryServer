@@ -30,7 +30,7 @@ vector<WirelessSocket> WirelessSocketDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,10 +38,10 @@ vector<WirelessSocket> WirelessSocketDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string roomUuid = sqlite3_column_text(res, 2);
-		string name = sqlite3_column_text(res, 3);
-		string code = sqlite3_column_text(res, 4);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string roomUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+		string code = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		bool state = sqlite3_column_int(res, 5) == 1;
 
 		WirelessSocket newEntry(uuid, roomUuid, name, code, state);
@@ -64,7 +64,7 @@ WirelessSocket WirelessSocketDatabase::GetByUuid(string uuid)
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -72,10 +72,10 @@ WirelessSocket WirelessSocketDatabase::GetByUuid(string uuid)
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string roomUuid = sqlite3_column_text(res, 2);
-		string name = sqlite3_column_text(res, 3);
-		string code = sqlite3_column_text(res, 4);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string roomUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+		string code = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		bool state = sqlite3_column_int(res, 5) == 1;
 
 		WirelessSocket wirelessSocket(uuid, roomUuid, name, code, state);
@@ -115,7 +115,7 @@ char WirelessSocketDatabase::Insert(int rowId, WirelessSocket entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -142,7 +142,7 @@ char WirelessSocketDatabase::Update(WirelessSocket entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -166,7 +166,7 @@ char WirelessSocketDatabase::UpdateState(string uuid, bool newState)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -189,7 +189,7 @@ char WirelessSocketDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -202,7 +202,7 @@ char WirelessSocketDatabase::Delete(string uuid)
 
 char WirelessSocketDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char WirelessSocketDatabase::create()
@@ -222,7 +222,7 @@ char WirelessSocketDatabase::create()
 		+ _keyState + " INT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

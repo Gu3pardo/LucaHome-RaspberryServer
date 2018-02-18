@@ -30,7 +30,7 @@ vector<SuggestedMeal> SuggestedMealDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,12 +38,12 @@ vector<SuggestedMeal> SuggestedMealDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string title = sqlite3_column_text(res, 2);
-		string description = sqlite3_column_text(res, 3);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string title = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string description = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		int rating = sqlite3_column_int(res, 4);
 		int useCounter = sqlite3_column_int(res, 5);
-		string shoppingItemUuidListDbString = sqlite3_column_text(res, 6);
+		string shoppingItemUuidListDbString = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
 
 		vector<string> shoppingItemUuidList = Tools::Explode(",", shoppingItemUuidListDbString);
 
@@ -83,7 +83,7 @@ char SuggestedMealDatabase::Insert(int rowId, SuggestedMeal entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -111,7 +111,7 @@ char SuggestedMealDatabase::Update(SuggestedMeal entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -134,7 +134,7 @@ char SuggestedMealDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -147,7 +147,7 @@ char SuggestedMealDatabase::Delete(string uuid)
 
 char SuggestedMealDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char SuggestedMealDatabase::create()
@@ -168,7 +168,7 @@ char SuggestedMealDatabase::create()
 		+ _keyShoppingItemUuidList + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

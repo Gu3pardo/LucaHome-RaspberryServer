@@ -30,7 +30,7 @@ vector<YoutubeVideo> YoutubeVideoDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,12 +38,12 @@ vector<YoutubeVideo> YoutubeVideoDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string title = sqlite3_column_text(res, 2);
-		string youtubeId = sqlite3_column_text(res, 3);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string title = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string youtubeId = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		int playCount = sqlite3_column_int(res, 4);
-		string description = sqlite3_column_text(res, 5);
-		string mediumImageUrl = sqlite3_column_text(res, 6);
+		string description = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 5)));
+		string mediumImageUrl = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
 
 		YoutubeVideo newEntry(uuid, title, youtubeId, playCount, description, mediumImageUrl);
 		list.push_back(newEntry);
@@ -81,7 +81,7 @@ char YoutubeVideoDatabase::Insert(int rowId, YoutubeVideo entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -109,7 +109,7 @@ char YoutubeVideoDatabase::Update(YoutubeVideo entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -132,7 +132,7 @@ char YoutubeVideoDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -145,7 +145,7 @@ char YoutubeVideoDatabase::Delete(string uuid)
 
 char YoutubeVideoDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char YoutubeVideoDatabase::create()
@@ -166,7 +166,7 @@ char YoutubeVideoDatabase::create()
 		+ _keyMediumImageUrl + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

@@ -30,7 +30,7 @@ vector<PuckJs> PuckJsDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,10 +38,10 @@ vector<PuckJs> PuckJsDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string roomUuid = sqlite3_column_text(res, 2);
-		string name = sqlite3_column_text(res, 3);
-		string mac = sqlite3_column_text(res, 4);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string roomUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+		string mac = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 
 		PuckJs newEntry(uuid, roomUuid, name, mac);
 		list.push_back(newEntry);
@@ -75,7 +75,7 @@ char PuckJsDatabase::Insert(int rowId, PuckJs entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -101,7 +101,7 @@ char PuckJsDatabase::Update(PuckJs entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -124,7 +124,7 @@ char PuckJsDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -137,7 +137,7 @@ char PuckJsDatabase::Delete(string uuid)
 
 char PuckJsDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char PuckJsDatabase::create()
@@ -156,7 +156,7 @@ char PuckJsDatabase::create()
 		+ _keyMac + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

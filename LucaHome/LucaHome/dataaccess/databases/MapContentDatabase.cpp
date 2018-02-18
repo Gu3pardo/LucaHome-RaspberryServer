@@ -30,7 +30,7 @@ vector<MapContent> MapContentDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,13 +38,13 @@ vector<MapContent> MapContentDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string typeUuid = sqlite3_column_text(res, 2);
-		string type = sqlite3_column_text(res, 3);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string typeUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		int positionX = sqlite3_column_int(res, 4);
 		int positionY = sqlite3_column_int(res, 5);
-		string name = sqlite3_column_text(res, 6);
-		string shortName = sqlite3_column_text(res, 7);
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
+		string shortName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
 		bool visibility = sqlite3_column_int(res, 8) == 1;
 
 		Position position(positionX, positionY);
@@ -89,7 +89,7 @@ char MapContentDatabase::Insert(int rowId, MapContent entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -119,7 +119,7 @@ char MapContentDatabase::Update(MapContent entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -142,7 +142,7 @@ char MapContentDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -155,7 +155,7 @@ char MapContentDatabase::Delete(string uuid)
 
 char MapContentDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char MapContentDatabase::create()
@@ -178,7 +178,7 @@ char MapContentDatabase::create()
 		+ _keyVisibility + " INT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

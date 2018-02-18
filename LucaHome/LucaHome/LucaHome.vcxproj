@@ -76,6 +76,8 @@
     <ClCompile Include="application\services\WirelessSwitchService.cpp" />
     <ClCompile Include="application\services\WirelessTimerService.cpp" />
     <ClCompile Include="application\services\YoutubeVideoService.cpp" />
+    <ClCompile Include="crosscutting\crypto\Decrypter.cpp" />
+    <ClCompile Include="crosscutting\crypto\Encrypter.cpp" />
     <ClCompile Include="crosscutting\rcswitch\RCSwitch.cpp" />
     <ClCompile Include="crosscutting\utils\PiControl.cpp" />
     <ClCompile Include="crosscutting\utils\Tools.cpp" />
@@ -133,6 +135,8 @@
     <ClCompile Include="domain\classes\WirelessTask.cpp" />
     <ClCompile Include="domain\classes\WirelessTimer.cpp" />
     <ClCompile Include="domain\classes\YoutubeVideo.cpp" />
+    <ClCompile Include="external\shell.c" />
+    <ClCompile Include="external\sqlite3.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +167,9 @@
     <ClInclude Include="application\services\WirelessTimerService.h" />
     <ClInclude Include="application\services\YoutubeVideoService.h" />
     <ClInclude Include="crosscutting\Constants.h" />
+    <ClInclude Include="crosscutting\crypto.h" />
+    <ClInclude Include="crosscutting\crypto\Decrypter.h" />
+    <ClInclude Include="crosscutting\crypto\Encrypter.h" />
     <ClInclude Include="crosscutting\rcswitch\RCSwitch.h" />
     <ClInclude Include="crosscutting\utils.h" />
     <ClInclude Include="crosscutting\utils\PiControl.h" />
@@ -225,6 +232,8 @@
     <ClInclude Include="domain\classes\WirelessTask.h" />
     <ClInclude Include="domain\classes\WirelessTimer.h" />
     <ClInclude Include="domain\classes\YoutubeVideo.h" />
+    <ClInclude Include="external\sqlite3.h" />
+    <ClInclude Include="external\sqlite3ext.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

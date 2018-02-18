@@ -28,6 +28,7 @@ namespace patch {
 
 #include "application/services.h"
 #include "crosscutting/Constants.h"
+#include "crosscutting/crypto.h"
 #include "dataaccess/controller.h"
 #include "domain/classes.h"
 
@@ -35,7 +36,6 @@ namespace patch {
 #define SERVER_PORT 6677
 #define TASK_TYPE_SCHEDULE 0
 #define TASK_TYPE_TIMER 1
-
 
 using namespace std;
 
@@ -73,196 +73,190 @@ vector<WirelessTask> _wirelessTaskList;
 
 pthread_mutex_t _lucaHomeMutex = PTHREAD_MUTEX_INITIALIZER;
 
-string executeCommand(string cmd, int source)
+string executeCommand(string encryptedCmd, int source)
 {
-	if (cmd.length() < CMD_MIN_LENGTH) {
-		return COMMAND_ERROR_SHORT_STATEMENT;
-	}
+	char key[]{};
 
 	if (source != CMD_SOURCE_EXTERNAL && source != CMD_SOURCE_SCHEDULER) {
-		return AUTHENTIFICATION_ERROR_INVALID_SOURCE;
+		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_INVALID_SOURCE);
 	}
 
-	vector < string > data = Tools::Explode(":", cmd);
-	if (data.size() < 1) {
-		return AUTHENTIFICATION_ERROR_NO_USERNAME;
+	if (encryptedCmd.length() < CMD_MIN_LENGTH) {
+		return Encrypter::Encrypt(source, key, COMMAND_ERROR_SHORT_STATEMENT);
 	}
-	if (data.size() < 2) {
-		return AUTHENTIFICATION_ERROR_NO_PASSWORD;
+
+	string cmd;
+	if (source == CMD_SOURCE_SCHEDULER) {
+		cmd = Decrypter::Decrypt(key, encryptedCmd);
 	}
-	if (data.size() < 3) {
-		return COMMAND_ERROR_NO_CATEGORY;
+	else {
+		cmd = encryptedCmd;
 	}
-	if (data.size() < 4) {
-		return COMMAND_ERROR_NO_ACTION;
+
+	vector <string> data = Tools::Explode(":", cmd);
+	if (data.size() < 1 || data[USER_NAME_INDEX] == "") {
+		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_NO_USERNAME);
 	}
-	if (data.size() < 5) {
-		return COMMAND_ERROR_NO_PARAMETER;
+	if (data.size() < 2 || data[PASSWORD_INDEX] == "") {
+		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_NO_PASSWORD);
+	}
+	if (data.size() < 3 || data[CATEGORY_INDEX] == "") {
+		return Encrypter::Encrypt(source, key, COMMAND_ERROR_NO_CATEGORY);
+	}
+	if (data.size() < 4 || data[ACTION_INDEX] == "") {
+		return Encrypter::Encrypt(source, key, COMMAND_ERROR_NO_ACTION);
+	}
+	if (data.size() < 5 || data[ACTION_PARAMETER_INDEX] == "") {
+		return Encrypter::Encrypt(source, key, COMMAND_ERROR_NO_PARAMETER);
 	}
 
 	string username = data[USER_NAME_INDEX];
-	string password = data[PASSWORD_INDEX];
-	string category = data[CATEGORY_INDEX];
-	string action = data[ACTION_INDEX];
-	string actionParameter = data[ACTION_PARAMETER_INDEX];
-
-	if (username == "") {
-		return AUTHENTIFICATION_ERROR_NO_USERNAME;
-	}
-	if (password == "") {
-		return AUTHENTIFICATION_ERROR_NO_PASSWORD;
-	}
-	if (category == "") {
-		return COMMAND_ERROR_NO_CATEGORY;
-	}
-	if (action == "") {
-		return COMMAND_ERROR_NO_ACTION;
-	}
-	if (actionParameter == "") {
-		return COMMAND_ERROR_NO_PARAMETER;
-	}
-
 	if (username == SCHEDULER && source != CMD_SOURCE_SCHEDULER) {
-		return COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED;
+		return Encrypter::Encrypt(source, key, COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED);
 	}
-
-	// TODO activate if logger is wished
-	//_logger.addLog("DEBUG", data, username);
 
 	//---------------Authentificate user--------------
-	if (!_userService.AuthentificateUser(username, password)) {
-		return AUTHENTIFICATION_ERROR_FAILED;
+	if (!_userService.AuthentificateUser(username, data[PASSWORD_INDEX])) {
+		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_FAILED);
 	}
-	if (!_userService.AuthentificateUserAction(username, password, action)) {
-		return AUTHENTIFICATION_ERROR_NO_RIGHTS;
+	if (!_userService.AuthentificateUserAction(username, data[PASSWORD_INDEX], data[ACTION_INDEX])) {
+		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_NO_RIGHTS);
 	}
+
+	string category = data[CATEGORY_INDEX];
+	string commandAnswer = "";
 
 	//-------------ApplicationInformation-------------
 	if (category == APPLICATIONINFORMATION) {
 		_changeService.UpdateChange("ApplicationInformation", username);
-		return _applicationInformationService.PerformAction(data);
+		commandAnswer = _applicationInformationService.PerformAction(data);
 	}
 	//--------------------Birthday--------------------
 	else if (category == BIRTHDAY) {
 		_changeService.UpdateChange("Birthday", username);
-		return _birthdayService.PerformAction(data);
+		commandAnswer = _birthdayService.PerformAction(data);
 	}
 	//---------------------Changes--------------------
 	else if (category == CHANGE) {
-		return _changeService.PerformAction(data);
+		commandAnswer = _changeService.PerformAction(data);
 	}
 	//----------------------Coins---------------------
 	else if (category == COIN) {
 		_changeService.UpdateChange("Coin", username);
-		return _coinService.PerformAction(data);
+		commandAnswer = _coinService.PerformAction(data);
 	}
 	//-------------------MapContent-------------------
 	else if (category == MAPCONTENT) {
 		_changeService.UpdateChange("MapContent", username);
-		return _mapContentService.PerformAction(data);
+		commandAnswer = _mapContentService.PerformAction(data);
 	}
 	//----------------------Meal----------------------
 	else if (category == MEAL) {
 		_changeService.UpdateChange("Meal", username);
-		return _mealService.PerformAction(data);
+		commandAnswer = _mealService.PerformAction(data);
 	}
 	//-------------------MediaServer------------------
 	else if (category == MEDIASERVER) {
 		_changeService.UpdateChange("MediaServer", username);
-		return _mediaServerService.PerformAction(data);
+		commandAnswer = _mediaServerService.PerformAction(data);
 	}
 	//-------------------MeterLogItem-----------------
 	else if (category == METERLOGITEM) {
 		_changeService.UpdateChange("MeterLogItem", username);
-		return _meterLogService.PerformAction(data);
+		commandAnswer = _meterLogService.PerformAction(data);
 	}
 	//-------------------MoneyLogItem-----------------
 	else if (category == MONEYLOGITEM) {
 		_changeService.UpdateChange("MoneyLogItem", username);
-		return _moneyLogService.PerformAction(data);
+		commandAnswer = _moneyLogService.PerformAction(data);
 	}
 	//---------------------Movies---------------------
 	else if (category == MOVIE) {
 		_changeService.UpdateChange("Movie", username);
-		return _movieService.PerformAction(data);
+		commandAnswer = _movieService.PerformAction(data);
 	}
 	//---------------------PuckJs---------------------
 	else if (category == PUCKJS) {
 		_changeService.UpdateChange("PuckJs", username);
-		return _puckJsService.PerformAction(data);
+		commandAnswer = _puckJsService.PerformAction(data);
 	}
 	//-------------------RadioStream------------------
 	else if (category == RADIOSTREAM) {
 		_changeService.UpdateChange("RadioStream", username);
-		return _radioStreamService.PerformAction(data);
+		commandAnswer = _radioStreamService.PerformAction(data);
 	}
 	//-----------------------Room---------------------
 	else if (category == ROOM) {
 		_changeService.UpdateChange("Room", username);
-		return _roomService.PerformAction(data);
+		commandAnswer = _roomService.PerformAction(data);
 	}
 	//---------------------RssFeed--------------------
 	else if (category == RSSFEED) {
 		_changeService.UpdateChange("RssFeed", username);
-		return _rssFeedService.PerformAction(data);
+		commandAnswer = _rssFeedService.PerformAction(data);
 	}
 	//---------------------Security-------------------
 	else if (category == SECURITY) {
 		_changeService.UpdateChange("Security", username);
-		return _securityService.PerformAction(data);
+		commandAnswer = _securityService.PerformAction(data);
 	}
 	//------------------ShoppingItem------------------
 	if (category == SHOPPINGITEM) {
 		_changeService.UpdateChange("ShoppingItem", username);
-		return _shoppingItemService.PerformAction(data);
+		commandAnswer = _shoppingItemService.PerformAction(data);
 	}
 	//-----------------SuggestedMeal------------------
 	else if (category == SUGGESTEDMEAL) {
 		_changeService.UpdateChange("SuggestedMeal", username);
-		return _suggestedMealService.PerformAction(data);
+		commandAnswer = _suggestedMealService.PerformAction(data);
 	}
 	//-------------SuggestedShoppingItem--------------
-	if (category == SUGGESTEDSHOPPINGITEM) {
+	else if (category == SUGGESTEDSHOPPINGITEM) {
 		_changeService.UpdateChange("SuggestedShoppingItem", username);
-		return _suggestedShoppingItemService.PerformAction(data);
+		commandAnswer = _suggestedShoppingItemService.PerformAction(data);
 	}
 	//--------------------Temperature-----------------
 	else if (category == TEMPERATURE) {
 		_changeService.UpdateChange("Temperature", username);
-		return _temperatureService.PerformAction(data);
+		commandAnswer = _temperatureService.PerformAction(data);
 	}
 	//----------------------User----------------------
 	else if (category == USER) {
 		_changeService.UpdateChange("User", username);
-		return _userService.PerformAction(data);
+		commandAnswer = _userService.PerformAction(data);
 	}
 	//----------------WirelessSchedule----------------
 	else if (category == WIRELESSSCHEDULE) {
 		_changeService.UpdateChange("WirelessSchedule", username);
-		return _wirelessScheduleService.PerformAction(data);
+		commandAnswer = _wirelessScheduleService.PerformAction(data);
 	}
 	//-----------------WirelessSocket-----------------
 	else if (category == WIRELESSSOCKET) {
 		_changeService.UpdateChange("WirelessSocket", username);
-		return _wirelessSocketService.PerformAction(data);
+		commandAnswer = _wirelessSocketService.PerformAction(data);
 	}
 	//-----------------WirelessSwitch-----------------
 	else if (category == WIRELESSSWITCH) {
 		_changeService.UpdateChange("WirelessSwitch", username);
-		return _wirelessSwitchService.PerformAction(data);
+		commandAnswer = _wirelessSwitchService.PerformAction(data);
 	}
 	//-----------------WirelessTimer------------------
 	else if (category == WIRELESSTIMER) {
 		_changeService.UpdateChange("WirelessTimer", username);
-		return _wirelessTimerService.PerformAction(data);
+		commandAnswer = _wirelessTimerService.PerformAction(data);
 	}
 	//------------------YoutubeVideo------------------
 	else if (category == YOUTUBEVIDEO) {
 		_changeService.UpdateChange("YoutubeVideo", username);
-		return _youtubeVideoService.PerformAction(data);
+		commandAnswer = _youtubeVideoService.PerformAction(data);
 	}
 
-	return COMMAND_ERROR_NO_ACTION_FOUND;
+	// Check if command was performed
+	if (commandAnswer == "") {
+		commandAnswer = COMMAND_ERROR_NO_ACTION_FOUND;
+	}
+
+	return Encrypter::Encrypt(source, key, commandAnswer);
 }
 
 void *server(void *arg) {

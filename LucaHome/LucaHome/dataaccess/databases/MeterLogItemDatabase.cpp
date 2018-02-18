@@ -30,7 +30,7 @@ vector<MeterLogItem> MeterLogItemDatabase::GetList()
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
 
-	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -38,18 +38,18 @@ vector<MeterLogItem> MeterLogItemDatabase::GetList()
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
-		string uuid = sqlite3_column_text(res, 1);
-		string roomUuid = sqlite3_column_text(res, 2);
-		string typeUuid = sqlite3_column_text(res, 3);
-		string type = sqlite3_column_text(res, 4);
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string roomUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string typeUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
+		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		int day = sqlite3_column_int(res, 5);
 		int month = sqlite3_column_int(res, 6);
 		int year = sqlite3_column_int(res, 7);
 		int hour = sqlite3_column_int(res, 8);
 		int minute = sqlite3_column_int(res, 9);
-		string meterId = sqlite3_column_text(res, 10);
+		string meterId = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 10)));
 		double value = sqlite3_column_double(res, 11);
-		string imageName = sqlite3_column_text(res, 12);
+		string imageName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 12)));
 
 		MeterLogItem newEntry(uuid, roomUuid, typeUuid, type, day, month, year, hour, minute, meterId, value, imageName);
 		list.push_back(newEntry);
@@ -99,7 +99,7 @@ char MeterLogItemDatabase::Insert(int rowId, MeterLogItem entry)
 		+ ");";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlInsertCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlInsertCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -133,7 +133,7 @@ char MeterLogItemDatabase::Update(MeterLogItem entry)
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -156,7 +156,7 @@ char MeterLogItemDatabase::Delete(string uuid)
 		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();
@@ -169,7 +169,7 @@ char MeterLogItemDatabase::Delete(string uuid)
 
 char MeterLogItemDatabase::open()
 {
-	return sqlite3_open(_databaseName, &database);
+	return sqlite3_open(_databaseName.c_str(), &database);
 }
 
 char MeterLogItemDatabase::create()
@@ -196,7 +196,7 @@ char MeterLogItemDatabase::create()
 		+ _keyImageName + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
-	int error = sqlite3_exec(database, sqlCreateCommand, NULL, NULL, &errorMessage);
+	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);
 	if (error != SQLITE_OK) {
 		sqlite3_free(errorMessage);
 		close();

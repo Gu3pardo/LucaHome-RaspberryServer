@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <sqlite3.h>
+#include "../../external/sqlite3.h"
 #include "../../crosscutting/utils/Tools.h"
 
 using namespace std;
