@@ -176,13 +176,76 @@
     <ClCompile Include="domain\classes\Birthday.cpp">
       <Filter>domain\classes</Filter>
     </ClCompile>
-    <ClCompile Include="application\server\Server.cpp">
-      <Filter>application\server</Filter>
-    </ClCompile>
-    <ClCompile Include="application\handler\CommandHandler.cpp">
-      <Filter>application\handler</Filter>
-    </ClCompile>
     <ClCompile Include="application\services\UserService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\ApplicationInformationService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\BirthdayService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MapContentService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\ChangeService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MealService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MediaServerService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MeterLogService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\MoneyLogService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\PuckJsService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\RadioStreamService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\RoomService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\RssFeedService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\YoutubeVideoService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\ShoppingItemService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\SuggestedMealService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\SuggestedShoppingItemService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccess\controller\SystemController.cpp">
+      <Filter>dataaccess\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\WirelessScheduleService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\WirelessTimerService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\WirelessSocketService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\WirelessSwitchService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\TemperatureService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\SecurityService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
   </ItemGroup>
@@ -216,12 +279,6 @@
     </Filter>
     <Filter Include="domain\classes">
       <UniqueIdentifier>{e250d8fb-97b2-44b7-b856-2053c8dd1501}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="application\server">
-      <UniqueIdentifier>{336579d7-f594-4822-a8f9-c981e3e0cb64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="application\handler">
-      <UniqueIdentifier>{4875f66a-3dc1-4134-8b15-1617c3ca3472}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -420,13 +477,76 @@
     <ClInclude Include="domain\classes\ApplicationInformation.h">
       <Filter>domain\classes</Filter>
     </ClInclude>
-    <ClInclude Include="application\server\Server.h">
-      <Filter>application\server</Filter>
-    </ClInclude>
-    <ClInclude Include="application\handler\CommandHandler.h">
-      <Filter>application\handler</Filter>
-    </ClInclude>
     <ClInclude Include="application\services\UserService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\ApplicationInformationService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\BirthdayService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MapContentService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\ChangeService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MealService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MediaServerService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MeterLogService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\MoneyLogService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\PuckJsService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\RadioStreamService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\RoomService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\RssFeedService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\YoutubeVideoService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\ShoppingItemService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\SuggestedMealService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\SuggestedShoppingItemService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="dataaccess\controller\SystemController.h">
+      <Filter>dataaccess\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\WirelessScheduleService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\WirelessTimerService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\WirelessSocketService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\WirelessSwitchService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\TemperatureService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\SecurityService.h">
       <Filter>application\services</Filter>
     </ClInclude>
   </ItemGroup>

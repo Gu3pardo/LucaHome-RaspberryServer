@@ -25,7 +25,7 @@ vector<ApplicationInformation> ApplicationInformationDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -89,9 +89,8 @@ char ApplicationInformationDatabase::Update(ApplicationInformation entry)
 
 	string sqlUpdateCommand =
 		"UPDATE " + _tableName + " "
-		+ "SET " + _keyKey + " = '" + entry.GetKey() + "',"
 		+ "SET " + _keyValue + " = '" + entry.GetValue() + "' "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyKey + "=" + entry.GetKey() + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
@@ -105,7 +104,7 @@ char ApplicationInformationDatabase::Update(ApplicationInformation entry)
 	return 0;
 }
 
-char ApplicationInformationDatabase::Delete(ApplicationInformation entry)
+char ApplicationInformationDatabase::Delete(string key)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -114,7 +113,7 @@ char ApplicationInformationDatabase::Delete(ApplicationInformation entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyKey + "=" + key + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

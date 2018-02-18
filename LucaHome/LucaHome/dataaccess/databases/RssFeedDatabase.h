@@ -34,7 +34,7 @@ public:
 
 	virtual char Insert(int, RssFeed);
 	virtual char Update(RssFeed);
-	virtual char Delete(RssFeed);
+	virtual char Delete(string);
 };
 
 #endif

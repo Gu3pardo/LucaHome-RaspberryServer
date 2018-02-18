@@ -35,7 +35,7 @@ public:
 
 	virtual char Insert(int, ShoppingItem);
 	virtual char Update(ShoppingItem);
-	virtual char Delete(ShoppingItem);
+	virtual char Delete(string);
 };
 
 #endif

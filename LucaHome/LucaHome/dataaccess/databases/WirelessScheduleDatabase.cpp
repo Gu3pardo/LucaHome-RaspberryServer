@@ -132,7 +132,31 @@ char WirelessScheduleDatabase::Update(WirelessSchedule entry)
 	return 0;
 }
 
-char WirelessScheduleDatabase::Delete(WirelessSchedule entry)
+char WirelessScheduleDatabase::UpdateState(string uuid, bool newState)
+{
+	char openErrorMessage = open();
+	if (openErrorMessage) {
+		return openErrorMessage;
+	}
+
+	string sqlUpdateCommand =
+		"UPDATE " + _tableName + " "
+		+ "SET " + _keyIsActive + " = " + Tools::ConvertBoolToStr(newState) + ","
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
+
+	char *errorMessage = 0;
+	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return *errorMessage;
+	}
+
+	close();
+	return 0;
+}
+
+char WirelessScheduleDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -141,7 +165,7 @@ char WirelessScheduleDatabase::Delete(WirelessSchedule entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

@@ -33,10 +33,12 @@ public:
 	virtual char Dispose();
 
 	virtual vector<WirelessSwitch> GetList();
+	virtual WirelessSwitch GetByUuid(string);
 
 	virtual char Insert(int, WirelessSwitch);
 	virtual char Update(WirelessSwitch);
-	virtual char Delete(WirelessSwitch);
+	virtual char UpdateAction(string, bool);
+	virtual char Delete(string);
 };
 
 #endif

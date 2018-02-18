@@ -34,7 +34,7 @@ public:
 
 	virtual char Insert(int, PuckJs);
 	virtual char Update(PuckJs);
-	virtual char Delete(PuckJs);
+	virtual char Delete(string);
 };
 
 #endif

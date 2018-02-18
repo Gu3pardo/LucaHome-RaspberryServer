@@ -29,7 +29,7 @@ private:
 
 	char addCoin(vector<string>);
 	char updateCoin(vector<string>);
-	char deleteCoin(vector<string>);
+	char deleteCoin(string);
 
 public:
 	CoinService();

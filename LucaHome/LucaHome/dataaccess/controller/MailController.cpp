@@ -1,18 +1,14 @@
 #include "MailController.h"
 
-MailController::MailController()
-{
-}
+MailController::MailController() {}
 
-MailController::~MailController()
-{
-}
+MailController::~MailController() {}
 
 //--------------------------Public-----------------------//
 
-void MailController::SendMail(std::string message)
+void MailController::SendMail(string message)
 {
-	std::string command = CMD_SEND_SIMPLE_MAIL;
+	string command = CMD_SEND_SIMPLE_MAIL;
 
 	if (command.length() + message.length() > MAIL_MAX_MESSAGE_LENGTH)
 	{
@@ -25,14 +21,14 @@ void MailController::SendMail(std::string message)
 
 	length = sprintf(buffer, "%s %s", command.c_str(), message.c_str());
 
-	std::string str(buffer);
+	string str(buffer);
 
 	system(buffer);
 }
 
-void MailController::SendMailWithImage(std::string imagePath)
+void MailController::SendMailWithImage(string imagePath)
 {
-	std::string command = CMD_SEND_IMAGE_MAIL;
+	string command = CMD_SEND_IMAGE_MAIL;
 
 	if (command.length() + imagePath.length() > MAIL_MAX_MESSAGE_LENGTH)
 	{
@@ -45,7 +41,7 @@ void MailController::SendMailWithImage(std::string imagePath)
 
 	length = sprintf(buffer, "%s %s", command.c_str(), imagePath.c_str());
 
-	std::string str(buffer);
+	string str(buffer);
 
 	system(buffer);
 }

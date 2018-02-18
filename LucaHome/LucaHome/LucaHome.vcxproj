@@ -51,17 +51,38 @@
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="application\handler\CommandHandler.cpp" />
-    <ClCompile Include="application\server\Server.cpp" />
+    <ClCompile Include="application\services\ApplicationInformationService.cpp" />
+    <ClCompile Include="application\services\BirthdayService.cpp" />
+    <ClCompile Include="application\services\ChangeService.cpp" />
+    <ClCompile Include="application\services\MapContentService.cpp" />
+    <ClCompile Include="application\services\MealService.cpp" />
+    <ClCompile Include="application\services\MediaServerService.cpp" />
+    <ClCompile Include="application\services\MeterLogService.cpp" />
+    <ClCompile Include="application\services\MoneyLogService.cpp" />
+    <ClCompile Include="application\services\PuckJsService.cpp" />
+    <ClCompile Include="application\services\RadioStreamService.cpp" />
+    <ClCompile Include="application\services\RoomService.cpp" />
+    <ClCompile Include="application\services\RssFeedService.cpp" />
+    <ClCompile Include="application\services\SecurityService.cpp" />
+    <ClCompile Include="application\services\ShoppingItemService.cpp" />
+    <ClCompile Include="application\services\SuggestedMealService.cpp" />
+    <ClCompile Include="application\services\SuggestedShoppingItemService.cpp" />
+    <ClCompile Include="application\services\TemperatureService.cpp" />
     <ClCompile Include="application\services\UserService.cpp" />
     <ClCompile Include="application\services\CoinService.cpp" />
     <ClCompile Include="application\services\MovieService.cpp" />
+    <ClCompile Include="application\services\WirelessScheduleService.cpp" />
+    <ClCompile Include="application\services\WirelessSocketService.cpp" />
+    <ClCompile Include="application\services\WirelessSwitchService.cpp" />
+    <ClCompile Include="application\services\WirelessTimerService.cpp" />
+    <ClCompile Include="application\services\YoutubeVideoService.cpp" />
     <ClCompile Include="crosscutting\rcswitch\RCSwitch.cpp" />
     <ClCompile Include="crosscutting\utils\PiControl.cpp" />
     <ClCompile Include="crosscutting\utils\Tools.cpp" />
     <ClCompile Include="dataaccess\controller\FileController.cpp" />
     <ClCompile Include="dataaccess\controller\MailController.cpp" />
     <ClCompile Include="dataaccess\controller\PathController.cpp" />
+    <ClCompile Include="dataaccess\controller\SystemController.cpp" />
     <ClCompile Include="dataaccess\databases\ApplicationInformationDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\BirthdayDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\ChangeDatabase.cpp" />
@@ -115,12 +136,32 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application\handler\CommandHandler.h" />
-    <ClInclude Include="application\server\Server.h" />
     <ClInclude Include="application\services.h" />
+    <ClInclude Include="application\services\ApplicationInformationService.h" />
+    <ClInclude Include="application\services\BirthdayService.h" />
+    <ClInclude Include="application\services\ChangeService.h" />
+    <ClInclude Include="application\services\MapContentService.h" />
+    <ClInclude Include="application\services\MealService.h" />
+    <ClInclude Include="application\services\MediaServerService.h" />
+    <ClInclude Include="application\services\MeterLogService.h" />
+    <ClInclude Include="application\services\MoneyLogService.h" />
+    <ClInclude Include="application\services\PuckJsService.h" />
+    <ClInclude Include="application\services\RadioStreamService.h" />
+    <ClInclude Include="application\services\RoomService.h" />
+    <ClInclude Include="application\services\RssFeedService.h" />
+    <ClInclude Include="application\services\SecurityService.h" />
+    <ClInclude Include="application\services\ShoppingItemService.h" />
+    <ClInclude Include="application\services\SuggestedMealService.h" />
+    <ClInclude Include="application\services\SuggestedShoppingItemService.h" />
+    <ClInclude Include="application\services\TemperatureService.h" />
     <ClInclude Include="application\services\UserService.h" />
     <ClInclude Include="application\services\CoinService.h" />
     <ClInclude Include="application\services\MovieService.h" />
+    <ClInclude Include="application\services\WirelessScheduleService.h" />
+    <ClInclude Include="application\services\WirelessSocketService.h" />
+    <ClInclude Include="application\services\WirelessSwitchService.h" />
+    <ClInclude Include="application\services\WirelessTimerService.h" />
+    <ClInclude Include="application\services\YoutubeVideoService.h" />
     <ClInclude Include="crosscutting\Constants.h" />
     <ClInclude Include="crosscutting\rcswitch\RCSwitch.h" />
     <ClInclude Include="crosscutting\utils.h" />
@@ -130,6 +171,7 @@
     <ClInclude Include="dataaccess\controller\FileController.h" />
     <ClInclude Include="dataaccess\controller\MailController.h" />
     <ClInclude Include="dataaccess\controller\PathController.h" />
+    <ClInclude Include="dataaccess\controller\SystemController.h" />
     <ClInclude Include="dataaccess\databases.h" />
     <ClInclude Include="dataaccess\databases\ApplicationInformationDatabase.h" />
     <ClInclude Include="dataaccess\databases\BirthdayDatabase.h" />

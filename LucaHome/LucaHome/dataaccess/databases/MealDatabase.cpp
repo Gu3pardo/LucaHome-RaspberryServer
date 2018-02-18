@@ -25,7 +25,7 @@ vector<Meal> MealDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyWeekday;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyWeekday + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -130,7 +130,7 @@ char MealDatabase::Update(Meal entry)
 	return 0;
 }
 
-char MealDatabase::Delete(Meal entry)
+char MealDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -139,7 +139,7 @@ char MealDatabase::Delete(Meal entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

@@ -161,7 +161,7 @@ string Tools::SendSystemCommandGetResult(string commandString)
 	FILE *pipe = popen(command, "r");
 	if (!pipe)
 	{
-		return "Error 80:System command error. Pipe Error!";
+		return COMMAND_ERROR_PIPE_ERROR;
 	}
 
 	char buffer[256];

@@ -34,7 +34,7 @@ public:
 
 	virtual char Insert(int, RadioStream);
 	virtual char Update(RadioStream);
-	virtual char Delete(RadioStream);
+	virtual char Delete(string);
 };
 
 #endif

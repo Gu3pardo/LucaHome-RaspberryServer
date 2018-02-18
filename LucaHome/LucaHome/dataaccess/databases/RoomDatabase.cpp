@@ -25,7 +25,7 @@ vector<Room> RoomDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -108,7 +108,7 @@ char RoomDatabase::Update(Room entry)
 	return 0;
 }
 
-char RoomDatabase::Delete(Room entry)
+char RoomDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -117,7 +117,7 @@ char RoomDatabase::Delete(Room entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

@@ -25,7 +25,7 @@ vector<User> UserDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -120,7 +120,7 @@ char UserDatabase::Update(User entry)
 	return 0;
 }
 
-char UserDatabase::Delete(User entry)
+char UserDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -129,7 +129,7 @@ char UserDatabase::Delete(User entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

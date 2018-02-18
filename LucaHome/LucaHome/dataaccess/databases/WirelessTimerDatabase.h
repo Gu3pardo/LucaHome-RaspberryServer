@@ -38,7 +38,7 @@ public:
 
 	virtual char Insert(int, WirelessTimer);
 	virtual char Update(WirelessTimer);
-	virtual char Delete(WirelessTimer);
+	virtual char Delete(string);
 };
 
 #endif

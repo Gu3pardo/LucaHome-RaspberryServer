@@ -1,23 +1,19 @@
 #include "FileController.h"
 
-FileController::FileController()
-{
-}
+FileController::FileController() {}
 
-FileController::~FileController()
-{
-}
+FileController::~FileController() {}
 
-std::string FileController::ReadFile(std::string path)
+string FileController::ReadFile(string path)
 {
-	std::string content;
-	std::ifstream file;
+	string content;
+	ifstream file;
 
 	file.open(path.c_str());
 
 	if (file.is_open())
 	{
-		std::string line;
+		string line;
 		while (!file.eof())
 		{
 			getline(file, line, '\n');
@@ -34,16 +30,16 @@ std::string FileController::ReadFile(std::string path)
 	return content;
 }
 
-std::vector<std::string> FileController::ReadFileList(std::string path)
+vector<string> FileController::ReadFileList(string path)
 {
-	std::vector<std::string> contentList;
-	std::ifstream file;
+	vector<string> contentList;
+	ifstream file;
 
 	file.open(path.c_str());
 
 	if (file.is_open())
 	{
-		std::string line;
+		string line;
 		while (!file.eof())
 		{
 			getline(file, line, '\n');
@@ -60,11 +56,11 @@ std::vector<std::string> FileController::ReadFileList(std::string path)
 	return contentList;
 }
 
-bool FileController::SaveFile(std::string path, std::string content)
+bool FileController::SaveFile(string path, string content)
 {
 	bool success;
-	std::ofstream file;
-	file.open(path.c_str(), std::ios::out);
+	ofstream file;
+	file.open(path.c_str(), ios::out);
 
 	if (file.is_open())
 	{

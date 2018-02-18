@@ -35,7 +35,7 @@ public:
 
 	virtual char Insert(int, MediaServer);
 	virtual char Update(MediaServer);
-	virtual char Delete(MediaServer);
+	virtual char Delete(string);
 };
 
 #endif

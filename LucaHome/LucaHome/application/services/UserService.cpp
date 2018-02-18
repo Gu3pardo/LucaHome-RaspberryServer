@@ -57,25 +57,22 @@ string UserService::PerformAction(vector<string> data)
 
 	else if (action == DELETE)
 	{
-		if (data.size() == USER_DATA_SIZE)
+		char error = deleteUser(actionParameter);
+		if (!error)
 		{
-			char error = deleteUser(data);
-			if (!error)
-			{
-				return USER_DELETE_SUCCESS;
-			}
-
-			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
-			return actionAnswer.str();
+			return USER_DELETE_SUCCESS;
 		}
-		return USER_ERROR_WRONG_WORD_SIZE;
+
+		stringstream actionAnswer;
+		actionAnswer << "Error: " << error;
+		return actionAnswer.str();
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
 }
 
-void UserService::Dispose() {
+void UserService::Dispose()
+{
 	_userDatabase.Dispose();
 }
 
@@ -174,16 +171,9 @@ char UserService::updateUser(vector<string> updateUserData)
 	return _userDatabase.Update(updateUser);
 }
 
-char UserService::deleteUser(vector<string> deleteUserData)
+char UserService::deleteUser(string deleteUuid)
 {
-	User deleteUser(
-		deleteUserData[COIN_UUID_INDEX].c_str(),
-		deleteUserData[USER_NAME_INDEX].c_str(),
-		deleteUserData[USER_PASSPHRASE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(deleteUserData[USER_ROLE_INDEX].c_str()),
-		Tools::ConvertStrToBool(deleteUserData[USER_IS_ADMIN_INDEX].c_str()),
-		Tools::ConvertStrToDouble(deleteUserData[USER_INVALID_LOGIN_COUNT_INDEX].c_str()));
-	return _userDatabase.Delete(deleteUser);
+	return _userDatabase.Delete(deleteUuid);
 }
 
 int UserService::getActionId(string action) {
@@ -199,7 +189,7 @@ int UserService::getActionId(string action) {
 	else if (action == CLEAR || action == DEACTIVATE || action == DELETE) {
 		return ACTION_LEVEL_CRIT;
 	}
-	else if (action == RESETFAILEDLOGIN || action == SETCONTROLTASK) {
+	else if (action == RESETFAILEDLOGIN) {
 		return ACTION_LEVEL_SYSTEM;
 	}
 	return ACTION_LEVEL_ERROR;
@@ -214,7 +204,7 @@ bool UserService::isAdminAction(string action) {
 		|| action == DELETE) {
 		return false;
 	}
-	else if (action == RESETFAILEDLOGIN || action == SETCONTROLTASK) {
+	else if (action == RESETFAILEDLOGIN) {
 		return true;
 	}
 	return true;

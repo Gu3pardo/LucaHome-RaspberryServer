@@ -36,7 +36,7 @@ public:
 
 	virtual char Insert(int, YoutubeVideo);
 	virtual char Update(YoutubeVideo);
-	virtual char Delete(YoutubeVideo);
+	virtual char Delete(string);
 };
 
 #endif

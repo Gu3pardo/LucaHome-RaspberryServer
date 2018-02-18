@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+#include "../Constants.h"
+
 using namespace std;
 
 #ifndef TOOLS_H

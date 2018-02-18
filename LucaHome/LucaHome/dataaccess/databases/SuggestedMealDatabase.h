@@ -36,7 +36,7 @@ public:
 
 	virtual char Insert(int, SuggestedMeal);
 	virtual char Update(SuggestedMeal);
-	virtual char Delete(SuggestedMeal);
+	virtual char Delete(string);
 };
 
 #endif

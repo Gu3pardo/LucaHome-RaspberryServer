@@ -25,22 +25,24 @@
 #include "../../crosscutting/utils/Tools.h"
 #include "../../crosscutting/Constants.h"
 
+using namespace std;
+
 #ifndef PATH_CONTROLLER_H
 #define PATH_CONTROLLER_H
 
 class PathController
 {
 private:
-	std::vector<std::string> scanDirForType(std::string, int);
-	std::vector<std::string> filterList(std::vector<std::string>, std::vector<std::string>);
+	vector<string> scanDirForType(string, int);
+	vector<string> filterList(vector<string>, vector<string>);
 public:
 	PathController();
 	~PathController();
 
-	std::vector<std::string> ScanCameraFolder();
-	std::vector<std::string> ScanMovieFolder();
-	std::vector<std::string> ScanSeriesFolder();
-	std::vector<std::string> ScanMeterLogImageFolder();
+	vector<string> ScanCameraFolder();
+	vector<string> ScanMovieFolder();
+	vector<string> ScanSeriesFolder();
+	vector<string> ScanMeterLogImageFolder();
 };
 
 #endif

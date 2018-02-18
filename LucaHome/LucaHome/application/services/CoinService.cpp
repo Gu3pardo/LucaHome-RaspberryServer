@@ -66,25 +66,22 @@ string CoinService::PerformAction(vector<string> data)
 
 	else if (action == DELETE)
 	{
-		if (data.size() == COIN_DATA_SIZE)
+		char error = deleteCoin(actionParameter);
+		if (!error)
 		{
-			char error = deleteCoin(data);
-			if (!error)
-			{
-				return COIN_DELETE_SUCCESS;
-			}
-
-			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
-			return actionAnswer.str();
+			return COIN_DELETE_SUCCESS;
 		}
-		return COIN_ERROR_WRONG_WORD_SIZE;
+
+		stringstream actionAnswer;
+		actionAnswer << "Error: " << error;
+		return actionAnswer.str();
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
 }
 
-void CoinService::Dispose() {
+void CoinService::Dispose()
+{
 	_coinDatabase.Dispose();
 }
 
@@ -140,12 +137,7 @@ char CoinService::updateCoin(vector<string> updateCoinData)
 	return _coinDatabase.Update(updateCoin);
 }
 
-char CoinService::deleteCoin(vector<string> deleteCoinData)
+char CoinService::deleteCoin(string deleteUuid)
 {
-	Coin deleteCoin(
-		deleteCoinData[COIN_UUID_INDEX].c_str(),
-		deleteCoinData[COIN_USER_INDEX].c_str(),
-		deleteCoinData[COIN_TYPE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(deleteCoinData[COIN_AMOUNT_INDEX].c_str()));
-	return _coinDatabase.Delete(deleteCoin);
+	return _coinDatabase.Delete(deleteUuid);
 }

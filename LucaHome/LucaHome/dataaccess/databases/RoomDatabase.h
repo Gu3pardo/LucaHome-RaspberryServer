@@ -33,7 +33,7 @@ public:
 
 	virtual char Insert(int, Room);
 	virtual char Update(Room);
-	virtual char Delete(Room);
+	virtual char Delete(string);
 };
 
 #endif

@@ -24,6 +24,8 @@
 
 #include "../../crosscutting/Constants.h"
 
+using namespace std;
+
 #ifndef MAIL_CONTROLLER_H
 #define MAIL_CONTROLLER_H
 
@@ -33,8 +35,8 @@ public:
 	MailController();
 	~MailController();
 
-	void SendMail(std::string);
-	void SendMailWithImage(std::string);
+	void SendMail(string);
+	void SendMailWithImage(string);
 };
 
 #endif

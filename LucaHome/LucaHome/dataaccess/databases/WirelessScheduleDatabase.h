@@ -39,7 +39,8 @@ public:
 
 	virtual char Insert(int, WirelessSchedule);
 	virtual char Update(WirelessSchedule);
-	virtual char Delete(WirelessSchedule);
+	virtual char UpdateState(string, bool);
+	virtual char Delete(string);
 };
 
 #endif

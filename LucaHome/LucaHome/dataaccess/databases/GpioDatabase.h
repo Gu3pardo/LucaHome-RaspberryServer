@@ -34,7 +34,7 @@ public:
 
 	virtual char Insert(int, Gpio);
 	virtual char Update(Gpio);
-	virtual char Delete(Gpio);
+	virtual char Delete(string);
 };
 
 #endif

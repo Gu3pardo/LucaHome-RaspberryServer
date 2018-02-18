@@ -35,7 +35,7 @@ public:
 
 	virtual char Insert(int, Coin);
 	virtual char Update(Coin);
-	virtual char Delete(Coin);
+	virtual char Delete(string);
 };
 
 #endif

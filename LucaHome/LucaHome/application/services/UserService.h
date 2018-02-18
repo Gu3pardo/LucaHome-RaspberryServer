@@ -25,7 +25,7 @@ private:
 
 	char addUser(vector<string>);
 	char updateUser(vector<string>);
-	char deleteUser(vector<string>);
+	char deleteUser(string);
 
 	int getActionId(string);
 	bool isAdminAction(string);

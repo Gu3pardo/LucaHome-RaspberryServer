@@ -25,7 +25,7 @@ vector<Coin> CoinDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyUser;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyUser + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -59,7 +59,7 @@ vector<Coin> CoinDatabase::GetUserList(string user)
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " WHERE " + _keyUser + "=" + user + " ORDER BY " + _keyType;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " WHERE " + _keyUser + "=" + user + " ORDER BY " + _keyType + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -145,7 +145,7 @@ char CoinDatabase::Update(Coin entry)
 	return 0;
 }
 
-char CoinDatabase::Delete(Coin entry)
+char CoinDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -154,7 +154,7 @@ char CoinDatabase::Delete(Coin entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

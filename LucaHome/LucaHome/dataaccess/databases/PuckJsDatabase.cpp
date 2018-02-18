@@ -25,7 +25,7 @@ vector<PuckJs> PuckJsDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRoomUuid;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRoomUuid + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -112,7 +112,7 @@ char PuckJsDatabase::Update(PuckJs entry)
 	return 0;
 }
 
-char PuckJsDatabase::Delete(PuckJs entry)
+char PuckJsDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -121,7 +121,7 @@ char PuckJsDatabase::Delete(PuckJs entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

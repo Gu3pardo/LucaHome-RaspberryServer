@@ -32,10 +32,12 @@ public:
 	virtual char Dispose();
 
 	virtual vector<WirelessSocket> GetList();
+	virtual WirelessSocket GetByUuid(string);
 
 	virtual char Insert(int, WirelessSocket);
 	virtual char Update(WirelessSocket);
-	virtual char Delete(WirelessSocket);
+	virtual char UpdateState(string, bool);
+	virtual char Delete(string);
 };
 
 #endif

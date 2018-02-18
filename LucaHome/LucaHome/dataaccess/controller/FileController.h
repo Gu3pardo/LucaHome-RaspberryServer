@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <syslog.h>
 
+using namespace std;
+
 #ifndef FILE_CONTROLLER_H
 #define FILE_CONTROLLER_H
 
@@ -24,9 +26,9 @@ public:
 	FileController();
 	~FileController();
 
-	std::string ReadFile(std::string path);
-	std::vector<std::string> ReadFileList(std::string path);
-	bool SaveFile(std::string path, std::string content);
+	string ReadFile(string path);
+	vector<string> ReadFileList(string path);
+	bool SaveFile(string path, string content);
 };
 
 #endif

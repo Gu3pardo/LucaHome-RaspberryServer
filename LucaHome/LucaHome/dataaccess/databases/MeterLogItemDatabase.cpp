@@ -25,7 +25,7 @@ vector<MeterLogItem> MeterLogItemDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRoomUuid;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRoomUuid + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -144,7 +144,7 @@ char MeterLogItemDatabase::Update(MeterLogItem entry)
 	return 0;
 }
 
-char MeterLogItemDatabase::Delete(MeterLogItem entry)
+char MeterLogItemDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -153,7 +153,7 @@ char MeterLogItemDatabase::Delete(MeterLogItem entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

@@ -25,7 +25,7 @@ vector<WirelessSwitch> WirelessSwitchDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -54,6 +54,46 @@ vector<WirelessSwitch> WirelessSwitchDatabase::GetList()
 	sqlite3_finalize(res);
 	close();
 	return list;
+}
+
+WirelessSwitch WirelessSwitchDatabase::GetByUuid(string uuid)
+{
+	if (!open()) {
+		return WirelessSwitch();
+	}
+
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + "WHERE " + _keyUuid + "=" + uuid + " LIMIT 1;";
+
+	sqlite3_stmt *res;
+	char *errorMessage = 0;
+
+	int error = sqlite3_exec(database, sqlSelectCommand, NULL, &res, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return WirelessSwitch();
+	}
+
+	while (sqlite3_step(res) == SQLITE_ROW) {
+		string uuid = sqlite3_column_text(res, 1);
+		string roomUuid = sqlite3_column_text(res, 2);
+		string name = sqlite3_column_text(res, 3);
+		int remoteId = sqlite3_column_int(res, 4);
+		string keyCodeString = sqlite3_column_text(res, 5);
+		bool action = sqlite3_column_int(res, 6) == 1;
+
+		unsigned char keyCode = Tools::ConvertStrToUnsignedChar(keyCodeString);
+
+		WirelessSwitch wirelessSwitch(uuid, roomUuid, name, remoteId, keyCode, action);
+		sqlite3_finalize(res);
+		close();
+
+		return wirelessSwitch;
+	}
+
+	sqlite3_finalize(res);
+	close();
+	return WirelessSwitch();
 }
 
 char WirelessSwitchDatabase::Insert(int rowId, WirelessSwitch entry)
@@ -122,7 +162,31 @@ char WirelessSwitchDatabase::Update(WirelessSwitch entry)
 	return 0;
 }
 
-char WirelessSwitchDatabase::Delete(WirelessSwitch entry)
+char WirelessSwitchDatabase::UpdateAction(string uuid, bool newAction)
+{
+	char openErrorMessage = open();
+	if (openErrorMessage) {
+		return openErrorMessage;
+	}
+
+	string sqlUpdateCommand =
+		"UPDATE " + _tableName + " "
+		+ "SET " + _keyAction + " = " + Tools::ConvertBoolToStr(newAction) + ","
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
+
+	char *errorMessage = 0;
+	int error = sqlite3_exec(database, sqlUpdateCommand, NULL, NULL, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return *errorMessage;
+	}
+
+	close();
+	return 0;
+}
+
+char WirelessSwitchDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -131,7 +195,7 @@ char WirelessSwitchDatabase::Delete(WirelessSwitch entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

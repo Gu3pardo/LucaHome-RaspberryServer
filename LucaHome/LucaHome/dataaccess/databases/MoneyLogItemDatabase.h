@@ -40,7 +40,7 @@ public:
 
 	virtual char Insert(int, MoneyLogItem);
 	virtual char Update(MoneyLogItem);
-	virtual char Delete(MoneyLogItem);
+	virtual char Delete(string);
 };
 
 #endif

@@ -36,7 +36,7 @@ public:
 
 	virtual char Insert(int, User);
 	virtual char Update(User);
-	virtual char Delete(User);
+	virtual char Delete(string);
 };
 
 #endif

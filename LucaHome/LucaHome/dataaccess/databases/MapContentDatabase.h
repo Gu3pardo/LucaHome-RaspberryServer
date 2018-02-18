@@ -38,7 +38,7 @@ public:
 
 	virtual char Insert(int, MapContent);
 	virtual char Update(MapContent);
-	virtual char Delete(MapContent);
+	virtual char Delete(string);
 };
 
 #endif

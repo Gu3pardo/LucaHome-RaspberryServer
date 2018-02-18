@@ -12,6 +12,19 @@ MapContentType
 11	Camera
 12	Meter
 
+RoomType
+0 Living Room
+1 Sleeping Room
+2 Kitchen
+3 Bath
+4 Hall
+
+TemperatureType
+0	Null
+1	RaspberryPi
+2	PuckJs
+3	City
+
 WirelessTaskType
 0	Schedule
 1	Timer

@@ -25,7 +25,7 @@ vector<SuggestedShoppingItem> SuggestedShoppingItemDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId;
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyRowId + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -116,7 +116,7 @@ char SuggestedShoppingItemDatabase::Update(SuggestedShoppingItem entry)
 	return 0;
 }
 
-char SuggestedShoppingItemDatabase::Delete(SuggestedShoppingItem entry)
+char SuggestedShoppingItemDatabase::Delete(string uuid)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -125,7 +125,7 @@ char SuggestedShoppingItemDatabase::Delete(SuggestedShoppingItem entry)
 
 	string sqlDeleteCommand =
 		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand, NULL, NULL, &errorMessage);

@@ -42,7 +42,7 @@ public:
 
 	virtual char Insert(int, MeterLogItem);
 	virtual char Update(MeterLogItem);
-	virtual char Delete(MeterLogItem);
+	virtual char Delete(string);
 };
 
 #endif

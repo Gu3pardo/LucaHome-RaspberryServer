@@ -32,7 +32,7 @@ public:
 
 	virtual char Insert(int, ApplicationInformation);
 	virtual char Update(ApplicationInformation);
-	virtual char Delete(ApplicationInformation);
+	virtual char Delete(string);
 };
 
 #endif
