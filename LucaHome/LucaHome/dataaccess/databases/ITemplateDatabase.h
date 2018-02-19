@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../../external/sqlite3.h"
+#include <sqlite3.h>
 #include "../../crosscutting/utils/Tools.h"
 
 using namespace std;
@@ -10,18 +10,18 @@ using namespace std;
 template<class T> class ITemplateDatabase
 {
 protected:
-	virtual char open();
-	virtual char create();
-	virtual char close();
+	virtual char open() { return -69; }
+	virtual char create() { return -69; }
+	virtual char close() { return -69; }
 
 public:
-	virtual char Dispose();
+	virtual char Dispose() {}
 
-	virtual vector<T> GetList();
+	virtual vector<T> GetList() { return vector<T>() {}; }
 
-	virtual char Insert(int, T);
-	virtual char Update(T);
-	virtual char Delete(T);
+	virtual char Insert(int rowId, T entry) { return -69; }
+	virtual char Update(T entry) { return -69; }
+	virtual char Delete(T entry) { return -69; }
 };
 
 #endif

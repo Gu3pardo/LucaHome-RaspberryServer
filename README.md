@@ -4,8 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Build](https://img.shields.io/badge/build-WIP-red.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
-[![Version](https://img.shields.io/badge/version-v6.0.0.180219alpha-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Build](https://img.shields.io/badge/build-WIP_red.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
+[![Version](https://img.shields.io/badge/version-v6.0.0.180219alpha-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
 
 Part of the LucaHome-Project
 
@@ -14,7 +14,44 @@ Remotely controlled by an android application (https://github.com/GuepardoApps/L
 
 # Installation
 
-Webserver (optional)
+## Required
+
+### Sqlite3
+If Sqlite3 is not installed, install this first:
+```
+sudo apt-get install sqlite3
+```
+
+Then install the dev lib for sqlite3 using following command:
+```
+sudo apt-get install libsqlite3-dev
+```
+
+This post is very helpful: https://stackoverflow.com/questions/28969543/fatal-error-sqlite3-h-no-such-file-or-directory
+
+### WiringPi
+```
+pi@raspberrypi ~ $ wget http://raspberrypiguide.de/stuff/wiringPi-27afc01.tar.gz
+pi@raspberrypi ~ $ tar xfz wiringPi-27afc01.tar.gz
+pi@raspberrypi ~ $ cd wiringPi-27afc01
+pi@raspberrypi ~/wiringPi-27afc01 $ ./build 
+```
+
+### Finalize
+
+Now you are ready to install LucaHome to your raspberry
+- first download sourcecode and copy it to your raspberry (e.g. to your home directory (lucahome)
+- you have to cd into the directory you copied the sourcecode to
+```
+pi@raspberrypi ~/lucahome $ sudo make clean
+pi@raspberrypi ~/lucahome $ sudo make
+pi@raspberrypi ~/lucahome $ sudo make install
+pi@raspberrypi ~/lucahome $ sudo /etc/init.d/LucaHome start 
+```
+
+## Optional
+
+### Webserver
 ```
 pi@raspberrypi ~ $ apt-get update
 pi@raspberrypi ~ $ sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
@@ -52,24 +89,7 @@ Restart server
 ```
 pi@raspberrypi ~ $ sudo /etc/init.d/nginx restart 
 ```
-
-Install WiringPi (IMPORTANT!)
-```
-pi@raspberrypi ~ $ wget http://raspberrypiguide.de/stuff/wiringPi-27afc01.tar.gz
-pi@raspberrypi ~ $ tar xfz wiringPi-27afc01.tar.gz
-pi@raspberrypi ~ $ cd wiringPi-27afc01
-pi@raspberrypi ~/wiringPi-27afc01 $ ./build 
-```
-
-Now you are ready to install LucaHome to your raspberry
-- first download sourcecode and copy it to your raspberry (e.g. to your home directory (lucahome)
-- you have to cd into the directory you copied the sourcecode to
-```
-pi@raspberrypi ~/lucahome $ sudo make clean
-pi@raspberrypi ~/lucahome $ sudo make
-pi@raspberrypi ~/lucahome $ sudo make install
-pi@raspberrypi ~/lucahome $ sudo /etc/init.d/LucaHome start 
-```
+_______________
 
 # IMPORTANT
 

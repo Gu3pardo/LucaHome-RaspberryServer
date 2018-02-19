@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/WirelessSchedule.h";
+#include "../../domain/classes/WirelessSchedule.h"
 
 using namespace std;
 

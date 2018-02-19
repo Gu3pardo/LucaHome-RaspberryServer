@@ -8,9 +8,6 @@
     <ClCompile Include="application\services\MovieService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
-    <ClCompile Include="crosscutting\rcswitch\RCSwitch.cpp">
-      <Filter>crosscutting\rcswitch</Filter>
-    </ClCompile>
     <ClCompile Include="crosscutting\utils\Tools.cpp">
       <Filter>crosscutting\utils</Filter>
     </ClCompile>
@@ -92,9 +89,6 @@
     <ClCompile Include="dataaccess\databases\ApplicationInformationDatabase.cpp">
       <Filter>dataaccess\databases</Filter>
     </ClCompile>
-    <ClCompile Include="dataaccess\databases\BirthdayDatabase.cpp">
-      <Filter>dataaccess\databases</Filter>
-    </ClCompile>
     <ClCompile Include="domain\classes\Change.cpp">
       <Filter>domain\classes</Filter>
     </ClCompile>
@@ -173,16 +167,10 @@
     <ClCompile Include="domain\classes\ApplicationInformation.cpp">
       <Filter>domain\classes</Filter>
     </ClCompile>
-    <ClCompile Include="domain\classes\Birthday.cpp">
-      <Filter>domain\classes</Filter>
-    </ClCompile>
     <ClCompile Include="application\services\UserService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
     <ClCompile Include="application\services\ApplicationInformationService.cpp">
-      <Filter>application\services</Filter>
-    </ClCompile>
-    <ClCompile Include="application\services\BirthdayService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
     <ClCompile Include="application\services\MapContentService.cpp">
@@ -254,11 +242,17 @@
     <ClCompile Include="crosscutting\crypto\Encrypter.cpp">
       <Filter>crosscutting\crypto</Filter>
     </ClCompile>
-    <ClCompile Include="external\sqlite3.c">
-      <Filter>external</Filter>
+    <ClCompile Include="domain\classes\Contact.cpp">
+      <Filter>domain\classes</Filter>
     </ClCompile>
-    <ClCompile Include="external\shell.c">
-      <Filter>external</Filter>
+    <ClCompile Include="dataaccess\databases\ContactDatabase.cpp">
+      <Filter>dataaccess\databases</Filter>
+    </ClCompile>
+    <ClCompile Include="application\services\ContactService.cpp">
+      <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Polyline.cpp">
+      <Filter>domain\classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,9 +264,6 @@
     </Filter>
     <Filter Include="crosscutting">
       <UniqueIdentifier>{52821572-44bb-4350-b80c-a3fc48bafce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="crosscutting\rcswitch">
-      <UniqueIdentifier>{ebe3b2b3-3771-47da-b552-088c7c5c02b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="crosscutting\utils">
       <UniqueIdentifier>{088132c3-d175-4b81-9429-aa4321656b0d}</UniqueIdentifier>
@@ -295,9 +286,6 @@
     <Filter Include="crosscutting\crypto">
       <UniqueIdentifier>{e4d1628a-5a38-4b13-8840-e4bdcde36317}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external">
-      <UniqueIdentifier>{58082da9-c7c4-48e2-acfd-8d5fb4be1f06}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\services.h">
@@ -314,9 +302,6 @@
     </ClInclude>
     <ClInclude Include="crosscutting\utils.h">
       <Filter>crosscutting</Filter>
-    </ClInclude>
-    <ClInclude Include="crosscutting\rcswitch\RCSwitch.h">
-      <Filter>crosscutting\rcswitch</Filter>
     </ClInclude>
     <ClInclude Include="crosscutting\utils\PiControl.h">
       <Filter>crosscutting\utils</Filter>
@@ -338,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="dataaccess\controller\FileController.h">
       <Filter>dataaccess\controller</Filter>
-    </ClInclude>
-    <ClInclude Include="dataaccess\databases\BirthdayDatabase.h">
-      <Filter>dataaccess\databases</Filter>
     </ClInclude>
     <ClInclude Include="dataaccess\databases\ChangeDatabase.h">
       <Filter>dataaccess\databases</Filter>
@@ -413,9 +395,6 @@
     </ClInclude>
     <ClInclude Include="domain\classes.h">
       <Filter>domain</Filter>
-    </ClInclude>
-    <ClInclude Include="domain\classes\Birthday.h">
-      <Filter>domain\classes</Filter>
     </ClInclude>
     <ClInclude Include="domain\classes\Change.h">
       <Filter>domain\classes</Filter>
@@ -501,9 +480,6 @@
     <ClInclude Include="application\services\ApplicationInformationService.h">
       <Filter>application\services</Filter>
     </ClInclude>
-    <ClInclude Include="application\services\BirthdayService.h">
-      <Filter>application\services</Filter>
-    </ClInclude>
     <ClInclude Include="application\services\MapContentService.h">
       <Filter>application\services</Filter>
     </ClInclude>
@@ -576,11 +552,17 @@
     <ClInclude Include="crosscutting\crypto\Encrypter.h">
       <Filter>crosscutting\crypto</Filter>
     </ClInclude>
-    <ClInclude Include="external\sqlite3.h">
-      <Filter>external</Filter>
+    <ClInclude Include="domain\classes\Contact.h">
+      <Filter>domain\classes</Filter>
     </ClInclude>
-    <ClInclude Include="external\sqlite3ext.h">
-      <Filter>external</Filter>
+    <ClInclude Include="dataaccess\databases\ContactDatabase.h">
+      <Filter>dataaccess\databases</Filter>
+    </ClInclude>
+    <ClInclude Include="application\services\ContactService.h">
+      <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Polyline.h">
+      <Filter>domain\classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

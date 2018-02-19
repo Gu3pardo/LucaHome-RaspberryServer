@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/PuckJs.h";
+#include "../../domain/classes/PuckJs.h"
 
 using namespace std;
 

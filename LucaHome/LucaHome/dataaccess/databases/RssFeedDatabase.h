@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/RssFeed.h";
+#include "../../domain/classes/RssFeed.h"
 
 using namespace std;
 

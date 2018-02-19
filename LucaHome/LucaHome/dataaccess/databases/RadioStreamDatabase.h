@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/RadioStream.h";
+#include "../../domain/classes/RadioStream.h"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/YoutubeVideo.h";
+#include "../../domain/classes/YoutubeVideo.h"
 
 using namespace std;
 

@@ -526,7 +526,7 @@ void *scheduler(void *arg) {
 void *birthdayControl(void *arg) {
 	syslog(LOG_INFO, "BirthdayControl started!");
 	while (1) {
-		_contactService.CheckContactBirthdayList(_mailController);
+		_contactService.CheckContactBirthdayList();
 		sleep(BIRTHDAY_CHECK_TIMEOUT);
 	}
 	syslog(LOG_INFO, "Exiting *birthdayControl");
@@ -591,7 +591,7 @@ int main(void) {
 	_applicationInformationService.Initialize("ApplicationInformation.db");
 	_changeService.Initialize("Change.db");
 	_coinService.Initialize("Coin.db");
-	_contactService.Initialize("Contact.db");
+	_contactService.Initialize("Contact.db", _mailController);
 	_mapContentService.Initialize("MapContent.db");
 	_mealService.Initialize("Meal.db");
 	_mediaServerService.Initialize("MediaServer.db");

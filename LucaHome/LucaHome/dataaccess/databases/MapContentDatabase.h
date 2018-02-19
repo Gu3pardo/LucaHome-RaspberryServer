@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/MapContent.h";
+#include "../../domain/classes/MapContent.h"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/Gpio.h";
+#include "../../domain/classes/Gpio.h"
 
 using namespace std;
 

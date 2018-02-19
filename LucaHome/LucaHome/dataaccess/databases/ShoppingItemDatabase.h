@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/ShoppingItem.h";
+#include "../../domain/classes/ShoppingItem.h"
 
 using namespace std;
 

@@ -179,12 +179,12 @@ string ContactService::writeMailToContact(vector<string> data)
 {
 	string uuid = data[CONTACT_UUID_INDEX].c_str();
 	Contact contact = _contactDatabase.GetByUuid(uuid);
-	if (contact.GetEMail().length <= 0) {
+	if (contact.GetEMail().length() <= 0) {
 		return "Contact has no email!";
 	}
 
 	string message = data[CONTACT_MAIL_MESSAGE_INDEX].c_str();
-	if (message.length <= 0) {
+	if (message.length() <= 0) {
 		return "Message is empty!";
 	}
 

@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/MediaServer.h";
+#include "../../domain/classes/MediaServer.h"
 
 using namespace std;
 

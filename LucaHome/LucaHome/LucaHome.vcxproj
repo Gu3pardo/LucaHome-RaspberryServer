@@ -52,7 +52,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application\services\ApplicationInformationService.cpp" />
-    <ClCompile Include="application\services\BirthdayService.cpp" />
+    <ClCompile Include="application\services\ContactService.cpp" />
     <ClCompile Include="application\services\ChangeService.cpp" />
     <ClCompile Include="application\services\MapContentService.cpp" />
     <ClCompile Include="application\services\MealService.cpp" />
@@ -78,7 +78,6 @@
     <ClCompile Include="application\services\YoutubeVideoService.cpp" />
     <ClCompile Include="crosscutting\crypto\Decrypter.cpp" />
     <ClCompile Include="crosscutting\crypto\Encrypter.cpp" />
-    <ClCompile Include="crosscutting\rcswitch\RCSwitch.cpp" />
     <ClCompile Include="crosscutting\utils\PiControl.cpp" />
     <ClCompile Include="crosscutting\utils\Tools.cpp" />
     <ClCompile Include="dataaccess\controller\FileController.cpp" />
@@ -86,7 +85,7 @@
     <ClCompile Include="dataaccess\controller\PathController.cpp" />
     <ClCompile Include="dataaccess\controller\SystemController.cpp" />
     <ClCompile Include="dataaccess\databases\ApplicationInformationDatabase.cpp" />
-    <ClCompile Include="dataaccess\databases\BirthdayDatabase.cpp" />
+    <ClCompile Include="dataaccess\databases\ContactDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\ChangeDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\CoinDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\GpioDatabase.cpp" />
@@ -109,7 +108,7 @@
     <ClCompile Include="dataaccess\databases\WirelessTimerDatabase.cpp" />
     <ClCompile Include="dataaccess\databases\YoutubeVideoDatabase.cpp" />
     <ClCompile Include="domain\classes\ApplicationInformation.cpp" />
-    <ClCompile Include="domain\classes\Birthday.cpp" />
+    <ClCompile Include="domain\classes\Contact.cpp" />
     <ClCompile Include="domain\classes\Change.cpp" />
     <ClCompile Include="domain\classes\Coin.cpp" />
     <ClCompile Include="domain\classes\Gpio.cpp" />
@@ -119,6 +118,7 @@
     <ClCompile Include="domain\classes\MeterLogItem.cpp" />
     <ClCompile Include="domain\classes\MoneyLogItem.cpp" />
     <ClCompile Include="domain\classes\Movie.cpp" />
+    <ClCompile Include="domain\classes\Polyline.cpp" />
     <ClCompile Include="domain\classes\Position.cpp" />
     <ClCompile Include="domain\classes\PuckJs.cpp" />
     <ClCompile Include="domain\classes\RadioStream.cpp" />
@@ -135,14 +135,12 @@
     <ClCompile Include="domain\classes\WirelessTask.cpp" />
     <ClCompile Include="domain\classes\WirelessTimer.cpp" />
     <ClCompile Include="domain\classes\YoutubeVideo.cpp" />
-    <ClCompile Include="external\shell.c" />
-    <ClCompile Include="external\sqlite3.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\services.h" />
     <ClInclude Include="application\services\ApplicationInformationService.h" />
-    <ClInclude Include="application\services\BirthdayService.h" />
+    <ClInclude Include="application\services\ContactService.h" />
     <ClInclude Include="application\services\ChangeService.h" />
     <ClInclude Include="application\services\MapContentService.h" />
     <ClInclude Include="application\services\MealService.h" />
@@ -170,7 +168,6 @@
     <ClInclude Include="crosscutting\crypto.h" />
     <ClInclude Include="crosscutting\crypto\Decrypter.h" />
     <ClInclude Include="crosscutting\crypto\Encrypter.h" />
-    <ClInclude Include="crosscutting\rcswitch\RCSwitch.h" />
     <ClInclude Include="crosscutting\utils.h" />
     <ClInclude Include="crosscutting\utils\PiControl.h" />
     <ClInclude Include="crosscutting\utils\Tools.h" />
@@ -181,7 +178,7 @@
     <ClInclude Include="dataaccess\controller\SystemController.h" />
     <ClInclude Include="dataaccess\databases.h" />
     <ClInclude Include="dataaccess\databases\ApplicationInformationDatabase.h" />
-    <ClInclude Include="dataaccess\databases\BirthdayDatabase.h" />
+    <ClInclude Include="dataaccess\databases\ContactDatabase.h" />
     <ClInclude Include="dataaccess\databases\ChangeDatabase.h" />
     <ClInclude Include="dataaccess\databases\CoinDatabase.h" />
     <ClInclude Include="dataaccess\databases\GpioDatabase.h" />
@@ -206,7 +203,7 @@
     <ClInclude Include="dataaccess\databases\YoutubeVideoDatabase.h" />
     <ClInclude Include="domain\classes.h" />
     <ClInclude Include="domain\classes\ApplicationInformation.h" />
-    <ClInclude Include="domain\classes\Birthday.h" />
+    <ClInclude Include="domain\classes\Contact.h" />
     <ClInclude Include="domain\classes\Change.h" />
     <ClInclude Include="domain\classes\Coin.h" />
     <ClInclude Include="domain\classes\Gpio.h" />
@@ -216,6 +213,7 @@
     <ClInclude Include="domain\classes\MeterLogItem.h" />
     <ClInclude Include="domain\classes\MoneyLogItem.h" />
     <ClInclude Include="domain\classes\Movie.h" />
+    <ClInclude Include="domain\classes\Polyline.h" />
     <ClInclude Include="domain\classes\Position.h" />
     <ClInclude Include="domain\classes\PuckJs.h" />
     <ClInclude Include="domain\classes\RadioStream.h" />
@@ -232,8 +230,6 @@
     <ClInclude Include="domain\classes\WirelessTask.h" />
     <ClInclude Include="domain\classes\WirelessTimer.h" />
     <ClInclude Include="domain\classes\YoutubeVideo.h" />
-    <ClInclude Include="external\sqlite3.h" />
-    <ClInclude Include="external\sqlite3ext.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

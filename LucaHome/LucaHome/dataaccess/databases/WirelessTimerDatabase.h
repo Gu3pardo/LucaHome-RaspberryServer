@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/WirelessTimer.h";
+#include "../../domain/classes/WirelessTimer.h"
 
 using namespace std;
 

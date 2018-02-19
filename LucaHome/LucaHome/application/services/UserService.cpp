@@ -151,7 +151,7 @@ char UserService::addUser(vector<string> newUserData)
 {
 	User newUser(
 		newUserData[COIN_UUID_INDEX].c_str(),
-		newUserData[USER_NAME_INDEX].c_str(),
+		newUserData[USER_DATA_NAME_INDEX].c_str(),
 		newUserData[USER_PASSPHRASE_INDEX].c_str(),
 		Tools::ConvertStrToDouble(newUserData[USER_ROLE_INDEX].c_str()),
 		Tools::ConvertStrToBool(newUserData[USER_IS_ADMIN_INDEX].c_str()),
@@ -163,7 +163,7 @@ char UserService::updateUser(vector<string> updateUserData)
 {
 	User updateUser(
 		updateUserData[COIN_UUID_INDEX].c_str(),
-		updateUserData[USER_NAME_INDEX].c_str(),
+		updateUserData[USER_DATA_NAME_INDEX].c_str(),
 		updateUserData[USER_PASSPHRASE_INDEX].c_str(),
 		Tools::ConvertStrToDouble(updateUserData[USER_ROLE_INDEX].c_str()),
 		Tools::ConvertStrToBool(updateUserData[USER_IS_ADMIN_INDEX].c_str()),

@@ -81,8 +81,8 @@ char MapContentDatabase::Insert(int rowId, MapContent entry)
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTypeUuid() + "',"
 		+ "'" + entry.GetType() + "',"
-		+ Tools::ConvertIntToStr(entry.GetPosition().GetX) + ","
-		+ Tools::ConvertIntToStr(entry.GetPosition().GetY) + ","
+		+ Tools::ConvertIntToStr(entry.GetPosition().GetX()) + ","
+		+ Tools::ConvertIntToStr(entry.GetPosition().GetY()) + ","
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetShortName() + "',"
 		+ Tools::ConvertBoolToStr(entry.GetVisibility())

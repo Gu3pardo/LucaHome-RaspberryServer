@@ -1,5 +1,5 @@
 #include "ITemplateDatabase.h"
-#include "../../domain/classes/Change.h";
+#include "../../domain/classes/Change.h"
 
 using namespace std;
 
