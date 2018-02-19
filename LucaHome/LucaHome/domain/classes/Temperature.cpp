@@ -2,17 +2,7 @@
 
 Temperature::Temperature()
 {
-	_uuid = "";
-	_roomUuid = "";
-	_temperature = 0.0;
-	_day = 1;
-	_month = 1;
-	_year = 1970;
-	_hour = 0;
-	_minute = 0;
-	_temperatureType = 0;
-	_sensorPath = "";
-	_graphPath = "";
+	Temperature("", "", 0.0, 1, 1, 1970, 0, 0, 0, "", "");
 }
 
 Temperature::Temperature(

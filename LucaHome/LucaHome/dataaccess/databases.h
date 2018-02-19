@@ -1,7 +1,7 @@
 #include "databases/ApplicationInformationDatabase.h"
-#include "databases/BirthdayDatabase.h"
 #include "databases/ChangeDatabase.h"
 #include "databases/CoinDatabase.h"
+#include "databases/ContactDatabase.h"
 #include "databases/GpioDatabase.h"
 #include "databases/MapContentDatabase.h"
 #include "databases/MealDatabase.h"

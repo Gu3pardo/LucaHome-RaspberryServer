@@ -2,12 +2,7 @@
 
 YoutubeVideo::YoutubeVideo()
 {
-	_uuid = "";
-	_title = "";
-	_youtubeId = "";
-	_playCount = 0;
-	_description = "";
-	_mediumImageUrl = "";
+	YoutubeVideo("", "", "", 0, "", "");
 }
 
 YoutubeVideo::YoutubeVideo(string uuid, string title, string youtubeId, int playCount, string description, string mediumImageUrl)

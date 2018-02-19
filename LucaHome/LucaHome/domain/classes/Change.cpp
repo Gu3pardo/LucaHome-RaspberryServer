@@ -2,14 +2,7 @@
 
 Change::Change()
 {
-	_uuid = "";
-	_type = "";
-	_userName = "";
-	_hour = 0;
-	_minute = 0;
-	_day = 1;
-	_month = 1;
-	_year = 1970;
+	Change("", "", "", 0, 0, 1, 1, 1970);
 }
 
 Change::Change(string uuid, string type, string userName, int hour, int minute, int day, int month, int year)

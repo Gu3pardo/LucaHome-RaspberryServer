@@ -2,11 +2,7 @@
 
 SuggestedShoppingItem::SuggestedShoppingItem()
 {
-	_uuid = "";
-	_name = "";
-	_type = "";
-	_quantity = 0;
-	_unit = "";
+	SuggestedShoppingItem("", "", "", 0, "");
 }
 
 SuggestedShoppingItem::SuggestedShoppingItem(string uuid, string name, string type, int quantity, string unit)

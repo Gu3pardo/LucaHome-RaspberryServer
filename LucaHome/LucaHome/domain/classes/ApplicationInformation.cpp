@@ -2,6 +2,7 @@
 
 ApplicationInformation::ApplicationInformation()
 {
+	ApplicationInformation("", "");
 }
 
 ApplicationInformation::ApplicationInformation(string key, string value)

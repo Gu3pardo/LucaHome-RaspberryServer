@@ -13,7 +13,7 @@ protected:
 	string _tableName = "DatabaseCoinListTable";
 	string _keyRowId = "_rowId";
 	string _keyUuid = "_uuid";
-	string _keyUser = "_user";
+	string _keyUserUuid = "_userUuid";
 	string _keyType = "_type";
 	string _keyAmount = "_amount";
 

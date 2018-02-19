@@ -44,9 +44,9 @@ MailController _mailController = MailController();
 PathController _pathController = PathController();
 
 ApplicationInformationService _applicationInformationService = ApplicationInformationService();
-BirthdayService _birthdayService = BirthdayService();
 ChangeService _changeService = ChangeService();
 CoinService _coinService = CoinService();
+ContactService _contactService = ContactService();
 MapContentService _mapContentService = MapContentService();
 MealService _mealService = MealService();
 MediaServerService _mediaServerService = MediaServerService();
@@ -131,11 +131,6 @@ string executeCommand(string encryptedCmd, int source)
 		_changeService.UpdateChange("ApplicationInformation", username);
 		commandAnswer = _applicationInformationService.PerformAction(data);
 	}
-	//--------------------Birthday--------------------
-	else if (category == BIRTHDAY) {
-		_changeService.UpdateChange("Birthday", username);
-		commandAnswer = _birthdayService.PerformAction(data);
-	}
 	//---------------------Changes--------------------
 	else if (category == CHANGE) {
 		commandAnswer = _changeService.PerformAction(data);
@@ -144,6 +139,11 @@ string executeCommand(string encryptedCmd, int source)
 	else if (category == COIN) {
 		_changeService.UpdateChange("Coin", username);
 		commandAnswer = _coinService.PerformAction(data);
+	}
+	//--------------------Contact--------------------
+	else if (category == CONTACT) {
+		_changeService.UpdateChange("Contact", username);
+		commandAnswer = _contactService.PerformAction(data);
 	}
 	//-------------------MapContent-------------------
 	else if (category == MAPCONTENT) {
@@ -526,7 +526,7 @@ void *scheduler(void *arg) {
 void *birthdayControl(void *arg) {
 	syslog(LOG_INFO, "BirthdayControl started!");
 	while (1) {
-		_birthdayService.CheckBirthdayList(_mailController);
+		_contactService.CheckContactBirthdayList(_mailController);
 		sleep(BIRTHDAY_CHECK_TIMEOUT);
 	}
 	syslog(LOG_INFO, "Exiting *birthdayControl");
@@ -589,9 +589,9 @@ int main(void) {
 	_mailController.SendMail(startMessage.str());
 
 	_applicationInformationService.Initialize("ApplicationInformation.db");
-	_birthdayService.Initialize("Birthday.db");
 	_changeService.Initialize("Change.db");
 	_coinService.Initialize("Coin.db");
+	_contactService.Initialize("Contact.db");
 	_mapContentService.Initialize("MapContent.db");
 	_mealService.Initialize("Meal.db");
 	_mediaServerService.Initialize("MediaServer.db");
@@ -639,9 +639,9 @@ int main(void) {
 	_mailController.SendMail(stopMessage.str());
 
 	_applicationInformationService.Dispose();
-	_birthdayService.Dispose();
 	_changeService.Dispose();
 	_coinService.Dispose();
+	_contactService.Dispose();
 	_mapContentService.Dispose();
 	_mealService.Dispose();
 	_mediaServerService.Dispose();

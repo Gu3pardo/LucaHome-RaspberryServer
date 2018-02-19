@@ -2,11 +2,7 @@
 
 MediaServer::MediaServer()
 {
-	_uuid = "";
-	_roomUuid = "";
-	_ip = "";
-	_isSleepingServer = false;
-	_wirelessSocketUuid = "";
+	MediaServer("", "", "", false, "");
 }
 
 MediaServer::MediaServer(string uuid, string roomUuid, string ip, bool isSleepingServer, string wirelessSocketUuid)

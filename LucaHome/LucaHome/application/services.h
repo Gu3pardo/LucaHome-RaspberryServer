@@ -1,7 +1,7 @@
 #include "services/ApplicationInformationService.h";
-#include "services/BirthdayService.h";
 #include "services/ChangeService.h";
 #include "services/CoinService.h";
+#include "services/ContactService.h";
 #include "services/MapContentService.h";
 #include "services/MealService.h";
 #include "services/MediaServerService.h";

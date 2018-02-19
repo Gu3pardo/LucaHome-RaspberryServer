@@ -21,7 +21,7 @@ private:
 	int _day;
 	int _month;
 	int _year;
-	string _user;
+	string _userUuid;
 
 public:
 	MoneyLogItem();
@@ -55,8 +55,8 @@ public:
 	void SetYear(int);
 	int GetYear();
 
-	void SetUser(string);
-	string GetUser();
+	void SetUserUuid(string);
+	string GetUserUuid();
 
 	string JsonString();
 	string ToString();

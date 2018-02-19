@@ -100,6 +100,8 @@ char RoomService::addRoom(vector<string> newRoomData)
 		newRoomData[ROOM_UUID_INDEX].c_str(),
 		newRoomData[ROOM_NAME_INDEX].c_str(),
 		atoi(newRoomData[ROOM_TYPE_INDEX].c_str()));
+	string polylineString = newRoomData[ROOM_POLYLINE_INDEX].c_str();
+	newRoom.ParsePolylineDbString(polylineString);
 	return _roomDatabase.Insert(_roomDatabase.GetList().size(), newRoom);
 }
 
@@ -109,6 +111,8 @@ char RoomService::updateRoom(vector<string> updateRoomData)
 		updateRoomData[ROOM_UUID_INDEX].c_str(),
 		updateRoomData[ROOM_NAME_INDEX].c_str(),
 		atoi(updateRoomData[ROOM_TYPE_INDEX].c_str()));
+	string polylineString = updateRoomData[ROOM_POLYLINE_INDEX].c_str();
+	updateRoom.ParsePolylineDbString(polylineString);
 	return _roomDatabase.Update(updateRoom);
 }
 

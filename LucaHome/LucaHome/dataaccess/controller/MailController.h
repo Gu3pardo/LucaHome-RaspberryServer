@@ -37,6 +37,7 @@ public:
 
 	void SendMail(string);
 	void SendMailWithImage(string);
+	void SendMailWithCustomAddress(string, string);
 };
 
 #endif

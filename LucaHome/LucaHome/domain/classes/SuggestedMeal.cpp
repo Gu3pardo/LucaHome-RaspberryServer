@@ -2,12 +2,7 @@
 
 SuggestedMeal::SuggestedMeal()
 {
-	_uuid = "";
-	_title = "";
-	_description = "";
-	_rating = 0;
-	_useCounter = 0;
-	_shoppingItemUuidList = vector<string>();
+	SuggestedMeal("", "", "", 0, 0, vector<string>());
 }
 
 SuggestedMeal::SuggestedMeal(string uuid, string title, string description, int rating, int useCounter, vector<string> shoppingItemUuidList)

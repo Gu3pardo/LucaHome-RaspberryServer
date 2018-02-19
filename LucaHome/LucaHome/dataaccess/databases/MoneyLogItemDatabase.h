@@ -21,7 +21,7 @@ protected:
 	string _keyDay = "_day";
 	string _keyMonth = "_month";
 	string _keyYear = "_year";
-	string _keyUser = "_user";
+	string _keyUserUuid = "_userUuid";
 
 	sqlite3 *database;
 
@@ -37,6 +37,7 @@ public:
 	virtual char Dispose();
 
 	virtual vector<MoneyLogItem> GetList();
+	virtual vector<MoneyLogItem> GetUserList(string);
 
 	virtual char Insert(int, MoneyLogItem);
 	virtual char Update(MoneyLogItem);

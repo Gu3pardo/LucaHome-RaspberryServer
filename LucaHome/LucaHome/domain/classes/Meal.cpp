@@ -2,14 +2,7 @@
 
 Meal::Meal()
 {
-	_uuid = "";
-	_title = "";
-	_description = "";
-	_weekday = 1;
-	_day = 1;
-	_month = 1;
-	_year = 1970;
-	_shoppingItemUuidList = vector<string>();
+	Meal("", "", "", 1, 1, 1, 1970, vector<string>());
 }
 
 Meal::Meal(string uuid, string title, string description, int weekday, int day, int month, int year, vector<string> shoppingItemUuidList)

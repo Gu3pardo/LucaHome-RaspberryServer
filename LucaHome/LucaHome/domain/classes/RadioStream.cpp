@@ -2,10 +2,7 @@
 
 RadioStream::RadioStream()
 {
-	_uuid = "";
-	_title = "";
-	_url = "";
-	_playCount = 0;
+	RadioStream("", "", "", 0);
 }
 
 RadioStream::RadioStream(string uuid, string title, string url, int playCount)

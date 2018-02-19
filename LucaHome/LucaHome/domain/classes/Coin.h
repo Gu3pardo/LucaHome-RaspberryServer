@@ -13,7 +13,7 @@ class Coin
 {
 private:
 	string _uuid;
-	string _user;
+	string _userUuid;
 	string _type;
 	double _amount;
 
@@ -25,8 +25,8 @@ public:
 	void SetUuid(string);
 	string GetUuid();
 
-	void SetUser(string);
-	string GetUser();
+	void SetUserUuid(string);
+	string GetUserUuid();
 
 	void SetType(string);
 	string GetType();

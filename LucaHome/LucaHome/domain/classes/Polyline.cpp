@@ -1,35 +1,35 @@
-#include "Position.h"
+#include "Polyline.h"
 
-Position::Position()
+Polyline::Polyline()
 {
-	Position(0, 0);
+	Polyline(0, 0);
 }
 
-Position::Position(int x, int y)
+Polyline::Polyline(int x, int y)
 {
 	_x = x;
 	_y = y;
 }
 
-Position::~Position()
+Polyline::~Polyline()
 {
 }
 
-int Position::GetX()
+int Polyline::GetX()
 {
 	return _x;
 }
 
-int Position::GetY()
+int Polyline::GetY()
 {
 	return _y;
 }
 
-string Position::JsonString()
+string Polyline::JsonString()
 {
 	string str =
 		string("{")
-		+ string("\"Position\":")
+		+ string("\"Polyline\":")
 		+ string("{")
 		+ string("\"X\":") + Tools::ConvertIntToStr(_x) + string(",")
 		+ string("\"Y\":") + Tools::ConvertIntToStr(_y)
@@ -38,10 +38,10 @@ string Position::JsonString()
 	return str;
 }
 
-string Position::ToString()
+string Polyline::ToString()
 {
 	string str =
-		string("Position { ")
+		string("Polyline { ")
 		+ string("; X: ") + Tools::ConvertIntToStr(_x)
 		+ string("; Y: ") + Tools::ConvertIntToStr(_y)
 		+ string(" }");

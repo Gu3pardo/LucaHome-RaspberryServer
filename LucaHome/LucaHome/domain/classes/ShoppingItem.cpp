@@ -2,11 +2,7 @@
 
 ShoppingItem::ShoppingItem()
 {
-	_uuid = "";
-	_name = "";
-	_type = "";
-	_quantity = 0;
-	_unit = "";
+	ShoppingItem("", "", "", 0, "");
 }
 
 ShoppingItem::ShoppingItem(string uuid, string name, string type, int quantity, string unit)

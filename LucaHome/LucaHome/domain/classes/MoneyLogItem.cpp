@@ -2,16 +2,7 @@
 
 MoneyLogItem::MoneyLogItem()
 {
-	_uuid = "";
-	_typeUuid = "";
-	_bank = "";
-	_plan = "";
-	_amount = 0.0;
-	_unit = "";
-	_day = 1;
-	_month = 1;
-	_year = 1970;
-	_user = "";
+	MoneyLogItem("", "", "", "", 0.0, "", 1, 1, 1970, "");
 }
 
 MoneyLogItem::MoneyLogItem(
@@ -22,7 +13,7 @@ MoneyLogItem::MoneyLogItem(
 	double amount,
 	string unit,
 	int day, int month, int year,
-	string user)
+	string userUuid)
 {
 	_uuid = uuid;
 	_typeUuid = typeUuid;
@@ -33,7 +24,7 @@ MoneyLogItem::MoneyLogItem(
 	_day = day;
 	_month = month;
 	_year = year;
-	_user = user;
+	_userUuid = userUuid;
 }
 
 MoneyLogItem::~MoneyLogItem()
@@ -130,14 +121,14 @@ int MoneyLogItem::GetYear()
 	return _year;
 }
 
-void MoneyLogItem::SetUser(string user)
+void MoneyLogItem::SetUserUuid(string userUuid)
 {
-	_user = user;
+	_userUuid = userUuid;
 }
 
-string MoneyLogItem::GetUser()
+string MoneyLogItem::GetUserUuid()
 {
-	return _user;
+	return _userUuid;
 }
 
 string MoneyLogItem::JsonString()
@@ -159,7 +150,7 @@ string MoneyLogItem::JsonString()
 		+ string("\"Year\":") + Tools::ConvertIntToStr(_year)
 		+ string("}")
 		+ string(",")
-		+ string("\"User\":\"") + _user + string("\"")
+		+ string("\"UserUuid\":\"") + _userUuid + string("\"")
 		+ string("}")
 		+ string("}");
 	return str;
@@ -177,7 +168,7 @@ string MoneyLogItem::ToString()
 		+ string("; day: ") + Tools::ConvertIntToStr(_day)
 		+ string("; month: ") + Tools::ConvertIntToStr(_month)
 		+ string("; year: ") + Tools::ConvertIntToStr(_year)
-		+ string("; user: ") + _user
+		+ string("; useruuid: ") + _userUuid
 		+ string(" }");
 	return str;
 }

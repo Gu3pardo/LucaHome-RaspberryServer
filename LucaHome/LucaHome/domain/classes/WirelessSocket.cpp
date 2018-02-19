@@ -2,11 +2,7 @@
 
 WirelessSocket::WirelessSocket()
 {
-	_uuid = "";
-	_roomUuid = "";
-	_name = "";
-	_code = "";
-	_state = false;
+	WirelessSocket("", "", "", "", false);
 }
 
 WirelessSocket::WirelessSocket(string uuid, string roomUuid, string name, string code, bool state)

@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include "../../crosscutting/utils/Tools.h"
+#include "Polyline.h"
 
 using namespace std;
 
@@ -15,10 +16,14 @@ private:
 	string _uuid;
 	string _name;
 	int _type;
+	vector<Polyline> _polylineList;
+
+	string polylineJsonString();
 
 public:
 	Room();
 	Room(string, string, int);
+	Room(string, string, int, vector<Polyline>);
 	~Room();
 
 	void SetUuid(string);
@@ -29,6 +34,11 @@ public:
 
 	void SetType(int);
 	int GetType();
+
+	void SetPolylineList(vector<Polyline>);
+	vector<Polyline> GetPolylineList();
+	string GetPolylineDbString();
+	void ParsePolylineDbString(string);
 
 	string JsonString();
 	string ToString();

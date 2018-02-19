@@ -2,15 +2,7 @@
 
 WirelessSchedule::WirelessSchedule()
 {
-	_uuid = "";
-	_name = "";
-	_weekday = 0;
-	_hour = 0;
-	_minute = 0;
-	_isActive = false;
-	_wirelessSocketUuid = "";
-	_wirelessSocketAction = false;
-	_wirelessSwitchUuid = "";
+	WirelessSchedule("", "", 0, 0, 0, false, "", false, "");
 }
 
 WirelessSchedule::WirelessSchedule(

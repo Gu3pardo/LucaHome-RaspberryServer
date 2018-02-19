@@ -5,7 +5,7 @@
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
 [![Build](https://img.shields.io/badge/build-WIP-red.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
-[![Version](https://img.shields.io/badge/version-v6.0.0.180217alpha-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Version](https://img.shields.io/badge/version-v6.0.0.180219alpha-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
 
 Part of the LucaHome-Project
 
@@ -82,10 +82,6 @@ https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
 
 for the CAMERA module (working with motion!)
 https://www.pcwelt.de/ratgeber/Mit_dem_Raspberry_Pi_die_Wohnung_ueberwachen-Sicherheit-8638548.html
-
----
-
-![alt tag](https://github.com/GuepardoApps/LucaHome-RaspberryServer/blob/master/screenshots/img001.png)
 
 ---
 

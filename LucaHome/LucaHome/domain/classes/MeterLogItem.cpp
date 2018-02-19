@@ -2,18 +2,7 @@
 
 MeterLogItem::MeterLogItem()
 {
-	_uuid = "";
-	_roomUuid = "";
-	_typeUuid = "";
-	_type = "";
-	_day = 1;
-	_month = 1;
-	_year = 1970;
-	_hour = 0;
-	_minute = 0;
-	_meterId = "";
-	_value = 0;
-	_imageName = "";
+	MeterLogItem("", "", "", "", 1, 1, 1970, 0, 0, "", 0, "");
 }
 
 MeterLogItem::MeterLogItem(

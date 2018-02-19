@@ -2,10 +2,7 @@
 
 PuckJs::PuckJs()
 {
-	_uuid = "";
-	_roomUuid = "";
-	_name = "";
-	_mac = "";
+	PuckJs("", "", "", "");
 }
 
 PuckJs::PuckJs(string uuid, string roomUuid, string name, string mac)

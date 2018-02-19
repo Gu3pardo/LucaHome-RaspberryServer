@@ -2,12 +2,7 @@
 
 Movie::Movie()
 {
-	_uuid = "";
-	_title = "";
-	_genre = "";
-	_description = "";
-	_rating = 0;
-	_watched = 0;
+	Movie("", "", "", "", 0, 0);
 }
 
 Movie::Movie(string uuid, string title, string genre, string description, int rating, int watched)

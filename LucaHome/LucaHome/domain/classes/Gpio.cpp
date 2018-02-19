@@ -2,10 +2,7 @@
 
 Gpio::Gpio()
 {
-	_uuid = "";
-	_name = "";
-	_pin = 0;
-	_state = false;
+	Gpio("", "", 0, false);
 }
 
 Gpio::Gpio(string uuid, string name, int pin, bool state)

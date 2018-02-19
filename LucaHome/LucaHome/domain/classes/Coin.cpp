@@ -2,16 +2,13 @@
 
 Coin::Coin()
 {
-	_uuid = "";
-	_user = "";
-	_type = "";
-	_amount = 0;
+	Coin("", "", "", 0);
 }
 
-Coin::Coin(string uuid, string user, string type, double amount)
+Coin::Coin(string uuid, string userUuid, string type, double amount)
 {
 	_uuid = uuid;
-	_user = user;
+	_userUuid = userUuid;
 	_type = type;
 	_amount = amount;
 }
@@ -30,14 +27,14 @@ string Coin::GetUuid()
 	return _uuid;
 }
 
-void Coin::SetUser(string user)
+void Coin::SetUserUuid(string userUuid)
 {
-	_user = user;
+	_userUuid = userUuid;
 }
 
-string Coin::GetUser()
+string Coin::GetUserUuid()
 {
-	return _user;
+	return _userUuid;
 }
 
 void Coin::SetType(string type)
@@ -67,7 +64,7 @@ string Coin::JsonString()
 		+ string("\"Coin\":")
 		+ string("{")
 		+ string("\"Uuid\":\"") + _uuid + string("\",")
-		+ string("\"User\":\"") + _user + string("\",")
+		+ string("\"UserUuid\":\"") + _userUuid + string("\",")
 		+ string("\"Type\":\"") + _type + string("\",")
 		+ string("\"Amount\":") + Tools::ConvertDoubleToStr(_amount)
 		+ string("}")
@@ -79,7 +76,7 @@ string Coin::ToString()
 {
 	string str =
 		string("Coin { uuid: ") + _uuid
-		+ string("; user: ") + _user
+		+ string("; useruuid: ") + _userUuid
 		+ string("; type: ") + _type
 		+ string("; amount: ") + Tools::ConvertDoubleToStr(_amount)
 		+ string(" }");

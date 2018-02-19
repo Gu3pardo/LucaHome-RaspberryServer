@@ -2,12 +2,7 @@
 
 User::User()
 {
-	_uuid = "";
-	_name = "";
-	_passphrase = "";
-	_role = 0;
-	_isAdmin = false;
-	_invalidLoginCount = 0;
+	User("", "", "", 0, false, 0);
 }
 
 User::User(string uuid, string name, string passphrase, int role, bool isAdmin, int invalidLoginCount)

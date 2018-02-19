@@ -1,13 +1,7 @@
 #include "MapContent.h"
 
 MapContent::MapContent() {
-	_uuid = "";
-	_typeUuid = "";
-	_type = "";
-	_position = Position();
-	_name = "";
-	_shortName = "";
-	_visibility = true;
+	MapContent("", "", "", Position(), "", "", true);
 }
 
 MapContent::MapContent(

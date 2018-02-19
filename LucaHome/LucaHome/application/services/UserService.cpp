@@ -196,12 +196,10 @@ int UserService::getActionId(string action) {
 }
 
 bool UserService::isAdminAction(string action) {
-	if (action == AVAILABILITY || action == CHECK || action == COUNT
-		|| action == GET || action == VALIDATE || action == ACTIVATE
-		|| action == PLAY || action == SET || action == START || action == TOGGLE
-		|| action == STOP || action == ADD || action == UPDATE
-		|| action == CLEAR || action == DEACTIVATE
-		|| action == DELETE) {
+	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE 
+		|| action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP  || action == TOGGLE 
+		|| action == ADD || action == UPDATE
+		|| action == CLEAR || action == DEACTIVATE || action == DELETE) {
 		return false;
 	}
 	else if (action == RESETFAILEDLOGIN) {

@@ -25,7 +25,7 @@ string CoinService::PerformAction(vector<string> data)
 		}
 		else if (actionParameter == FOR_USER)
 		{
-			return getUserJsonString(username);
+			return getUserJsonString(data[COIN_USER_UUID_INDEX].c_str());
 		}
 		return COMMAND_ERROR_NO_ACTION;
 	}
@@ -102,9 +102,9 @@ string CoinService::getAllJsonString()
 	return out.str();
 }
 
-string CoinService::getUserJsonString(string userName)
+string CoinService::getUserJsonString(string userUuid)
 {
-	vector<Coin> coinList = _coinDatabase.GetUserList(userName);
+	vector<Coin> coinList = _coinDatabase.GetUserList(userUuid);
 
 	stringstream data;
 	for (int index = 0; index < coinList.size(); index++)
@@ -121,7 +121,7 @@ char CoinService::addCoin(vector<string> newCoinData)
 {
 	Coin newCoin(
 		newCoinData[COIN_UUID_INDEX].c_str(),
-		newCoinData[COIN_USER_INDEX].c_str(),
+		newCoinData[COIN_USER_UUID_INDEX].c_str(),
 		newCoinData[COIN_TYPE_INDEX].c_str(),
 		Tools::ConvertStrToDouble(newCoinData[COIN_AMOUNT_INDEX].c_str()));
 	return _coinDatabase.Insert(_coinDatabase.GetList().size(), newCoin);
@@ -131,7 +131,7 @@ char CoinService::updateCoin(vector<string> updateCoinData)
 {
 	Coin updateCoin(
 		updateCoinData[COIN_UUID_INDEX].c_str(),
-		updateCoinData[COIN_USER_INDEX].c_str(),
+		updateCoinData[COIN_USER_UUID_INDEX].c_str(),
 		updateCoinData[COIN_TYPE_INDEX].c_str(),
 		Tools::ConvertStrToDouble(updateCoinData[COIN_AMOUNT_INDEX].c_str()));
 	return _coinDatabase.Update(updateCoin);

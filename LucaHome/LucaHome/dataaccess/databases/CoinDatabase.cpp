@@ -25,7 +25,7 @@ vector<Coin> CoinDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyUser + ";";
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyUserUuid + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -39,11 +39,11 @@ vector<Coin> CoinDatabase::GetList()
 
 	while (sqlite3_step(res) == SQLITE_ROW) {
 		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
-		string user = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		string userUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		double amount = sqlite3_column_double(res, 4);
 
-		Coin newEntry(uuid, user, type, amount);
+		Coin newEntry(uuid, userUuid, type, amount);
 		list.push_back(newEntry);
 	}
 
@@ -52,14 +52,14 @@ vector<Coin> CoinDatabase::GetList()
 	return list;
 }
 
-vector<Coin> CoinDatabase::GetUserList(string user)
+vector<Coin> CoinDatabase::GetUserList(string userUuid)
 {
 	vector<Coin> list;
 	if (!open()) {
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " WHERE " + _keyUser + "=" + user + " ORDER BY " + _keyType + ";";
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " WHERE " + _keyUserUuid + "=" + userUuid + " ORDER BY " + _keyType + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -76,7 +76,7 @@ vector<Coin> CoinDatabase::GetUserList(string user)
 		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		double amount = sqlite3_column_double(res, 4);
 
-		Coin newEntry(uuid, user, type, amount);
+		Coin newEntry(uuid, userUuid, type, amount);
 		list.push_back(newEntry);
 	}
 
@@ -96,13 +96,13 @@ char CoinDatabase::Insert(int rowId, Coin entry)
 		"INSERT INTO " + _tableName + " ("
 		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
-		+ _keyUser + " ,"
+		+ _keyUserUuid + " ,"
 		+ _keyType + " ,"
 		+ _keyAmount + " ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
-		+ "'" + entry.GetUser() + "',"
+		+ "'" + entry.GetUserUuid() + "',"
 		+ "'" + entry.GetType() + "',"
 		+ Tools::ConvertDoubleToStr(entry.GetAmount())
 		+ ");";
@@ -128,7 +128,7 @@ char CoinDatabase::Update(Coin entry)
 
 	string sqlUpdateCommand =
 		"UPDATE " + _tableName + " "
-		+ "SET " + _keyUser + " = '" + entry.GetUser() + "',"
+		+ "SET " + _keyUserUuid + " = '" + entry.GetUserUuid() + "',"
 		+ "SET " + _keyType + " = '" + entry.GetType() + "',"
 		+ "SET " + _keyAmount + " = " + Tools::ConvertDoubleToStr(entry.GetAmount()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
@@ -184,7 +184,7 @@ char CoinDatabase::create()
 		"CREATE TABLE " + _tableName + "("
 		+ _keyRowId + " KEY NOT NULL,"
 		+ _keyUuid + " TEXT NOT NULL,"
-		+ _keyUser + " TEXT NOT NULL,"
+		+ _keyUserUuid + " TEXT NOT NULL,"
 		+ _keyType + " INT NOT NULL,"
 		+ _keyAmount + " REAL NOT NULL);";
 

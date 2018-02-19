@@ -19,7 +19,15 @@ string MoneyLogService::PerformAction(vector<string> data)
 
 	if (action == GET)
 	{
-		return getJsonString();
+		if (actionParameter == ALL)
+		{
+			return getAllJsonString();
+		}
+		else if (actionParameter == FOR_USER)
+		{
+			return getUserJsonString(data[MONEY_LOG_ITEM_GET_USER_UUID_INDEX].c_str());
+		}
+		return COMMAND_ERROR_NO_ACTION;
 	}
 
 	else if (action == ADD)
@@ -79,9 +87,24 @@ void MoneyLogService::Dispose()
 
 /*==============PRIVATE==============*/
 
-string MoneyLogService::getJsonString()
+string MoneyLogService::getAllJsonString()
 {
 	vector<MoneyLogItem> moneyLogItemList = _moneyLogItemDatabase.GetList();
+
+	stringstream data;
+	for (int index = 0; index < moneyLogItemList.size(); index++)
+	{
+		data << moneyLogItemList[index].JsonString() << ",";
+	}
+
+	stringstream out;
+	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	return out.str();
+}
+
+string MoneyLogService::getUserJsonString(string userUuid)
+{
+	vector<MoneyLogItem> moneyLogItemList = _moneyLogItemDatabase.GetUserList(userUuid);
 
 	stringstream data;
 	for (int index = 0; index < moneyLogItemList.size(); index++)
@@ -106,7 +129,7 @@ char MoneyLogService::addMoneyLogItem(vector<string> newMoneyLogItemData)
 		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_DAY_INDEX].c_str()),
 		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_MONTH_INDEX].c_str()),
 		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_YEAR_INDEX].c_str()),
-		newMoneyLogItemData[MONEY_LOG_ITEM_USER_INDEX].c_str());
+		newMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str());
 	return _moneyLogItemDatabase.Insert(_moneyLogItemDatabase.GetList().size(), newMoneyLogItem);
 }
 
@@ -122,7 +145,7 @@ char MoneyLogService::updateMoneyLogItem(vector<string> updateMoneyLogItemData)
 		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_DAY_INDEX].c_str()),
 		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_MONTH_INDEX].c_str()),
 		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_YEAR_INDEX].c_str()),
-		updateMoneyLogItemData[MONEY_LOG_ITEM_USER_INDEX].c_str());
+		updateMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str());
 	return _moneyLogItemDatabase.Update(updateMoneyLogItem);
 }
 

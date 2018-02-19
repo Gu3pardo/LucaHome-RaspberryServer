@@ -2,10 +2,7 @@
 
 RssFeed::RssFeed()
 {
-	_uuid = "";
-	_title = "";
-	_url = "";
-	_playCount = 0;
+	RssFeed("", "", "", 0);
 }
 
 RssFeed::RssFeed(string uuid, string title, string url, int playCount)

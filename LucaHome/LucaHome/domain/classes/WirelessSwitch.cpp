@@ -2,9 +2,7 @@
 
 WirelessSwitch::WirelessSwitch() : WirelessSocket()
 {
-	_remoteId = 0;
-	_keycode = 0;
-	_action = false;
+	WirelessSwitch("", "", "", 0, 0, false);
 }
 
 WirelessSwitch::WirelessSwitch(string uuid, string roomUuid, string name, int remoteId, unsigned char keycode, bool action)

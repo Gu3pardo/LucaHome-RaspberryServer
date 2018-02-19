@@ -45,3 +45,23 @@ void MailController::SendMailWithImage(string imagePath)
 
 	system(buffer);
 }
+
+void MailController::SendMailWithCustomAddress(string mailAddress, string message)
+{
+	string command = CMD_SEND_CUSTOM_RECEIVER_MAIL;
+
+	if (command.length() + message.length() > MAIL_MAX_MESSAGE_LENGTH)
+	{
+		syslog(LOG_CRIT, "Error! Message too long! Message: %s; Length: %d", message.c_str(), message.length());
+		return;
+	}
+
+	char buffer[MAIL_MAX_MESSAGE_LENGTH];
+	int length;
+
+	length = sprintf(buffer, "%s %s %s", command.c_str(), mailAddress, message.c_str());
+
+	string str(buffer);
+
+	system(buffer);
+}

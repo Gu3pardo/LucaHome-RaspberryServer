@@ -24,7 +24,8 @@ class MoneyLogService
 private:
 	MoneyLogItemDatabase _moneyLogItemDatabase;
 
-	string getJsonString();
+	string getAllJsonString();
+	string getUserJsonString(string);
 
 	char addMoneyLogItem(vector<string>);
 	char updateMoneyLogItem(vector<string>);
