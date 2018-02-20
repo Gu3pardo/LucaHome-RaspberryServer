@@ -54,6 +54,7 @@
     <ClCompile Include="application\services\ApplicationInformationService.cpp" />
     <ClCompile Include="application\services\ContactService.cpp" />
     <ClCompile Include="application\services\ChangeService.cpp" />
+    <ClCompile Include="application\services\GpioService.cpp" />
     <ClCompile Include="application\services\MapContentService.cpp" />
     <ClCompile Include="application\services\MealService.cpp" />
     <ClCompile Include="application\services\MediaServerService.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="application\services\ApplicationInformationService.h" />
     <ClInclude Include="application\services\ContactService.h" />
     <ClInclude Include="application\services\ChangeService.h" />
+    <ClInclude Include="application\services\GpioService.h" />
     <ClInclude Include="application\services\MapContentService.h" />
     <ClInclude Include="application\services\MealService.h" />
     <ClInclude Include="application\services\MediaServerService.h" />
