@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+#include "../Constants.h"
+
 using namespace std;
 
 #ifndef DECRYPTER_H
@@ -18,7 +20,7 @@ using namespace std;
 class Decrypter
 {
 public:
-	static string Decrypt(char[], string);
+	static string Decrypt(int, char[], string);
 };
 
 #endif

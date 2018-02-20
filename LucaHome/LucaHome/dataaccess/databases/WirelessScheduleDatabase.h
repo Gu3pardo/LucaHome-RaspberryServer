@@ -18,6 +18,8 @@ protected:
 	string _keyHour = "_hour";
 	string _keyMinute = "_minute";
 	string _keyIsActive = "_isActive";
+	string _keyGpioUuid = "_gpioUuid";
+	string _keyGpioAction = "_gpioAction";
 	string _keyWirelessSocketUuid = "_wirelessSocketUuid";
 	string _keyWirelessSocketAction = "_wirelessSocketAction";
 	string _keyWirelessSwitchUuid = "_wirelessSwitchUuid";

@@ -19,13 +19,15 @@ protected:
 	int _hour;
 	int _minute;
 	bool _isActive;
+	string _gpioUuid;
+	bool _gpioAction;
 	string _wirelessSocketUuid;
 	bool _wirelessSocketAction;
 	string _wirelessSwitchUuid;
 
 public:
 	WirelessSchedule();
-	WirelessSchedule(string, string, int, int, int, bool, string, bool, string);
+	WirelessSchedule(string, string, int, int, int, bool, string, bool, string, bool, string);
 	~WirelessSchedule();
 
 	void SetUuid(string);
@@ -45,6 +47,12 @@ public:
 
 	void SetActive(bool);
 	bool IsActive();
+
+	void SetGpioUuid(string);
+	string GetGpioUuid();
+
+	void SetGpioAction(bool);
+	bool GetGpioAction();
 
 	void SetWirelessSocketUuid(string);
 	string GetWirelessSocketUuid();

@@ -31,9 +31,11 @@ public:
 	virtual char Dispose();
 
 	virtual vector<Gpio> GetList();
+	virtual Gpio GetByUuid(string);
 
 	virtual char Insert(int, Gpio);
 	virtual char Update(Gpio);
+	virtual char UpdateState(string, bool);
 	virtual char Delete(string);
 };
 

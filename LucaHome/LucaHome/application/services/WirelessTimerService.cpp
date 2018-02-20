@@ -106,6 +106,8 @@ char WirelessTimerService::addWirelessTimer(vector<string> newWirelessTimerData)
 		atoi(newWirelessTimerData[WIRELESS_TIMER_WEEKDAY_INDEX].c_str()),
 		atoi(newWirelessTimerData[WIRELESS_TIMER_HOUR_INDEX].c_str()),
 		atoi(newWirelessTimerData[WIRELESS_TIMER_MINUTE_INDEX].c_str()),
+		newWirelessTimerData[WIRELESS_TIMER_GPIO_UUID_INDEX].c_str(),
+		atoi(newWirelessTimerData[WIRELESS_TIMER_GPIO_ACTION_INDEX].c_str()) == 1,
 		newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SWITCH_UUID_INDEX].c_str());
@@ -120,6 +122,8 @@ char WirelessTimerService::updateWirelessTimer(vector<string> updateWirelessTime
 		atoi(updateWirelessTimerData[WIRELESS_TIMER_WEEKDAY_INDEX].c_str()),
 		atoi(updateWirelessTimerData[WIRELESS_TIMER_HOUR_INDEX].c_str()),
 		atoi(updateWirelessTimerData[WIRELESS_TIMER_MINUTE_INDEX].c_str()),
+		updateWirelessTimerData[WIRELESS_TIMER_GPIO_UUID_INDEX].c_str(),
+		atoi(updateWirelessTimerData[WIRELESS_TIMER_GPIO_ACTION_INDEX].c_str()) == 1,
 		updateWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(updateWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		updateWirelessTimerData[WIRELESS_TIMER_WIRELESS_SWITCH_UUID_INDEX].c_str());

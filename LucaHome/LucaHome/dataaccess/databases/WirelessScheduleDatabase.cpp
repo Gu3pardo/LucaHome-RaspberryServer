@@ -44,11 +44,13 @@ vector<WirelessSchedule> WirelessScheduleDatabase::GetList()
 		int hour = sqlite3_column_int(res, 4);
 		int minute = sqlite3_column_int(res, 5);
 		bool isActive = sqlite3_column_int(res, 6) == 1;
-		string wirelessSocketUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
-		bool wirelessSocketAction = sqlite3_column_int(res, 8) == 1;
-		string wirelessSwitchUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 9)));
+		string gpioUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
+		bool gpioAction = sqlite3_column_int(res, 8) == 1;
+		string wirelessSocketUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 9)));
+		bool wirelessSocketAction = sqlite3_column_int(res, 10) == 1;
+		string wirelessSwitchUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 11)));
 
-		WirelessSchedule newEntry(uuid, name, weekday, hour, minute, isActive, wirelessSocketUuid, wirelessSocketAction, wirelessSwitchUuid);
+		WirelessSchedule newEntry(uuid, name, weekday, hour, minute, isActive, gpioUuid, gpioAction, wirelessSocketUuid, wirelessSocketAction, wirelessSwitchUuid);
 		list.push_back(newEntry);
 	}
 
@@ -73,6 +75,8 @@ char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
 		+ _keyHour + " ,"
 		+ _keyMinute + " ,"
 		+ _keyIsActive + " ,"
+		+ _keyGpioUuid + " ,"
+		+ _keyGpioAction + " ,"
 		+ _keyWirelessSocketUuid + " ,"
 		+ _keyWirelessSocketAction + " ,"
 		+ _keyWirelessSwitchUuid + " ) "
@@ -84,6 +88,8 @@ char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
 		+ Tools::ConvertIntToStr(entry.GetHour()) + ","
 		+ Tools::ConvertIntToStr(entry.GetMinute()) + ","
 		+ Tools::ConvertBoolToStr(entry.IsActive()) + ","
+		+ "'" + entry.GetGpioUuid() + "',"
+		+ Tools::ConvertBoolToStr(entry.GetGpioAction()) + ","
 		+ "'" + entry.GetWirelessSocketUuid() + "',"
 		+ Tools::ConvertBoolToStr(entry.GetWirelessSocketAction()) + ","
 		+ "'" + entry.GetWirelessSwitchUuid() + "'"
@@ -115,6 +121,8 @@ char WirelessScheduleDatabase::Update(WirelessSchedule entry)
 		+ "SET " + _keyHour + " = " + Tools::ConvertIntToStr(entry.GetHour()) + ","
 		+ "SET " + _keyMinute + " = " + Tools::ConvertIntToStr(entry.GetMinute()) + ","
 		+ "SET " + _keyIsActive + " = " + Tools::ConvertBoolToStr(entry.IsActive()) + ","
+		+ "SET " + _keyGpioUuid + " = '" + entry.GetGpioUuid() + "',"
+		+ "SET " + _keyGpioAction + " = " + Tools::ConvertBoolToStr(entry.GetGpioAction()) + ","
 		+ "SET " + _keyWirelessSocketUuid + " = '" + entry.GetWirelessSocketUuid() + "',"
 		+ "SET " + _keyWirelessSocketAction + " = " + Tools::ConvertBoolToStr(entry.GetWirelessSocketAction()) + ","
 		+ "SET " + _keyWirelessSwitchUuid + " = '" + entry.GetWirelessSwitchUuid() + "' "
@@ -200,6 +208,8 @@ char WirelessScheduleDatabase::create()
 		+ _keyHour + " INT NOT NULL,"
 		+ _keyMinute + " INT NOT NULL,"
 		+ _keyIsActive + " INT NOT NULL,"
+		+ _keyGpioUuid + " TEXT NOT NULL,"
+		+ _keyGpioAction + " INT NOT NULL,"
 		+ _keyWirelessSocketUuid + " TEXT NOT NULL,"
 		+ _keyWirelessSocketAction + " INT NOT NULL,"
 		+ _keyWirelessSwitchUuid + " TEXT NOT NULL);";

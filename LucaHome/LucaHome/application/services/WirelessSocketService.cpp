@@ -145,7 +145,7 @@ char WirelessSocketService::deleteWirelessSocket(string deleteUuid)
 char WirelessSocketService::setWirelessSocket(vector<string> setWirelessSocketData)
 {
 	string uuid = setWirelessSocketData[WIRELESS_SOCKET_UUID_INDEX].c_str();
-	bool newState = atoi(setWirelessSocketData[WIRELESS_SOCKET_SET_STATE_INDEX].c_str());
+	bool newState = atoi(setWirelessSocketData[WIRELESS_SOCKET_SET_STATE_INDEX].c_str()) == 1;
 
 	WirelessSocket wirelessSocket = _wirelessSocketDatabase.GetByUuid(uuid);
 	if (wirelessSocket.GetCode() == "") {

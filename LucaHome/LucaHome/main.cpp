@@ -47,6 +47,7 @@ ApplicationInformationService _applicationInformationService = ApplicationInform
 ChangeService _changeService = ChangeService();
 CoinService _coinService = CoinService();
 ContactService _contactService = ContactService();
+GpioService _gpioService = GpioService();
 MapContentService _mapContentService = MapContentService();
 MealService _mealService = MealService();
 MediaServerService _mediaServerService = MediaServerService();
@@ -77,7 +78,7 @@ string executeCommand(string encryptedCmd, int source)
 {
 	char key[]{};
 
-	if (source != CMD_SOURCE_EXTERNAL && source != CMD_SOURCE_SCHEDULER) {
+	if (source != CMD_SOURCE_EXTERNAL && source != CMD_SOURCE_TASKER) {
 		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_INVALID_SOURCE);
 	}
 
@@ -85,15 +86,9 @@ string executeCommand(string encryptedCmd, int source)
 		return Encrypter::Encrypt(source, key, COMMAND_ERROR_SHORT_STATEMENT);
 	}
 
-	string cmd;
-	if (source == CMD_SOURCE_SCHEDULER) {
-		cmd = Decrypter::Decrypt(key, encryptedCmd);
-	}
-	else {
-		cmd = encryptedCmd;
-	}
-
+	string cmd = Decrypter::Decrypt(source, key, encryptedCmd);
 	vector <string> data = Tools::Explode(":", cmd);
+
 	if (data.size() < 1 || data[USER_NAME_INDEX] == "") {
 		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_NO_USERNAME);
 	}
@@ -111,7 +106,7 @@ string executeCommand(string encryptedCmd, int source)
 	}
 
 	string username = data[USER_NAME_INDEX];
-	if (username == SCHEDULER && source != CMD_SOURCE_SCHEDULER) {
+	if (username == TASKER && source != CMD_SOURCE_TASKER) {
 		return Encrypter::Encrypt(source, key, COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED);
 	}
 
@@ -144,6 +139,11 @@ string executeCommand(string encryptedCmd, int source)
 	else if (category == CONTACT) {
 		_changeService.UpdateChange("Contact", username);
 		commandAnswer = _contactService.PerformAction(data);
+	}
+	//--------------------Gpio--------------------
+	else if (category == GPIO) {
+		_changeService.UpdateChange("Gpio", username);
+		commandAnswer = _gpioService.PerformAction(data);
 	}
 	//-------------------MapContent-------------------
 	else if (category == MAPCONTENT) {
@@ -315,8 +315,8 @@ void *server(void *arg) {
 	pthread_exit(NULL);
 }
 
-void *scheduler(void *arg) {
-	syslog(LOG_INFO, "Scheduler started!");
+void *tasker(void *arg) {
+	syslog(LOG_INFO, "Tasker started!");
 
 	time_t now;
 	struct tm now_info;
@@ -454,23 +454,33 @@ void *scheduler(void *arg) {
 						WirelessSchedule wirelessSchedule = wirelessScheduleList[scheduleIndex];
 						if (uuid == wirelessSchedule.GetUuid()) {
 							if (wirelessSchedule.IsActive()) {
+								string gpioUuid = wirelessSchedule.GetGpioUuid();
+								if (gpioUuid != "") {
+									stringstream socket_out;
+									socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << GPIO << ":" << SET << ":" << gpioUuid << ":" << Tools::ConvertBoolToStr(wirelessSchedule.GetGpioAction());
+									string response = executeCommand(socket_out.str(), CMD_SOURCE_TASKER);
+									if (response != GPIO_SET_SUCCESS) {
+										syslog(LOG_INFO, "Setting gpio %s by tasker failed!", gpioUuid.c_str());
+									}
+								}
+
 								string wirelessSocketUuid = wirelessSchedule.GetWirelessSocketUuid();
 								if (wirelessSocketUuid != "") {
-									stringstream socket_out;
-									socket_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:SOCKET:" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessSchedule.GetWirelessSocketAction());
-									string response = executeCommand(socket_out.str(), CMD_SOURCE_SCHEDULER);
+									stringstream wireless_socket_out;
+									wireless_socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSOCKET << ":" << SET << ":" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessSchedule.GetWirelessSocketAction());
+									string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER);
 									if (response != WIRELESS_SOCKET_SET_SUCCESS) {
-										syslog(LOG_INFO, "Setting wireless socket %s by scheduler failed!", wirelessSocketUuid.c_str());
+										syslog(LOG_INFO, "Setting wireless socket %s by tasker failed!", wirelessSocketUuid.c_str());
 									}
 								}
 
 								string wirelessSwitchUuid = wirelessSchedule.GetWirelessSwitchUuid();
 								if (wirelessSwitchUuid != "") {
-									stringstream switch_out;
-									switch_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:TOGGLE:SWITCH:" << wirelessSwitchUuid;
-									string response = executeCommand(switch_out.str(), CMD_SOURCE_SCHEDULER);
+									stringstream wireless_switch_out;
+									wireless_switch_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSWITCH << ":" << TOGGLE << ":" << wirelessSwitchUuid;
+									string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER);
 									if (response != WIRELESS_SWITCH_TOGGLE_SUCCESS) {
-										syslog(LOG_INFO, "Toggling wireless switch %s by scheduler failed!", wirelessSwitchUuid.c_str());
+										syslog(LOG_INFO, "Toggling wireless switch %s by tasker failed!", wirelessSwitchUuid.c_str());
 									}
 								}
 							}
@@ -481,29 +491,39 @@ void *scheduler(void *arg) {
 					for (int timerIndex = 0; timerIndex < wirelessTimerList.size(); timerIndex++) {
 						WirelessTimer wirelessTimer = wirelessTimerList[timerIndex];
 						if (uuid == wirelessTimer.GetUuid()) {
+							string gpioUuid = wirelessTimer.GetGpioUuid();
+							if (gpioUuid != "") {
+								stringstream gpio_out;
+								gpio_out << TASKER << ":" << TASKER_PASSWORD << ":" << GPIO << ":" << SET << ":" << gpioUuid << ":" << Tools::ConvertBoolToStr(wirelessTimer.GetGpioAction());
+								string response = executeCommand(gpio_out.str(), CMD_SOURCE_TASKER);
+								if (response != GPIO_SET_SUCCESS) {
+									syslog(LOG_INFO, "Setting gpio %s by tasker failed!", gpioUuid.c_str());
+								}
+							}
+
 							string wirelessSocketUuid = wirelessTimer.GetWirelessSocketUuid();
 							if (wirelessSocketUuid != "") {
-								stringstream socket_out;
-								socket_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:SET:SOCKET:" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessTimer.GetWirelessSocketAction());
-								string response = executeCommand(socket_out.str(), CMD_SOURCE_SCHEDULER);
+								stringstream wireless_socket_out;
+								wireless_socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSOCKET << ":" << SET << ":" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessTimer.GetWirelessSocketAction());
+								string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER);
 								if (response != WIRELESS_SOCKET_SET_SUCCESS) {
-									syslog(LOG_INFO, "Setting wireless socket %s by scheduler failed!", wirelessSocketUuid.c_str());
+									syslog(LOG_INFO, "Setting wireless socket %s by tasker failed!", wirelessSocketUuid.c_str());
 								}
 							}
 
 							string wirelessSwitchUuid = wirelessTimer.GetWirelessSwitchUuid();
 							if (wirelessSwitchUuid != "") {
-								stringstream switch_out;
-								switch_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:TOGGLE:SWITCH:" << wirelessSwitchUuid;
-								string response = executeCommand(switch_out.str(), CMD_SOURCE_SCHEDULER);
+								stringstream wireless_switch_out;
+								wireless_switch_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSWITCH << ":" << TOGGLE << ":" << wirelessSwitchUuid;
+								string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER);
 								if (response != WIRELESS_SWITCH_TOGGLE_SUCCESS) {
-									syslog(LOG_INFO, "Toggling wireless switch %s by scheduler failed!", wirelessSwitchUuid.c_str());
+									syslog(LOG_INFO, "Toggling wireless switch %s by tasker failed!", wirelessSwitchUuid.c_str());
 								}
 							}
 
-							stringstream timer_delete_out;
-							timer_delete_out << SCHEDULER << ":" << SCHEDULER_PASSWORD << ":REMOTE:DELETE:TIMER:" << wirelessTimer.GetUuid();
-							string response = executeCommand(timer_delete_out.str(), CMD_SOURCE_SCHEDULER);
+							stringstream wireless_timer_delete_out;
+							wireless_timer_delete_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSTIMER << ":" << DELETE << ":" << wirelessTimer.GetUuid();
+							string response = executeCommand(wireless_timer_delete_out.str(), CMD_SOURCE_TASKER);
 							if (response != WIRELESS_TIMER_DELETE_SUCCESS) {
 								syslog(LOG_INFO, "Deleting timer %s by scheduler failed!", wirelessTimer.GetUuid().c_str());
 							}
@@ -516,10 +536,10 @@ void *scheduler(void *arg) {
 		}
 
 		pthread_mutex_unlock(&_lucaHomeMutex);
-		sleep(SCHEDULE_CONTROL_TIMEOUT);
+		sleep(TASK_CONTROL_TIMEOUT);
 	}
 
-	syslog(LOG_INFO, "Exiting *scheduler");
+	syslog(LOG_INFO, "Exiting *tasker");
 	pthread_exit(NULL);
 }
 
@@ -592,6 +612,7 @@ int main(void) {
 	_changeService.Initialize("Change.db");
 	_coinService.Initialize("Coin.db");
 	_contactService.Initialize("Contact.db", _mailController);
+	_gpioService.Initialize("Gpio.db");
 	_mapContentService.Initialize("MapContent.db");
 	_mealService.Initialize("Meal.db");
 	_mediaServerService.Initialize("MediaServer.db");
@@ -614,10 +635,10 @@ int main(void) {
 	_wirelessTimerService.Initialize("WirelessTimer.db");
 	_youtubeVideoService.Initialize("YoutubeVideo.db");
 
-	pthread_t serverThread, scheduleThread, birthdayThread, motionStartThread, motionStopThread, motionThread, temperatureThread;
+	pthread_t serverThread, taskThread, birthdayThread, motionStartThread, motionStopThread, motionThread, temperatureThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
-	pthread_create(&scheduleThread, NULL, scheduler, NULL);
+	pthread_create(&taskThread, NULL, tasker, NULL);
 	pthread_create(&birthdayThread, NULL, birthdayControl, NULL);
 	pthread_create(&motionStartThread, NULL, motionStartControl, NULL);
 	pthread_create(&motionStopThread, NULL, motionStopControl, NULL);
@@ -625,7 +646,7 @@ int main(void) {
 	pthread_create(&temperatureThread, NULL, temperatureControl, NULL);
 
 	pthread_join(serverThread, NULL);
-	pthread_join(scheduleThread, NULL);
+	pthread_join(taskThread, NULL);
 	pthread_join(birthdayThread, NULL);
 	pthread_join(motionStartThread, NULL);
 	pthread_join(motionStopThread, NULL);
@@ -642,6 +663,7 @@ int main(void) {
 	_changeService.Dispose();
 	_coinService.Dispose();
 	_contactService.Dispose();
+	_gpioService.Dispose();
 	_mapContentService.Dispose();
 	_mealService.Dispose();
 	_mediaServerService.Dispose();

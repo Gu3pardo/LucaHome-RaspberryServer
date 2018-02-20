@@ -124,6 +124,8 @@ char WirelessScheduleService::addWirelessSchedule(vector<string> newWirelessSche
 		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_HOUR_INDEX].c_str()),
 		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_MINUTE_INDEX].c_str()),
 		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_IS_ACTIVE_INDEX].c_str()) == 1,
+		newWirelessScheduleData[WIRELESS_SCHEDULE_GPIO_UUID_INDEX].c_str(),
+		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_GPIO_ACTION_INDEX].c_str()) == 1,
 		newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SWITCH_UUID_INDEX].c_str());
@@ -139,6 +141,8 @@ char WirelessScheduleService::updateWirelessSchedule(vector<string> updateWirele
 		atoi(updateWirelessScheduleData[WIRELESS_SCHEDULE_HOUR_INDEX].c_str()),
 		atoi(updateWirelessScheduleData[WIRELESS_SCHEDULE_MINUTE_INDEX].c_str()),
 		atoi(updateWirelessScheduleData[WIRELESS_SCHEDULE_IS_ACTIVE_INDEX].c_str()) == 1,
+		updateWirelessScheduleData[WIRELESS_SCHEDULE_GPIO_UUID_INDEX].c_str(),
+		atoi(updateWirelessScheduleData[WIRELESS_SCHEDULE_GPIO_ACTION_INDEX].c_str()) == 1,
 		updateWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(updateWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		updateWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SWITCH_UUID_INDEX].c_str());
@@ -153,6 +157,6 @@ char WirelessScheduleService::deleteWirelessSchedule(string deleteUuid)
 char WirelessScheduleService::setWirelessSchedule(vector<string> setWirelessScheduleData)
 {
 	string uuid = setWirelessScheduleData[WIRELESS_SCHEDULE_UUID_INDEX].c_str();
-	bool newState = atoi(setWirelessScheduleData[WIRELESS_SCHEDULE_SET_STATE_INDEX].c_str());
+	bool newState = atoi(setWirelessScheduleData[WIRELESS_SCHEDULE_SET_STATE_INDEX].c_str()) == 1;
 	return _wirelessScheduleDatabase.UpdateState(uuid, newState);
 }

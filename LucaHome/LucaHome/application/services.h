@@ -2,6 +2,7 @@
 #include "services/ChangeService.h"
 #include "services/CoinService.h"
 #include "services/ContactService.h"
+#include "services/GpioService.h"
 #include "services/MapContentService.h"
 #include "services/MealService.h"
 #include "services/MediaServerService.h"

@@ -52,6 +52,42 @@ vector<Gpio> GpioDatabase::GetList()
 	return list;
 }
 
+Gpio GpioDatabase::GetByUuid(string uuid)
+{
+	if (!open()) {
+		return Gpio();
+	}
+
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + "WHERE " + _keyUuid + "=" + uuid + " LIMIT 1;";
+
+	sqlite3_stmt *res;
+	char *errorMessage = 0;
+
+	int error = sqlite3_exec(database, sqlSelectCommand.c_str(), NULL, &res, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return Gpio();
+	}
+
+	while (sqlite3_step(res) == SQLITE_ROW) {
+		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
+		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
+		int pin = sqlite3_column_int(res, 3);
+		bool state = sqlite3_column_int(res, 4) == 1;
+
+		Gpio gpio(uuid, name, pin, state);
+		sqlite3_finalize(res);
+		close();
+
+		return gpio;
+	}
+
+	sqlite3_finalize(res);
+	close();
+	return Gpio();
+}
+
 char GpioDatabase::Insert(int rowId, Gpio entry)
 {
 	char openErrorMessage = open();
@@ -99,6 +135,30 @@ char GpioDatabase::Update(Gpio entry)
 		+ "SET " + _keyPin + " = " + Tools::ConvertIntToStr(entry.GetPin()) + ","
 		+ "SET " + _keyState + " = " + Tools::ConvertBoolToStr(entry.GetState()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+
+	char *errorMessage = 0;
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return *errorMessage;
+	}
+
+	close();
+	return 0;
+}
+
+char GpioDatabase::UpdateState(string uuid, bool newState)
+{
+	char openErrorMessage = open();
+	if (openErrorMessage) {
+		return openErrorMessage;
+	}
+
+	string sqlUpdateCommand =
+		"UPDATE " + _tableName + " "
+		+ "SET " + _keyState + " = " + Tools::ConvertBoolToStr(newState) + ","
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);

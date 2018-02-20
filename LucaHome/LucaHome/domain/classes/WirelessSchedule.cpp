@@ -2,13 +2,14 @@
 
 WirelessSchedule::WirelessSchedule()
 {
-	WirelessSchedule("", "", 0, 0, 0, false, "", false, "");
+	WirelessSchedule("", "", 0, 0, 0, false, "", false, "", false, "");
 }
 
 WirelessSchedule::WirelessSchedule(
 	string uuid, string name,
 	int weekday, int hour, int minute,
 	bool isActive,
+	string gpioUuid, bool gpioAction,
 	string wirelessSocketUuid, bool wirelessSocketAction,
 	string wirelessSwitchUuid)
 {
@@ -18,6 +19,8 @@ WirelessSchedule::WirelessSchedule(
 	_hour = hour;
 	_minute = minute;
 	_isActive = isActive;
+	_gpioUuid = gpioUuid;
+	_gpioAction = gpioAction;
 	_wirelessSocketUuid = wirelessSocketUuid;
 	_wirelessSocketAction = wirelessSocketAction;
 	_wirelessSwitchUuid = wirelessSwitchUuid;
@@ -87,6 +90,26 @@ bool WirelessSchedule::IsActive()
 	return _isActive;
 }
 
+void WirelessSchedule::SetGpioUuid(string gpioUuid)
+{
+	_gpioUuid = gpioUuid;
+}
+
+string WirelessSchedule::GetGpioUuid()
+{
+	return _gpioUuid;
+}
+
+void WirelessSchedule::SetGpioAction(bool gpioAction)
+{
+	_gpioAction = gpioAction;
+}
+
+bool WirelessSchedule::GetGpioAction()
+{
+	return _gpioAction;
+}
+
 void WirelessSchedule::SetWirelessSocketUuid(string wirelessSocketUuid)
 {
 	_wirelessSocketUuid = wirelessSocketUuid;
@@ -129,6 +152,8 @@ string WirelessSchedule::JsonString()
 		+ string("\"Hour\":") + Tools::ConvertIntToStr(_hour) + string(",")
 		+ string("\"Minute\":") + Tools::ConvertIntToStr(_minute) + string(",")
 		+ string("\"IsActive\":") + Tools::ConvertIntToStr(_isActive) + string(",")
+		+ string("\"GpioUuid\":\"") + _gpioUuid + string("\",")
+		+ string("\"GpioAction\":") + Tools::ConvertBoolToStr(_gpioAction) + string(",")
 		+ string("\"WirelessSocketUuid\":\"") + _wirelessSocketUuid + string("\",")
 		+ string("\"WirelessSocketAction\":") + Tools::ConvertBoolToStr(_wirelessSocketAction) + string(",")
 		+ string("\"WirelessSwitchUuid\":\"") + _wirelessSwitchUuid
@@ -144,6 +169,8 @@ string WirelessSchedule::ToString()
 		+ string("; weekday: ") + Tools::ConvertIntToStr(_weekday)
 		+ string("; time: ") + Tools::ConvertIntToStr(_hour) + string(":") + Tools::ConvertIntToStr(_minute)
 		+ string("; isactive: ") + Tools::ConvertIntToStr(_isActive)
+		+ string("; gpiouuid: ") + _gpioUuid
+		+ string("; gpioaction: ") + Tools::ConvertBoolToStr(_gpioAction)
 		+ string("; wirelesssocketuuid: ") + _wirelessSocketUuid
 		+ string("; wirelesssocketaction: ") + Tools::ConvertBoolToStr(_wirelessSocketAction)
 		+ string("; wirelessswitchuuid: ") + _wirelessSwitchUuid

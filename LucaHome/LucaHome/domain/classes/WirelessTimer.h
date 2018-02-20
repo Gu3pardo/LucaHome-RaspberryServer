@@ -7,7 +7,7 @@ class WirelessTimer : public WirelessSchedule
 {
 public:
 	WirelessTimer();
-	WirelessTimer(string, string, int, int, int, string, bool, string);
+	WirelessTimer(string, string, int, int, int, string, bool, string, bool, string);
 	virtual ~WirelessTimer();
 
 	virtual string JsonString();

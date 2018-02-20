@@ -17,7 +17,7 @@ protected:
 public:
 	virtual char Dispose() {}
 
-	virtual vector<T> GetList() { return vector<T>() {}; }
+	virtual vector<T> GetList() { return vector<T>(); }
 
 	virtual char Insert(int rowId, T entry) { return -69; }
 	virtual char Update(T entry) { return -69; }
