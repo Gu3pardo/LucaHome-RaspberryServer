@@ -8,7 +8,6 @@
 #define DUMMY "DUMMY"
 #define TASKER "Tasker"
 #define TASKER_PASSWORD "435435"
-#define DATA_GPIO 17
 
 /***********************************************/
 /************* SUCCESS DEFINITIONS *************/
@@ -289,6 +288,8 @@
 /************* COMMAND DEFINITIONS *************/
 /***********************************************/
 
+#define COMMAND_SPLITTER "::"
+
 #define ACTIVATE "ACTIVATE"
 #define DEACTIVATE "DEACTIVATE"
 #define TOGGLE "TOGGLE"
@@ -526,7 +527,9 @@
 #define SHOPPING_ITEM_TYPE_INDEX 6
 #define SHOPPING_ITEM_QUANTITY_INDEX 7
 #define SHOPPING_ITEM_UNIT_INDEX 8
-#define SHOPPING_ITEM_DATA_SIZE 9
+#define SHOPPING_ITEM_CREATION_TIME_INDEX 9
+#define SHOPPING_ITEM_SENT_DAY_7_REMINDER_INDEX 10
+#define SHOPPING_ITEM_DATA_SIZE 11
 
 #define SUGGESTED_MEAL_UUID_INDEX 4
 #define SUGGESTED_MEAL_TITLE_INDEX 5
@@ -613,6 +616,7 @@
 
 #define BIRTHDAY_CHECK_TIMEOUT 2 * 60 * 60
 #define MOTION_CONTROL_TIMEOUT 15
+#define SHOPPING_ITEM_CHECK_TIMEOUT 2 * 60 * 60
 #define TASK_CONTROL_TIMEOUT 10
 #define TEMPERATURE_CONTROL_TIMEOUT 60
 
@@ -638,3 +642,15 @@
 #define SWF_ENDING ".swf"
 
 #define NFO_LUCA_FILE "NFO.luca"
+
+/***********************************************/
+/*************** OTHER DEFINITIONS *************/
+/***********************************************/
+
+#define DATA_GPIO 17
+#define SECONDS_OF_7_DAYS 7 * 24 * 60 * 60
+
+#define BUFFER_LENGTH 512
+#define SERVER_PORT 6677
+#define TASK_TYPE_SCHEDULE 0
+#define TASK_TYPE_TIMER 1

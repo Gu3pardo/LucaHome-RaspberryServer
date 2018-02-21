@@ -32,11 +32,6 @@ namespace patch {
 #include "dataaccess/controller.h"
 #include "domain/classes.h"
 
-#define BUFFER_LENGTH 512
-#define SERVER_PORT 6677
-#define TASK_TYPE_SCHEDULE 0
-#define TASK_TYPE_TIMER 1
-
 using namespace std;
 
 FileController _fileController = FileController();
@@ -87,7 +82,7 @@ string executeCommand(string encryptedCmd, int source)
 	}
 
 	string cmd = Decrypter::Decrypt(source, key, encryptedCmd);
-	vector <string> data = Tools::Explode(":", cmd);
+	vector <string> data = Tools::Explode(COMMAND_SPLITTER, cmd);
 
 	if (data.size() < 1 || data[USER_NAME_INDEX] == "") {
 		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_NO_USERNAME);
@@ -546,7 +541,9 @@ void *tasker(void *arg) {
 void *birthdayControl(void *arg) {
 	syslog(LOG_INFO, "BirthdayControl started!");
 	while (1) {
+		pthread_mutex_lock(&_lucaHomeMutex);
 		_contactService.CheckContactBirthdayList();
+		pthread_mutex_unlock(&_lucaHomeMutex);
 		sleep(BIRTHDAY_CHECK_TIMEOUT);
 	}
 	syslog(LOG_INFO, "Exiting *birthdayControl");
@@ -587,6 +584,18 @@ void *motionControl(void *arg) {
 	pthread_exit(NULL);
 }
 
+void *shoppingItemControl(void *arg) {
+	syslog(LOG_INFO, "ShoppingItemControl started!");
+	while (1) {
+		pthread_mutex_lock(&_lucaHomeMutex);
+		_shoppingItemService.CheckShoppingListToRemind();
+		pthread_mutex_unlock(&_lucaHomeMutex);
+		sleep(SHOPPING_ITEM_CHECK_TIMEOUT);
+	}
+	syslog(LOG_INFO, "Exiting *shoppingItemControl");
+	pthread_exit(NULL);
+}
+
 void *temperatureControl(void *arg) {
 	syslog(LOG_INFO, "TemperatureControl started!");
 	while (1) {
@@ -624,7 +633,7 @@ int main(void) {
 	_roomService.Initialize("Room.db");
 	_rssFeedService.Initialize("RssFeed.db");
 	_securityService.Initialize("http://192.168.178.25:8081");
-	_shoppingItemService.Initialize("ShoppinItem.db");
+	_shoppingItemService.Initialize("ShoppinItem.db", _mailController);
 	_suggestedMealService.Initialize("SuggestedMeal.db");
 	_suggestedShoppingItemService.Initialize("SuggestedShoppinItem.db");
 	_temperatureService.Initialize(Room("72B08CD8-54A2-4959-9BFE-26C4C9D876BF", "Living Room", 0), "28-000006f437d1", "http://192.168.178.25/cgi-bin/webgui.py", 15, 35);
@@ -635,7 +644,7 @@ int main(void) {
 	_wirelessTimerService.Initialize("WirelessTimer.db");
 	_youtubeVideoService.Initialize("YoutubeVideo.db");
 
-	pthread_t serverThread, taskThread, birthdayThread, motionStartThread, motionStopThread, motionThread, temperatureThread;
+	pthread_t serverThread, taskThread, birthdayThread, motionStartThread, motionStopThread, motionThread, shoppingItemControlThread, temperatureThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
 	pthread_create(&taskThread, NULL, tasker, NULL);
@@ -643,6 +652,7 @@ int main(void) {
 	pthread_create(&motionStartThread, NULL, motionStartControl, NULL);
 	pthread_create(&motionStopThread, NULL, motionStopControl, NULL);
 	pthread_create(&motionThread, NULL, motionControl, NULL);
+	pthread_create(&shoppingItemControlThread, NULL, shoppingItemControl, NULL);
 	pthread_create(&temperatureThread, NULL, temperatureControl, NULL);
 
 	pthread_join(serverThread, NULL);
@@ -651,6 +661,7 @@ int main(void) {
 	pthread_join(motionStartThread, NULL);
 	pthread_join(motionStopThread, NULL);
 	pthread_join(motionThread, NULL);
+	pthread_join(shoppingItemControlThread, NULL);
 	pthread_join(temperatureThread, NULL);
 
 	pthread_mutex_destroy(&_lucaHomeMutex);

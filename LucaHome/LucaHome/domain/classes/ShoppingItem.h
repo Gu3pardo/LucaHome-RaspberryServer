@@ -3,42 +3,29 @@
 #include <cstring>
 #include <iostream>
 #include "../../crosscutting/utils/Tools.h"
+#include "SuggestedShoppingItem.h"
 
 using namespace std;
 
 #ifndef SHOPPING_ITEM_H
 #define SHOPPING_ITEM_H
 
-class ShoppingItem
+class ShoppingItem : public SuggestedShoppingItem
 {
 private:
-	string _uuid;
-	string _name;
-	string _type;
-	int _quantity;
-	string _unit;
+	time_t _creationTime;
+	bool _sentDay7Reminder;
 
 public:
 	ShoppingItem();
-	ShoppingItem(string, string, string, int, string);
+	ShoppingItem(string, string, string, int, string, time_t, bool);
 	~ShoppingItem();
 
-	void SetUuid(string);
-	string GetUuid();
+	void SetCreationTime(time_t);
+	time_t GetCreationTime();
 
-	void SetName(string);
-	string GetName();
-
-	void SetType(string);
-	string GetType();
-
-	void SetQuantity(int);
-	void IncreaseQuantity(int);
-	void DecreaseQuantity(int);
-	int GetQuantity();
-
-	void SetUnit(string);
-	string GetUnit();
+	void SetSentDay7Reminder(bool);
+	bool GetSentDay7Reminder();
 
 	string JsonString();
 	string ToString();

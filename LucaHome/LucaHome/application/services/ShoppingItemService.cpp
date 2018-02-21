@@ -6,9 +6,10 @@ ShoppingItemService::ShoppingItemService() {}
 
 ShoppingItemService::~ShoppingItemService() {}
 
-void ShoppingItemService::Initialize(string databaseName)
+void ShoppingItemService::Initialize(string databaseName, MailController mailController)
 {
 	_shoppingItemDatabase = ShoppingItemDatabase(databaseName);
+	_mailController = mailController;
 }
 
 string ShoppingItemService::PerformAction(vector<string> data)
@@ -77,6 +78,43 @@ void ShoppingItemService::Dispose()
 	_shoppingItemDatabase.Dispose();
 }
 
+void ShoppingItemService::CheckShoppingListToRemind()
+{
+	vector<ShoppingItem> shoppingItemList = _shoppingItemDatabase.GetList();
+	vector<ShoppingItem> reminderList;
+
+	time_t now = time(0);
+
+	for (int index = 0; index < shoppingItemList.size(); index++)
+	{
+		ShoppingItem shoppingItem = shoppingItemList[index];
+		double timeSinceCreation = difftime(now, shoppingItem.GetCreationTime());
+
+		if (timeSinceCreation >= SECONDS_OF_7_DAYS && !shoppingItem.GetSentDay7Reminder()) {
+			reminderList.push_back(shoppingItem);
+		}
+	}
+
+	if (reminderList.size() > 0) {
+		stringstream reminderMessage;
+		reminderMessage << "You have following shopping items on your list for more then one week:\n";
+
+		for (int reminderIndex = 0; reminderIndex < reminderList.size(); reminderIndex++) {
+			ShoppingItem shoppingItem = reminderList[reminderIndex];
+			shoppingItem.SetSentDay7Reminder(true);
+
+			reminderMessage
+				<< shoppingItem.GetName() << " "
+				<< Tools::ConvertIntToStr(shoppingItem.GetQuantity()) << " "
+				<< shoppingItem.GetUnit() << "\n";
+
+			_shoppingItemDatabase.Update(shoppingItem);
+		}
+
+		_mailController.SendMail(reminderMessage.str());
+	}
+}
+
 /*==============PRIVATE==============*/
 
 string ShoppingItemService::getJsonString()
@@ -101,7 +139,9 @@ char ShoppingItemService::addShoppingItem(vector<string> newShoppingItemData)
 		newShoppingItemData[SHOPPING_ITEM_NAME_INDEX].c_str(),
 		newShoppingItemData[SHOPPING_ITEM_TYPE_INDEX].c_str(),
 		atoi(newShoppingItemData[SHOPPING_ITEM_QUANTITY_INDEX].c_str()),
-		newShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str());
+		newShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str(),
+		atoi(newShoppingItemData[SHOPPING_ITEM_CREATION_TIME_INDEX].c_str()),
+		atoi(newShoppingItemData[SHOPPING_ITEM_SENT_DAY_7_REMINDER_INDEX].c_str()) == 1);
 	return _shoppingItemDatabase.Insert(_shoppingItemDatabase.GetList().size(), newShoppingItem);
 }
 
@@ -112,7 +152,9 @@ char ShoppingItemService::updateShoppingItem(vector<string> updateShoppingItemDa
 		updateShoppingItemData[SHOPPING_ITEM_NAME_INDEX].c_str(),
 		updateShoppingItemData[SHOPPING_ITEM_TYPE_INDEX].c_str(),
 		atoi(updateShoppingItemData[SHOPPING_ITEM_QUANTITY_INDEX].c_str()),
-		updateShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str());
+		updateShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str(),
+		atoi(updateShoppingItemData[SHOPPING_ITEM_CREATION_TIME_INDEX].c_str()),
+		atoi(updateShoppingItemData[SHOPPING_ITEM_SENT_DAY_7_REMINDER_INDEX].c_str()) == 1);
 	return _shoppingItemDatabase.Update(updateShoppingItem);
 }
 

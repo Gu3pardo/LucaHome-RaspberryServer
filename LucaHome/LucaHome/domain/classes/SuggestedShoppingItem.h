@@ -11,7 +11,7 @@ using namespace std;
 
 class SuggestedShoppingItem
 {
-private:
+protected:
 	string _uuid;
 	string _name;
 	string _type;

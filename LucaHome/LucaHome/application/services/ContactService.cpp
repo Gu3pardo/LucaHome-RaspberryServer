@@ -104,7 +104,7 @@ void ContactService::CheckContactBirthdayList()
 		Contact contact = contactList[index];
 		if (contact.HasBirthday() && contact.GetBirthdayRemindMe() && !contact.GetBirthdaySentReminderMail())
 		{
-			std::stringstream information;
+			stringstream information;
 			information << contact.GetName() << " has birthday today! It is the " << Tools::ConvertIntToStr(contact.GetAge()) << "th birthday!";
 			_mailController.SendMail(information.str());
 			contact.SetBirthdaySentReminderMail(true);

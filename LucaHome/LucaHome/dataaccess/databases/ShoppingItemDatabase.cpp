@@ -43,6 +43,8 @@ vector<ShoppingItem> ShoppingItemDatabase::GetList()
 		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		int quantity = sqlite3_column_int(res, 4);
 		string unit = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 5)));
+		int creationTime = sqlite3_column_int(res, 6);
+		bool sendDay7reminder = sqlite3_column_int(res, 7) == 1;
 
 		ShoppingItem newEntry(uuid, name, type, quantity, unit);
 		list.push_back(newEntry);
@@ -67,14 +69,18 @@ char ShoppingItemDatabase::Insert(int rowId, ShoppingItem entry)
 		+ _keyName + " ,"
 		+ _keyType + " ,"
 		+ _keyQuantity + " ,"
-		+ _keyUnit + " ) "
+		+ _keyUnit + " ,"
+		+ _keyCreationTime + " ,"
+		+ _keySentDay7Reminder + " ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetType() + "',"
 		+ Tools::ConvertIntToStr(entry.GetQuantity()) + ","
-		+ "'" + entry.GetUnit() + "'"
+		+ "'" + entry.GetUnit() + "',"
+		+ Tools::ConvertIntToStr(entry.GetCreationTime()) + ","
+		+ Tools::ConvertBoolToStr(entry.GetSentDay7Reminder())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -101,7 +107,9 @@ char ShoppingItemDatabase::Update(ShoppingItem entry)
 		+ "SET " + _keyName + " = '" + entry.GetName() + "',"
 		+ "SET " + _keyType + " = '" + entry.GetType() + "',"
 		+ "SET " + _keyQuantity + " = " + Tools::ConvertIntToStr(entry.GetQuantity()) + ","
-		+ "SET " + _keyUnit + " = '" + entry.GetUnit() + "' "
+		+ "SET " + _keyUnit + " = '" + entry.GetUnit() + "', "
+		+ "SET " + _keyCreationTime + " = " + Tools::ConvertIntToStr(entry.GetCreationTime()) + ","
+		+ "SET " + _keySentDay7Reminder + " = " + Tools::ConvertBoolToStr(entry.GetSentDay7Reminder())
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
@@ -158,7 +166,9 @@ char ShoppingItemDatabase::create()
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
 		+ _keyQuantity + " INT NOT NULL,"
-		+ _keyUnit + " TEXT NOT NULL);";
+		+ _keyUnit + " TEXT NOT NULL,"
+		+ _keyCreationTime + " INT NOT NULL,"
+		+ _keySentDay7Reminder + " INT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

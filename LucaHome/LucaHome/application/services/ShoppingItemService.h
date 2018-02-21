@@ -11,6 +11,7 @@
 #include <sys/types.h>
 
 #include "../../crosscutting/Constants.h"
+#include "../../dataaccess/controller/MailController.h"
 #include "../../dataaccess/databases/ShoppingItemDatabase.h"
 #include "../../domain/classes/ShoppingItem.h"
 
@@ -23,6 +24,7 @@ class ShoppingItemService
 {
 private:
 	ShoppingItemDatabase _shoppingItemDatabase;
+	MailController _mailController;
 
 	string getJsonString();
 
@@ -34,9 +36,11 @@ public:
 	ShoppingItemService();
 	~ShoppingItemService();
 
-	void Initialize(string);
+	void Initialize(string, MailController);
 	string PerformAction(vector<string>);
 	void Dispose();
+
+	void CheckShoppingListToRemind();
 };
 
 #endif

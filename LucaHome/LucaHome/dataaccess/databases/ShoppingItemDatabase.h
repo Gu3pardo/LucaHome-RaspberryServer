@@ -17,6 +17,8 @@ protected:
 	string _keyType = "_type";
 	string _keyQuantity = "_quantity";
 	string _keyUnit = "_unit";
+	string _keyCreationTime = "_creationTime";
+	string _keySentDay7Reminder = "_sentDay7Reminder";
 
 	sqlite3 *database;
 

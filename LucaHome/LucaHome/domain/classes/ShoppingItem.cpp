@@ -1,85 +1,40 @@
 #include "ShoppingItem.h"
 
-ShoppingItem::ShoppingItem()
+ShoppingItem::ShoppingItem() :SuggestedShoppingItem()
 {
-	ShoppingItem("", "", "", 0, "");
+	_creationTime = time(0);
+	_sentDay7Reminder = false;
 }
 
-ShoppingItem::ShoppingItem(string uuid, string name, string type, int quantity, string unit)
+ShoppingItem::ShoppingItem(string uuid, string name, string type, int quantity, string unit, time_t creationTime, bool sentDay7Reminder)
+	: SuggestedShoppingItem(uuid, name, type, quantity, unit)
 {
-	_uuid = uuid;
-	_name = name;
-	_type = type;
-	_quantity = quantity;
-	_unit = unit;
+	_creationTime = creationTime;
+	_sentDay7Reminder = sentDay7Reminder;
 }
 
 ShoppingItem::~ShoppingItem()
 {
 }
 
-void ShoppingItem::SetUuid(string uuid)
+void ShoppingItem::SetCreationTime(time_t creationTime)
 {
-	_uuid = uuid;
+	_creationTime = creationTime;
 }
 
-string ShoppingItem::GetUuid()
+time_t ShoppingItem::GetCreationTime()
 {
-	return _uuid;
+	return _creationTime;
 }
 
-void ShoppingItem::SetName(string name)
+void ShoppingItem::SetSentDay7Reminder(bool sentDay7Reminder)
 {
-	_name = name;
+	_sentDay7Reminder = sentDay7Reminder;
 }
 
-string ShoppingItem::GetName()
+bool ShoppingItem::GetSentDay7Reminder()
 {
-	return _name;
-}
-
-void ShoppingItem::SetType(string type)
-{
-	_type = type;
-}
-
-string ShoppingItem::GetType()
-{
-	return _type;
-}
-
-void ShoppingItem::SetQuantity(int quantity)
-{
-	_quantity = quantity;
-}
-
-void ShoppingItem::IncreaseQuantity(int additionalQuantity)
-{
-	_quantity += additionalQuantity;
-}
-
-void ShoppingItem::DecreaseQuantity(int removalQuantity)
-{
-	_quantity -= removalQuantity;
-	if (_quantity < 1)
-	{
-		_quantity = 1;
-	}
-}
-
-int ShoppingItem::GetQuantity()
-{
-	return _quantity;
-}
-
-void ShoppingItem::SetUnit(string unit)
-{
-	_unit = unit;
-}
-
-string ShoppingItem::GetUnit()
-{
-	return _unit;
+	return _sentDay7Reminder;
 }
 
 string ShoppingItem::JsonString()
@@ -92,7 +47,9 @@ string ShoppingItem::JsonString()
 		+ string("\"Name\":\"") + _name + string("\",")
 		+ string("\"Type\":\"") + _type + string("\",")
 		+ string("\"Quantity\":") + Tools::ConvertIntToStr(_quantity) + string(",")
-		+ string("\"Unit\":\"") + _unit + string("\"")
+		+ string("\"Unit\":\"") + _unit + string("\",")
+		+ string("\"CreationTime\":") + Tools::ConvertIntToStr(_creationTime) + string(",")
+		+ string("\"SentDay7Reminder\":") + Tools::ConvertBoolToStr(_sentDay7Reminder)
 		+ string("}")
 		+ string("}");
 	return str;
@@ -106,6 +63,8 @@ string ShoppingItem::ToString()
 		+ string("; type: ") + _type
 		+ string("; quantity: ") + Tools::ConvertIntToStr(_quantity)
 		+ string("; unit: ") + _unit
+		+ string("; creationtime: ") + Tools::ConvertIntToStr(_creationTime)
+		+ string("; sentday7reminder: ") + Tools::ConvertBoolToStr(_sentDay7Reminder)
 		+ string(" }");
 	return str;
 }
