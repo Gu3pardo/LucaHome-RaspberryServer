@@ -9,7 +9,7 @@ Contact::Contact(
 	string uuid, string name, string group,
 	string address, string phoneHome, string phoneMobile, string email,
 	int birthdayDay, int birthdayMonth, int birthdayYear,
-	bool birthdayRemindMe, bool birthdaySentReminderMail)
+	bool birthdayRemindMe, bool birthdaySentReminder)
 {
 	_uuid = uuid;
 	_name = name;
@@ -22,7 +22,7 @@ Contact::Contact(
 	_birthdayMonth = birthdayMonth;
 	_birthdayYear = birthdayYear;
 	_birthdayRemindMe = birthdayRemindMe;
-	_birthdaySentReminderMail = birthdaySentReminderMail;
+	_birthdaySentReminder = birthdaySentReminder;
 }
 
 Contact::~Contact()
@@ -183,12 +183,12 @@ bool Contact::GetBirthdayRemindMe() {
 	return _birthdayRemindMe;
 }
 
-void Contact::SetBirthdaySentReminderMail(bool birthdaySentReminderMail) {
-	_birthdaySentReminderMail = birthdaySentReminderMail;
+void Contact::SetBirthdaySentReminder(bool birthdaySentReminder) {
+	_birthdaySentReminder = birthdaySentReminder;
 }
 
-bool Contact::GetBirthdaySentReminderMail() {
-	return _birthdaySentReminderMail;
+bool Contact::GetBirthdaySentReminder() {
+	return _birthdaySentReminder;
 }
 
 string Contact::JsonString()
@@ -210,7 +210,7 @@ string Contact::JsonString()
 		+ string("\"Month\":") + Tools::ConvertIntToStr(_birthdayMonth) + string(",")
 		+ string("\"Year\":") + Tools::ConvertIntToStr(_birthdayYear) + string(",")
 		+ string("\"RemindMe\":") + Tools::ConvertBoolToStr(_birthdayRemindMe) + string(",")
-		+ string("\"SentMail\":") + Tools::ConvertBoolToStr(_birthdaySentReminderMail)
+		+ string("\"SentReminder\":") + Tools::ConvertBoolToStr(_birthdaySentReminder)
 		+ string("}")
 		+ string("}")
 		+ string("}");
@@ -230,7 +230,7 @@ string Contact::ToString()
 		+ string("; birthdaymonth: ") + Tools::ConvertIntToStr(_birthdayMonth)
 		+ string("; birthdayyear: ") + Tools::ConvertIntToStr(_birthdayYear)
 		+ string("; birthdayremindme: ") + Tools::ConvertBoolToStr(_birthdayRemindMe)
-		+ string("; birthdaysentremindermail: ") + Tools::ConvertBoolToStr(_birthdaySentReminderMail)
+		+ string("; birthdaysentreminder: ") + Tools::ConvertBoolToStr(_birthdaySentReminder)
 		+ string(" }");
 	return str;
 }

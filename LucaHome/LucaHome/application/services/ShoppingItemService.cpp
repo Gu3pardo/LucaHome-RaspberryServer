@@ -6,10 +6,9 @@ ShoppingItemService::ShoppingItemService() {}
 
 ShoppingItemService::~ShoppingItemService() {}
 
-void ShoppingItemService::Initialize(string databaseName, MailController mailController)
+void ShoppingItemService::Initialize(string databaseName)
 {
 	_shoppingItemDatabase = ShoppingItemDatabase(databaseName);
-	_mailController = mailController;
 }
 
 string ShoppingItemService::PerformAction(vector<string> data)
@@ -111,7 +110,7 @@ void ShoppingItemService::CheckShoppingListToRemind()
 			_shoppingItemDatabase.Update(shoppingItem);
 		}
 
-		_mailController.SendMail(reminderMessage.str());
+		MailController::SendMail(reminderMessage.str());
 	}
 }
 

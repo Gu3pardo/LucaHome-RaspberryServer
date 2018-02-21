@@ -33,16 +33,13 @@ using namespace std;
 class PathController
 {
 private:
-	vector<string> scanDirForType(string, int);
-	vector<string> filterList(vector<string>, vector<string>);
+	static vector<string> scanDirForType(string, int);
+	static vector<string> filterList(vector<string>, vector<string>);
 public:
-	PathController();
-	~PathController();
-
-	vector<string> ScanCameraFolder();
-	vector<string> ScanMovieFolder();
-	vector<string> ScanSeriesFolder();
-	vector<string> ScanMeterLogImageFolder();
+	static vector<string> ScanCameraFolder();
+	static vector<string> ScanMovieFolder();
+	static vector<string> ScanSeriesFolder();
+	static vector<string> ScanMeterLogImageFolder();
 };
 
 #endif

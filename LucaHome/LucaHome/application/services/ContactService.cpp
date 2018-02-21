@@ -6,10 +6,9 @@ ContactService::ContactService() {}
 
 ContactService::~ContactService() {}
 
-void ContactService::Initialize(string databaseName, MailController mailController)
+void ContactService::Initialize(string databaseName)
 {
 	_contactDatabase = ContactDatabase(databaseName);
-	_mailController = mailController;
 }
 
 string ContactService::PerformAction(vector<string> data)
@@ -102,16 +101,16 @@ void ContactService::CheckContactBirthdayList()
 	for (int index = 0; index < contactList.size(); index++)
 	{
 		Contact contact = contactList[index];
-		if (contact.HasBirthday() && contact.GetBirthdayRemindMe() && !contact.GetBirthdaySentReminderMail())
+		if (contact.HasBirthday() && contact.GetBirthdayRemindMe() && !contact.GetBirthdaySentReminder())
 		{
 			stringstream information;
 			information << contact.GetName() << " has birthday today! It is the " << Tools::ConvertIntToStr(contact.GetAge()) << "th birthday!";
-			_mailController.SendMail(information.str());
-			contact.SetBirthdaySentReminderMail(true);
+			MailController::SendMail(information.str());
+			contact.SetBirthdaySentReminder(true);
 		}
-		else if (!contact.HasBirthday() && contact.GetBirthdaySentReminderMail())
+		else if (!contact.HasBirthday() && contact.GetBirthdaySentReminder())
 		{
-			contact.SetBirthdaySentReminderMail(false);
+			contact.SetBirthdaySentReminder(false);
 		}
 		_contactDatabase.Update(contact);
 	}
@@ -188,7 +187,7 @@ string ContactService::writeMailToContact(vector<string> data)
 		return "Message is empty!";
 	}
 
-	_mailController.SendMailWithCustomAddress(contact.GetEMail(), message);
+	MailController::SendMailWithCustomAddress(contact.GetEMail(), message);
 
 	return "";
 }

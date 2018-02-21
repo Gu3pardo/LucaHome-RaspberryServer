@@ -35,7 +35,7 @@ private:
 
 	string getJsonString();
 	double loadTemperature();
-	void sendWarningMail(MailController, string);
+	void sendWarningMail(string);
 
 public:
 	TemperatureService();
@@ -44,7 +44,7 @@ public:
 	void Initialize(Room, string, string, int, int);
 	string PerformAction(vector<string>);
 
-	void CheckTemperature(MailController);
+	void CheckTemperature();
 };
 
 #endif

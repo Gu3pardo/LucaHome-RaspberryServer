@@ -24,7 +24,6 @@ class ContactService
 {
 private:
 	ContactDatabase _contactDatabase;
-	MailController _mailController;
 
 	string getJsonString();
 
@@ -38,7 +37,7 @@ public:
 	ContactService();
 	~ContactService();
 
-	void Initialize(string, MailController);
+	void Initialize(string);
 	string PerformAction(vector<string>);
 	void Dispose();
 

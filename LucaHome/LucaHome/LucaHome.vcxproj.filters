@@ -116,9 +116,6 @@
     <ClCompile Include="domain\classes\Movie.cpp">
       <Filter>domain\classes</Filter>
     </ClCompile>
-    <ClCompile Include="domain\classes\Position.cpp">
-      <Filter>domain\classes</Filter>
-    </ClCompile>
     <ClCompile Include="domain\classes\PuckJs.cpp">
       <Filter>domain\classes</Filter>
     </ClCompile>
@@ -251,11 +248,11 @@
     <ClCompile Include="application\services\ContactService.cpp">
       <Filter>application\services</Filter>
     </ClCompile>
-    <ClCompile Include="domain\classes\Polyline.cpp">
-      <Filter>domain\classes</Filter>
-    </ClCompile>
     <ClCompile Include="application\services\GpioService.cpp">
       <Filter>application\services</Filter>
+    </ClCompile>
+    <ClCompile Include="domain\classes\Point.cpp">
+      <Filter>domain\classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,9 +423,6 @@
     <ClInclude Include="domain\classes\Movie.h">
       <Filter>domain\classes</Filter>
     </ClInclude>
-    <ClInclude Include="domain\classes\Position.h">
-      <Filter>domain\classes</Filter>
-    </ClInclude>
     <ClInclude Include="domain\classes\PuckJs.h">
       <Filter>domain\classes</Filter>
     </ClInclude>
@@ -564,11 +558,11 @@
     <ClInclude Include="application\services\ContactService.h">
       <Filter>application\services</Filter>
     </ClInclude>
-    <ClInclude Include="domain\classes\Polyline.h">
-      <Filter>domain\classes</Filter>
-    </ClInclude>
     <ClInclude Include="application\services\GpioService.h">
       <Filter>application\services</Filter>
+    </ClInclude>
+    <ClInclude Include="domain\classes\Point.h">
+      <Filter>domain\classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

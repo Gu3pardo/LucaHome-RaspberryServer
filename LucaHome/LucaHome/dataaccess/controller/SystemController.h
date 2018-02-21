@@ -35,10 +35,7 @@ class SystemController
 private:
 
 public:
-	SystemController();
-	~SystemController();
-
-	int IsProcessRunning(string);
+	static int IsProcessRunning(string);
 };
 
 #endif

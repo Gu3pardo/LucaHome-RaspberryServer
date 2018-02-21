@@ -17,7 +17,7 @@ string UserService::PerformAction(vector<string> data)
 	string action = data[ACTION_INDEX];
 	string actionParameter = data[ACTION_PARAMETER_INDEX];
 
-	if (!isUserAdmin(username)) {
+	if (!IsUserAdmin(username)) {
 		return AUTHENTIFICATION_ERROR_NO_ADMIN;
 	}
 
@@ -128,7 +128,7 @@ bool UserService::AuthentificateUserAction(string userName, string passphrase, s
 			if (user.GetPassphrase() == passphrase) {
 				if (user.GetRole() >= actionId) {
 					if (isAdminAction(action)) {
-						if (isUserAdmin(userName)) {
+						if (IsUserAdmin(userName)) {
 							return true;
 						}
 					}
@@ -208,7 +208,7 @@ bool UserService::isAdminAction(string action) {
 	return true;
 }
 
-bool UserService::isUserAdmin(string userName) {
+bool UserService::IsUserAdmin(string userName) {
 	if (userName == DUMMY) {
 		return false;
 	}

@@ -1,14 +1,14 @@
 #include "MapContent.h"
 
 MapContent::MapContent() {
-	MapContent("", "", "", Position(), "", "", true);
+	MapContent("", "", "", Point(), "", "", true);
 }
 
 MapContent::MapContent(
 	string uuid,
 	string typeUuid,
 	string type,
-	Position position,
+	Point position,
 	string name,
 	string shortName,
 	bool visibility)
@@ -37,7 +37,7 @@ string MapContent::GetType() {
 	return _type;
 }
 
-Position MapContent::GetPosition() {
+Point MapContent::GetPosition() {
 	return _position;
 }
 

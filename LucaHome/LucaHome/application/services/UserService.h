@@ -29,7 +29,6 @@ private:
 
 	int getActionId(string);
 	bool isAdminAction(string);
-	bool isUserAdmin(string);
 
 public:
 	UserService();
@@ -41,6 +40,7 @@ public:
 
 	bool AuthentificateUser(string, string);
 	bool AuthentificateUserAction(string, string, string);
+	bool IsUserAdmin(string);
 };
 
 #endif

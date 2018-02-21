@@ -24,7 +24,6 @@ class ShoppingItemService
 {
 private:
 	ShoppingItemDatabase _shoppingItemDatabase;
-	MailController _mailController;
 
 	string getJsonString();
 
@@ -36,7 +35,7 @@ public:
 	ShoppingItemService();
 	~ShoppingItemService();
 
-	void Initialize(string, MailController);
+	void Initialize(string);
 	string PerformAction(vector<string>);
 	void Dispose();
 

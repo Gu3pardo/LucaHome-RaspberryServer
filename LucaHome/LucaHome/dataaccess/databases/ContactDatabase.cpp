@@ -49,9 +49,9 @@ vector<Contact> ContactDatabase::GetList()
 		int birthdayMonth = sqlite3_column_int(res, 9);
 		int birthdayYear = sqlite3_column_int(res, 10);
 		bool birthdayRemindMe = sqlite3_column_int(res, 11) == 1;
-		bool birthdaySentReminderMail = sqlite3_column_int(res, 12) == 1;
+		bool birthdaySentReminder = sqlite3_column_int(res, 12) == 1;
 
-		Contact newEntry(uuid, name, group, address, phoneHome, phoneMobile, email, birthdayDay, birthdayMonth, birthdayYear, birthdayRemindMe, birthdaySentReminderMail);
+		Contact newEntry(uuid, name, group, address, phoneHome, phoneMobile, email, birthdayDay, birthdayMonth, birthdayYear, birthdayRemindMe, birthdaySentReminder);
 		list.push_back(newEntry);
 	}
 
@@ -90,9 +90,9 @@ Contact ContactDatabase::GetByUuid(string uuid)
 		int birthdayMonth = sqlite3_column_int(res, 9);
 		int birthdayYear = sqlite3_column_int(res, 10);
 		bool birthdayRemindMe = sqlite3_column_int(res, 11) == 1;
-		bool birthdaySentReminderMail = sqlite3_column_int(res, 12) == 1;
+		bool birthdaySentReminder = sqlite3_column_int(res, 12) == 1;
 
-		Contact contact(uuid, name, group, address, phoneHome, phoneMobile, email, birthdayDay, birthdayMonth, birthdayYear, birthdayRemindMe, birthdaySentReminderMail);
+		Contact contact(uuid, name, group, address, phoneHome, phoneMobile, email, birthdayDay, birthdayMonth, birthdayYear, birthdayRemindMe, birthdaySentReminder);
 		sqlite3_finalize(res);
 		close();
 
@@ -125,7 +125,7 @@ char ContactDatabase::Insert(int rowId, Contact entry)
 		+ _keyBirthdayMonth + " ,"
 		+ _keyBirthdayYear + " ,"
 		+ _keyBirthdayRemindMe + " ,"
-		+ _keyBirthdaySentReminderMail + " ) "
+		+ _keyBirthdaySentReminder + " ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
@@ -139,7 +139,7 @@ char ContactDatabase::Insert(int rowId, Contact entry)
 		+ Tools::ConvertIntToStr(entry.GetBirthdayMonth()) + ", "
 		+ Tools::ConvertIntToStr(entry.GetBirthdayYear()) + ", "
 		+ Tools::ConvertBoolToStr(entry.GetBirthdayRemindMe()) + ", "
-		+ Tools::ConvertBoolToStr(entry.GetBirthdaySentReminderMail())
+		+ Tools::ConvertBoolToStr(entry.GetBirthdaySentReminder())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -173,7 +173,7 @@ char ContactDatabase::Update(Contact entry)
 		+ "SET " + _keyBirthdayMonth + " = " + Tools::ConvertIntToStr(entry.GetBirthdayMonth()) + ","
 		+ "SET " + _keyBirthdayYear + " = " + Tools::ConvertIntToStr(entry.GetBirthdayYear()) + ","
 		+ "SET " + _keyBirthdayRemindMe + " = " + Tools::ConvertBoolToStr(entry.GetBirthdayRemindMe()) + ","
-		+ "SET " + _keyBirthdaySentReminderMail + " = " + Tools::ConvertBoolToStr(entry.GetBirthdaySentReminderMail()) + " "
+		+ "SET " + _keyBirthdaySentReminder + " = " + Tools::ConvertBoolToStr(entry.GetBirthdaySentReminder()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
@@ -237,7 +237,7 @@ char ContactDatabase::create()
 		+ _keyBirthdayMonth + " INT NOT NULL,"
 		+ _keyBirthdayYear + " INT NOT NULL,"
 		+ _keyBirthdayRemindMe + " INT NOT NULL,"
-		+ _keyBirthdaySentReminderMail + " INT NOT NULL);";
+		+ _keyBirthdaySentReminder + " INT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

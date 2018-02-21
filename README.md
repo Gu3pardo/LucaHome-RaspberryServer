@@ -5,7 +5,7 @@
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
 [![Build](https://img.shields.io/badge/build-WIP-red.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
-[![Version](https://img.shields.io/badge/version-v6.0.0.180221alpha-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
+[![Version](https://img.shields.io/badge/version-v6.0.0.180221alpha1-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
 
 Part of the LucaHome-Project
 
@@ -17,25 +17,70 @@ Remotely controlled by an android application (https://github.com/GuepardoApps/L
 ## Required
 
 ### Sqlite3
-If Sqlite3 is not installed, install this first:
+If Sqlite3 or the devlibs are not installed, install them first:
 ```
-sudo apt-get install sqlite3
+sudo apt-get install sqlite3 libsqlite3-dev
 ```
-
-Then install the dev lib for sqlite3 using following command:
-```
-sudo apt-get install libsqlite3-dev
-```
-
 This post is very helpful: https://stackoverflow.com/questions/28969543/fatal-error-sqlite3-h-no-such-file-or-directory
 
 ### WiringPi
+If wiringpi is not installed, install this too:
+Check this link: http://wiringpi.com/download-and-install/
 ```
-pi@raspberrypi ~ $ wget http://raspberrypiguide.de/stuff/wiringPi-27afc01.tar.gz
-pi@raspberrypi ~ $ tar xfz wiringPi-27afc01.tar.gz
-pi@raspberrypi ~ $ cd wiringPi-27afc01
-pi@raspberrypi ~/wiringPi-27afc01 $ ./build 
+git clone git://git.drogon.net/wiringPi
+cd ~/wiringPi
+git pull origin
+./build
 ```
+Check if the installation worked well:
+```
+gpio -v
+gpio readall
+```
+
+### Webserver
+```
+sudo apt-get update
+sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
+sudo useradd www-data
+sudo groupadd www-data
+sudo usermod -g www-data www-data
+sudo mkdir /var/www
+sudo chmod 775 /var/www -R
+sudo chown www-data:www-data /var/www 
+```
+
+Change some settings in
+```
+sudo vi /etc/nginx/sites-enabled/default 
+```
+to following settings:
+```
+server {
+	listen 80;
+	root /var/www;
+	index index.html index.php;
+	server_name localhost;
+	location / {
+	try_files $uri $uri/ /index.php?$args;
+}
+location ~ \.php$ {
+	try_files $uri =404;
+	fastcgi_pass unix:/var/run/php5-fpm.sock;
+	fastcgi_index index.php;
+	fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	include fastcgi_params;
+} 
+```
+
+Restart the nginx webserver
+```
+sudo /etc/init.d/nginx restart 
+```
+
+### Motion
+For the camera and security module (using the motion library) please try below link or search with your prefered search engine... ;)
+https://www.pcwelt.de/ratgeber/Mit_dem_Raspberry_Pi_die_Wohnung_ueberwachen-Sicherheit-8638548.html
 
 ### Finalize
 
@@ -43,66 +88,15 @@ Now you are ready to install LucaHome to your raspberry
 - first download sourcecode and copy it to your raspberry (e.g. to your home directory (lucahome)
 - you have to cd into the directory you copied the sourcecode to
 ```
-pi@raspberrypi ~/lucahome $ sudo make clean
-pi@raspberrypi ~/lucahome $ sudo make
-pi@raspberrypi ~/lucahome $ sudo make install
-pi@raspberrypi ~/lucahome $ sudo /etc/init.d/LucaHome start 
+sudo make clean
+sudo make
+sudo make install
+sudo /etc/init.d/LucaHome start 
 ```
 
 ## Optional
 
-### Webserver
-```
-pi@raspberrypi ~ $ apt-get update
-pi@raspberrypi ~ $ sudo apt-get install nginx php5-fpm php5-cgi php5-cli php5-common
-pi@raspberrypi ~ $ sudo useradd www-data
-pi@raspberrypi ~ $ sudo groupadd www-data
-pi@raspberrypi ~ $ sudo usermod -g www-data www-data
-pi@raspberrypi ~ $ sudo mkdir /var/www
-pi@raspberrypi ~ $ sudo chmod 775 /var/www -R
-pi@raspberrypi ~ $ sudo chown www-data:www-data /var/www 
-```
-
-Change some settings in
-```
-pi@raspberrypi ~ $ sudo vi /etc/nginx/sites-enabled/default 
-```
-to following settings:
-```
-server {
-listen 80;
-root /var/www;
-index index.html index.php;
-server_name localhost;
-location / {
-try_files $uri $uri/ /index.php?$args;
-}
-location ~ \.php$ {
-try_files $uri =404;
-fastcgi_pass unix:/var/run/php5-fpm.sock;
-fastcgi_index index.php;
-fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-include fastcgi_params;
-} 
-```
-Restart server
-```
-pi@raspberrypi ~ $ sudo /etc/init.d/nginx restart 
-```
-_______________
-
-# IMPORTANT
-
-following project is also needed to work with the android application
-https://github.com/GuepardoApps/LucaHome-Website
-The code of this project needs to be copied to /var/www
-
-optional:
 https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
 
-for the CAMERA module (working with motion!)
-https://www.pcwelt.de/ratgeber/Mit_dem_Raspberry_Pi_die_Wohnung_ueberwachen-Sicherheit-8638548.html
-
----
-
+# Origin
 Based on the original project of http://raspberrypiguide.de/howtos/powerpi-raspberry-pi-haussteuerung/

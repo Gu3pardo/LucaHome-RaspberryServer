@@ -23,12 +23,9 @@ using namespace std;
 class FileController
 {
 public:
-	FileController();
-	~FileController();
-
-	string ReadFile(string path);
-	vector<string> ReadFileList(string path);
-	bool SaveFile(string path, string content);
+	static string ReadFile(string path);
+	static vector<string> ReadFileList(string path);
+	static bool SaveFile(string path, string content);
 };
 
 #endif

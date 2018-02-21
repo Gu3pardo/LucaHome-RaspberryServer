@@ -10,10 +10,8 @@ MovieService::~MovieService()
 {
 }
 
-void MovieService::Initialize(FileController fileController, PathController pathController)
+void MovieService::Initialize()
 {
-	_fileController = fileController;
-	_pathController = pathController;
 	LoadData();
 }
 
@@ -72,7 +70,7 @@ string MovieService::PerformAction(vector<string> data)
 void MovieService::LoadData()
 {
 	vector<Movie> movieList;
-	vector<string> movieDirectories = _pathController.ScanMovieFolder();
+	vector<string> movieDirectories = PathController::ScanMovieFolder();
 
 	for (int movieIndex = 0; movieIndex < movieDirectories.size(); movieIndex++) {
 		string currentMovieDir = movieDirectories.at(movieIndex);
@@ -89,7 +87,7 @@ void MovieService::LoadData()
 		Movie newMovie = Movie();
 		newMovie.SetTitle(currentMovieDir);
 
-		vector<string> nfoFileContent = _fileController.ReadFileList(nfoFilePath);
+		vector<string> nfoFileContent = FileController::ReadFileList(nfoFilePath);
 
 		for (int contentIndex = 0; contentIndex < nfoFileContent.size(); contentIndex++) {
 			string currentLine = nfoFileContent.at(contentIndex);
@@ -135,7 +133,7 @@ void MovieService::saveMovieNFO(Movie movie)
 	ostringstream nfoFilePathStringStream;
 	nfoFilePathStringStream << NAS_PATH_MOVIE << movie.GetTitle() << "/" << NFO_LUCA_FILE;
 	string nfoFilePath = nfoFilePathStringStream.str();
-	_fileController.SaveFile(nfoFilePath, movie.SaveString());
+	FileController::SaveFile(nfoFilePath, movie.SaveString());
 }
 
 int MovieService::getMovieCount()

@@ -34,10 +34,6 @@ namespace patch {
 
 using namespace std;
 
-FileController _fileController = FileController();
-MailController _mailController = MailController();
-PathController _pathController = PathController();
-
 ApplicationInformationService _applicationInformationService = ApplicationInformationService();
 ChangeService _changeService = ChangeService();
 CoinService _coinService = CoinService();
@@ -217,6 +213,9 @@ string executeCommand(string encryptedCmd, int source)
 	}
 	//----------------------User----------------------
 	else if (category == USER) {
+		if (!_userService.IsUserAdmin(username)) {
+			return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_FAILED);
+		}
 		_changeService.UpdateChange("User", username);
 		commandAnswer = _userService.PerformAction(data);
 	}
@@ -599,7 +598,7 @@ void *shoppingItemControl(void *arg) {
 void *temperatureControl(void *arg) {
 	syslog(LOG_INFO, "TemperatureControl started!");
 	while (1) {
-		_temperatureService.CheckTemperature(_mailController);
+		_temperatureService.CheckTemperature();
 		sleep(TEMPERATURE_CONTROL_TIMEOUT);
 	}
 	syslog(LOG_INFO, "Exiting *temperatureControl");
@@ -615,25 +614,25 @@ int main(void) {
 
 	std::ostringstream startMessage;
 	startMessage << "Starting LucaHome";
-	_mailController.SendMail(startMessage.str());
+	MailController::SendMail(startMessage.str());
 
 	_applicationInformationService.Initialize("ApplicationInformation.db");
 	_changeService.Initialize("Change.db");
 	_coinService.Initialize("Coin.db");
-	_contactService.Initialize("Contact.db", _mailController);
+	_contactService.Initialize("Contact.db");
 	_gpioService.Initialize("Gpio.db");
 	_mapContentService.Initialize("MapContent.db");
 	_mealService.Initialize("Meal.db");
 	_mediaServerService.Initialize("MediaServer.db");
 	_meterLogService.Initialize("MeterLog.db");
 	_moneyLogService.Initialize("MoneyLog.db");
-	_movieService.Initialize(_fileController, _pathController);
+	_movieService.Initialize();
 	_puckJsService.Initialize("PuckJs.db");
 	_radioStreamService.Initialize("RadioStream.db");
 	_roomService.Initialize("Room.db");
 	_rssFeedService.Initialize("RssFeed.db");
 	_securityService.Initialize("http://192.168.178.25:8081");
-	_shoppingItemService.Initialize("ShoppinItem.db", _mailController);
+	_shoppingItemService.Initialize("ShoppinItem.db");
 	_suggestedMealService.Initialize("SuggestedMeal.db");
 	_suggestedShoppingItemService.Initialize("SuggestedShoppinItem.db");
 	_temperatureService.Initialize(Room("72B08CD8-54A2-4959-9BFE-26C4C9D876BF", "Living Room", 0), "28-000006f437d1", "http://192.168.178.25/cgi-bin/webgui.py", 15, 35);
@@ -668,7 +667,7 @@ int main(void) {
 
 	std::ostringstream stopMessage;
 	stopMessage << "Stopping LucaHome";
-	_mailController.SendMail(stopMessage.str());
+	MailController::SendMail(stopMessage.str());
 
 	_applicationInformationService.Dispose();
 	_changeService.Dispose();

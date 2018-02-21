@@ -1,9 +1,5 @@
 #include "PathController.h"
 
-PathController::PathController() {}
-
-PathController::~PathController() {}
-
 vector<string> PathController::ScanCameraFolder()
 {
 	vector<string> allFiles = scanDirForType(NAS_PATH_CAMERA, IS_FILE);

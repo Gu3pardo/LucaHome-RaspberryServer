@@ -25,9 +25,6 @@ class MovieService
 private:
 	vector<Movie> _movieList;
 
-	FileController _fileController;
-	PathController _pathController;
-
 	void saveMovieNFO(Movie);
 	bool updateMovieData(vector<string>);
 
@@ -38,7 +35,7 @@ public:
 	MovieService();
 	~MovieService();
 
-	void Initialize(FileController, PathController);
+	void Initialize();
 	string PerformAction(vector<string>);
 	void LoadData();
 };

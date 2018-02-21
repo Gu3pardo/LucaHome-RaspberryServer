@@ -23,7 +23,7 @@ private:
 	int _birthdayMonth;
 	int _birthdayYear;
 	bool _birthdayRemindMe;
-	bool _birthdaySentReminderMail;
+	bool _birthdaySentReminder;
 
 public:
 	Contact();
@@ -66,8 +66,8 @@ public:
 	void SetBirthdayRemindMe(bool);
 	bool GetBirthdayRemindMe();
 
-	void SetBirthdaySentReminderMail(bool);
-	bool GetBirthdaySentReminderMail();
+	void SetBirthdaySentReminder(bool);
+	bool GetBirthdaySentReminder();
 
 	string JsonString();
 	string ToString();

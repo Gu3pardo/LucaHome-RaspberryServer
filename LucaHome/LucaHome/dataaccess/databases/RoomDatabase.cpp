@@ -44,7 +44,7 @@ vector<Room> RoomDatabase::GetList()
 		string polylineDbString = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 
 		Room newEntry(uuid, name, type);
-		newEntry.ParsePolylineDbString(polylineDbString);
+		newEntry.ParsePointDbString(polylineDbString);
 		list.push_back(newEntry);
 	}
 
@@ -72,7 +72,7 @@ char RoomDatabase::Insert(int rowId, Room entry)
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ Tools::ConvertIntToStr(entry.GetType()) + ","
-		+ "'" + entry.GetPolylineDbString() + "'"
+		+ "'" + entry.GetPointDbString() + "'"
 		+ ");";
 
 	char *errorMessage = 0;
@@ -98,7 +98,7 @@ char RoomDatabase::Update(Room entry)
 		"UPDATE " + _tableName + " "
 		+ "SET " + _keyName + " = '" + entry.GetName() + "',"
 		+ "SET " + _keyType + " = '" + Tools::ConvertIntToStr(entry.GetType()) + "',"
-		+ "SET " + _keyPolyline + " = " + entry.GetPolylineDbString() + " "
+		+ "SET " + _keyPolyline + " = " + entry.GetPointDbString() + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;

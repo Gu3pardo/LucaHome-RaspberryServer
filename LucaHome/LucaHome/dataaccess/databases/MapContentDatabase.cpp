@@ -47,7 +47,7 @@ vector<MapContent> MapContentDatabase::GetList()
 		string shortName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
 		bool visibility = sqlite3_column_int(res, 8) == 1;
 
-		Position position(positionX, positionY);
+		Point position(positionX, positionY);
 		MapContent newEntry(uuid, typeUuid, type, position, name, shortName, visibility);
 		list.push_back(newEntry);
 	}

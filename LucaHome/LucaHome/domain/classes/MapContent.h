@@ -1,7 +1,7 @@
 #include <string>
 #include <cstring>
 #include <iostream>
-#include "Position.h"
+#include "Point.h"
 #include "../../crosscutting/utils/Tools.h"
 
 using namespace std;
@@ -15,20 +15,20 @@ private:
 	string _uuid;
 	string _typeUuid;
 	string _type;
-	Position _position;
+	Point _position;
 	string _name;
 	string _shortName;
 	bool _visibility;
 
 public:
 	MapContent();
-	MapContent(string, string, string, Position, string, string, bool);
+	MapContent(string, string, string, Point, string, string, bool);
 	~MapContent();
 
 	string GetUuid();
 	string GetTypeUuid();
 	string GetType();
-	Position GetPosition();
+	Point GetPosition();
 	string GetName();
 	string GetShortName();
 	bool GetVisibility();

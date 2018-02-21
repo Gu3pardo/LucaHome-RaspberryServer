@@ -1,9 +1,5 @@
 #include "FileController.h"
 
-FileController::FileController() {}
-
-FileController::~FileController() {}
-
 string FileController::ReadFile(string path)
 {
 	string content;

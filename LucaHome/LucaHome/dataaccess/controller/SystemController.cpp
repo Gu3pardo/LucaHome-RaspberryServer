@@ -1,11 +1,5 @@
 #include "SystemController.h"
 
-SystemController::SystemController() {}
-
-SystemController::~SystemController() {}
-
-//--------------------------Public-----------------------//
-
 // Answer from:
 // http://stackoverflow.com/questions/6898337/determine-programmatically-if-a-program-is-running
 int SystemController::IsProcessRunning(string processName)

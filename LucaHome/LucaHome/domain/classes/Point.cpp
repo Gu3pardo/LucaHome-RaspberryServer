@@ -1,35 +1,35 @@
-#include "Polyline.h"
+#include "Point.h"
 
-Polyline::Polyline()
+Point::Point()
 {
-	Polyline(0, 0);
+	Point(0, 0);
 }
 
-Polyline::Polyline(int x, int y)
+Point::Point(int x, int y)
 {
 	_x = x;
 	_y = y;
 }
 
-Polyline::~Polyline()
+Point::~Point()
 {
 }
 
-int Polyline::GetX()
+int Point::GetX()
 {
 	return _x;
 }
 
-int Polyline::GetY()
+int Point::GetY()
 {
 	return _y;
 }
 
-string Polyline::JsonString()
+string Point::JsonString()
 {
 	string str =
 		string("{")
-		+ string("\"Polyline\":")
+		+ string("\"Point\":")
 		+ string("{")
 		+ string("\"X\":") + Tools::ConvertIntToStr(_x) + string(",")
 		+ string("\"Y\":") + Tools::ConvertIntToStr(_y)
@@ -38,10 +38,10 @@ string Polyline::JsonString()
 	return str;
 }
 
-string Polyline::ToString()
+string Point::ToString()
 {
 	string str =
-		string("Polyline { ")
+		string("Point { ")
 		+ string("; X: ") + Tools::ConvertIntToStr(_x)
 		+ string("; Y: ") + Tools::ConvertIntToStr(_y)
 		+ string(" }");

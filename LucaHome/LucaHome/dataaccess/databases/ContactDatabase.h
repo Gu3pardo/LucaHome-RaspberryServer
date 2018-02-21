@@ -23,7 +23,7 @@ protected:
 	string _keyBirthdayMonth = "_birthdayMonth";
 	string _keyBirthdayYear = "_birthdayYear";
 	string _keyBirthdayRemindMe = "_birthdayRemindMe";
-	string _keyBirthdaySentReminderMail = "_birthdaySentReminderMail";
+	string _keyBirthdaySentReminder = "_birthdaySentReminder";
 
 	sqlite3 *database;
 

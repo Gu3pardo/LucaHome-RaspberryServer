@@ -131,8 +131,8 @@
 #define AUTHENTIFICATION_ERROR_NO_PASSWORD "Error 12:No password"
 #define AUTHENTIFICATION_ERROR_NO_USERNAME "Error 13:No username"
 #define AUTHENTIFICATION_ERROR_INVALID_SOURCE "Error 14:Invalid source"
-#define AUTHENTIFICATION_ERROR_RESET_FAILED "Error 15:Could not reset invalid login count"
-#define AUTHENTIFICATION_ERROR_NO_ADMIN "Error 16:Permitted! User is no admin!"
+#define AUTHENTIFICATION_ERROR_RESET_FAILED "Error 16:Could not reset invalid login count"
+#define AUTHENTIFICATION_ERROR_NO_ADMIN "Error 17:Permitted! User is no admin!"
 
 #define COMMAND_ERROR_NO_ACTION_FOUND "Error 20:action not found"
 #define COMMAND_ERROR_NO_PARAMETER_FOUND "Error 21:parameter not found"

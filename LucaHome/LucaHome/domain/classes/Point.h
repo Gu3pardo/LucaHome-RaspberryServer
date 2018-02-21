@@ -5,19 +5,19 @@
 
 using namespace std;
 
-#ifndef POSITION_H
-#define POSITION_H
+#ifndef POINT_H
+#define POINT_H
 
-class Position {
+class Point {
 
 private:
 	int _x;
 	int _y;
 
 public:
-	Position();
-	Position(int, int);
-	~Position();
+	Point();
+	Point(int, int);
+	~Point();
 
 	int GetX();
 	int GetY();

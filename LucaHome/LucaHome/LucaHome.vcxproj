@@ -119,8 +119,7 @@
     <ClCompile Include="domain\classes\MeterLogItem.cpp" />
     <ClCompile Include="domain\classes\MoneyLogItem.cpp" />
     <ClCompile Include="domain\classes\Movie.cpp" />
-    <ClCompile Include="domain\classes\Polyline.cpp" />
-    <ClCompile Include="domain\classes\Position.cpp" />
+    <ClCompile Include="domain\classes\Point.cpp" />
     <ClCompile Include="domain\classes\PuckJs.cpp" />
     <ClCompile Include="domain\classes\RadioStream.cpp" />
     <ClCompile Include="domain\classes\Room.cpp" />
@@ -215,8 +214,7 @@
     <ClInclude Include="domain\classes\MeterLogItem.h" />
     <ClInclude Include="domain\classes\MoneyLogItem.h" />
     <ClInclude Include="domain\classes\Movie.h" />
-    <ClInclude Include="domain\classes\Polyline.h" />
-    <ClInclude Include="domain\classes\Position.h" />
+    <ClInclude Include="domain\classes\Point.h" />
     <ClInclude Include="domain\classes\PuckJs.h" />
     <ClInclude Include="domain\classes\RadioStream.h" />
     <ClInclude Include="domain\classes\Room.h" />

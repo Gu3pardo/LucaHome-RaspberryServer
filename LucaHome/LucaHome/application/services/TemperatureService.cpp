@@ -49,7 +49,7 @@ string TemperatureService::PerformAction(vector<string> data)
 	return COMMAND_ERROR_NO_ACTION_FOUND;
 }
 
-void TemperatureService::CheckTemperature(MailController mailController)
+void TemperatureService::CheckTemperature()
 {
 	if (!_isInitialized)
 	{
@@ -63,14 +63,14 @@ void TemperatureService::CheckTemperature(MailController mailController)
 		ostringstream data;
 		data << "Current temperature at " << _room.GetName() << " is too low! " << currentTemperature << "°C!";
 
-		sendWarningMail(mailController, data.str());
+		sendWarningMail(data.str());
 	}
 	else if (currentTemperature > _maxTemp)
 	{
 		ostringstream data;
 		data << "Current temperature at " << _room.GetName() << " is too high! " << currentTemperature << "°C!";
 
-		sendWarningMail(mailController, data.str());
+		sendWarningMail(data.str());
 	}
 	else
 	{
@@ -140,7 +140,7 @@ double TemperatureService::loadTemperature()
 	return temperature;
 }
 
-void TemperatureService::sendWarningMail(MailController mailController, string warning)
+void TemperatureService::sendWarningMail(string warning)
 {
 	_warningCount++;
 
@@ -149,5 +149,5 @@ void TemperatureService::sendWarningMail(MailController mailController, string w
 		return;
 	}
 
-	mailController.SendMail(warning);
+	MailController::SendMail(warning);
 }

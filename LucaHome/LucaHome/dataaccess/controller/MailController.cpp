@@ -1,11 +1,5 @@
 #include "MailController.h"
 
-MailController::MailController() {}
-
-MailController::~MailController() {}
-
-//--------------------------Public-----------------------//
-
 void MailController::SendMail(string message)
 {
 	string command = CMD_SEND_SIMPLE_MAIL;

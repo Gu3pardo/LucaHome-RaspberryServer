@@ -2,20 +2,20 @@
 
 Room::Room()
 {
-	Room("", "", -1, vector<Polyline>());
+	Room("", "", -1, vector<Point>());
 }
 
 Room::Room(string uuid, string name, int type)
 {
-	Room(uuid, name, type, vector<Polyline>());
+	Room(uuid, name, type, vector<Point>());
 }
 
-Room::Room(string uuid, string name, int type, vector<Polyline> polylineList)
+Room::Room(string uuid, string name, int type, vector<Point> pointList)
 {
 	_uuid = uuid;
 	_name = name;
 	_type = type;
-	_polylineList = polylineList;
+	_pointList = pointList;
 }
 
 Room::~Room()
@@ -52,31 +52,31 @@ int Room::GetType()
 	return _type;
 }
 
-void Room::SetPolylineList(vector<Polyline> polylineList)
+void Room::SetPointList(vector<Point> pointList)
 {
-	_polylineList = polylineList;
+	_pointList = pointList;
 }
 
-vector<Polyline> Room::GetPolylineList()
+vector<Point> Room::GetPointList()
 {
-	return _polylineList;
+	return _pointList;
 }
 
-string Room::GetPolylineDbString()
+string Room::GetPointDbString()
 {
 	stringstream data;
-	for (int index = 0; index < _polylineList.size(); index++)
+	for (int index = 0; index < _pointList.size(); index++)
 	{
-		data << Tools::ConvertIntToStr(_polylineList[index].GetX()) << "--" << Tools::ConvertIntToStr(_polylineList[index].GetX()) << ",,";
+		data << Tools::ConvertIntToStr(_pointList[index].GetX()) << "--" << Tools::ConvertIntToStr(_pointList[index].GetX()) << ",,";
 	}
 	return data.str().substr(0, data.str().size() - 1);
 }
 
-void Room::ParsePolylineDbString(string polylineDbString)
+void Room::ParsePointDbString(string pointDbString)
 {
-	vector<Polyline> polylineList;
+	vector<Point> pointList;
 
-	vector<string> stringList = Tools::Explode(polylineDbString, ",,");
+	vector<string> stringList = Tools::Explode(pointDbString, ",,");
 	for (int index = 0; index < stringList.size(); index++)
 	{
 		string dataString = stringList[index];
@@ -89,11 +89,11 @@ void Room::ParsePolylineDbString(string polylineDbString)
 		int x = Tools::ConvertStrToInt(data[0]);
 		int y = Tools::ConvertStrToInt(data[1]);
 
-		Polyline polyline(x, y);
-		polylineList.push_back(polyline);
+		Point Point(x, y);
+		pointList.push_back(Point);
 	}
 
-	_polylineList = polylineList;
+	_pointList = pointList;
 }
 
 string Room::JsonString()
@@ -105,7 +105,7 @@ string Room::JsonString()
 		+ string("\"Uuid\":\"") + _uuid + string("\",")
 		+ string("\"Name\":\"") + _name + string("\",")
 		+ string("\"Type\":") + Tools::ConvertIntToStr(_type) + string(",")
-		+ string("\"PolylineList\":") + polylineJsonString()
+		+ string("\"PointList\":") + pointJsonString()
 		+ string("}")
 		+ string("}");
 	return str;
@@ -120,20 +120,20 @@ string Room::ToString()
 	return str;
 }
 
-string Room::polylineJsonString()
+string Room::pointJsonString()
 {
 	stringstream data;
-	for (int index = 0; index < _polylineList.size(); index++)
+	for (int index = 0; index < _pointList.size(); index++)
 	{
-		string polylineJsonString =
+		string pointJsonString =
 			string("{")
-			+ string("\"Polyline\":")
+			+ string("\"Point\":")
 			+ string("{")
-			+ string("\"X\":") + Tools::ConvertIntToStr(_polylineList[index].GetX()) + string(",")
-			+ string("\"Y\":") + Tools::ConvertIntToStr(_polylineList[index].GetY()) + string("")
+			+ string("\"X\":") + Tools::ConvertIntToStr(_pointList[index].GetX()) + string(",")
+			+ string("\"Y\":") + Tools::ConvertIntToStr(_pointList[index].GetY()) + string("")
 			+ string("}")
 			+ string("}");
-		data << polylineJsonString << ",";
+		data << pointJsonString << ",";
 	}
 
 	stringstream out;
