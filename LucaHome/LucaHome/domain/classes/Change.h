@@ -15,15 +15,11 @@ private:
 	string _uuid;
 	string _type;
 	string _userName;
-	int _hour;
-	int _minute;
-	int _day;
-	int _month;
-	int _year;
+	time_t _time;
 
 public:
 	Change();
-	Change(string, string, string, int, int, int, int, int);
+	Change(string, string, string, time_t);
 	~Change();
 
 	void SetUuid(string);
@@ -35,20 +31,8 @@ public:
 	void SetUserName(string);
 	string GetUserName();
 
-	void SetHour(int);
-	int GetHour();
-
-	void SetMinute(int);
-	int GetMinute();
-
-	void SetDay(int);
-	int GetDay();
-
-	void SetMonth(int);
-	int GetMonth();
-
-	void SetYear(int);
-	int GetYear();
+	void SetTime(time_t);
+	time_t GetTime();
 
 	string JsonString();
 	string ToString();

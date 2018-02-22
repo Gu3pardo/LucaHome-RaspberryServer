@@ -138,7 +138,6 @@ char WirelessSocketDatabase::Update(WirelessSocket entry)
 		+ "SET " + _keyRoomUuid + " = '" + entry.GetRoomUuid() + "',"
 		+ "SET " + _keyName + " = '" + entry.GetName() + "',"
 		+ "SET " + _keyCode + " = '" + entry.GetCode() + "',"
-		+ "SET " + _keyState + " = " + Tools::ConvertBoolToStr(entry.GetState())
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;

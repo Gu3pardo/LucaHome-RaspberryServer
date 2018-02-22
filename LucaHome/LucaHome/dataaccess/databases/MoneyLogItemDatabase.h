@@ -18,10 +18,8 @@ protected:
 	string _keyPlan = "_plan";
 	string _keyAmount = "_amount";
 	string _keyUnit = "_unit";
-	string _keyDay = "_day";
-	string _keyMonth = "_month";
-	string _keyYear = "_year";
 	string _keyUserUuid = "_userUuid";
+	string _keySaveDate = "_saveDate";
 
 	sqlite3 *database;
 

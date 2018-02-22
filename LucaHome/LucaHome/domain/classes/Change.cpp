@@ -2,19 +2,15 @@
 
 Change::Change()
 {
-	Change("", "", "", 0, 0, 1, 1, 1970);
+	Change("", "", "", time(0));
 }
 
-Change::Change(string uuid, string type, string userName, int hour, int minute, int day, int month, int year)
+Change::Change(string uuid, string type, string userName, time_t changeTime)
 {
 	_uuid = uuid;
 	_type = type;
 	_userName = userName;
-	_hour = hour;
-	_minute = minute;
-	_day = day;
-	_month = month;
-	_year = year;
+	_time = changeTime;
 }
 
 Change::~Change()
@@ -51,54 +47,14 @@ string Change::GetUserName()
 	return _userName;
 }
 
-void Change::SetHour(int hour)
+void Change::SetTime(time_t newtime)
 {
-	_hour = hour;
+	_time = newtime;
 }
 
-int Change::GetHour()
+time_t Change::GetTime()
 {
-	return _hour;
-}
-
-void Change::SetMinute(int minute)
-{
-	_minute = minute;
-}
-
-int Change::GetMinute()
-{
-	return _minute;
-}
-
-void Change::SetDay(int day)
-{
-	_day = day;
-}
-
-int Change::GetDay()
-{
-	return _day;
-}
-
-void Change::SetMonth(int month)
-{
-	_month = month;
-}
-
-int Change::GetMonth()
-{
-	return _month;
-}
-
-void Change::SetYear(int year)
-{
-	_year = year;
-}
-
-int Change::GetYear()
-{
-	return _year;
+	return _time;
 }
 
 string Change::JsonString()
@@ -110,17 +66,7 @@ string Change::JsonString()
 		+ string("\"Uuid\":\"") + _uuid + string("\",")
 		+ string("\"Type\":\"") + _type + string("\",")
 		+ string("\"UserName\":\"") + _userName + string("\",")
-		+ string("\"Date\":")
-		+ string("{")
-		+ string("\"Day\":") + Tools::ConvertIntToStr(_day) + string(",")
-		+ string("\"Month\":") + Tools::ConvertIntToStr(_month) + string(",")
-		+ string("\"Year\":") + Tools::ConvertIntToStr(_year)
-		+ string("}") + string(",")
-		+ string("\"Time\":")
-		+ string("{")
-		+ string("\"Hour\":") + Tools::ConvertIntToStr(_hour) + string(",")
-		+ string("\"Minute\":") + Tools::ConvertIntToStr(_minute)
-		+ string("}")
+		+ string("\"Time\":") + Tools::ConvertIntToStr(_time)
 		+ string("}")
 		+ string("}");
 	return str;
@@ -132,11 +78,7 @@ string Change::ToString()
 		string("Change { uuid: ") + _uuid
 		+ string("; type: ") + _type
 		+ string("; userName: ") + _userName
-		+ string("; hour: ") + Tools::ConvertIntToStr(_hour)
-		+ string("; minute: ") + Tools::ConvertIntToStr(_minute)
-		+ string("; day: ") + Tools::ConvertIntToStr(_day)
-		+ string("; month: ") + Tools::ConvertIntToStr(_month)
-		+ string("; year: ") + Tools::ConvertIntToStr(_year)
+		+ string("; time: ") + Tools::ConvertIntToStr(_time)
 		+ string(" }");
 	return str;
 }

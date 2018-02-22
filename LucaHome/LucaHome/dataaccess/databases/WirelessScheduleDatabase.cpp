@@ -120,7 +120,6 @@ char WirelessScheduleDatabase::Update(WirelessSchedule entry)
 		+ "SET " + _keyWeekday + " = " + Tools::ConvertIntToStr(entry.GetWeekday()) + ","
 		+ "SET " + _keyHour + " = " + Tools::ConvertIntToStr(entry.GetHour()) + ","
 		+ "SET " + _keyMinute + " = " + Tools::ConvertIntToStr(entry.GetMinute()) + ","
-		+ "SET " + _keyIsActive + " = " + Tools::ConvertBoolToStr(entry.IsActive()) + ","
 		+ "SET " + _keyGpioUuid + " = '" + entry.GetGpioUuid() + "',"
 		+ "SET " + _keyGpioAction + " = " + Tools::ConvertBoolToStr(entry.GetGpioAction()) + ","
 		+ "SET " + _keyWirelessSocketUuid + " = '" + entry.GetWirelessSocketUuid() + "',"

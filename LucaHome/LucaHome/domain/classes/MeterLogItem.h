@@ -16,18 +16,14 @@ private:
 	string _roomUuid;
 	string _typeUuid;
 	string _type;
-	int _day;
-	int _month;
-	int _year;
-	int _hour;
-	int _minute;
 	string _meterId;
 	double _value;
 	string _imageName;
+	time_t _saveDateTime;
 
 public:
 	MeterLogItem();
-	MeterLogItem(string, string, string, string, int, int, int, int, int, string, double, string);
+	MeterLogItem(string, string, string, string, string, double, string, time_t);
 	~MeterLogItem();
 
 	void SetUuid(string);
@@ -42,21 +38,6 @@ public:
 	void SetType(string);
 	string GetType();
 
-	void SetDay(int);
-	int GetDay();
-
-	void SetMonth(int);
-	int GetMonth();
-
-	void SetYear(int);
-	int GetYear();
-
-	void SetHour(int);
-	int GetHour();
-
-	void SetMinute(int);
-	int GetMinute();
-
 	void SetMeterId(string);
 	string GetMeterId();
 
@@ -65,6 +46,9 @@ public:
 
 	void SetImageName(string);
 	string GetImageName();
+
+	void SetSaveDateTime(time_t);
+	time_t GetSaveDateTime();
 
 	string JsonString();
 	string ToString();

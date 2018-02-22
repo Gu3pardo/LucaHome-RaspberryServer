@@ -105,7 +105,7 @@ void ContactService::CheckContactBirthdayList()
 		{
 			stringstream information;
 			information << contact.GetName() << " has birthday today! It is the " << Tools::ConvertIntToStr(contact.GetAge()) << "th birthday!";
-			MailController::SendMail(information.str());
+			MailController::SendMail(RECEIVER_MAIL, 0, information.str());
 			contact.SetBirthdaySentReminder(true);
 		}
 		else if (!contact.HasBirthday() && contact.GetBirthdaySentReminder())
@@ -187,7 +187,7 @@ string ContactService::writeMailToContact(vector<string> data)
 		return "Message is empty!";
 	}
 
-	MailController::SendMailWithCustomAddress(contact.GetEMail(), message);
+	MailController::SendMail(contact.GetEMail(), 0, message);
 
 	return "";
 }

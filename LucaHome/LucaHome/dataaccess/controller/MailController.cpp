@@ -1,59 +1,31 @@
 #include "MailController.h"
 
-void MailController::SendMail(string message)
+void MailController::SendMail(string address, int messageType, string data)
 {
-	string command = CMD_SEND_SIMPLE_MAIL;
+	string command = CMD_SEND_MAIL;
 
-	if (command.length() + message.length() > MAIL_MAX_MESSAGE_LENGTH)
+	if (address.length() < MAIL_MIN_ADDRESS_LENGTH)
 	{
-		syslog(LOG_CRIT, "Error! Message too long! Message: %s; Length: %d", message.c_str(), message.length());
+		syslog(LOG_CRIT, "Error! Address too short! Length: %d", address.length());
 		return;
 	}
 
-	char buffer[MAIL_MAX_MESSAGE_LENGTH];
-	int length;
-
-	length = sprintf(buffer, "%s %s", command.c_str(), message.c_str());
-
-	string str(buffer);
-
-	system(buffer);
-}
-
-void MailController::SendMailWithImage(string imagePath)
-{
-	string command = CMD_SEND_IMAGE_MAIL;
-
-	if (command.length() + imagePath.length() > MAIL_MAX_MESSAGE_LENGTH)
+	if (messageType != 0 && messageType != 1)
 	{
-		syslog(LOG_CRIT, "Error! ImagePath too long! ImagePath: %s; Length: %d", imagePath.c_str(), imagePath.length());
+		syslog(LOG_CRIT, "Error! Invalid message type: %d", messageType);
 		return;
 	}
 
-	char buffer[MAIL_MAX_MESSAGE_LENGTH];
-	int length;
-
-	length = sprintf(buffer, "%s %s", command.c_str(), imagePath.c_str());
-
-	string str(buffer);
-
-	system(buffer);
-}
-
-void MailController::SendMailWithCustomAddress(string mailAddress, string message)
-{
-	string command = CMD_SEND_CUSTOM_RECEIVER_MAIL;
-
-	if (command.length() + message.length() > MAIL_MAX_MESSAGE_LENGTH)
+	if (command.length() + data.length() > MAIL_MAX_DATA_LENGTH)
 	{
-		syslog(LOG_CRIT, "Error! Message too long! Message: %s; Length: %d", message.c_str(), message.length());
+		syslog(LOG_CRIT, "Error! Data too long! Length: %d", data.length());
 		return;
 	}
 
-	char buffer[MAIL_MAX_MESSAGE_LENGTH];
+	char buffer[MAIL_MAX_DATA_LENGTH];
 	int length;
 
-	length = sprintf(buffer, "%s %s %s", command.c_str(), mailAddress, message.c_str());
+	length = sprintf(buffer, "%s %s %d %s", command.c_str(), address.c_str(), messageType, data.c_str());
 
 	string str(buffer);
 

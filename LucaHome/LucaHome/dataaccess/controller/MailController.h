@@ -32,9 +32,7 @@ using namespace std;
 class MailController
 {
 public:
-	static void SendMail(string);
-	static void SendMailWithImage(string);
-	static void SendMailWithCustomAddress(string, string);
+	static void SendMail(string, int, string);
 };
 
 #endif

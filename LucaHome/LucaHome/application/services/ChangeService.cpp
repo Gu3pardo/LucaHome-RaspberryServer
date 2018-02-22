@@ -30,25 +30,14 @@ void ChangeService::Dispose()
 
 void ChangeService::UpdateChange(string type, string userName)
 {
-	time_t now;
-	struct tm now_info;
-
-	now = time(0);
-	localtime_r(&now, &now_info);
-
 	vector<Change> changeList = _changeDatabase.GetList();
 	for (int index = 0; index < changeList.size(); index++)
 	{
 		Change change = changeList[index];
 		if (change.GetType() == type)
 		{
-			change.SetHour(now_info.tm_hour);
-			change.SetMinute(now_info.tm_min);
-			change.SetDay(now_info.tm_mday);
-			change.SetMonth(now_info.tm_mon + 1);
-			change.SetYear(now_info.tm_year + 1900);
+			change.SetTime(time(0));
 			change.SetUserName(userName);
-
 			_changeDatabase.Update(change);
 			break;
 		}

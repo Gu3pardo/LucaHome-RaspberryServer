@@ -614,7 +614,7 @@ int main(void) {
 
 	std::ostringstream startMessage;
 	startMessage << "Starting LucaHome";
-	MailController::SendMail(startMessage.str());
+	MailController::SendMail(RECEIVER_MAIL, 0, startMessage.str());
 
 	_applicationInformationService.Initialize("ApplicationInformation.db");
 	_changeService.Initialize("Change.db");
@@ -667,7 +667,7 @@ int main(void) {
 
 	std::ostringstream stopMessage;
 	stopMessage << "Stopping LucaHome";
-	MailController::SendMail(stopMessage.str());
+	MailController::SendMail(RECEIVER_MAIL, 0, stopMessage.str());
 
 	_applicationInformationService.Dispose();
 	_changeService.Dispose();

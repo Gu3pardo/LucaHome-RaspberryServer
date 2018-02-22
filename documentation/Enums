@@ -12,12 +12,16 @@ MapContentType
 11	Camera
 12	Meter
 
+MailType
+0	Simple Text
+1	Mail with image
+
 RoomType
-0 Living Room
-1 Sleeping Room
-2 Kitchen
-3 Bath
-4 Hall
+0	Living Room
+1	Sleeping Room
+2	Kitchen
+3	Bath
+4	Hall
 
 TemperatureType
 0	Null
@@ -31,6 +35,11 @@ UserActions
 3	Add					Update
 4	Clear				Deactivate		Delete
 5	ResetFailedLogin
+
+UserType
+2	Guest
+3	Normal
+5	Administrator
 
 WirelessTaskType
 0	Schedule

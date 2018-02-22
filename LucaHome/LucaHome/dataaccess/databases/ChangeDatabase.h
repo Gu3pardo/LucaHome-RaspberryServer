@@ -15,11 +15,7 @@ protected:
 	string _keyUuid = "_uuid";
 	string _keyType = "_type";
 	string _keyUserName = "_userName";
-	string _keyHour = "_hour";
-	string _keyMinute = "_minute";
-	string _keyDay = "_day";
-	string _keyMonth = "_month";
-	string _keyYear = "_year";
+	string _keyTime = "_time";
 
 	sqlite3 *database;
 

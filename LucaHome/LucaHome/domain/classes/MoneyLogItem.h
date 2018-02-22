@@ -18,14 +18,12 @@ private:
 	string _plan;
 	double _amount;
 	string _unit;
-	int _day;
-	int _month;
-	int _year;
 	string _userUuid;
+	time_t _saveDate;
 
 public:
 	MoneyLogItem();
-	MoneyLogItem(string, string, string, string, double, string, int, int, int, string);
+	MoneyLogItem(string, string, string, string, double, string, string, time_t);
 	~MoneyLogItem();
 
 	void SetUuid(string);
@@ -46,17 +44,11 @@ public:
 	void SetUnit(string);
 	string GetUnit();
 
-	void SetDay(int);
-	int GetDay();
-
-	void SetMonth(int);
-	int GetMonth();
-
-	void SetYear(int);
-	int GetYear();
-
 	void SetUserUuid(string);
 	string GetUserUuid();
+
+	void SetSaveDate(time_t);
+	time_t GetSaveDate();
 
 	string JsonString();
 	string ToString();

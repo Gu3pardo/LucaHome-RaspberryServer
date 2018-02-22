@@ -100,17 +100,16 @@ void ShoppingItemService::CheckShoppingListToRemind()
 
 		for (int reminderIndex = 0; reminderIndex < reminderList.size(); reminderIndex++) {
 			ShoppingItem shoppingItem = reminderList[reminderIndex];
-			shoppingItem.SetSentDay7Reminder(true);
 
 			reminderMessage
 				<< shoppingItem.GetName() << " "
 				<< Tools::ConvertIntToStr(shoppingItem.GetQuantity()) << " "
 				<< shoppingItem.GetUnit() << "\n";
 
-			_shoppingItemDatabase.Update(shoppingItem);
+			_shoppingItemDatabase.UpdateReminder(shoppingItem.GetUuid(), true);
 		}
 
-		MailController::SendMail(reminderMessage.str());
+		MailController::SendMail(RECEIVER_MAIL, 0, reminderMessage.str());
 	}
 }
 
@@ -139,8 +138,8 @@ char ShoppingItemService::addShoppingItem(vector<string> newShoppingItemData)
 		newShoppingItemData[SHOPPING_ITEM_TYPE_INDEX].c_str(),
 		atoi(newShoppingItemData[SHOPPING_ITEM_QUANTITY_INDEX].c_str()),
 		newShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str(),
-		atoi(newShoppingItemData[SHOPPING_ITEM_CREATION_TIME_INDEX].c_str()),
-		atoi(newShoppingItemData[SHOPPING_ITEM_SENT_DAY_7_REMINDER_INDEX].c_str()) == 1);
+		time(0),
+		false);
 	return _shoppingItemDatabase.Insert(_shoppingItemDatabase.GetList().size(), newShoppingItem);
 }
 
@@ -152,8 +151,8 @@ char ShoppingItemService::updateShoppingItem(vector<string> updateShoppingItemDa
 		updateShoppingItemData[SHOPPING_ITEM_TYPE_INDEX].c_str(),
 		atoi(updateShoppingItemData[SHOPPING_ITEM_QUANTITY_INDEX].c_str()),
 		updateShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str(),
-		atoi(updateShoppingItemData[SHOPPING_ITEM_CREATION_TIME_INDEX].c_str()),
-		atoi(updateShoppingItemData[SHOPPING_ITEM_SENT_DAY_7_REMINDER_INDEX].c_str()) == 1);
+		time(0),
+		false);
 	return _shoppingItemDatabase.Update(updateShoppingItem);
 }
 

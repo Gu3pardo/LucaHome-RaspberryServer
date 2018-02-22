@@ -96,7 +96,7 @@ string MapContentService::getJsonString()
 
 char MapContentService::addMapContent(vector<string> newMapContentData)
 {
-	Position newPosition(
+	Point newPosition(
 		atoi(newMapContentData[MAP_CONTENT_COORDINATES_X_INDEX].c_str()),
 		atoi(newMapContentData[MAP_CONTENT_COORDINATES_Y_INDEX].c_str()));
 	MapContent newMapContent(
@@ -112,7 +112,7 @@ char MapContentService::addMapContent(vector<string> newMapContentData)
 
 char MapContentService::updateMapContent(vector<string> updateMapContentData)
 {
-	Position updatePosition(
+	Point updatePosition(
 		atoi(updateMapContentData[MAP_CONTENT_COORDINATES_X_INDEX].c_str()),
 		atoi(updateMapContentData[MAP_CONTENT_COORDINATES_Y_INDEX].c_str()));
 	MapContent updateMapContent(

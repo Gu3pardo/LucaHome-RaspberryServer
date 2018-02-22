@@ -2,7 +2,7 @@
 
 MoneyLogItem::MoneyLogItem()
 {
-	MoneyLogItem("", "", "", "", 0.0, "", 1, 1, 1970, "");
+	MoneyLogItem("", "", "", "", 0.0, "", "", time(0));
 }
 
 MoneyLogItem::MoneyLogItem(
@@ -12,8 +12,8 @@ MoneyLogItem::MoneyLogItem(
 	string plan,
 	double amount,
 	string unit,
-	int day, int month, int year,
-	string userUuid)
+	string userUuid,
+	time_t saveDate)
 {
 	_uuid = uuid;
 	_typeUuid = typeUuid;
@@ -21,10 +21,8 @@ MoneyLogItem::MoneyLogItem(
 	_plan = plan;
 	_amount = amount;
 	_unit = unit;
-	_day = day;
-	_month = month;
-	_year = year;
 	_userUuid = userUuid;
+	_saveDate = saveDate;
 }
 
 MoneyLogItem::~MoneyLogItem()
@@ -91,36 +89,6 @@ string MoneyLogItem::GetUnit()
 	return _unit;
 }
 
-void MoneyLogItem::SetDay(int day)
-{
-	_day = day;
-}
-
-int MoneyLogItem::GetDay()
-{
-	return _day;
-}
-
-void MoneyLogItem::SetMonth(int month)
-{
-	_month = month;
-}
-
-int MoneyLogItem::GetMonth()
-{
-	return _month;
-}
-
-void MoneyLogItem::SetYear(int year)
-{
-	_year = year;
-}
-
-int MoneyLogItem::GetYear()
-{
-	return _year;
-}
-
 void MoneyLogItem::SetUserUuid(string userUuid)
 {
 	_userUuid = userUuid;
@@ -129,6 +97,16 @@ void MoneyLogItem::SetUserUuid(string userUuid)
 string MoneyLogItem::GetUserUuid()
 {
 	return _userUuid;
+}
+
+void MoneyLogItem::SetSaveDate(time_t saveDate)
+{
+	_saveDate = saveDate;
+}
+
+time_t MoneyLogItem::GetSaveDate()
+{
+	return _saveDate;
 }
 
 string MoneyLogItem::JsonString()
@@ -143,14 +121,8 @@ string MoneyLogItem::JsonString()
 		+ string("\"Plan\":\"") + _plan + string("\",")
 		+ string("\"Amount\":") + Tools::ConvertDoubleToStr(_amount) + string(",")
 		+ string("\"Unit\":\"") + _unit + string("\",")
-		+ string("\"Date\":")
-		+ string("{")
-		+ string("\"Day\":") + Tools::ConvertIntToStr(_day) + string(",")
-		+ string("\"Month\":") + Tools::ConvertIntToStr(_month) + string(",")
-		+ string("\"Year\":") + Tools::ConvertIntToStr(_year)
-		+ string("}")
-		+ string(",")
-		+ string("\"UserUuid\":\"") + _userUuid + string("\"")
+		+ string("\"UserUuid\":\"") + _userUuid + string("\",")
+		+ string("\"SaveDate\":") + Tools::ConvertIntToStr(_saveDate)
 		+ string("}")
 		+ string("}");
 	return str;
@@ -165,10 +137,8 @@ string MoneyLogItem::ToString()
 		+ string("; plan: ") + _plan
 		+ string("; amount: ") + Tools::ConvertDoubleToStr(_amount)
 		+ string("; unit: ") + _unit
-		+ string("; day: ") + Tools::ConvertIntToStr(_day)
-		+ string("; month: ") + Tools::ConvertIntToStr(_month)
-		+ string("; year: ") + Tools::ConvertIntToStr(_year)
 		+ string("; useruuid: ") + _userUuid
+		+ string("; savedate: ") + Tools::ConvertIntToStr(_saveDate)
 		+ string(" }");
 	return str;
 }

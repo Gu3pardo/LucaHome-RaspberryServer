@@ -25,7 +25,7 @@ vector<Change> ChangeDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyType + ";";
+	string sqlSelectCommand = "SELECT * FROM '" + _tableName + "' ORDER BY '" + _keyType + "';";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -41,13 +41,9 @@ vector<Change> ChangeDatabase::GetList()
 		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
 		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		string userName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
-		int hour = sqlite3_column_int(res, 4);
-		int minute = sqlite3_column_int(res, 5);
-		int day = sqlite3_column_int(res, 6);
-		int month = sqlite3_column_int(res, 7);
-		int year = sqlite3_column_int(res, 8);
+		time_t changeTime = sqlite3_column_int(res, 4);
 
-		Change newEntry(uuid, type, userName, hour, minute, day, month, year);
+		Change newEntry(uuid, type, userName, changeTime);
 		list.push_back(newEntry);
 	}
 
@@ -64,26 +60,18 @@ char ChangeDatabase::Insert(int rowId, Change entry)
 	}
 
 	string sqlInsertCommand =
-		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
-		+ _keyUuid + " ,"
-		+ _keyType + " ,"
-		+ _keyUserName + " ,"
-		+ _keyHour + " ,"
-		+ _keyMinute + " ,"
-		+ _keyDay + " ,"
-		+ _keyMonth + " ,"
-		+ _keyYear + " ) "
+		"INSERT INTO '" + _tableName + "' ("
+		+ "'" + _keyRowId + "' ,"
+		+ "'" + _keyUuid + "' ,"
+		+ "'" + _keyType + "' ,"
+		+ "'" + _keyUserName + "' ,"
+		+ "'" + _keyTime + "' ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetType() + "',"
 		+ "'" + entry.GetUserName() + "',"
-		+ Tools::ConvertIntToStr(entry.GetHour()) + ", "
-		+ Tools::ConvertIntToStr(entry.GetMinute()) + ", "
-		+ Tools::ConvertIntToStr(entry.GetDay()) + ", "
-		+ Tools::ConvertIntToStr(entry.GetMonth()) + ", "
-		+ Tools::ConvertIntToStr(entry.GetYear())
+		+ Tools::ConvertIntToStr(entry.GetTime())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -106,15 +94,11 @@ char ChangeDatabase::Update(Change entry)
 	}
 
 	string sqlUpdateCommand =
-		"UPDATE " + _tableName + " "
-		+ "SET " + _keyType + " = '" + entry.GetType() + "',"
-		+ "SET " + _keyUserName + " = '" + entry.GetUserName() + "',"
-		+ "SET " + _keyHour + " = " + Tools::ConvertIntToStr(entry.GetDay()) + ","
-		+ "SET " + _keyMinute + " = " + Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ "SET " + _keyDay + " = " + Tools::ConvertIntToStr(entry.GetYear()) + ","
-		+ "SET " + _keyMonth + " = " + Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ "SET " + _keyYear + " = " + Tools::ConvertIntToStr(entry.GetYear()) + " "
-		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+		"UPDATE '" + _tableName + "' "
+		+ "SET '" + _keyType + "' = '" + entry.GetType() + "',"
+		+ "SET '" + _keyUserName + "' = '" + entry.GetUserName() + "',"
+		+ "SET '" + _keyTime + "' = " + Tools::ConvertIntToStr(entry.GetTime()) + " "
+		+ "WHERE '" + _keyUuid + "'='" + entry.GetUuid() + "';";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
@@ -136,8 +120,8 @@ char ChangeDatabase::Delete(string uuid)
 	}
 
 	string sqlDeleteCommand =
-		"DELETE FROM " + _tableName + " "
-		+ "WHERE " + _keyUuid + "=" + uuid + ";";
+		"DELETE FROM '" + _tableName + "' "
+		+ "WHERE '" + _keyUuid + "'='" + uuid + "';";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
@@ -164,16 +148,12 @@ char ChangeDatabase::create()
 	}
 
 	string sqlCreateCommand =
-		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
-		+ _keyUuid + " TEXT NOT NULL,"
-		+ _keyType + " TEXT NOT NULL,"
-		+ _keyUserName + " TEXT NOT NULL,"
-		+ _keyHour + " INT NOT NULL,"
-		+ _keyMinute + " INT NOT NULL,"
-		+ _keyDay + " INT NOT NULL,"
-		+ _keyMonth + " INT NOT NULL,"
-		+ _keyYear + " INT NOT NULL);";
+		"CREATE TABLE '" + _tableName + "'("
+		+ "'" + _keyRowId + "' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+		+ "'" + _keyUuid + "' TEXT NOT NULL,"
+		+ "'" + _keyType + "' TEXT NOT NULL,"
+		+ "'" + _keyUserName + "' TEXT NOT NULL,"
+		+ "'" + _keyTime + "' INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

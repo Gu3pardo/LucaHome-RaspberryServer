@@ -1,12 +1,14 @@
 ID	PBI			Task																State
 
-1	API			Implement using php script											WIP (../api/lucahome.php)
-2	Telegram	Include Telegram Library (https://github.com/reo7sp/tgbot-cpp)		-
-3				Implement methods to use library									-
-4				Create token for telegram (https://core.telegram.org/)				-
-5	Mail		Reduce and simplify python scripts to use only one or two			-
-6	SQLite		Create local database and include them								-
-7				Fill databases with initial data (especially changes/informations)	-
-8	Crypto		Implement Encryption and Decryption (write by yourself vs lib)		-
+1	API			Implement using php script											TO TEST
+2	Mail		Reduce and simplify python scripts to use only one or two			TO TEST
+3	Telegram	Include Telegram Library (https://github.com/reo7sp/tgbot-cpp)		-
+4				Implement methods to use library									-
+5				Create token for telegram (https://core.telegram.org/)				-
+6	SQLite		Create local database and include them								WIP
+7				Create single DB-Controller, which every other uses					-
+8				Fix commands in existing databases									-
+9				Fill databases with initial data (especially changes/informations)	-
+10	Crypto		Implement Encryption and Decryption (write by yourself vs lib)		-
 
 Links for epic libs: http://en.cppreference.com/w/cpp/links/libs

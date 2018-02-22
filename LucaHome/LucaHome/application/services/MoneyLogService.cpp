@@ -126,10 +126,8 @@ char MoneyLogService::addMoneyLogItem(vector<string> newMoneyLogItemData)
 		newMoneyLogItemData[MONEY_LOG_ITEM_PLAN_INDEX].c_str(),
 		Tools::ConvertStrToDouble(newMoneyLogItemData[MONEY_LOG_ITEM_AMOUNT_INDEX].c_str()) == 1,
 		newMoneyLogItemData[MONEY_LOG_ITEM_UNIT_INDEX].c_str(),
-		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_DAY_INDEX].c_str()),
-		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_MONTH_INDEX].c_str()),
-		atoi(newMoneyLogItemData[MONEY_LOG_ITEM_YEAR_INDEX].c_str()),
-		newMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str());
+		newMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str(),
+		atoi(newMoneyLogItemData[METER_LOG_ITEM_SAVE_DATE_INDEX].c_str()));
 	return _moneyLogItemDatabase.Insert(_moneyLogItemDatabase.GetList().size(), newMoneyLogItem);
 }
 
@@ -142,10 +140,8 @@ char MoneyLogService::updateMoneyLogItem(vector<string> updateMoneyLogItemData)
 		updateMoneyLogItemData[MONEY_LOG_ITEM_PLAN_INDEX].c_str(),
 		Tools::ConvertStrToDouble(updateMoneyLogItemData[MONEY_LOG_ITEM_AMOUNT_INDEX].c_str()) == 1,
 		updateMoneyLogItemData[MONEY_LOG_ITEM_UNIT_INDEX].c_str(),
-		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_DAY_INDEX].c_str()),
-		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_MONTH_INDEX].c_str()),
-		atoi(updateMoneyLogItemData[MONEY_LOG_ITEM_YEAR_INDEX].c_str()),
-		updateMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str());
+		updateMoneyLogItemData[MONEY_LOG_ITEM_USER_UUID_INDEX].c_str(),
+		atoi(newMoneyLogItemData[METER_LOG_ITEM_SAVE_DATE_INDEX].c_str()));
 	return _moneyLogItemDatabase.Update(updateMoneyLogItem);
 }
 

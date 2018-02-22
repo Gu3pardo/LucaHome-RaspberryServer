@@ -44,12 +44,10 @@ vector<MoneyLogItem> MoneyLogItemDatabase::GetList()
 		string plan = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		double amount = sqlite3_column_double(res, 5);
 		string unit = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
-		int day = sqlite3_column_int(res, 7);
-		int month = sqlite3_column_int(res, 8);
-		int year = sqlite3_column_int(res, 9);
-		string userUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 10)));
+		string userUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
+		int saveDate = sqlite3_column_int(res, 8);
 
-		MoneyLogItem newEntry(uuid, typeUuid, bank, plan, amount, unit, day, month, year, userUuid);
+		MoneyLogItem newEntry(uuid, typeUuid, bank, plan, amount, unit, userUuid, saveDate);
 		list.push_back(newEntry);
 	}
 
@@ -84,12 +82,10 @@ vector<MoneyLogItem> MoneyLogItemDatabase::GetUserList(string userUuid)
 		string plan = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 		double amount = sqlite3_column_double(res, 5);
 		string unit = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 6)));
-		int day = sqlite3_column_int(res, 7);
-		int month = sqlite3_column_int(res, 8);
-		int year = sqlite3_column_int(res, 9);
-		string userUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 10)));
+		string userUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
+		int saveDate = sqlite3_column_int(res, 8);
 
-		MoneyLogItem newEntry(uuid, typeUuid, bank, plan, amount, unit, day, month, year, userUuid);
+		MoneyLogItem newEntry(uuid, typeUuid, bank, plan, amount, unit, userUuid, saveDate);
 		list.push_back(newEntry);
 	}
 
@@ -114,10 +110,8 @@ char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
 		+ _keyPlan + " ,"
 		+ _keyAmount + " ,"
 		+ _keyUnit + " ,"
-		+ _keyDay + " ,"
-		+ _keyMonth + " ,"
-		+ _keyYear + " ,"
-		+ _keyUserUuid + " ) "
+		+ _keyUserUuid + " ,"
+		+ _keySaveDate + " ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
@@ -126,10 +120,8 @@ char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
 		+ "'" + entry.GetPlan() + "',"
 		+ Tools::ConvertDoubleToStr(entry.GetAmount()) + ","
 		+ "'" + entry.GetUnit() + "',"
-		+ Tools::ConvertIntToStr(entry.GetDay()) + ","
-		+ Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ Tools::ConvertIntToStr(entry.GetYear()) + ","
-		+ "'" + entry.GetUserUuid() + "'"
+		+ "'" + entry.GetUserUuid() + "',"
+		+ Tools::ConvertIntToStr(entry.GetSaveDate())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -158,10 +150,8 @@ char MoneyLogItemDatabase::Update(MoneyLogItem entry)
 		+ "SET " + _keyPlan + " = '" + entry.GetPlan() + "',"
 		+ "SET " + _keyAmount + " = " + Tools::ConvertDoubleToStr(entry.GetAmount()) + ","
 		+ "SET " + _keyUnit + " = '" + entry.GetUnit() + "',"
-		+ "SET " + _keyDay + " = " + Tools::ConvertIntToStr(entry.GetDay()) + ","
-		+ "SET " + _keyMonth + " = " + Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ "SET " + _keyYear + " = " + Tools::ConvertIntToStr(entry.GetYear()) + ","
-		+ "SET " + _keyUserUuid + " = '" + entry.GetUserUuid() + "' "
+		+ "SET " + _keyUserUuid + " = '" + entry.GetUserUuid() + "',"
+		+ "SET " + _keySaveDate + " = " + Tools::ConvertIntToStr(entry.GetSaveDate()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
@@ -220,10 +210,8 @@ char MoneyLogItemDatabase::create()
 		+ _keyPlan + " TEXT NOT NULL,"
 		+ _keyAmount + " REAL NOT NULL,"
 		+ _keyUnit + " TEXT NOT NULL,"
-		+ _keyDay + " INT NOT NULL,"
-		+ _keyMonth + " INT NOT NULL,"
-		+ _keyYear + " INT NOT NULL,"
-		+ _keyUserUuid + " TEXT NOT NULL);";
+		+ _keyUserUuid + " TEXT NOT NULL,"
+		+ _keySaveDate + " INT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

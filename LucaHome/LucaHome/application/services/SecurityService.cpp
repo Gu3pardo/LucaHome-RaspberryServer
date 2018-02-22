@@ -87,7 +87,7 @@ void SecurityService::CheckMotionEvents()
 
 				stringstream imagePath;
 				imagePath << "../../.." << NAS_PATH_CAMERA << currentMotionEventImage;
-				_mailController.SendMailWithImage(imagePath.str());
+				MailController::SendMail(RECEIVER_MAIL, 1, imagePath.str());
 			}
 		}
 	}

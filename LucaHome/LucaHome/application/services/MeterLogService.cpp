@@ -101,14 +101,10 @@ char MeterLogService::addMeterLogItem(vector<string> newMeterLogItemData)
 		newMeterLogItemData[METER_LOG_ITEM_ROOM_UUID_INDEX].c_str(),
 		newMeterLogItemData[METER_LOG_ITEM_TYPE_UUID_INDEX].c_str(),
 		newMeterLogItemData[METER_LOG_ITEM_TYPE_INDEX].c_str(),
-		atoi(newMeterLogItemData[METER_LOG_ITEM_DAY_INDEX].c_str()),
-		atoi(newMeterLogItemData[METER_LOG_ITEM_MONTH_INDEX].c_str()),
-		atoi(newMeterLogItemData[METER_LOG_ITEM_YEAR_INDEX].c_str()),
-		atoi(newMeterLogItemData[METER_LOG_ITEM_HOUR_INDEX].c_str()),
-		atoi(newMeterLogItemData[METER_LOG_ITEM_MINUTE_INDEX].c_str()),
 		newMeterLogItemData[METER_LOG_ITEM_METER_ID_INDEX].c_str(),
 		Tools::ConvertStrToDouble(newMeterLogItemData[METER_LOG_ITEM_VALUE_INDEX].c_str()) == 1,
-		newMeterLogItemData[METER_LOG_ITEM_IMAGE_NAME_INDEX].c_str());
+		newMeterLogItemData[METER_LOG_ITEM_IMAGE_NAME_INDEX].c_str(),
+		atoi(newMeterLogItemData[METER_LOG_ITEM_SAVE_DATE_TIME_INDEX].c_str()));
 	return _meterLogItemDatabase.Insert(_meterLogItemDatabase.GetList().size(), newMeterLogItem);
 }
 
@@ -119,14 +115,10 @@ char MeterLogService::updateMeterLogItem(vector<string> updateMeterLogItemData)
 		updateMeterLogItemData[METER_LOG_ITEM_ROOM_UUID_INDEX].c_str(),
 		updateMeterLogItemData[METER_LOG_ITEM_TYPE_UUID_INDEX].c_str(),
 		updateMeterLogItemData[METER_LOG_ITEM_TYPE_INDEX].c_str(),
-		atoi(updateMeterLogItemData[METER_LOG_ITEM_DAY_INDEX].c_str()),
-		atoi(updateMeterLogItemData[METER_LOG_ITEM_MONTH_INDEX].c_str()),
-		atoi(updateMeterLogItemData[METER_LOG_ITEM_YEAR_INDEX].c_str()),
-		atoi(updateMeterLogItemData[METER_LOG_ITEM_HOUR_INDEX].c_str()),
-		atoi(updateMeterLogItemData[METER_LOG_ITEM_MINUTE_INDEX].c_str()),
 		updateMeterLogItemData[METER_LOG_ITEM_METER_ID_INDEX].c_str(),
 		Tools::ConvertStrToDouble(updateMeterLogItemData[METER_LOG_ITEM_VALUE_INDEX].c_str()) == 1,
-		updateMeterLogItemData[METER_LOG_ITEM_IMAGE_NAME_INDEX].c_str());
+		updateMeterLogItemData[METER_LOG_ITEM_IMAGE_NAME_INDEX].c_str(),
+		atoi(updateMeterLogItemData[METER_LOG_ITEM_SAVE_DATE_TIME_INDEX].c_str()));
 	return _meterLogItemDatabase.Update(updateMeterLogItem);
 }
 

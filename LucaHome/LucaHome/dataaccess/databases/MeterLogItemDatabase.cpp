@@ -42,16 +42,12 @@ vector<MeterLogItem> MeterLogItemDatabase::GetList()
 		string roomUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		string typeUuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 3)));
 		string type = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
-		int day = sqlite3_column_int(res, 5);
-		int month = sqlite3_column_int(res, 6);
-		int year = sqlite3_column_int(res, 7);
-		int hour = sqlite3_column_int(res, 8);
-		int minute = sqlite3_column_int(res, 9);
-		string meterId = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 10)));
-		double value = sqlite3_column_double(res, 11);
-		string imageName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 12)));
+		string meterId = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 5)));
+		double value = sqlite3_column_double(res, 6);
+		string imageName = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 7)));
+		int saveDateTime = sqlite3_column_int(res, 8);
 
-		MeterLogItem newEntry(uuid, roomUuid, typeUuid, type, day, month, year, hour, minute, meterId, value, imageName);
+		MeterLogItem newEntry(uuid, roomUuid, typeUuid, type, meterId, value, imageName, saveDateTime);
 		list.push_back(newEntry);
 	}
 
@@ -74,28 +70,20 @@ char MeterLogItemDatabase::Insert(int rowId, MeterLogItem entry)
 		+ _keyRoomUuid + " ,"
 		+ _keyTypeUuid + " ,"
 		+ _keyType + " ,"
-		+ _keyDay + " ,"
-		+ _keyMonth + " ,"
-		+ _keyYear + " ,"
-		+ _keyHour + " ,"
-		+ _keyMinute + " ,"
 		+ _keyMeterId + " ,"
 		+ _keyValue + " ,"
-		+ _keyImageName + " ) "
+		+ _keyImageName + " ,"
+		+ _keySaveDateTime + " ) "
 		+ "VALUES("
 		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetTypeUuid() + "',"
 		+ "'" + entry.GetType() + "',"
-		+ Tools::ConvertIntToStr(entry.GetDay()) + ","
-		+ Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ Tools::ConvertIntToStr(entry.GetYear()) + ","
-		+ Tools::ConvertIntToStr(entry.GetHour()) + ","
-		+ Tools::ConvertIntToStr(entry.GetMinute()) + ","
 		+ "'" + entry.GetMeterId() + "',"
 		+ Tools::ConvertDoubleToStr(entry.GetValue()) + ","
-		+ "'" + entry.GetImageName() + "'"
+		+ "'" + entry.GetImageName() + "',"
+		+ Tools::ConvertIntToStr(entry.GetSaveDateTime())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -122,14 +110,10 @@ char MeterLogItemDatabase::Update(MeterLogItem entry)
 		+ "SET " + _keyRoomUuid + " = '" + entry.GetRoomUuid() + "',"
 		+ "SET " + _keyTypeUuid + " = '" + entry.GetTypeUuid() + "',"
 		+ "SET " + _keyType + " = '" + entry.GetType() + "',"
-		+ "SET " + _keyDay + " = " + Tools::ConvertIntToStr(entry.GetDay()) + ","
-		+ "SET " + _keyMonth + " = " + Tools::ConvertIntToStr(entry.GetMonth()) + ","
-		+ "SET " + _keyYear + " = " + Tools::ConvertIntToStr(entry.GetYear()) + ","
-		+ "SET " + _keyHour + " = " + Tools::ConvertIntToStr(entry.GetHour()) + ","
-		+ "SET " + _keyMinute + " = " + Tools::ConvertIntToStr(entry.GetMinute()) + ","
 		+ "SET " + _keyMeterId + " = '" + entry.GetMeterId() + "',"
 		+ "SET " + _keyValue + " = " + Tools::ConvertDoubleToStr(entry.GetValue()) + ","
-		+ "SET " + _keyImageName + " = '" + entry.GetImageName() + "' "
+		+ "SET " + _keyImageName + " = '" + entry.GetImageName() + "',"
+		+ "SET " + _keySaveDateTime + " = " + Tools::ConvertIntToStr(entry.GetSaveDateTime()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
@@ -186,14 +170,10 @@ char MeterLogItemDatabase::create()
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyTypeUuid + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
-		+ _keyDay + " INT NOT NULL,"
-		+ _keyMonth + " INT NOT NULL,"
-		+ _keyYear + " INT NOT NULL,"
-		+ _keyHour + " INT NOT NULL,"
-		+ _keyMinute + " INT NOT NULL,"
 		+ _keyMeterId + " TEXT NOT NULL,"
 		+ _keyValue + " REAL NOT NULL,"
-		+ _keyImageName + " TEXT NOT NULL);";
+		+ _keyImageName + " TEXT NOT NULL,"
+		+ _keySaveDateTime + " INT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

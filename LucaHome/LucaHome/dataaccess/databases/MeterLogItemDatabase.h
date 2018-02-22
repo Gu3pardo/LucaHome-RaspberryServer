@@ -16,14 +16,10 @@ protected:
 	string _keyRoomUuid = "_roomUuid";
 	string _keyTypeUuid = "_typeUuid";
 	string _keyType = "_type";
-	string _keyDay = "_day";
-	string _keyMonth = "_month";
-	string _keyYear = "_year";
-	string _keyHour = "_hour";
-	string _keyMinute = "_minute";
 	string _keyMeterId = "_meterId";
 	string _keyValue = "_value";
 	string _keyImageName = "_imageName";
+	string _keySaveDateTime = "_saveDateTime";
 
 	sqlite3 *database;
 

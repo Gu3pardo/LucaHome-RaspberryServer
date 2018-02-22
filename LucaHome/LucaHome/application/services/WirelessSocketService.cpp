@@ -122,7 +122,7 @@ char WirelessSocketService::addWirelessSocket(vector<string> newWirelessSocketDa
 		newWirelessSocketData[WIRELESS_SOCKET_ROOM_UUID_INDEX].c_str(),
 		newWirelessSocketData[WIRELESS_SOCKET_NAME_INDEX].c_str(),
 		newWirelessSocketData[WIRELESS_SOCKET_CODE_INDEX].c_str(),
-		atoi(newWirelessSocketData[WIRELESS_SOCKET_STATE_INDEX].c_str()) == 1);
+		false);
 	return _wirelessSocketDatabase.Insert(_wirelessSocketDatabase.GetList().size(), newWirelessSocket);
 }
 
@@ -133,7 +133,7 @@ char WirelessSocketService::updateWirelessSocket(vector<string> updateWirelessSo
 		updateWirelessSocketData[WIRELESS_SOCKET_ROOM_UUID_INDEX].c_str(),
 		updateWirelessSocketData[WIRELESS_SOCKET_NAME_INDEX].c_str(),
 		updateWirelessSocketData[WIRELESS_SOCKET_CODE_INDEX].c_str(),
-		atoi(updateWirelessSocketData[WIRELESS_SOCKET_STATE_INDEX].c_str()) == 1);
+		false);
 	return _wirelessSocketDatabase.Update(updateWirelessSocket);
 }
 

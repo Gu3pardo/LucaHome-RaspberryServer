@@ -14,6 +14,7 @@ void UserService::Initialize(string databaseName)
 string UserService::PerformAction(vector<string> data)
 {
 	string username = data[USER_NAME_INDEX];
+	string passphrase = data[PASSWORD_INDEX];
 	string action = data[ACTION_INDEX];
 	string actionParameter = data[ACTION_PARAMETER_INDEX];
 
@@ -66,6 +67,16 @@ string UserService::PerformAction(vector<string> data)
 		stringstream actionAnswer;
 		actionAnswer << "Error: " << error;
 		return actionAnswer.str();
+	}
+
+	else if (action == VALIDATE)
+	{
+		if (AuthentificateUser(username, passphrase))
+		{
+			return USER_DELETE_SUCCESS;
+		}
+
+		return AUTHENTIFICATION_ERROR_FAILED;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -145,29 +156,56 @@ bool UserService::AuthentificateUserAction(string userName, string passphrase, s
 	return false;
 }
 
+bool UserService::IsUserAdmin(string userName) {
+	if (userName == DUMMY) {
+		return false;
+	}
+
+	vector<User> userList = _userDatabase.GetList();
+
+	for (int index = 0; index < userList.size(); index++) {
+		User user = userList[index];
+		if (user.GetName() == userName) {
+			if (user.GetInvalidLoginCount() >= MAX_INVALID_LOGIN_COUNT) {
+				return false;
+			}
+
+			if (user.IsAdmin()) {
+				return true;
+			}
+
+			return false;
+		}
+	}
+
+	return false;
+}
+
 /*==============PRIVATE==============*/
 
 char UserService::addUser(vector<string> newUserData)
 {
+	int role = Tools::ConvertStrToDouble(newUserData[USER_ROLE_INDEX].c_str());
 	User newUser(
 		newUserData[COIN_UUID_INDEX].c_str(),
 		newUserData[USER_DATA_NAME_INDEX].c_str(),
 		newUserData[USER_PASSPHRASE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(newUserData[USER_ROLE_INDEX].c_str()),
-		Tools::ConvertStrToBool(newUserData[USER_IS_ADMIN_INDEX].c_str()),
-		Tools::ConvertStrToDouble(newUserData[USER_INVALID_LOGIN_COUNT_INDEX].c_str()));
+		role,
+		role == 5,
+		0);
 	return _userDatabase.Insert(_userDatabase.GetList().size(), newUser);
 }
 
 char UserService::updateUser(vector<string> updateUserData)
 {
+	int role = Tools::ConvertStrToDouble(updateUserData[USER_ROLE_INDEX].c_str());
 	User updateUser(
 		updateUserData[COIN_UUID_INDEX].c_str(),
 		updateUserData[USER_DATA_NAME_INDEX].c_str(),
 		updateUserData[USER_PASSPHRASE_INDEX].c_str(),
-		Tools::ConvertStrToDouble(updateUserData[USER_ROLE_INDEX].c_str()),
-		Tools::ConvertStrToBool(updateUserData[USER_IS_ADMIN_INDEX].c_str()),
-		Tools::ConvertStrToDouble(updateUserData[USER_INVALID_LOGIN_COUNT_INDEX].c_str()));
+		role,
+		role == 5,
+		0);
 	return _userDatabase.Update(updateUser);
 }
 
@@ -196,8 +234,8 @@ int UserService::getActionId(string action) {
 }
 
 bool UserService::isAdminAction(string action) {
-	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE 
-		|| action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP  || action == TOGGLE 
+	if (action == AVAILABILITY || action == CHECK || action == COUNT || action == GET || action == VALIDATE
+		|| action == ACTIVATE || action == PLAY || action == SET || action == START || action == STOP || action == TOGGLE
 		|| action == ADD || action == UPDATE
 		|| action == CLEAR || action == DEACTIVATE || action == DELETE) {
 		return false;
@@ -206,29 +244,4 @@ bool UserService::isAdminAction(string action) {
 		return true;
 	}
 	return true;
-}
-
-bool UserService::IsUserAdmin(string userName) {
-	if (userName == DUMMY) {
-		return false;
-	}
-
-	vector<User> userList = _userDatabase.GetList();
-
-	for (int index = 0; index < userList.size(); index++) {
-		User user = userList[index];
-		if (user.GetName() == userName) {
-			if (user.GetInvalidLoginCount() >= MAX_INVALID_LOGIN_COUNT) {
-				return false;
-			}
-
-			if (user.IsAdmin()) {
-				return true;
-			}
-
-			return false;
-		}
-	}
-
-	return false;
 }

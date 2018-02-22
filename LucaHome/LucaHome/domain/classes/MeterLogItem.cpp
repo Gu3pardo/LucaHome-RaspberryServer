@@ -2,7 +2,7 @@
 
 MeterLogItem::MeterLogItem()
 {
-	MeterLogItem("", "", "", "", 1, 1, 1970, 0, 0, "", 0, "");
+	MeterLogItem("", "", "", "", "", 0, "", time(0));
 }
 
 MeterLogItem::MeterLogItem(
@@ -10,24 +10,19 @@ MeterLogItem::MeterLogItem(
 	string roomUuid,
 	string typeUuid,
 	string type,
-	int day, int month, int year,
-	int hour, int minute,
 	string meterId,
 	double value,
-	string imageName)
+	string imageName,
+	time_t saveDateTime)
 {
 	_uuid = uuid;
 	_roomUuid = roomUuid;
 	_typeUuid = typeUuid;
 	_type = type;
-	_day = day;
-	_month = month;
-	_year = year;
-	_hour = hour;
-	_minute = minute;
 	_meterId = meterId;
 	_value = value;
 	_imageName = imageName;
+	_saveDateTime = saveDateTime;
 }
 
 MeterLogItem::~MeterLogItem()
@@ -74,56 +69,6 @@ string MeterLogItem::GetType()
 	return _type;
 }
 
-void MeterLogItem::SetDay(int day)
-{
-	_day = day;
-}
-
-int MeterLogItem::GetDay()
-{
-	return _day;
-}
-
-void MeterLogItem::SetMonth(int month)
-{
-	_month = month;
-}
-
-int MeterLogItem::GetMonth()
-{
-	return _month;
-}
-
-void MeterLogItem::SetYear(int year)
-{
-	_year = year;
-}
-
-int MeterLogItem::GetYear()
-{
-	return _year;
-}
-
-void MeterLogItem::SetHour(int hour)
-{
-	_hour = hour;
-}
-
-int MeterLogItem::GetHour()
-{
-	return _hour;
-}
-
-void MeterLogItem::SetMinute(int minute)
-{
-	_minute = minute;
-}
-
-int MeterLogItem::GetMinute()
-{
-	return _minute;
-}
-
 void MeterLogItem::SetMeterId(string meterId)
 {
 	_meterId = meterId;
@@ -154,6 +99,16 @@ string MeterLogItem::GetImageName()
 	return _imageName;
 }
 
+void MeterLogItem::SetSaveDateTime(time_t saveDateTime)
+{
+	_saveDateTime = saveDateTime;
+}
+
+time_t MeterLogItem::GetSaveDateTime()
+{
+	return _saveDateTime;
+}
+
 string MeterLogItem::JsonString()
 {
 	string str =
@@ -164,22 +119,10 @@ string MeterLogItem::JsonString()
 		+ string("\"RoomUuid\":\"") + _roomUuid + string("\",")
 		+ string("\"TypeUuid\":\"") + _typeUuid + string("\",")
 		+ string("\"Type\":\"") + _type + string("\",")
-		+ string("\"Date\":")
-		+ string("{")
-		+ string("\"Day\":") + Tools::ConvertIntToStr(_day) + string(",")
-		+ string("\"Month\":") + Tools::ConvertIntToStr(_month) + string(",")
-		+ string("\"Year\":") + Tools::ConvertIntToStr(_year)
-		+ string("}")
-		+ string(",")
-		+ string("\"Time\":")
-		+ string("{")
-		+ string("\"Hour\":") + Tools::ConvertIntToStr(_hour) + string(",")
-		+ string("\"Minute\":") + Tools::ConvertIntToStr(_minute)
-		+ string("}")
-		+ string(",")
 		+ string("\"MeterId\":\"") + _meterId + string("\",")
 		+ string("\"Value\":") + Tools::ConvertDoubleToStr(_value) + string(",")
-		+ string("\"ImageName\":\"") + _imageName + string("\"")
+		+ string("\"ImageName\":\"") + _imageName + string("\",")
+		+ string("\"SaveDateTime\":") + Tools::ConvertIntToStr(_saveDateTime)
 		+ string("}")
 		+ string("}");
 	return str;
@@ -192,14 +135,10 @@ string MeterLogItem::ToString()
 		+ string("; roomUuid: ") + _roomUuid
 		+ string("; typeUuid: ") + _typeUuid
 		+ string("; type: ") + _type
-		+ string("; day: ") + Tools::ConvertIntToStr(_day)
-		+ string("; month: ") + Tools::ConvertIntToStr(_month)
-		+ string("; year: ") + Tools::ConvertIntToStr(_year)
-		+ string("; hour: ") + Tools::ConvertIntToStr(_hour)
-		+ string("; hour: ") + Tools::ConvertIntToStr(_minute)
 		+ string("; meterId: ") + _meterId
 		+ string("; value: ") + Tools::ConvertDoubleToStr(_value)
 		+ string("; imageName: ") + _imageName
+		+ string("; saveDateTime: ") + Tools::ConvertIntToStr(_saveDateTime)
 		+ string(" }");
 	return str;
 }

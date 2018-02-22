@@ -46,7 +46,7 @@ vector<ShoppingItem> ShoppingItemDatabase::GetList()
 		int creationTime = sqlite3_column_int(res, 6);
 		bool sendDay7reminder = sqlite3_column_int(res, 7) == 1;
 
-		ShoppingItem newEntry(uuid, name, type, quantity, unit);
+		ShoppingItem newEntry(uuid, name, type, quantity, unit, creationTime, sendDay7reminder);
 		list.push_back(newEntry);
 	}
 
@@ -111,6 +111,30 @@ char ShoppingItemDatabase::Update(ShoppingItem entry)
 		+ "SET " + _keyCreationTime + " = " + Tools::ConvertIntToStr(entry.GetCreationTime()) + ","
 		+ "SET " + _keySentDay7Reminder + " = " + Tools::ConvertBoolToStr(entry.GetSentDay7Reminder())
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
+
+	char *errorMessage = 0;
+	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
+	if (error != SQLITE_OK) {
+		sqlite3_free(errorMessage);
+		close();
+		return *errorMessage;
+	}
+
+	close();
+	return 0;
+}
+
+char ShoppingItemDatabase::UpdateReminder(string uuid, bool sendDay7Reminder)
+{
+	char openErrorMessage = open();
+	if (openErrorMessage) {
+		return openErrorMessage;
+	}
+
+	string sqlUpdateCommand =
+		"UPDATE " + _tableName + " "
+		+ "SET " + _keySentDay7Reminder + " = " + Tools::ConvertBoolToStr(sendDay7Reminder)
+		+ "WHERE " + _keyUuid + "=" + uuid + ";";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
