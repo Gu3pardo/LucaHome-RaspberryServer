@@ -107,7 +107,7 @@ char MapContentService::addMapContent(vector<string> newMapContentData)
 		newMapContentData[MAP_CONTENT_NAME_INDEX].c_str(),
 		newMapContentData[MAP_CONTENT_SHORT_NAME_INDEX].c_str(),
 		atoi(newMapContentData[MAP_CONTENT_VISIBILITY_INDEX].c_str()) == 1);
-	return _mapContentDatabase.Insert(_mapContentDatabase.GetList().size(), newMapContent);
+	return _mapContentDatabase.Insert(newMapContent);
 }
 
 char MapContentService::updateMapContent(vector<string> updateMapContentData)

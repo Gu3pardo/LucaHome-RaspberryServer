@@ -104,7 +104,7 @@ Contact ContactDatabase::GetByUuid(string uuid)
 	return Contact();
 }
 
-char ContactDatabase::Insert(int rowId, Contact entry)
+char ContactDatabase::Insert(Contact entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -113,7 +113,6 @@ char ContactDatabase::Insert(int rowId, Contact entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyGroup + " ,"
@@ -127,7 +126,6 @@ char ContactDatabase::Insert(int rowId, Contact entry)
 		+ _keyBirthdayRemindMe + " ,"
 		+ _keyBirthdaySentReminder + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetGroup() + "',"
@@ -225,7 +223,7 @@ char ContactDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyGroup + " TEXT NOT NULL,"
@@ -233,11 +231,11 @@ char ContactDatabase::create()
 		+ _keyPhoneHome + " TEXT NOT NULL,"
 		+ _keyPhoneMobile + " TEXT NOT NULL,"
 		+ _keyEMail + " TEXT NOT NULL,"
-		+ _keyBirthdayDay + " INT NOT NULL,"
-		+ _keyBirthdayMonth + " INT NOT NULL,"
-		+ _keyBirthdayYear + " INT NOT NULL,"
-		+ _keyBirthdayRemindMe + " INT NOT NULL,"
-		+ _keyBirthdaySentReminder + " INT NOT NULL);";
+		+ _keyBirthdayDay + " INTEGER NOT NULL,"
+		+ _keyBirthdayMonth + " INTEGER NOT NULL,"
+		+ _keyBirthdayYear + " INTEGER NOT NULL,"
+		+ _keyBirthdayRemindMe + " INTEGER NOT NULL,"
+		+ _keyBirthdaySentReminder + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

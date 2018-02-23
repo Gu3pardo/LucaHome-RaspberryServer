@@ -101,7 +101,7 @@ char RadioStreamService::addRadioStream(vector<string> newRadioStreamData)
 		newRadioStreamData[RADIO_STREAM_TITLE_INDEX].c_str(),
 		newRadioStreamData[RADIO_STREAM_URL_INDEX].c_str(),
 		atoi(newRadioStreamData[RADIO_STREAM_PLAY_COUNT_INDEX].c_str()));
-	return _radioStreamDatabase.Insert(_radioStreamDatabase.GetList().size(), newRadioStream);
+	return _radioStreamDatabase.Insert(newRadioStream);
 }
 
 char RadioStreamService::updateRadioStream(vector<string> updateRadioStreamData)

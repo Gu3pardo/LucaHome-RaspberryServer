@@ -55,7 +55,7 @@ vector<ShoppingItem> ShoppingItemDatabase::GetList()
 	return list;
 }
 
-char ShoppingItemDatabase::Insert(int rowId, ShoppingItem entry)
+char ShoppingItemDatabase::Insert(ShoppingItem entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -64,7 +64,6 @@ char ShoppingItemDatabase::Insert(int rowId, ShoppingItem entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyType + " ,"
@@ -73,7 +72,6 @@ char ShoppingItemDatabase::Insert(int rowId, ShoppingItem entry)
 		+ _keyCreationTime + " ,"
 		+ _keySentDay7Reminder + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetType() + "',"
@@ -185,14 +183,14 @@ char ShoppingItemDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
-		+ _keyQuantity + " INT NOT NULL,"
+		+ _keyQuantity + " INTEGER NOT NULL,"
 		+ _keyUnit + " TEXT NOT NULL,"
-		+ _keyCreationTime + " INT NOT NULL,"
-		+ _keySentDay7Reminder + " INT NOT NULL);";
+		+ _keyCreationTime + " INTEGER NOT NULL,"
+		+ _keySentDay7Reminder + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

@@ -111,7 +111,7 @@ char WirelessTimerService::addWirelessTimer(vector<string> newWirelessTimerData)
 		newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		newWirelessTimerData[WIRELESS_TIMER_WIRELESS_SWITCH_UUID_INDEX].c_str());
-	return _wirelessTimerDatabase.Insert(_wirelessTimerDatabase.GetList().size(), newWirelessTimer);
+	return _wirelessTimerDatabase.Insert(newWirelessTimer);
 }
 
 char WirelessTimerService::updateWirelessTimer(vector<string> updateWirelessTimerData)

@@ -54,7 +54,7 @@ vector<YoutubeVideo> YoutubeVideoDatabase::GetList()
 	return list;
 }
 
-char YoutubeVideoDatabase::Insert(int rowId, YoutubeVideo entry)
+char YoutubeVideoDatabase::Insert(YoutubeVideo entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -63,7 +63,6 @@ char YoutubeVideoDatabase::Insert(int rowId, YoutubeVideo entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyTitle + " ,"
 		+ _keyYoutubeId + " ,"
@@ -71,7 +70,6 @@ char YoutubeVideoDatabase::Insert(int rowId, YoutubeVideo entry)
 		+ _keyDescription + " ,"
 		+ _keyMediumImageUrl + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTitle() + "',"
 		+ "'" + entry.GetYoutubeId() + "',"
@@ -157,11 +155,11 @@ char YoutubeVideoDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTitle + " TEXT NOT NULL,"
 		+ _keyYoutubeId + " TEXT NOT NULL,"
-		+ _keyPlayCount + " INT NOT NULL,"
+		+ _keyPlayCount + " INTEGER NOT NULL,"
 		+ _keyDescription + " TEXT NOT NULL,"
 		+ _keyMediumImageUrl + " TEXT NOT NULL);";
 

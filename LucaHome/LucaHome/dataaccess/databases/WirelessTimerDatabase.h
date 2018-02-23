@@ -38,7 +38,7 @@ public:
 
 	virtual vector<WirelessTimer> GetList();
 
-	virtual char Insert(int, WirelessTimer);
+	virtual char Insert(WirelessTimer);
 	virtual char Update(WirelessTimer);
 	virtual char Delete(string);
 };

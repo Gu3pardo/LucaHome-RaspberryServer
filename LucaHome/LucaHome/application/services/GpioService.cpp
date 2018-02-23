@@ -118,7 +118,7 @@ char GpioService::addGpio(vector<string> newGpioData)
 		newGpioData[GPIO_NAME_INDEX].c_str(),
 		Tools::ConvertStrToInt(newGpioData[GPIO_PIN_INDEX].c_str()),
 		Tools::ConvertStrToBool(newGpioData[GPIO_STATE_INDEX].c_str()));
-	return _gpioDatabase.Insert(_gpioDatabase.GetList().size(), newGpio);
+	return _gpioDatabase.Insert(newGpio);
 }
 
 char GpioService::updateGpio(vector<string> updateGpioData)

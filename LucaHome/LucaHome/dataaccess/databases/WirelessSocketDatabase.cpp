@@ -90,7 +90,7 @@ WirelessSocket WirelessSocketDatabase::GetByUuid(string uuid)
 	return WirelessSocket();
 }
 
-char WirelessSocketDatabase::Insert(int rowId, WirelessSocket entry)
+char WirelessSocketDatabase::Insert(WirelessSocket entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -99,14 +99,12 @@ char WirelessSocketDatabase::Insert(int rowId, WirelessSocket entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyRoomUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyCode + " ,"
 		+ _keyState + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetName() + "',"
@@ -213,12 +211,12 @@ char WirelessSocketDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyCode + " TEXT NOT NULL,"
-		+ _keyState + " INT NOT NULL);";
+		+ _keyState + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

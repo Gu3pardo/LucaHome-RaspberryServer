@@ -85,7 +85,7 @@ vector<Coin> CoinDatabase::GetUserList(string userUuid)
 	return list;
 }
 
-char CoinDatabase::Insert(int rowId, Coin entry)
+char CoinDatabase::Insert(Coin entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -94,13 +94,11 @@ char CoinDatabase::Insert(int rowId, Coin entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyUserUuid + " ,"
 		+ _keyType + " ,"
 		+ _keyAmount + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetUserUuid() + "',"
 		+ "'" + entry.GetType() + "',"
@@ -182,10 +180,10 @@ char CoinDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyUserUuid + " TEXT NOT NULL,"
-		+ _keyType + " INT NOT NULL,"
+		+ _keyType + " INTEGER NOT NULL,"
 		+ _keyAmount + " REAL NOT NULL);";
 
 	char *errorMessage = 0;

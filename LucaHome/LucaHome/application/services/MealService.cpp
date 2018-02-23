@@ -106,7 +106,7 @@ char MealService::addMeal(vector<string> newMealData)
 		atoi(newMealData[MEAL_MONTH_INDEX].c_str()),
 		atoi(newMealData[MEAL_YEAR_INDEX].c_str()),
 		shoppingItemUuidList);
-	return _mealDatabase.Insert(_mealDatabase.GetList().size(), newMeal);
+	return _mealDatabase.Insert(newMeal);
 }
 
 char MealService::updateMeal(vector<string> updateMealData)

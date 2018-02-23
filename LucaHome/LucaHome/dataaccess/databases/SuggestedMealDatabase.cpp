@@ -56,7 +56,7 @@ vector<SuggestedMeal> SuggestedMealDatabase::GetList()
 	return list;
 }
 
-char SuggestedMealDatabase::Insert(int rowId, SuggestedMeal entry)
+char SuggestedMealDatabase::Insert(SuggestedMeal entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -65,7 +65,6 @@ char SuggestedMealDatabase::Insert(int rowId, SuggestedMeal entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyTitle + " ,"
 		+ _keyDescription + " ,"
@@ -73,7 +72,6 @@ char SuggestedMealDatabase::Insert(int rowId, SuggestedMeal entry)
 		+ _keyUseCounter + " ,"
 		+ _keyShoppingItemUuidList + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTitle() + "',"
 		+ "'" + entry.GetDescription() + "',"
@@ -159,12 +157,12 @@ char SuggestedMealDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTitle + " TEXT NOT NULL,"
 		+ _keyDescription + " TEXT NOT NULL,"
-		+ _keyRating + " INT NOT NULL,"
-		+ _keyUseCounter + " INT NOT NULL,"
+		+ _keyRating + " INTEGER NOT NULL,"
+		+ _keyUseCounter + " INTEGER NOT NULL,"
 		+ _keyShoppingItemUuidList + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;

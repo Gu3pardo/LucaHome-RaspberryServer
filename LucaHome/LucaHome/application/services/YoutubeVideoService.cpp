@@ -103,7 +103,7 @@ char YoutubeVideoService::addYoutubeVideo(vector<string> newYoutubeVideoData)
 		atoi(newYoutubeVideoData[YOUTUBE_VIDEO_PLAY_COUNT_INDEX].c_str()),
 		newYoutubeVideoData[YOUTUBE_VIDEO_DESCRIPTION_INDEX].c_str(),
 		newYoutubeVideoData[YOUTUBE_VIDEO_MEDIUM_IMAGE_URL_INDEX].c_str());
-	return _youtubeVideoDatabase.Insert(_youtubeVideoDatabase.GetList().size(), newYoutubeVideo);
+	return _youtubeVideoDatabase.Insert(newYoutubeVideo);
 }
 
 char YoutubeVideoService::updateYoutubeVideo(vector<string> updateYoutubeVideoData)

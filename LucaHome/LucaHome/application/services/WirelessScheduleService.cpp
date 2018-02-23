@@ -129,7 +129,7 @@ char WirelessScheduleService::addWirelessSchedule(vector<string> newWirelessSche
 		newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_UUID_INDEX].c_str(),
 		atoi(newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SOCKET_ACTION_INDEX].c_str()) == 1,
 		newWirelessScheduleData[WIRELESS_SCHEDULE_WIRELESS_SWITCH_UUID_INDEX].c_str());
-	return _wirelessScheduleDatabase.Insert(_wirelessScheduleDatabase.GetList().size(), newWirelessSchedule);
+	return _wirelessScheduleDatabase.Insert(newWirelessSchedule);
 }
 
 char WirelessScheduleService::updateWirelessSchedule(vector<string> updateWirelessScheduleData)

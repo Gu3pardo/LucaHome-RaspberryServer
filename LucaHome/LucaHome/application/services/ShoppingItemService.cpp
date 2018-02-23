@@ -140,7 +140,7 @@ char ShoppingItemService::addShoppingItem(vector<string> newShoppingItemData)
 		newShoppingItemData[SHOPPING_ITEM_UNIT_INDEX].c_str(),
 		time(0),
 		false);
-	return _shoppingItemDatabase.Insert(_shoppingItemDatabase.GetList().size(), newShoppingItem);
+	return _shoppingItemDatabase.Insert(newShoppingItem);
 }
 
 char ShoppingItemService::updateShoppingItem(vector<string> updateShoppingItemData)

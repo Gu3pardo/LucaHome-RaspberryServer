@@ -35,7 +35,7 @@ public:
 
 	virtual vector<ShoppingItem> GetList();
 
-	virtual char Insert(int, ShoppingItem);
+	virtual char Insert(ShoppingItem);
 	virtual char Update(ShoppingItem);
 	virtual char UpdateReminder(string, bool);
 	virtual char Delete(string);

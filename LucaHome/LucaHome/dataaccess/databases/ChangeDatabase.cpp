@@ -25,7 +25,7 @@ vector<Change> ChangeDatabase::GetList()
 		return list;
 	}
 
-	string sqlSelectCommand = "SELECT * FROM '" + _tableName + "' ORDER BY '" + _keyType + "';";
+	string sqlSelectCommand = "SELECT * FROM " + _tableName + " ORDER BY " + _keyType + ";";
 
 	sqlite3_stmt *res;
 	char *errorMessage = 0;
@@ -52,7 +52,7 @@ vector<Change> ChangeDatabase::GetList()
 	return list;
 }
 
-char ChangeDatabase::Insert(int rowId, Change entry)
+char ChangeDatabase::Insert(Change entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -60,17 +60,15 @@ char ChangeDatabase::Insert(int rowId, Change entry)
 	}
 
 	string sqlInsertCommand =
-		"INSERT INTO '" + _tableName + "' ("
-		+ "'" + _keyRowId + "' ,"
-		+ "'" + _keyUuid + "' ,"
-		+ "'" + _keyType + "' ,"
-		+ "'" + _keyUserName + "' ,"
-		+ "'" + _keyTime + "' ) "
+		"INSERT INTO " + _tableName + " ("
+		+ _keyUuid + " ,"
+		+ _keyType + " ,"
+		+ _keyUserName + " ,"
+		+ _keyTime + ") "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
-		+ "'" + entry.GetUuid() + "',"
-		+ "'" + entry.GetType() + "',"
-		+ "'" + entry.GetUserName() + "',"
+		+ entry.GetUuid() + "',"
+		+ entry.GetType() + "',"
+		+ entry.GetUserName() + "',"
 		+ Tools::ConvertIntToStr(entry.GetTime())
 		+ ");";
 
@@ -94,11 +92,11 @@ char ChangeDatabase::Update(Change entry)
 	}
 
 	string sqlUpdateCommand =
-		"UPDATE '" + _tableName + "' "
-		+ "SET '" + _keyType + "' = '" + entry.GetType() + "',"
-		+ "SET '" + _keyUserName + "' = '" + entry.GetUserName() + "',"
-		+ "SET '" + _keyTime + "' = " + Tools::ConvertIntToStr(entry.GetTime()) + " "
-		+ "WHERE '" + _keyUuid + "'='" + entry.GetUuid() + "';";
+		"UPDATE " + _tableName + " "
+		+ "SET " + _keyType + " = '" + entry.GetType() + "',"
+		+ "SET " + _keyUserName + " = '" + entry.GetUserName() + "',"
+		+ "SET " + _keyTime + " = " + Tools::ConvertIntToStr(entry.GetTime()) + " "
+		+ "WHERE " + _keyUuid + "='" + entry.GetUuid() + "';";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlUpdateCommand.c_str(), NULL, NULL, &errorMessage);
@@ -120,8 +118,8 @@ char ChangeDatabase::Delete(string uuid)
 	}
 
 	string sqlDeleteCommand =
-		"DELETE FROM '" + _tableName + "' "
-		+ "WHERE '" + _keyUuid + "'='" + uuid + "';";
+		"DELETE FROM " + _tableName + " "
+		+ "WHERE " + _keyUuid + "='" + uuid + "';";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlDeleteCommand.c_str(), NULL, NULL, &errorMessage);
@@ -148,12 +146,12 @@ char ChangeDatabase::create()
 	}
 
 	string sqlCreateCommand =
-		"CREATE TABLE '" + _tableName + "'("
-		+ "'" + _keyRowId + "' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-		+ "'" + _keyUuid + "' TEXT NOT NULL,"
-		+ "'" + _keyType + "' TEXT NOT NULL,"
-		+ "'" + _keyUserName + "' TEXT NOT NULL,"
-		+ "'" + _keyTime + "' INTEGER NOT NULL);";
+		"CREATE TABLE " + _tableName + "("
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+		+ _keyUuid + " TEXT NOT NULL,"
+		+ _keyType + " TEXT NOT NULL,"
+		+ _keyUserName + " TEXT NOT NULL,"
+		+ _keyTime + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

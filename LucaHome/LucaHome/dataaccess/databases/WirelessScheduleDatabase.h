@@ -39,7 +39,7 @@ public:
 
 	virtual vector<WirelessSchedule> GetList();
 
-	virtual char Insert(int, WirelessSchedule);
+	virtual char Insert(WirelessSchedule);
 	virtual char Update(WirelessSchedule);
 	virtual char UpdateState(string, bool);
 	virtual char Delete(string);

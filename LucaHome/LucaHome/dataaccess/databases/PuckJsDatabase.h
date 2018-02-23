@@ -32,7 +32,7 @@ public:
 
 	virtual vector<PuckJs> GetList();
 
-	virtual char Insert(int, PuckJs);
+	virtual char Insert(PuckJs);
 	virtual char Update(PuckJs);
 	virtual char Delete(string);
 };

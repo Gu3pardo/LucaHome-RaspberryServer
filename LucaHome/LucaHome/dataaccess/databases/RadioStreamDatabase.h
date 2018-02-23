@@ -32,7 +32,7 @@ public:
 
 	virtual vector<RadioStream> GetList();
 
-	virtual char Insert(int, RadioStream);
+	virtual char Insert(RadioStream);
 	virtual char Update(RadioStream);
 	virtual char Delete(string);
 };

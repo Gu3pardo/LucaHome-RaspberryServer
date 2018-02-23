@@ -33,7 +33,7 @@ public:
 
 	virtual vector<MediaServer> GetList();
 
-	virtual char Insert(int, MediaServer);
+	virtual char Insert(MediaServer);
 	virtual char Update(MediaServer);
 	virtual char Delete(string);
 };

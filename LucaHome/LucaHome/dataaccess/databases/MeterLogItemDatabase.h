@@ -36,7 +36,7 @@ public:
 
 	virtual vector<MeterLogItem> GetList();
 
-	virtual char Insert(int, MeterLogItem);
+	virtual char Insert(MeterLogItem);
 	virtual char Update(MeterLogItem);
 	virtual char Delete(string);
 };

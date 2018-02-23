@@ -105,7 +105,7 @@ char MeterLogService::addMeterLogItem(vector<string> newMeterLogItemData)
 		Tools::ConvertStrToDouble(newMeterLogItemData[METER_LOG_ITEM_VALUE_INDEX].c_str()) == 1,
 		newMeterLogItemData[METER_LOG_ITEM_IMAGE_NAME_INDEX].c_str(),
 		atoi(newMeterLogItemData[METER_LOG_ITEM_SAVE_DATE_TIME_INDEX].c_str()));
-	return _meterLogItemDatabase.Insert(_meterLogItemDatabase.GetList().size(), newMeterLogItem);
+	return _meterLogItemDatabase.Insert(newMeterLogItem);
 }
 
 char MeterLogService::updateMeterLogItem(vector<string> updateMeterLogItemData)

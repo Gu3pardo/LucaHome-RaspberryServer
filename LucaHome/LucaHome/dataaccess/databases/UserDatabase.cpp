@@ -54,7 +54,7 @@ vector<User> UserDatabase::GetList()
 	return list;
 }
 
-char UserDatabase::Insert(int rowId, User entry)
+char UserDatabase::Insert(User entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -63,7 +63,6 @@ char UserDatabase::Insert(int rowId, User entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyPassPhrase + " ,"
@@ -71,7 +70,6 @@ char UserDatabase::Insert(int rowId, User entry)
 		+ _keyIsAdmin + " ,"
 		+ _keyInvalidLoginCount + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetPassphrase() + "',"
@@ -157,13 +155,13 @@ char UserDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyPassPhrase + " TEXT NOT NULL,"
-		+ _keyRole + " INT NOT NULL,"
-		+ _keyIsAdmin + " INT NOT NULL,"
-		+ _keyInvalidLoginCount + " INT NOT NULL);";
+		+ _keyRole + " INTEGER NOT NULL,"
+		+ _keyIsAdmin + " INTEGER NOT NULL,"
+		+ _keyInvalidLoginCount + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

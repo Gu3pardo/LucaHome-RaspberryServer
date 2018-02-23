@@ -33,7 +33,7 @@ public:
 	virtual vector<Coin> GetList();
 	virtual vector<Coin> GetUserList(string);
 
-	virtual char Insert(int, Coin);
+	virtual char Insert(Coin);
 	virtual char Update(Coin);
 	virtual char Delete(string);
 };

@@ -56,7 +56,7 @@ vector<MeterLogItem> MeterLogItemDatabase::GetList()
 	return list;
 }
 
-char MeterLogItemDatabase::Insert(int rowId, MeterLogItem entry)
+char MeterLogItemDatabase::Insert(MeterLogItem entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -65,7 +65,6 @@ char MeterLogItemDatabase::Insert(int rowId, MeterLogItem entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyRoomUuid + " ,"
 		+ _keyTypeUuid + " ,"
@@ -75,7 +74,6 @@ char MeterLogItemDatabase::Insert(int rowId, MeterLogItem entry)
 		+ _keyImageName + " ,"
 		+ _keySaveDateTime + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetTypeUuid() + "',"
@@ -165,7 +163,7 @@ char MeterLogItemDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyTypeUuid + " TEXT NOT NULL,"
@@ -173,7 +171,7 @@ char MeterLogItemDatabase::create()
 		+ _keyMeterId + " TEXT NOT NULL,"
 		+ _keyValue + " REAL NOT NULL,"
 		+ _keyImageName + " TEXT NOT NULL,"
-		+ _keySaveDateTime + " INT NOT NULL);";
+		+ _keySaveDateTime + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

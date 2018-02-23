@@ -36,7 +36,7 @@ public:
 
 	virtual vector<Meal> GetList();
 
-	virtual char Insert(int, Meal);
+	virtual char Insert(Meal);
 	virtual char Update(Meal);
 	virtual char Delete(string);
 };

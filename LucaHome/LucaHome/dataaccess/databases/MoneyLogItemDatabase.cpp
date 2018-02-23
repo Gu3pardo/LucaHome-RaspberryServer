@@ -94,7 +94,7 @@ vector<MoneyLogItem> MoneyLogItemDatabase::GetUserList(string userUuid)
 	return list;
 }
 
-char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
+char MoneyLogItemDatabase::Insert(MoneyLogItem entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -103,7 +103,6 @@ char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyTypeUuid + " ,"
 		+ _keyBank + " ,"
@@ -113,7 +112,6 @@ char MoneyLogItemDatabase::Insert(int rowId, MoneyLogItem entry)
 		+ _keyUserUuid + " ,"
 		+ _keySaveDate + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTypeUuid() + "',"
 		+ "'" + entry.GetBank() + "',"
@@ -203,7 +201,7 @@ char MoneyLogItemDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTypeUuid + " TEXT NOT NULL,"
 		+ _keyBank + " TEXT NOT NULL,"
@@ -211,7 +209,7 @@ char MoneyLogItemDatabase::create()
 		+ _keyAmount + " REAL NOT NULL,"
 		+ _keyUnit + " TEXT NOT NULL,"
 		+ _keyUserUuid + " TEXT NOT NULL,"
-		+ _keySaveDate + " INT NOT NULL);";
+		+ _keySaveDate + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

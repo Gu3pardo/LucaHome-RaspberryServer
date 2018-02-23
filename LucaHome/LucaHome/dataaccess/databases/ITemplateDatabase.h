@@ -19,7 +19,7 @@ public:
 
 	virtual vector<T> GetList() { return vector<T>(); }
 
-	virtual char Insert(int rowId, T entry) { return -69; }
+	virtual char Insert(T entry) { return -69; }
 	virtual char Update(T entry) { return -69; }
 	virtual char Delete(T entry) { return -69; }
 };

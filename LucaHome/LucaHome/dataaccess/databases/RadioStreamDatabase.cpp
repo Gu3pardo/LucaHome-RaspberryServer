@@ -52,7 +52,7 @@ vector<RadioStream> RadioStreamDatabase::GetList()
 	return list;
 }
 
-char RadioStreamDatabase::Insert(int rowId, RadioStream entry)
+char RadioStreamDatabase::Insert(RadioStream entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -61,13 +61,11 @@ char RadioStreamDatabase::Insert(int rowId, RadioStream entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyTitle + " ,"
 		+ _keyUrl + " ,"
 		+ _keyPlayCount + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTitle() + "',"
 		+ "'" + entry.GetUrl() + "',"
@@ -149,11 +147,11 @@ char RadioStreamDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTitle + " TEXT NOT NULL,"
 		+ _keyUrl + " TEXT NOT NULL,"
-		+ _keyPlayCount + " INT NOT NULL);";
+		+ _keyPlayCount + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

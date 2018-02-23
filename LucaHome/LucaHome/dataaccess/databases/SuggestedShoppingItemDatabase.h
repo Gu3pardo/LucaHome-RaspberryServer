@@ -33,7 +33,7 @@ public:
 
 	virtual vector<SuggestedShoppingItem> GetList();
 
-	virtual char Insert(int, SuggestedShoppingItem);
+	virtual char Insert(SuggestedShoppingItem);
 	virtual char Update(SuggestedShoppingItem);
 	virtual char Delete(string);
 };

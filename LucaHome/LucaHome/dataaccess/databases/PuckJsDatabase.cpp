@@ -52,7 +52,7 @@ vector<PuckJs> PuckJsDatabase::GetList()
 	return list;
 }
 
-char PuckJsDatabase::Insert(int rowId, PuckJs entry)
+char PuckJsDatabase::Insert(PuckJs entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -61,13 +61,11 @@ char PuckJsDatabase::Insert(int rowId, PuckJs entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyRoomUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyMac + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetName() + "',"
@@ -149,7 +147,7 @@ char PuckJsDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"

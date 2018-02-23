@@ -123,7 +123,7 @@ char WirelessSocketService::addWirelessSocket(vector<string> newWirelessSocketDa
 		newWirelessSocketData[WIRELESS_SOCKET_NAME_INDEX].c_str(),
 		newWirelessSocketData[WIRELESS_SOCKET_CODE_INDEX].c_str(),
 		false);
-	return _wirelessSocketDatabase.Insert(_wirelessSocketDatabase.GetList().size(), newWirelessSocket);
+	return _wirelessSocketDatabase.Insert(newWirelessSocket);
 }
 
 char WirelessSocketService::updateWirelessSocket(vector<string> updateWirelessSocketData)

@@ -102,7 +102,7 @@ char RoomService::addRoom(vector<string> newRoomData)
 		atoi(newRoomData[ROOM_TYPE_INDEX].c_str()));
 	string pointString = newRoomData[ROOM_POINT_INDEX].c_str();
 	newRoom.ParsePointDbString(pointString);
-	return _roomDatabase.Insert(_roomDatabase.GetList().size(), newRoom);
+	return _roomDatabase.Insert(newRoom);
 }
 
 char RoomService::updateRoom(vector<string> updateRoomData)

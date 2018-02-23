@@ -53,7 +53,7 @@ vector<MediaServer> MediaServerDatabase::GetList()
 	return list;
 }
 
-char MediaServerDatabase::Insert(int rowId, MediaServer entry)
+char MediaServerDatabase::Insert(MediaServer entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -62,14 +62,12 @@ char MediaServerDatabase::Insert(int rowId, MediaServer entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyRoomUuid + " ,"
 		+ _keyIp + " ,"
 		+ _keyIsSleepingServer + " ,"
 		+ _keyWirelessSocketUuid + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetIp() + "',"
@@ -153,11 +151,11 @@ char MediaServerDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyIp + " TEXT NOT NULL,"
-		+ _keyIsSleepingServer + " INT NOT NULL,"
+		+ _keyIsSleepingServer + " INTEGER NOT NULL,"
 		+ _keyWirelessSocketUuid + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;

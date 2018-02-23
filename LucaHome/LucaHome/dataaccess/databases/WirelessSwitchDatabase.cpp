@@ -96,7 +96,7 @@ WirelessSwitch WirelessSwitchDatabase::GetByUuid(string uuid)
 	return WirelessSwitch();
 }
 
-char WirelessSwitchDatabase::Insert(int rowId, WirelessSwitch entry)
+char WirelessSwitchDatabase::Insert(WirelessSwitch entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -105,7 +105,6 @@ char WirelessSwitchDatabase::Insert(int rowId, WirelessSwitch entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyRoomUuid + " ,"
 		+ _keyName + " ,"
@@ -113,7 +112,6 @@ char WirelessSwitchDatabase::Insert(int rowId, WirelessSwitch entry)
 		+ _keyKeyCode + " ,"
 		+ _keyAction + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetRoomUuid() + "',"
 		+ "'" + entry.GetName() + "',"
@@ -223,13 +221,13 @@ char WirelessSwitchDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyRoomUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
-		+ _keyRemoteId + " INT NOT NULL,"
+		+ _keyRemoteId + " INTEGER NOT NULL,"
 		+ _keyKeyCode + " TEXT NOT NULL,"
-		+ _keyAction + " INT NOT NULL);";
+		+ _keyAction + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

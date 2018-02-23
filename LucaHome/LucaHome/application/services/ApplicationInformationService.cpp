@@ -99,7 +99,7 @@ char ApplicationInformationService::addApplicationInformation(vector<string> new
 	ApplicationInformation newApplicationInformation(
 		newApplicationInformationData[APPLICATION_INFORMATION_KEY_INDEX].c_str(),
 		newApplicationInformationData[APPLICATION_INFORMATION_VALUE_INDEX].c_str());
-	return _applicationInformationDatabase.Insert(_applicationInformationDatabase.GetList().size(), newApplicationInformation);
+	return _applicationInformationDatabase.Insert(newApplicationInformation);
 }
 
 char ApplicationInformationService::updateApplicationInformation(vector<string> updateApplicationInformationData)

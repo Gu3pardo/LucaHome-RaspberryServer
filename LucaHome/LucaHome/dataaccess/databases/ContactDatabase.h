@@ -41,7 +41,7 @@ public:
 	virtual vector<Contact> GetList();
 	virtual Contact GetByUuid(string);
 
-	virtual char Insert(int, Contact);
+	virtual char Insert(Contact);
 	virtual char Update(Contact);
 	virtual char Delete(string);
 };

@@ -30,7 +30,7 @@ public:
 
 	virtual vector<ApplicationInformation> GetList();
 
-	virtual char Insert(int, ApplicationInformation);
+	virtual char Insert(ApplicationInformation);
 	virtual char Update(ApplicationInformation);
 	virtual char Delete(string);
 };

@@ -102,7 +102,7 @@ char MediaServerService::addMediaServer(vector<string> newMediaServerData)
 		newMediaServerData[MEDIA_SERVER_IP_INDEX].c_str(),
 		atoi(newMediaServerData[MEDIA_SERVER_IS_SLEEPING_SERVER_INDEX].c_str()) == 1,
 		newMediaServerData[MEDIA_SERVER_WIRELESS_SOCKET_UUID].c_str());
-	return _mediaServerDatabase.Insert(_mediaServerDatabase.GetList().size(), newMediaServer);
+	return _mediaServerDatabase.Insert(newMediaServer);
 }
 
 char MediaServerService::updateMediaServer(vector<string> updateMediaServerData)

@@ -124,7 +124,7 @@ char CoinService::addCoin(vector<string> newCoinData)
 		newCoinData[COIN_USER_UUID_INDEX].c_str(),
 		newCoinData[COIN_TYPE_INDEX].c_str(),
 		Tools::ConvertStrToDouble(newCoinData[COIN_AMOUNT_INDEX].c_str()));
-	return _coinDatabase.Insert(_coinDatabase.GetList().size(), newCoin);
+	return _coinDatabase.Insert(newCoin);
 }
 
 char CoinService::updateCoin(vector<string> updateCoinData)

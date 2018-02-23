@@ -34,7 +34,7 @@ public:
 	virtual vector<WirelessSocket> GetList();
 	virtual WirelessSocket GetByUuid(string);
 
-	virtual char Insert(int, WirelessSocket);
+	virtual char Insert(WirelessSocket);
 	virtual char Update(WirelessSocket);
 	virtual char UpdateState(string, bool);
 	virtual char Delete(string);

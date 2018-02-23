@@ -193,7 +193,7 @@ char UserService::addUser(vector<string> newUserData)
 		role,
 		role == 5,
 		0);
-	return _userDatabase.Insert(_userDatabase.GetList().size(), newUser);
+	return _userDatabase.Insert(newUser);
 }
 
 char UserService::updateUser(vector<string> updateUserData)

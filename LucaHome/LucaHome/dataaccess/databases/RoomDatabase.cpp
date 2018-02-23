@@ -53,7 +53,7 @@ vector<Room> RoomDatabase::GetList()
 	return list;
 }
 
-char RoomDatabase::Insert(int rowId, Room entry)
+char RoomDatabase::Insert(Room entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -62,13 +62,11 @@ char RoomDatabase::Insert(int rowId, Room entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyType + " ,"
 		+ _keyPolyline + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ Tools::ConvertIntToStr(entry.GetType()) + ","
@@ -150,11 +148,11 @@ char RoomDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
-		+ _keyPolyline + " INT NOT NULL);";
+		+ _keyPolyline + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

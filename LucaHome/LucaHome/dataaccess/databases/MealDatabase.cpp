@@ -58,7 +58,7 @@ vector<Meal> MealDatabase::GetList()
 	return list;
 }
 
-char MealDatabase::Insert(int rowId, Meal entry)
+char MealDatabase::Insert(Meal entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -67,7 +67,6 @@ char MealDatabase::Insert(int rowId, Meal entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyTitle + " ,"
 		+ _keyDescription + " ,"
@@ -77,7 +76,6 @@ char MealDatabase::Insert(int rowId, Meal entry)
 		+ _keyYear + " ,"
 		+ _keyShoppingItemUuidList + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTitle() + "',"
 		+ "'" + entry.GetDescription() + "',"
@@ -167,14 +165,14 @@ char MealDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTitle + " TEXT NOT NULL,"
 		+ _keyDescription + " TEXT NOT NULL,"
-		+ _keyWeekday + " INT NOT NULL,"
-		+ _keyDay + " INT NOT NULL,"
-		+ _keyMonth + " INT NOT NULL,"
-		+ _keyYear + " INT NOT NULL,"
+		+ _keyWeekday + " INTEGER NOT NULL,"
+		+ _keyDay + " INTEGER NOT NULL,"
+		+ _keyMonth + " INTEGER NOT NULL,"
+		+ _keyYear + " INTEGER NOT NULL,"
 		+ _keyShoppingItemUuidList + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;

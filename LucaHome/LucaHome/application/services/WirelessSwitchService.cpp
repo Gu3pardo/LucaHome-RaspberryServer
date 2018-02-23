@@ -124,7 +124,7 @@ char WirelessSwitchService::addWirelessSwitch(vector<string> newWirelessSwitchDa
 		atoi(newWirelessSwitchData[WIRELESS_SWITCH_REMOTE_ID_INDEX].c_str()),
 		Tools::ConvertStrToUnsignedChar(newWirelessSwitchData[WIRELESS_SWITCH_KEY_CODE_INDEX].c_str()),
 		atoi(newWirelessSwitchData[WIRELESS_SWITCH_ACTION_INDEX].c_str()) == 1);
-	return _wirelessSwitchDatabase.Insert(_wirelessSwitchDatabase.GetList().size(), newWirelessSwitch);
+	return _wirelessSwitchDatabase.Insert(newWirelessSwitch);
 }
 
 char WirelessSwitchService::updateWirelessSwitch(vector<string> updateWirelessSwitchData)

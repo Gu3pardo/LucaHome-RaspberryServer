@@ -32,7 +32,7 @@ public:
 
 	virtual vector<Change> GetList();
 
-	virtual char Insert(int, Change);
+	virtual char Insert(Change);
 	virtual char Update(Change);
 	virtual char Delete(string);
 };

@@ -57,7 +57,7 @@ vector<MapContent> MapContentDatabase::GetList()
 	return list;
 }
 
-char MapContentDatabase::Insert(int rowId, MapContent entry)
+char MapContentDatabase::Insert(MapContent entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -66,7 +66,6 @@ char MapContentDatabase::Insert(int rowId, MapContent entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyTypeUuid + " ,"
@@ -77,7 +76,6 @@ char MapContentDatabase::Insert(int rowId, MapContent entry)
 		+ _keyShortName + " ,"
 		+ _keyVisibility + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetTypeUuid() + "',"
 		+ "'" + entry.GetType() + "',"
@@ -167,15 +165,15 @@ char MapContentDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyTypeUuid + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
-		+ _keyPositionX + " INT NOT NULL,"
-		+ _keyPositionY + " INT NOT NULL,"
+		+ _keyPositionX + " INTEGER NOT NULL,"
+		+ _keyPositionY + " INTEGER NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyShortName + " TEXT NOT NULL,"
-		+ _keyVisibility + " INT NOT NULL);";
+		+ _keyVisibility + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

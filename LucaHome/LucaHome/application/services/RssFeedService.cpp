@@ -101,7 +101,7 @@ char RssFeedService::addRssFeed(vector<string> newRssFeedData)
 		newRssFeedData[RSS_FEED_TITLE_INDEX].c_str(),
 		newRssFeedData[RSS_FEED_URL_INDEX].c_str(),
 		atoi(newRssFeedData[RSS_FEED_PLAY_COUNT_INDEX].c_str()));
-	return _rssFeedDatabase.Insert(_rssFeedDatabase.GetList().size(), newRssFeed);
+	return _rssFeedDatabase.Insert(newRssFeed);
 }
 
 char RssFeedService::updateRssFeed(vector<string> updateRssFeedData)

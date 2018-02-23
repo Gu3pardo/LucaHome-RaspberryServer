@@ -101,7 +101,7 @@ char PuckJsService::addPuckJs(vector<string> newPuckJsData)
 		newPuckJsData[PUCK_JS_ROOM_UUID_INDEX].c_str(),
 		newPuckJsData[PUCK_JS_NAME_INDEX].c_str(),
 		newPuckJsData[PUCK_JS_MAC_INDEX].c_str());
-	return _puckJsDatabase.Insert(_puckJsDatabase.GetList().size(), newPuckJs);
+	return _puckJsDatabase.Insert(newPuckJs);
 }
 
 char PuckJsService::updatePuckJs(vector<string> updatePuckJsData)

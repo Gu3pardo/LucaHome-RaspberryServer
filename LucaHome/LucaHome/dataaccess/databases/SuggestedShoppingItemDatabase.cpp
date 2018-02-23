@@ -53,7 +53,7 @@ vector<SuggestedShoppingItem> SuggestedShoppingItemDatabase::GetList()
 	return list;
 }
 
-char SuggestedShoppingItemDatabase::Insert(int rowId, SuggestedShoppingItem entry)
+char SuggestedShoppingItemDatabase::Insert(SuggestedShoppingItem entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -62,14 +62,12 @@ char SuggestedShoppingItemDatabase::Insert(int rowId, SuggestedShoppingItem entr
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyType + " ,"
 		+ _keyQuantity + " ,"
 		+ _keyUnit + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ "'" + entry.GetType() + "',"
@@ -153,11 +151,11 @@ char SuggestedShoppingItemDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
 		+ _keyType + " TEXT NOT NULL,"
-		+ _keyQuantity + " INT NOT NULL,"
+		+ _keyQuantity + " INTEGER NOT NULL,"
 		+ _keyUnit + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;

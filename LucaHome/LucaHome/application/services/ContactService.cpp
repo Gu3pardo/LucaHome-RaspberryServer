@@ -148,7 +148,7 @@ char ContactService::addContact(vector<string> newContactData)
 		atoi(newContactData[CONTACT_BIRTHDAY_YEAR_INDEX].c_str()),
 		atoi(newContactData[CONTACT_BIRTHDAY_REMINDME_INDEX].c_str()) == 1,
 		false);
-	return _contactDatabase.Insert(_contactDatabase.GetList().size(), newContact);
+	return _contactDatabase.Insert(newContact);
 }
 
 char ContactService::updateContact(vector<string> updateContactData)

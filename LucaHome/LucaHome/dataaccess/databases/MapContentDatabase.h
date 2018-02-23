@@ -36,7 +36,7 @@ public:
 
 	virtual vector<MapContent> GetList();
 
-	virtual char Insert(int, MapContent);
+	virtual char Insert(MapContent);
 	virtual char Update(MapContent);
 	virtual char Delete(string);
 };

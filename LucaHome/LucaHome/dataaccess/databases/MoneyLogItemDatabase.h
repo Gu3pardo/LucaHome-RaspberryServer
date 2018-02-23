@@ -37,7 +37,7 @@ public:
 	virtual vector<MoneyLogItem> GetList();
 	virtual vector<MoneyLogItem> GetUserList(string);
 
-	virtual char Insert(int, MoneyLogItem);
+	virtual char Insert(MoneyLogItem);
 	virtual char Update(MoneyLogItem);
 	virtual char Delete(string);
 };

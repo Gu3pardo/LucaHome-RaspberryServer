@@ -59,7 +59,7 @@ vector<WirelessSchedule> WirelessScheduleDatabase::GetList()
 	return list;
 }
 
-char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
+char WirelessScheduleDatabase::Insert(WirelessSchedule entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -68,7 +68,6 @@ char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyWeekday + " ,"
@@ -81,7 +80,6 @@ char WirelessScheduleDatabase::Insert(int rowId, WirelessSchedule entry)
 		+ _keyWirelessSocketAction + " ,"
 		+ _keyWirelessSwitchUuid + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ Tools::ConvertIntToStr(entry.GetWeekday()) + ","
@@ -200,17 +198,17 @@ char WirelessScheduleDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
-		+ _keyWeekday + " INT NOT NULL,"
-		+ _keyHour + " INT NOT NULL,"
-		+ _keyMinute + " INT NOT NULL,"
-		+ _keyIsActive + " INT NOT NULL,"
+		+ _keyWeekday + " INTEGER NOT NULL,"
+		+ _keyHour + " INTEGER NOT NULL,"
+		+ _keyMinute + " INTEGER NOT NULL,"
+		+ _keyIsActive + " INTEGER NOT NULL,"
 		+ _keyGpioUuid + " TEXT NOT NULL,"
-		+ _keyGpioAction + " INT NOT NULL,"
+		+ _keyGpioAction + " INTEGER NOT NULL,"
 		+ _keyWirelessSocketUuid + " TEXT NOT NULL,"
-		+ _keyWirelessSocketAction + " INT NOT NULL,"
+		+ _keyWirelessSocketAction + " INTEGER NOT NULL,"
 		+ _keyWirelessSwitchUuid + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;

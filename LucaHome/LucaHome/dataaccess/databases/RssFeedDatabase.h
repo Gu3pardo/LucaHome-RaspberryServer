@@ -32,7 +32,7 @@ public:
 
 	virtual vector<RssFeed> GetList();
 
-	virtual char Insert(int, RssFeed);
+	virtual char Insert(RssFeed);
 	virtual char Update(RssFeed);
 	virtual char Delete(string);
 };

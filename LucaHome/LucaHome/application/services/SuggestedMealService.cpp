@@ -104,7 +104,7 @@ char SuggestedMealService::addSuggestedMeal(vector<string> newSuggestedMealData)
 		atoi(newSuggestedMealData[SUGGESTED_MEAL_RATING_INDEX].c_str()),
 		atoi(newSuggestedMealData[SUGGESTED_MEAL_USE_COUNTER_INDEX].c_str()),
 		shoppingItemUuidList);
-	return _suggestedMealDatabase.Insert(_suggestedMealDatabase.GetList().size(), newSuggestedMeal);
+	return _suggestedMealDatabase.Insert(newSuggestedMeal);
 }
 
 char SuggestedMealService::updateSuggestedMeal(vector<string> updateSuggestedMealData)

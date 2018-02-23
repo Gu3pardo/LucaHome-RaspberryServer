@@ -34,7 +34,7 @@ public:
 
 	virtual vector<YoutubeVideo> GetList();
 
-	virtual char Insert(int, YoutubeVideo);
+	virtual char Insert(YoutubeVideo);
 	virtual char Update(YoutubeVideo);
 	virtual char Delete(string);
 };

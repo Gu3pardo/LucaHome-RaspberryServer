@@ -34,7 +34,7 @@ public:
 
 	virtual vector<User> GetList();
 
-	virtual char Insert(int, User);
+	virtual char Insert(User);
 	virtual char Update(User);
 	virtual char Delete(string);
 };

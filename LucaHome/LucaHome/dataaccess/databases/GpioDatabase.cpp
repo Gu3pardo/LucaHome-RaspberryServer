@@ -88,7 +88,7 @@ Gpio GpioDatabase::GetByUuid(string uuid)
 	return Gpio();
 }
 
-char GpioDatabase::Insert(int rowId, Gpio entry)
+char GpioDatabase::Insert(Gpio entry)
 {
 	char openErrorMessage = open();
 	if (openErrorMessage) {
@@ -97,13 +97,11 @@ char GpioDatabase::Insert(int rowId, Gpio entry)
 
 	string sqlInsertCommand =
 		"INSERT INTO " + _tableName + " ("
-		+ _keyRowId + " ,"
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
 		+ _keyPin + " ,"
 		+ _keyState + " ) "
 		+ "VALUES("
-		+ Tools::ConvertIntToStr(rowId) + ", "
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
 		+ Tools::ConvertIntToStr(entry.GetPin()) + ","
@@ -209,11 +207,11 @@ char GpioDatabase::create()
 
 	string sqlCreateCommand =
 		"CREATE TABLE " + _tableName + "("
-		+ _keyRowId + " KEY NOT NULL,"
+		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
-		+ _keyPin + " INT NOT NULL,"
-		+ _keyState + " INT NOT NULL);";
+		+ _keyPin + " INTEGER NOT NULL,"
+		+ _keyState + " INTEGER NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

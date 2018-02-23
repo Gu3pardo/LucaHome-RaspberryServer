@@ -102,7 +102,7 @@ char SuggestedShoppingItemService::addSuggestedShoppingItem(vector<string> newSu
 		newSuggestedShoppingItemData[SUGGESTED_SHOPPING_ITEM_TYPE_INDEX].c_str(),
 		atoi(newSuggestedShoppingItemData[SUGGESTED_SHOPPING_ITEM_QUANTITY_INDEX].c_str()),
 		newSuggestedShoppingItemData[SUGGESTED_SHOPPING_ITEM_UNIT_INDEX].c_str());
-	return _suggestedShoppingItemDatabase.Insert(_suggestedShoppingItemDatabase.GetList().size(), newSuggestedShoppingItem);
+	return _suggestedShoppingItemDatabase.Insert(newSuggestedShoppingItem);
 }
 
 char SuggestedShoppingItemService::updateSuggestedShoppingItem(vector<string> updateSuggestedShoppingItemData)

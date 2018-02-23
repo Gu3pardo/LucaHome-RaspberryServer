@@ -34,7 +34,7 @@ public:
 
 	virtual vector<SuggestedMeal> GetList();
 
-	virtual char Insert(int, SuggestedMeal);
+	virtual char Insert(SuggestedMeal);
 	virtual char Update(SuggestedMeal);
 	virtual char Delete(string);
 };
