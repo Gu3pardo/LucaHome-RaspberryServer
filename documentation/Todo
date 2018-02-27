@@ -5,10 +5,11 @@ ID	PBI			Task																State
 3	Telegram	Include Telegram Library (https://github.com/reo7sp/tgbot-cpp)		-
 4				Implement methods to use library									-
 5				Create token for telegram (https://core.telegram.org/)				-
-6	SQLite		Create local database and include them								WIP
-7				Create single DB-Controller, which every other uses					-
-8				Fix commands in existing databases									-
-9				Fill databases with initial data (especially changes/informations)	-
+6	SQLite		Create local database and include them								TO TEST
+7				Create single DB-Controller, which every other uses					CANCELED
+8				Fix commands in existing databases									TO TEST
+9				Fill databases with initial data (especially changes/informations)	WIP
 10	Crypto		Implement Encryption and Decryption (write by yourself vs lib)		-
+11				Add handshake to change keys before transmitting data				-
 
 Links for epic libs: http://en.cppreference.com/w/cpp/links/libs
