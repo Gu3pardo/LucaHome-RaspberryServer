@@ -28,8 +28,8 @@ namespace patch {
 
 #include "application/services.h"
 #include "crosscutting/Constants.h"
+#include "crosscutting/controller.h"
 #include "crosscutting/crypto.h"
-#include "dataaccess/controller.h"
 #include "domain/classes.h"
 
 using namespace std;
@@ -39,6 +39,7 @@ ChangeService _changeService = ChangeService();
 CoinService _coinService = CoinService();
 ContactService _contactService = ContactService();
 GpioService _gpioService = GpioService();
+HandshakeService _handshakeService = HandshakeService();
 MapContentService _mapContentService = MapContentService();
 MealService _mealService = MealService();
 MediaServerService _mediaServerService = MediaServerService();
@@ -65,9 +66,29 @@ vector<WirelessTask> _wirelessTaskList;
 
 pthread_mutex_t _lucaHomeMutex = PTHREAD_MUTEX_INITIALIZER;
 
-string executeCommand(string encryptedCmd, int source)
+string executeCommand(string encryptedCmd, int source, string clientAddress)
 {
-	char key[]{};
+	string key = "";
+
+	if (source == CMD_SOURCE_EXTERNAL) {
+		if (!_handshakeService.HandshakePerformed(clientAddress)) {
+			string secret = _handshakeService.CreateSecret(clientAddress);
+			string str =
+				string("{")
+				+ string("\"Handshake\":")
+				+ string("{")
+				+ string("\"ClientAddress\":\"") + clientAddress + string("\",")
+				+ string("\"Secret\":\"") + secret + string("\"")
+				+ string("}")
+				+ string("}");
+			return str;
+		}
+
+		key = _handshakeService.GetSecret(clientAddress);
+		if (key.find(AUTHENTIFICATION_ERROR_NO_HANDSHAKE) != std::string::npos) {
+			return AUTHENTIFICATION_ERROR_NO_HANDSHAKE;
+		}
+	}
 
 	if (source != CMD_SOURCE_EXTERNAL && source != CMD_SOURCE_TASKER) {
 		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_INVALID_SOURCE);
@@ -78,6 +99,10 @@ string executeCommand(string encryptedCmd, int source)
 	}
 
 	string cmd = Decrypter::Decrypt(source, key, encryptedCmd);
+	if (cmd.find(DECRYPT_ERROR_KEY_NULL) != std::string::npos) {
+		return DECRYPT_ERROR_KEY_NULL;
+	}
+
 	vector <string> data = Tools::Explode(COMMAND_SPLITTER, cmd);
 
 	if (data.size() < 1 || data[USER_NAME_INDEX] == "") {
@@ -250,7 +275,9 @@ string executeCommand(string encryptedCmd, int source)
 		commandAnswer = COMMAND_ERROR_NO_ACTION_FOUND;
 	}
 
-	return Encrypter::Encrypt(source, key, commandAnswer);
+	string response = Encrypter::Encrypt(source, key, commandAnswer);
+	_handshakeService.RemoveHandshake(clientAddress);
+	return response;
 }
 
 void *server(void *arg) {
@@ -292,8 +319,12 @@ void *server(void *arg) {
 		else {
 			syslog(LOG_INFO, "Received: %s", message);
 
+			char *clientAddressChar = inet_ntoa(&clientAddress);
+			string clientAddressString(clientAddressChar);
+			syslog(LOG_INFO, "From: %s", clientAddressString);
+
 			pthread_mutex_lock(&_lucaHomeMutex);
-			string response = executeCommand(message, CMD_SOURCE_EXTERNAL);
+			string response = executeCommand(message, CMD_SOURCE_EXTERNAL, clientAddressString);
 			pthread_mutex_unlock(&_lucaHomeMutex);
 
 			int sendResult = sendto(socketResult, response.c_str(), strlen(response.c_str()), 0, (struct sockaddr *) &clientAddress, clientLength);
@@ -452,7 +483,7 @@ void *tasker(void *arg) {
 								if (gpioUuid != "") {
 									stringstream socket_out;
 									socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << GPIO << ":" << SET << ":" << gpioUuid << ":" << Tools::ConvertBoolToStr(wirelessSchedule.GetGpioAction());
-									string response = executeCommand(socket_out.str(), CMD_SOURCE_TASKER);
+									string response = executeCommand(socket_out.str(), CMD_SOURCE_TASKER, "");
 									if (response != GPIO_SET_SUCCESS) {
 										syslog(LOG_INFO, "Setting gpio %s by tasker failed!", gpioUuid.c_str());
 									}
@@ -462,7 +493,7 @@ void *tasker(void *arg) {
 								if (wirelessSocketUuid != "") {
 									stringstream wireless_socket_out;
 									wireless_socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSOCKET << ":" << SET << ":" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessSchedule.GetWirelessSocketAction());
-									string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER);
+									string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER, "");
 									if (response != WIRELESS_SOCKET_SET_SUCCESS) {
 										syslog(LOG_INFO, "Setting wireless socket %s by tasker failed!", wirelessSocketUuid.c_str());
 									}
@@ -472,7 +503,7 @@ void *tasker(void *arg) {
 								if (wirelessSwitchUuid != "") {
 									stringstream wireless_switch_out;
 									wireless_switch_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSWITCH << ":" << TOGGLE << ":" << wirelessSwitchUuid;
-									string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER);
+									string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER, "");
 									if (response != WIRELESS_SWITCH_TOGGLE_SUCCESS) {
 										syslog(LOG_INFO, "Toggling wireless switch %s by tasker failed!", wirelessSwitchUuid.c_str());
 									}
@@ -489,7 +520,7 @@ void *tasker(void *arg) {
 							if (gpioUuid != "") {
 								stringstream gpio_out;
 								gpio_out << TASKER << ":" << TASKER_PASSWORD << ":" << GPIO << ":" << SET << ":" << gpioUuid << ":" << Tools::ConvertBoolToStr(wirelessTimer.GetGpioAction());
-								string response = executeCommand(gpio_out.str(), CMD_SOURCE_TASKER);
+								string response = executeCommand(gpio_out.str(), CMD_SOURCE_TASKER, "");
 								if (response != GPIO_SET_SUCCESS) {
 									syslog(LOG_INFO, "Setting gpio %s by tasker failed!", gpioUuid.c_str());
 								}
@@ -499,7 +530,7 @@ void *tasker(void *arg) {
 							if (wirelessSocketUuid != "") {
 								stringstream wireless_socket_out;
 								wireless_socket_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSOCKET << ":" << SET << ":" << wirelessSocketUuid << ":" << Tools::ConvertBoolToStr(wirelessTimer.GetWirelessSocketAction());
-								string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER);
+								string response = executeCommand(wireless_socket_out.str(), CMD_SOURCE_TASKER, "");
 								if (response != WIRELESS_SOCKET_SET_SUCCESS) {
 									syslog(LOG_INFO, "Setting wireless socket %s by tasker failed!", wirelessSocketUuid.c_str());
 								}
@@ -509,7 +540,7 @@ void *tasker(void *arg) {
 							if (wirelessSwitchUuid != "") {
 								stringstream wireless_switch_out;
 								wireless_switch_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSSWITCH << ":" << TOGGLE << ":" << wirelessSwitchUuid;
-								string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER);
+								string response = executeCommand(wireless_switch_out.str(), CMD_SOURCE_TASKER, "");
 								if (response != WIRELESS_SWITCH_TOGGLE_SUCCESS) {
 									syslog(LOG_INFO, "Toggling wireless switch %s by tasker failed!", wirelessSwitchUuid.c_str());
 								}
@@ -517,7 +548,7 @@ void *tasker(void *arg) {
 
 							stringstream wireless_timer_delete_out;
 							wireless_timer_delete_out << TASKER << ":" << TASKER_PASSWORD << ":" << WIRELESSTIMER << ":" << DELETE << ":" << wirelessTimer.GetUuid();
-							string response = executeCommand(wireless_timer_delete_out.str(), CMD_SOURCE_TASKER);
+							string response = executeCommand(wireless_timer_delete_out.str(), CMD_SOURCE_TASKER, "");
 							if (response != WIRELESS_TIMER_DELETE_SUCCESS) {
 								syslog(LOG_INFO, "Deleting timer %s by scheduler failed!", wirelessTimer.GetUuid().c_str());
 							}
@@ -643,7 +674,7 @@ int main(void) {
 	_wirelessTimerService.Initialize("WirelessTimer.db");
 	_youtubeVideoService.Initialize("YoutubeVideo.db");
 
-	pthread_t serverThread, taskThread, birthdayThread, motionStartThread, motionStopThread, motionThread, shoppingItemControlThread, temperatureThread;
+	pthread_t serverThread, taskThread, birthdayThread, motionStartThread, motionStopThread, motionThread, shoppingItemThread, temperatureThread;
 
 	pthread_create(&serverThread, NULL, server, NULL);
 	pthread_create(&taskThread, NULL, tasker, NULL);
@@ -651,7 +682,7 @@ int main(void) {
 	pthread_create(&motionStartThread, NULL, motionStartControl, NULL);
 	pthread_create(&motionStopThread, NULL, motionStopControl, NULL);
 	pthread_create(&motionThread, NULL, motionControl, NULL);
-	pthread_create(&shoppingItemControlThread, NULL, shoppingItemControl, NULL);
+	pthread_create(&shoppingItemThread, NULL, shoppingItemControl, NULL);
 	pthread_create(&temperatureThread, NULL, temperatureControl, NULL);
 
 	pthread_join(serverThread, NULL);
@@ -660,7 +691,7 @@ int main(void) {
 	pthread_join(motionStartThread, NULL);
 	pthread_join(motionStopThread, NULL);
 	pthread_join(motionThread, NULL);
-	pthread_join(shoppingItemControlThread, NULL);
+	pthread_join(shoppingItemThread, NULL);
 	pthread_join(temperatureThread, NULL);
 
 	pthread_mutex_destroy(&_lucaHomeMutex);

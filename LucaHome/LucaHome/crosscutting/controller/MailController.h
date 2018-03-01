@@ -20,26 +20,19 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <dirent.h>
+#include <syslog.h>
 
-#include "../../crosscutting/utils/Tools.h"
-#include "../../crosscutting/Constants.h"
+#include "../Constants.h"
 
 using namespace std;
 
-#ifndef PATH_CONTROLLER_H
-#define PATH_CONTROLLER_H
+#ifndef MAIL_CONTROLLER_H
+#define MAIL_CONTROLLER_H
 
-class PathController
+class MailController
 {
-private:
-	static vector<string> scanDirForType(string, int);
-	static vector<string> filterList(vector<string>, vector<string>);
 public:
-	static vector<string> ScanCameraFolder();
-	static vector<string> ScanMovieFolder();
-	static vector<string> ScanSeriesFolder();
-	static vector<string> ScanMeterLogImageFolder();
+	static void SendMail(string, int, string);
 };
 
 #endif

@@ -20,19 +20,22 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <syslog.h>
+#include <dirent.h>
 
-#include "../../crosscutting/Constants.h"
+#include "../utils/Tools.h"
+#include "../Constants.h"
 
 using namespace std;
 
-#ifndef MAIL_CONTROLLER_H
-#define MAIL_CONTROLLER_H
+#ifndef SYSTEM_CONTROLLER_H
+#define SYSTEM_CONTROLLER_H
 
-class MailController
+class SystemController
 {
+private:
+
 public:
-	static void SendMail(string, int, string);
+	static int IsProcessRunning(string);
 };
 
 #endif

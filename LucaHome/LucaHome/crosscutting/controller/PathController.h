@@ -22,20 +22,24 @@
 #include <unistd.h>
 #include <dirent.h>
 
-#include "../../crosscutting/utils/Tools.h"
-#include "../../crosscutting/Constants.h"
+#include "../utils/Tools.h"
+#include "../Constants.h"
 
 using namespace std;
 
-#ifndef SYSTEM_CONTROLLER_H
-#define SYSTEM_CONTROLLER_H
+#ifndef PATH_CONTROLLER_H
+#define PATH_CONTROLLER_H
 
-class SystemController
+class PathController
 {
 private:
-
+	static vector<string> scanDirForType(string, int);
+	static vector<string> filterList(vector<string>, vector<string>);
 public:
-	static int IsProcessRunning(string);
+	static vector<string> ScanCameraFolder();
+	static vector<string> ScanMovieFolder();
+	static vector<string> ScanSeriesFolder();
+	static vector<string> ScanMeterLogImageFolder();
 };
 
 #endif

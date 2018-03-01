@@ -135,6 +135,7 @@
 #define AUTHENTIFICATION_ERROR_INVALID_SOURCE "Error 14:Invalid source"
 #define AUTHENTIFICATION_ERROR_RESET_FAILED "Error 16:Could not reset invalid login count"
 #define AUTHENTIFICATION_ERROR_NO_ADMIN "Error 17:Permitted! User is no admin!"
+#define AUTHENTIFICATION_ERROR_NO_HANDSHAKE "Error 18:No handshake performed!"
 
 #define COMMAND_ERROR_NO_ACTION_FOUND "Error 20:action not found"
 #define COMMAND_ERROR_NO_PARAMETER_FOUND "Error 21:parameter not found"
@@ -142,9 +143,9 @@
 #define COMMAND_ERROR_NO_ACTION "Error 23:No action"
 #define COMMAND_ERROR_NO_CATEGORY "Error 24:No category"
 #define COMMAND_ERROR_NO_PARAMETER "Error 25:No action parameter"
-#define COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED "Error 26:scheduler not allowed from external source"
+#define COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED "Error 26:tasker not allowed from external source"
 #define COMMAND_ERROR_HANDLER_NOT_INITIALIZED "Error 27:Handler is not initialized! Restart server!"
-#define COMMAND_ERROR_PIPE_ERROR "Error 80:System command error. Pipe Error!"
+#define COMMAND_ERROR_PIPE_ERROR "Error 28:System command error. Pipe Error!"
 
 #define APPLICATION_INFORMATION_ERROR_ADD "Error 261:Could not add application information"
 #define APPLICATION_INFORMATION_ERROR_UPDATE "Error 262:Could not update application information"
@@ -166,6 +167,9 @@
 #define CONTACT_ERROR_DELETE "Error 33:Failed to delete contact"
 #define CONTACT_ERROR_WRONG_WORD_SIZE "Error 34:Wrong word size for contact"
 #define CONTACT_ERROR_INVALID_DATA "Error 39:Invalid data for contact"
+
+#define DECRYPT_ERROR_KEY_NULL "Error 300:Failed to decrypt! key is null"
+#define ENCRYPT_ERROR_KEY_NULL "Error 301:Failed to encrypt! key is null"
 
 #define GPIO_ERROR_SET "Error 290:Could not set gpio"
 #define GPIO_ERROR_ADD "Error 291:Could not add gpio"

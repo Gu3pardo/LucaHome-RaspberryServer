@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>256</x>
+      <y>8</y>
+      <w>176</w>
+      <h>584</h>
+    </coordinates>
+    <panel_attributes>Application
+--
+bg=orange
+
+Services
+--
+
+ApplicationInformationService
+ChangeService
+CoinService
+ContactService
+GpioService
+HandshakeService
+MapContentService
+MealService
+MediaServerService
+MeterLogService
+MoneyLogService
+MovieService
+PuckJsService
+RadioStreamService
+RoomService
+RssFeedService
+SecurityService
+ShoppingItemService
+SuggestedMealService
+SuggestedShoppingItemService
+TemperatureService
+UserService
+WirelessScheduleService
+WirelessSocketService
+WirelessSwitchService
+WirelessTimerService
+YoutubeVideoService
+
+--
+Crypto
+--
+Decrypter
+Encrypter</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>504</x>
+      <y>8</y>
+      <w>184</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>Domain
+--
+bg=orange
+
+Classes
+--
+ApplicationInformation
+Change
+Coin
+Contact
+Gpio
+MapContent
+Meal
+MediaServer
+MeterLogItem
+MoneyLogItem
+Movie
+Point
+PuckJs
+RadioStream
+Room
+RssFeed
+ShoppingItem
+SuggestedMeal
+SuggestedShoppingItem
+Temperature
+User
+WirelessSchedule
+WirelessSocket
+WirelessSwitch
+WirelessTask
+WirelessTimer
+YoutubeVideo</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>16</x>
+      <y>616</y>
+      <w>928</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Crosscutting
+--
+bg=orange
+
+Utils
+--
+PiControl
+Tools
+
+--
+Controller
+--
+FileController
+MailController
+PathController
+SystemController</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>24</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Main&gt;&gt;
+Package::LucaHome
+--
+Threads
+-- Server
+-- Tasker
+-- BirthdayControl
+-- Motion
+   -- Start
+   -- Stop
+   -- Control
+-- ShoppingItemControl
+-- TemperatureControl</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>760</x>
+      <y>8</y>
+      <w>176</w>
+      <h>584</h>
+    </coordinates>
+    <panel_attributes>DataAccess
+--
+bg=orange
+
+Databases
+--
+ApplicationInformationDatabase
+ChangeDatabase
+CoinDatabase
+ContactDatabase
+GpioDatabase
+MapContentDatabase
+MealDatabase
+MediaServerDatabase
+MeterLogItemDatabase
+MoneyLogItemDatabase
+PuckJsDatabase
+RadioStreamDatabase
+RoomDatabase
+RssFeedDatabase
+ShoppingItemDatabase
+SuggestedMealDatabase
+SuggestedShoppingItemDatabase
+UserDatabase
+WirelessScheduleDatabase
+WirelessSocketDatabase
+WirelessSwitchDatabase
+WirelessTimerDatabase
+YoutubeVideoDatabase</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>176</x>
+      <y>88</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>424</x>
+      <y>88</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>88</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>424</x>
+      <y>448</y>
+      <w>352</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>420.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>168</y>
+      <w>24</w>
+      <h>464</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;560.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>840</x>
+      <y>584</y>
+      <w>24</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>584</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>408</y>
+      <w>24</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;280.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

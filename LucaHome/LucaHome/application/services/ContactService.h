@@ -11,7 +11,7 @@
 #include <sys/types.h>
 
 #include "../../crosscutting/Constants.h"
-#include "../../dataaccess/controller/MailController.h"
+#include "../../crosscutting/controller/MailController.h"
 #include "../../dataaccess/databases/ContactDatabase.h"
 #include "../../domain/classes/Contact.h"
 

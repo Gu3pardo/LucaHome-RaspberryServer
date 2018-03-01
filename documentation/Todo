@@ -9,7 +9,9 @@ ID	PBI			Task																State
 7				Create single DB-Controller, which every other uses					CANCELED
 8				Fix commands in existing databases									TO TEST
 9				Fill databases with initial data (especially changes/informations)	WIP
-10	Crypto		Implement Encryption and Decryption (write by yourself vs lib)		-
-11				Add handshake to change keys before transmitting data				-
+10	Crypto		Implement Encryption and Decryption (write by yourself -vs lib-)	-
+11				Add handshake to change keys before transmitting data				TO TEST
+12					Implement HandshakeService										TO TEST
+13	Beacon		Add support to read data from beacons								-
 
 Links for epic libs: http://en.cppreference.com/w/cpp/links/libs

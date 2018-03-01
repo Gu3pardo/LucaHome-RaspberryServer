@@ -20,7 +20,7 @@ using namespace std;
 class Decrypter
 {
 public:
-	static string Decrypt(int, char[], string);
+	static string Decrypt(int, string, string);
 };
 
 #endif

@@ -11,7 +11,7 @@
 #include <sys/types.h>
 
 #include "../../crosscutting/Constants.h"
-#include "../../dataaccess/controller/MailController.h"
+#include "../../crosscutting/controller/MailController.h"
 #include "../../domain/classes/Room.h"
 #include "../../domain/classes/Temperature.h"
 

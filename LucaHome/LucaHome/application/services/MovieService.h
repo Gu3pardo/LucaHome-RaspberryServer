@@ -11,8 +11,8 @@
 #include <sys/types.h>
 
 #include "../../crosscutting/Constants.h"
-#include "../../dataaccess/controller/FileController.h"
-#include "../../dataaccess/controller/PathController.h"
+#include "../../crosscutting/controller/FileController.h"
+#include "../../crosscutting/controller/PathController.h"
 #include "../../domain/classes/Movie.h"
 
 using namespace std;
