@@ -1,4 +1,5 @@
 #include <string>
+#include <array>
 #include <cstring>
 #include <vector>
 #include <iostream>
@@ -24,7 +25,7 @@ using namespace std;
 class HandshakeService
 {
 private:
-	vector<string[2]> _handshakes;
+	vector<array<string, 2>> _handshakes;
 
 
 public:

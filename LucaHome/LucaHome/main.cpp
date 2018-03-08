@@ -319,9 +319,10 @@ void *server(void *arg) {
 		else {
 			syslog(LOG_INFO, "Received: %s", message);
 
-			char *clientAddressChar = inet_ntoa(&clientAddress);
+			char clientAddressChar[INET_ADDRSTRLEN];
+			inet_ntop(AF_INET, &(clientAddress.sin_addr), clientAddressChar, INET_ADDRSTRLEN);
+
 			string clientAddressString(clientAddressChar);
-			syslog(LOG_INFO, "From: %s", clientAddressString);
 
 			pthread_mutex_lock(&_lucaHomeMutex);
 			string response = executeCommand(message, CMD_SOURCE_EXTERNAL, clientAddressString);

@@ -23,7 +23,7 @@ string HandshakeService::CreateSecret(string clientAddress) {
 	secret.erase(remove(clientAddress.begin(), clientAddress.end(), '/'), clientAddress.end());
 	secret.erase(remove(clientAddress.begin(), clientAddress.end(), '\\'), clientAddress.end());
 
-	string handshake[2] = { clientAddress, secret };
+	array<string, 2> handshake = { clientAddress, secret };
 	_handshakes.push_back(handshake);
 
 	return secret;

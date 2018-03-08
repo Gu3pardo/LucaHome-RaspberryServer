@@ -6,7 +6,7 @@ void MailController::SendMail(string address, int messageType, string data)
 
 	if (address.length() < MAIL_MIN_ADDRESS_LENGTH)
 	{
-		syslog(LOG_CRIT, "Error! Address too short! Length: %d", address.length());
+		syslog(LOG_CRIT, "Error! Address too short! Length: %zu", address.length());
 		return;
 	}
 
@@ -18,7 +18,7 @@ void MailController::SendMail(string address, int messageType, string data)
 
 	if (command.length() + data.length() > MAIL_MAX_DATA_LENGTH)
 	{
-		syslog(LOG_CRIT, "Error! Data too long! Length: %d", data.length());
+		syslog(LOG_CRIT, "Error! Data too long! Length: %zu", data.length());
 		return;
 	}
 

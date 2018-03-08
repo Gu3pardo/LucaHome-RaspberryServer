@@ -149,5 +149,5 @@ void TemperatureService::sendWarningMail(string warning)
 		return;
 	}
 
-	MailController::SendMail(warning);
+	MailController::SendMail(RECEIVER_MAIL, 0, warning);
 }
