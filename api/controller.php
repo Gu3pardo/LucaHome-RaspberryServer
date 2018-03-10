@@ -6,74 +6,18 @@
 
 define ( 'LUCAHOMEPORT', 6677 );
 
-define ( 'GPIO_ERROR_PARAM', "Error 295:Parameter not found for gpio");
-
 /* ===================================================== */
 /* ================= MAIN API METHOD =================== */
 /* ===================================================== */
 
-$user = Get ( 'user' );
-$password = Get ( 'password' );
 $action = Get ( 'action' );
 
-if ($user == '' || $password == '' || $action == '') {
-	echo AUTHENTIFICATION_ERROR_PARAM;
+if ($action == '') {
+	echo 'Error: No action at api controller provided';
 	return;
 }
 
-$login = "$user::$password";
-
-switch ($action) {		
-	/* ------------------- Gpio -------------------- */
-	case 'get' :
-		echo Send ( "$login::GPIO::GET::ALL" );
-		break;
-	case 'set' :
-		$uuid = Get ( 'uuid' );
-		$state = Get ( 'state' );
-		if ($uuid != '' && $state != '') {
-			echo Send ( "$login::GPIO::SET::$gpio::$state" );
-		} else {
-			echo GPIO_ERROR_PARAM;
-		}
-		break;
-	case 'add' :
-		$uuid = Get ( 'uuid' );
-		$name = Get ( 'name' );
-		$pin = Get ( 'pin' );
-		$state = Get ( 'state' );
-		if ($uuid != '' && $name != '' && $pin != '' && $state != '') {
-			echo Send ( "$login::GPIO::ADD::$uuid::$name::$pin::$state" );
-		} else {
-			echo GPIO_ERROR_PARAM;
-		}
-		break;
-	case 'update' :
-		$uuid = Get ( 'uuid' );
-		$name = Get ( 'name' );
-		$pin = Get ( 'pin' );
-		$state = Get ( 'state' );
-		if ($uuid != '' && $name != '' && $pin != '' && $state != '') {
-			echo Send ( "$login::GPIO::UPDATE::$uuid::$name::$pin::$state" );
-		} else {
-			echo GPIO_ERROR_PARAM;
-		}
-		break;
-	case 'delete' :
-		$uuid = Get ( 'uuid' );
-		if ($uuid != '') {
-			echo Send ( "$login::GPIO::DELETE::$uuid" );
-		} else {
-			echo GPIO_ERROR_PARAM;
-		}
-		break;
-
-	/* --------------------- Default ------------------- */
-	default :
-		var2console ( "Warning: " );
-		var2console ( $action );
-		break;
-}
+echo Send ( "$action" );
 
 /* ===================================================== */
 /* ================== HELPER METHODS =================== */

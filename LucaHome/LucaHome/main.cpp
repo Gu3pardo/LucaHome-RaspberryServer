@@ -75,11 +75,8 @@ string executeCommand(string encryptedCmd, int source, string clientAddress)
 			string secret = _handshakeService.CreateSecret(clientAddress);
 			string str =
 				string("{")
-				+ string("\"Handshake\":")
-				+ string("{")
 				+ string("\"ClientAddress\":\"") + clientAddress + string("\",")
 				+ string("\"Secret\":\"") + secret + string("\"")
-				+ string("}")
 				+ string("}");
 			return str;
 		}
