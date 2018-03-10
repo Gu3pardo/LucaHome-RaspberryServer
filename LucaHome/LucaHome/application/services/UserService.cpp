@@ -33,7 +33,7 @@ string UserService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return USER_ERROR_WRONG_WORD_SIZE;
@@ -50,7 +50,7 @@ string UserService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return USER_ERROR_WRONG_WORD_SIZE;
@@ -65,7 +65,7 @@ string UserService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -73,7 +73,7 @@ string UserService::PerformAction(vector<string> data)
 	{
 		if (AuthentificateUser(username, passphrase))
 		{
-			return USER_DELETE_SUCCESS;
+			return USER_VALIDATE_SUCCESS;
 		}
 
 		return AUTHENTIFICATION_ERROR_FAILED;

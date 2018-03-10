@@ -41,7 +41,7 @@ string CoinService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return COIN_ERROR_WRONG_WORD_SIZE;
@@ -58,7 +58,7 @@ string CoinService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return COIN_ERROR_WRONG_WORD_SIZE;
@@ -73,7 +73,7 @@ string CoinService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -98,7 +98,9 @@ string CoinService::getAllJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"Coin\",\"Action\":\"GetAll\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 
@@ -113,7 +115,9 @@ string CoinService::getUserJsonString(string userUuid)
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"Coin\",\"Action\":\"GetUser\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

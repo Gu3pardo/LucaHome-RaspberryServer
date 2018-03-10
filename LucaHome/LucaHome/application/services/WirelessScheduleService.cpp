@@ -33,7 +33,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
@@ -50,7 +50,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
@@ -65,7 +65,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -80,7 +80,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
@@ -111,7 +111,9 @@ string WirelessScheduleService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"WirelessSchedule\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

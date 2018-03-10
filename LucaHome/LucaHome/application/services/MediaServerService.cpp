@@ -33,10 +33,10 @@ string MediaServerService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"MediaServer\",\"Error\":215,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
-		return MEDIA_SERVER_ERROR_WRONG_SIZE;
+		return MEDIA_SERVER_ERROR_WRONG_WORD_SIZE;
 	}
 
 	else if (action == UPDATE)
@@ -50,10 +50,10 @@ string MediaServerService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"MediaServer\",\"Error\":215,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
-		return MEDIA_SERVER_ERROR_WRONG_SIZE;
+		return MEDIA_SERVER_ERROR_WRONG_WORD_SIZE;
 	}
 
 	else if (action == DELETE)
@@ -65,7 +65,7 @@ string MediaServerService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"MediaServer\",\"Error\":215,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -90,7 +90,9 @@ string MediaServerService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"MediaServer\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

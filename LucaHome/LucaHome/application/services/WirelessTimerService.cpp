@@ -33,7 +33,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE;
@@ -50,7 +50,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE;
@@ -65,7 +65,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -94,7 +94,9 @@ string WirelessTimerService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"WirelessTimer\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

@@ -33,7 +33,7 @@ string ContactService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
@@ -50,7 +50,7 @@ string ContactService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
@@ -65,7 +65,7 @@ string ContactService::PerformAction(vector<string> data)
 		}
 
 		stringstream actionAnswer;
-		actionAnswer << "Error: " << error;
+		actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 		return actionAnswer.str();
 	}
 
@@ -80,7 +80,7 @@ string ContactService::PerformAction(vector<string> data)
 			}
 
 			stringstream actionAnswer;
-			actionAnswer << "Error: " << error;
+			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
 			return actionAnswer.str();
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
@@ -129,7 +129,9 @@ string ContactService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Data\":[" << data.str().substr(0, data.str().size() - 1) << "]}" << "\x00" << endl;
+	out << "{\"Category\":\"Contact\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+		<< data.str().substr(0, data.str().size() - 1)
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

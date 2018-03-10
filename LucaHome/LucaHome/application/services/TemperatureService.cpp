@@ -111,7 +111,11 @@ string TemperatureService::getJsonString()
 		_sensorPath,
 		_graphPath);
 
-	return temperature.JsonString();
+	stringstream out;
+	out << "{\"Category\":\"Temperature\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+		<< temperature.JsonString()
+		<< "]}\x00" << endl;
+	return out.str();
 }
 
 double TemperatureService::loadTemperature()

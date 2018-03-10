@@ -123,6 +123,23 @@ string executeCommand(string encryptedCmd, int source, string clientAddress)
 		return Encrypter::Encrypt(source, key, COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED);
 	}
 
+	//--------------Special validate user-------------
+	string action = data[ACTION_INDEX];
+	if (action == VALIDATE) {
+		string commandAnswer = "";
+
+		if (_userService.AuthentificateUser(username, data[PASSWORD_INDEX])) {
+			commandAnswer = USER_VALIDATE_SUCCESS;
+		}
+		else {
+			commandAnswer = USER_ERROR_VALIDATE;
+		}
+
+		string response = Encrypter::Encrypt(source, key, commandAnswer);
+		_handshakeService.RemoveHandshake(clientAddress);
+		return response;
+	}
+
 	//---------------Authentificate user--------------
 	if (!_userService.AuthentificateUser(username, data[PASSWORD_INDEX])) {
 		return Encrypter::Encrypt(source, key, AUTHENTIFICATION_ERROR_FAILED);

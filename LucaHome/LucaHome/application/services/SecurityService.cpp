@@ -158,16 +158,13 @@ string SecurityService::stopMotion()
 string SecurityService::getJsonString()
 {
 	stringstream out;
-	out << "{"
-		<< "\"Motion\":"
+	out << "{\"Category\":\"Security\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
 		<< "{"
-		<< "\"Active\":" << (_isMotionActive ? "\"ON\"" : "\"OFF\"") << ","
-		<< "\"TaskActive\":" << "\"ON\"" << ","
-		<< "\"URL\":\"" << _motionUrl << "\","
+		<< "\"Active\":" << (_isMotionActive ? "true" : "false") << ","
+		<< "\"TaskActive\":true" << ","
 		<< "\"Events\":" << getMotionEventsJsonString()
 		<< "}"
-		<< "}";
-
+		<< "]}\x00" << endl;
 	return out.str();
 }
 

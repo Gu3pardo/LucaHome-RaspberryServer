@@ -1,298 +1,299 @@
-/***********************************************/
-/*************** USER DEFINITIONS **************/
-/***********************************************/
+/**********************************************************************************************/
+/*************************************** USER DEFINITIONS *************************************/
+/**********************************************************************************************/
 
-#define DEFAULT_PASSWORD "0000"
-#define MAX_INVALID_LOGIN_COUNT 5
-#define NO_PASSWORD "NO_PASSWORD"
-#define DUMMY "DUMMY"
-#define TASKER "Tasker"
-#define TASKER_PASSWORD "435435"
+#define MAX_INVALID_LOGIN_COUNT								5
+#define DEFAULT_PASSWORD									"0000"
+#define NO_PASSWORD											"NO_PASSWORD"
+#define DUMMY												"DUMMY"
+#define TASKER												"Tasker"
+#define TASKER_PASSWORD										"435435"
 
-#define RECEIVER_MAIL "TODO_PUT_HERE_YOUR_RECEIVER_MAIL"
+#define RECEIVER_MAIL										"TODO_PUT_HERE_YOUR_RECEIVER_MAIL"
 
-/***********************************************/
-/************* SUCCESS DEFINITIONS *************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************* SUCCESS DEFINITIONS ************************************/
+/**********************************************************************************************/
 
-#define AUTHENTIFICATION_RESET_FAILED_LOGIN_COUNT_SUCCESS "AUTHENTIFICATION:RESET_FAILED_LOGIN_COUNT:SUCCESS"
+#define AUTHENTIFICATION_RESET_FAILED_LOGIN_COUNT_SUCCESS	"{\"Category\":\"Authentification\",\"Action\":\"ResetFailedLoginCount\",\"Success\":true,\"Data\":\"\"}"
 
-#define APPLICATION_INFORMATION_ADD_SUCCESS "APPLICATION_INFORMATION:ADD:SUCCESS"
-#define APPLICATION_INFORMATION_UPDATE_SUCCESS "APPLICATION_INFORMATION:UPDATE:SUCCESS"
-#define APPLICATION_INFORMATION_DELETE_SUCCESS "APPLICATION_INFORMATION:DELETE:SUCCESS"
+#define APPLICATION_INFORMATION_ADD_SUCCESS					"{\"Category\":\"ApplicationInformation\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define APPLICATION_INFORMATION_UPDATE_SUCCESS				"{\"Category\":\"ApplicationInformation\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define APPLICATION_INFORMATION_DELETE_SUCCESS				"{\"Category\":\"ApplicationInformation\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define CHANGE_ADD_SUCCESS "CHANGE:ADD:SUCCESS"
-#define CHANGE_UPDATE_SUCCESS "CHANGE:UPDATE:SUCCESS"
-#define CHANGE_DELETE_SUCCESS "CHANGE:DELETE:SUCCESS"
+#define CHANGE_ADD_SUCCESS									"{\"Category\":\"Change\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define CHANGE_UPDATE_SUCCESS								"{\"Category\":\"Change\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define CHANGE_DELETE_SUCCESS								"{\"Category\":\"Change\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define COIN_ADD_SUCCESS "COIN:ADD:SUCCESS"
-#define COIN_UPDATE_SUCCESS "COIN:UPDATE:SUCCESS"
-#define COIN_DELETE_SUCCESS "COIN:DELETE:SUCCESS"
+#define COIN_ADD_SUCCESS									"{\"Category\":\"Coin\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define COIN_UPDATE_SUCCESS									"{\"Category\":\"Coin\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define COIN_DELETE_SUCCESS									"{\"Category\":\"Coin\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define CONTACT_ADD_SUCCESS "CONTACT:ADD:SUCCESS"
-#define CONTACT_UPDATE_SUCCESS "CONTACT:UPDATE:SUCCESS"
-#define CONTACT_DELETE_SUCCESS "CONTACT:DELETE:SUCCESS"
-#define CONTACT_MAIL_SUCCESS "CONTACT:MAIL:SUCCESS"
+#define CONTACT_ADD_SUCCESS									"{\"Category\":\"Contact\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define CONTACT_UPDATE_SUCCESS									"{\"Category\":\"Contact\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define CONTACT_DELETE_SUCCESS								"{\"Category\":\"Contact\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define CONTACT_MAIL_SUCCESS								"{\"Category\":\"Contact\",\"Action\":\"Mail\",\"Success\":true,\"Data\":\"\"}"
 
-#define COMMAND_RELOAD_SUCCESS "COMMAND:RELOAD:SUCCESS"
+#define COMMAND_RELOAD_SUCCESS								"{\"Category\":\"Common\",\"Action\":\"Reload\",\"Success\":true,\"Data\":\"\"}"
 
-#define GPIO_ADD_SUCCESS "GPIO:ADD:SUCCESS"
-#define GPIO_UPDATE_SUCCESS "GPIO:UPDATE:SUCCESS"
-#define GPIO_DELETE_SUCCESS "GPIO:DELETE:SUCCESS"
-#define GPIO_SET_SUCCESS "GPIO:SET:SUCCESS"
+#define GPIO_ADD_SUCCESS									"{\"Category\":\"Gpio\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define GPIO_UPDATE_SUCCESS									"{\"Category\":\"Gpio\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define GPIO_DELETE_SUCCESS									"{\"Category\":\"Gpio\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define GPIO_SET_SUCCESS									"{\"Category\":\"Gpio\",\"Action\":\"Set\",\"Success\":true,\"Data\":\"\"}"
 
-#define MAP_CONTENT_ADD_SUCCESS "MAP_CONTENT:ADD:SUCCESS"
-#define MAP_CONTENT_UPDATE_SUCCESS "MAP_CONTENT:UPDATE:SUCCESS"
-#define MAP_CONTENT_DELETE_SUCCESS "MAP_CONTENT:DELETE:SUCCESS"
+#define MAP_CONTENT_ADD_SUCCESS								"{\"Category\":\"MapContent\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define MAP_CONTENT_UPDATE_SUCCESS							"{\"Category\":\"MapContent\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define MAP_CONTENT_DELETE_SUCCESS							"{\"Category\":\"MapContent\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define MEAL_ADD_SUCCESS "MEAL:ADD:SUCCESS"
-#define MEAL_UPDATE_SUCCESS "MEAL:UPDATE:SUCCESS"
-#define MEAL_DELETE_SUCCESS "MEAL:DELETE:SUCCESS"
+#define MEAL_ADD_SUCCESS									"{\"Category\":\"Meal\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define MEAL_UPDATE_SUCCESS									"{\"Category\":\"Meal\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define MEAL_DELETE_SUCCESS									"{\"Category\":\"Meal\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define MEDIA_SERVER_ADD_SUCCESS "MEDIA_SERVER:ADD:SUCCESS"
-#define MEDIA_SERVER_UPDATE_SUCCESS "MEDIA_SERVER:UPDATE:SUCCESS"
-#define MEDIA_SERVER_DELETE_SUCCESS "MEDIA_SERVER:DELETE:SUCCESS"
+#define MEDIA_SERVER_ADD_SUCCESS							"{\"Category\":\"MediaServer\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define MEDIA_SERVER_UPDATE_SUCCESS							"{\"Category\":\"MediaServer\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define MEDIA_SERVER_DELETE_SUCCESS							"{\"Category\":\"MediaServer\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define METER_LOG_ITEM_ADD_SUCCESS "METER_LOG_ITEM:ADD:SUCCESS"
-#define METER_LOG_ITEM_UPDATE_SUCCESS "METER_LOG_ITEM:UPDATE:SUCCESS"
-#define METER_LOG_ITEM_DELETE_SUCCESS "METER_LOG_ITEM:DELETE:SUCCESS"
+#define METER_LOG_ITEM_ADD_SUCCESS							"{\"Category\":\"MeterLogItem\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define METER_LOG_ITEM_UPDATE_SUCCESS						"{\"Category\":\"MeterLogItem\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define METER_LOG_ITEM_DELETE_SUCCESS						"{\"Category\":\"MeterLogItem\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define MONEY_LOG_ITEM_ADD_SUCCESS "MONEY_LOG_ITEM:ADD:SUCCESS"
-#define MONEY_LOG_ITEM_UPDATE_SUCCESS "MONEY_LOG_ITEM:UPDATE:SUCCESS"
-#define MONEY_LOG_ITEM_DELETE_SUCCESS "MONEY_LOG_ITEM:DELETE:SUCCESS"
+#define MONEY_LOG_ITEM_ADD_SUCCESS							"{\"Category\":\"MoneyLogItem\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define MONEY_LOG_ITEM_UPDATE_SUCCESS						"{\"Category\":\"MoneyLogItem\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define MONEY_LOG_ITEM_DELETE_SUCCESS						"{\"Category\":\"MoneyLogItem\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define MOVIE_UPDATE_SUCCESS "MOVIE:UPDATE:SUCCESS"
-#define MOVIE_LOAD_SUCCESS "MOVIE:LOAD:SUCCESS"
+#define MOVIE_UPDATE_SUCCESS								"{\"Category\":\"Movie\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define MOVIE_LOAD_SUCCESS									"{\"Category\":\"Movie\",\"Action\":\"Load\",\"Success\":true,\"Data\":\"\"}"
 
-#define PUCK_JS_ADD_SUCCESS "PUCKJS:ADD:SUCCESS"
-#define PUCK_JS_UPDATE_SUCCESS "PUCKJS:UPDATE:SUCCESS"
-#define PUCK_JS_DELETE_SUCCESS "PUCKJS:DELETE:SUCCESS"
+#define PUCK_JS_ADD_SUCCESS									"{\"Category\":\"PuckJs\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define PUCK_JS_UPDATE_SUCCESS								"{\"Category\":\"PuckJs\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define PUCK_JS_DELETE_SUCCESS								"{\"Category\":\"PuckJs\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define RADIO_STREAM_ADD_SUCCESS "RADIO_STREAM:ADD:SUCCESS"
-#define RADIO_STREAM_UPDATE_SUCCESS "RADIO_STREAM:UPDATE:SUCCESS"
-#define RADIO_STREAM_DELETE_SUCCESS "RADIO_STREAM:DELETE:SUCCESS"
+#define RADIO_STREAM_ADD_SUCCESS							"{\"Category\":\"RadioStream\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define RADIO_STREAM_UPDATE_SUCCESS							"{\"Category\":\"RadioStream\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define RADIO_STREAM_DELETE_SUCCESS							"{\"Category\":\"RadioStream\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define ROOM_ADD_SUCCESS "ROOM:ADD:SUCCESS"
-#define ROOM_UPDATE_SUCCESS "ROOM:UPDATE:SUCCESS"
-#define ROOM_DELETE_SUCCESS "ROOM:DELETE:SUCCESS"
+#define ROOM_ADD_SUCCESS									"{\"Category\":\"Room\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define ROOM_UPDATE_SUCCESS									"{\"Category\":\"Room\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define ROOM_DELETE_SUCCESS									"{\"Category\":\"Room\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define RSS_FEED_ADD_SUCCESS "RSS_FEED:ADD:SUCCESS"
-#define RSS_FEED_UPDATE_SUCCESS "RSS_FEED:UPDATE:SUCCESS"
-#define RSS_FEED_DELETE_SUCCESS "RSS_FEED:DELETE:SUCCESS"
+#define RSS_FEED_ADD_SUCCESS								"{\"Category\":\"RssFeed\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define RSS_FEED_UPDATE_SUCCESS								"{\"Category\":\"RssFeed\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define RSS_FEED_DELETE_SUCCESS								"{\"Category\":\"RssFeed\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define SECURITY_START_MOTION_SUCCESS "SECURITY:START_MOTION:SUCCESS"
-#define SECURITY_STOP_MOTION_SUCCESS "SECURITY:STOP_MOTION:SUCCESS"
+#define SECURITY_START_MOTION_SUCCESS						"{\"Category\":\"Securitz\",\"Action\":\"StartMotion\",\"Success\":true,\"Data\":\"\"}"
+#define SECURITY_STOP_MOTION_SUCCESS						"{\"Category\":\"Securitz\",\"Action\":\"StopMotion\",\"Success\":true,\"Data\":\"\"}"
 
-#define SHOPPING_ITEM_ADD_SUCCESS "SHOPPING_ITEM:ADD:SUCCESS"
-#define SHOPPING_ITEM_UPDATE_SUCCESS "SHOPPING_ITEM:UPDATE:SUCCESS"
-#define SHOPPING_ITEM_DELETE_SUCCESS "SHOPPING_ITEM:DELETE:SUCCESS"
+#define SHOPPING_ITEM_ADD_SUCCESS							"{\"Category\":\"ShoppingItem\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define SHOPPING_ITEM_UPDATE_SUCCESS						"{\"Category\":\"ShoppingItem\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define SHOPPING_ITEM_DELETE_SUCCESS						"{\"Category\":\"ShoppingItem\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define SUGGESTED_MEAL_ADD_SUCCESS "SUGGESTED_MEAL:ADD:SUCCESS"
-#define SUGGESTED_MEAL_UPDATE_SUCCESS "SUGGESTED_MEAL:UPDATE:SUCCESS"
-#define SUGGESTED_MEAL_DELETE_SUCCESS "SUGGESTED_MEAL:DELETE:SUCCESS"
+#define SUGGESTED_MEAL_ADD_SUCCESS							"{\"Category\":\"SuggestedMeal\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define SUGGESTED_MEAL_UPDATE_SUCCESS						"{\"Category\":\"SuggestedMeal\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define SUGGESTED_MEAL_DELETE_SUCCESS						"{\"Category\":\"SuggestedMeal\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define SUGGESTED_SHOPPING_ITEM_ADD_SUCCESS "SUGGESTED_SHOPPING_ITEM:ADD:SUCCESS"
-#define SUGGESTED_SHOPPING_ITEM_UPDATE_SUCCESS "SUGGESTED_SHOPPING_ITEM:UPDATE:SUCCESS"
-#define SUGGESTED_SHOPPING_ITEM_DELETE_SUCCESS "SUGGESTED_SHOPPING_ITEM:DELETE:SUCCESS"
+#define SUGGESTED_SHOPPING_ITEM_ADD_SUCCESS					"{\"Category\":\"SuggestedShoppingItem\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define SUGGESTED_SHOPPING_ITEM_UPDATE_SUCCESS				"{\"Category\":\"SuggestedShoppingItem\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define SUGGESTED_SHOPPING_ITEM_DELETE_SUCCESS				"{\"Category\":\"SuggestedShoppingItem\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define USER_VALIDATE_SUCCESS "USER:VALIDATE:SUCCESS"
-#define USER_ADD_SUCCESS "USER:ADD:SUCCESS"
-#define USER_UPDATE_SUCCESS "USER:UPDATE:SUCCESS"
-#define USER_DELETE_SUCCESS "USER:DELETE:SUCCESS"
+#define USER_VALIDATE_SUCCESS								"{\"Category\":\"User\",\"Action\":\"Validate\",\"Success\":true,\"Data\":\"\"}"
+#define USER_ADD_SUCCESS									"{\"Category\":\"User\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define USER_UPDATE_SUCCESS									"{\"Category\":\"User\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define USER_DELETE_SUCCESS									"{\"Category\":\"User\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-#define WIRELESS_SCHEDULE_ADD_SUCCESS "WIRELESS_SCHEDULE:ADD:SUCCESS"
-#define WIRELESS_SCHEDULE_UPDATE_SUCCESS "WIRELESS_SCHEDULE:UPDATE:SUCCESS"
-#define WIRELESS_SCHEDULE_DELETE_SUCCESS "WIRELESS_SCHEDULE:DELETE:SUCCESS"
-#define WIRELESS_SCHEDULE_SET_SUCCESS "WIRELESS_SCHEDULE:SET:SUCCESS"
+#define WIRELESS_SCHEDULE_ADD_SUCCESS						"{\"Category\":\"WirelessSchedule\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SCHEDULE_UPDATE_SUCCESS					"{\"Category\":\"WirelessSchedule\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SCHEDULE_DELETE_SUCCESS					"{\"Category\":\"WirelessSchedule\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SCHEDULE_SET_SUCCESS						"{\"Category\":\"WirelessSchedule\",\"Action\":\"Set\",\"Success\":true,\"Data\":\"\"}"
 
-#define WIRELESS_SOCKET_ADD_SUCCESS "WIRELESS_SOCKET:ADD:SUCCESS"
-#define WIRELESS_SOCKET_UPDATE_SUCCESS "WIRELESS_SOCKET:UPDATE:SUCCESS"
-#define WIRELESS_SOCKET_DELETE_SUCCESS "WIRELESS_SOCKET:DELETE:SUCCESS"
-#define WIRELESS_SOCKET_SET_SUCCESS "WIRELESS_SOCKET:SET:SUCCESS"
+#define WIRELESS_SOCKET_ADD_SUCCESS							"{\"Category\":\"WirelessSocket\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SOCKET_UPDATE_SUCCESS						"{\"Category\":\"WirelessSocket\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SOCKET_DELETE_SUCCESS						"{\"Category\":\"WirelessSocket\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SOCKET_SET_SUCCESS							"{\"Category\":\"WirelessSocket\",\"Action\":\"Set\",\"Success\":true,\"Data\":\"\"}"
 
-#define WIRELESS_SWITCH_ADD_SUCCESS "WIRELESS_SWITCH:ADD:SUCCESS"
-#define WIRELESS_SWITCH_UPDATE_SUCCESS "WIRELESS_SWITCH:UPDATE:SUCCESS"
-#define WIRELESS_SWITCH_DELETE_SUCCESS "WIRELESS_SWITCH:DELETE:SUCCESS"
-#define WIRELESS_SWITCH_TOGGLE_SUCCESS "WIRELESS_SOCKET:TOGGLE:SUCCESS"
+#define WIRELESS_SWITCH_ADD_SUCCESS							"{\"Category\":\"WirelessSwitch\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SWITCH_UPDATE_SUCCESS						"{\"Category\":\"WirelessSwitch\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SWITCH_DELETE_SUCCESS						"{\"Category\":\"WirelessSwitch\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_SWITCH_TOGGLE_SUCCESS						"{\"Category\":\"WirelessSwitch\",\"Action\":\"Toggle\",\"Success\":true,\"Data\":\"\"}"
 
-#define WIRELESS_TIMER_ADD_SUCCESS "WIRELESS_TIMER:ADD:SUCCESS"
-#define WIRELESS_TIMER_UPDATE_SUCCESS "WIRELESS_TIMER:UPDATE:SUCCESS"
-#define WIRELESS_TIMER_DELETE_SUCCESS "WIRELESS_TIMER:DELETE:SUCCESS"
-#define WIRELESS_TIMER_SET_SUCCESS "WIRELESS_TIMER:SET:SUCCESS"
+#define WIRELESS_TIMER_ADD_SUCCESS							"{\"Category\":\"WirelessTimer\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_TIMER_UPDATE_SUCCESS						"{\"Category\":\"WirelessTimer\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_TIMER_DELETE_SUCCESS						"{\"Category\":\"WirelessTimer\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
+#define WIRELESS_TIMER_SET_SUCCESS							"{\"Category\":\"WirelessTimer\",\"Action\":\"Set\",\"Success\":true,\"Data\":\"\"}"
 
-#define YOUTUBE_VIDEO_ADD_SUCCESS "YOUTUBE_VIDEO:ADD:SUCCESS"
-#define YOUTUBE_VIDEO_UPDATE_SUCCESS "YOUTUBE_VIDEO:UPDATE:SUCCESS"
-#define YOUTUBE_VIDEO_DELETE_SUCCESS "YOUTUBE_VIDEO:DELETE:SUCCESS"
+#define YOUTUBE_VIDEO_ADD_SUCCESS							"{\"Category\":\"YoutubeVideo\",\"Action\":\"Add\",\"Success\":true,\"Data\":\"\"}"
+#define YOUTUBE_VIDEO_UPDATE_SUCCESS						"{\"Category\":\"YoutubeVideo\",\"Action\":\"Update\",\"Success\":true,\"Data\":\"\"}"
+#define YOUTUBE_VIDEO_DELETE_SUCCESS						"{\"Category\":\"YoutubeVideo\",\"Action\":\"Delete\",\"Success\":true,\"Data\":\"\"}"
 
-/***********************************************/
-/************** ERROR DEFINITIONS **************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************** ERROR DEFINITIONS *************************************/
+/**********************************************************************************************/
 
-#define AUTHENTIFICATION_ERROR_FAILED "Error 10:Authentification failed"
-#define AUTHENTIFICATION_ERROR_NO_RIGHTS "Error 11:UserAction cannot be performed! No rights"
-#define AUTHENTIFICATION_ERROR_NO_PASSWORD "Error 12:No password"
-#define AUTHENTIFICATION_ERROR_NO_USERNAME "Error 13:No username"
-#define AUTHENTIFICATION_ERROR_INVALID_SOURCE "Error 14:Invalid source"
-#define AUTHENTIFICATION_ERROR_RESET_FAILED "Error 16:Could not reset invalid login count"
-#define AUTHENTIFICATION_ERROR_NO_ADMIN "Error 17:Permitted! User is no admin!"
-#define AUTHENTIFICATION_ERROR_NO_HANDSHAKE "Error 18:No handshake performed!"
+#define AUTHENTIFICATION_ERROR_FAILED						"{\"Category\":\"Authentification\",\"Error\":10,\"Success\":false,\"Data\":\"Authentification failed!\"}"
+#define AUTHENTIFICATION_ERROR_NO_RIGHTS					"{\"Category\":\"Authentification\",\"Error\":11,\"Success\":false,\"Data\":\"UserAction cannot be performed! No rights!\"}"
+#define AUTHENTIFICATION_ERROR_NO_PASSWORD					"{\"Category\":\"Authentification\",\"Error\":12,\"Success\":false,\"Data\":\"No password!\"}"
+#define AUTHENTIFICATION_ERROR_NO_USERNAME					"{\"Category\":\"Authentification\",\"Error\":13,\"Success\":false,\"Data\":\"No username!\"}"
+#define AUTHENTIFICATION_ERROR_INVALID_SOURCE				"{\"Category\":\"Authentification\",\"Error\":14,\"Success\":false,\"Data\":\"Invalid source!\"}"
+#define AUTHENTIFICATION_ERROR_RESET_FAILED					"{\"Category\":\"Authentification\",\"Error\":16,\"Success\":false,\"Data\":\"Could not reset invalid login count!\"}"
+#define AUTHENTIFICATION_ERROR_NO_ADMIN						"{\"Category\":\"Authentification\",\"Error\":17,\"Success\":false,\"Data\":\"Permitted! User is no admin!\"}"
+#define AUTHENTIFICATION_ERROR_NO_HANDSHAKE					"{\"Category\":\"Authentification\",\"Error\":18,\"Success\":false,\"Data\":\"No handshake performed!\"}"
 
-#define COMMAND_ERROR_NO_ACTION_FOUND "Error 20:action not found"
-#define COMMAND_ERROR_NO_PARAMETER_FOUND "Error 21:parameter not found"
-#define COMMAND_ERROR_SHORT_STATEMENT "Error 22:statement too short"
-#define COMMAND_ERROR_NO_ACTION "Error 23:No action"
-#define COMMAND_ERROR_NO_CATEGORY "Error 24:No category"
-#define COMMAND_ERROR_NO_PARAMETER "Error 25:No action parameter"
-#define COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED "Error 26:tasker not allowed from external source"
-#define COMMAND_ERROR_HANDLER_NOT_INITIALIZED "Error 27:Handler is not initialized! Restart server!"
-#define COMMAND_ERROR_PIPE_ERROR "Error 28:System command error. Pipe Error!"
+#define COMMAND_ERROR_NO_ACTION_FOUND						"{\"Category\":\"Command\",\"Error\":20,\"Success\":false,\"Data\":\"Action not found!\"}"
+#define COMMAND_ERROR_NO_PARAMETER_FOUND					"{\"Category\":\"Command\",\"Error\":21,\"Success\":false,\"Data\":\"Parameter not found!\"}"
+#define COMMAND_ERROR_SHORT_STATEMENT						"{\"Category\":\"Command\",\"Error\":22,\"Success\":false,\"Data\":\"Statement too short!\"}"
+#define COMMAND_ERROR_NO_ACTION								"{\"Category\":\"Command\",\"Error\":23,\"Success\":false,\"Data\":\"No action!\"}"
+#define COMMAND_ERROR_NO_CATEGORY							"{\"Category\":\"Command\",\"Error\":24,\"Success\":false,\"Data\":\"No category!\"}"
+#define COMMAND_ERROR_NO_PARAMETER							"{\"Category\":\"Command\",\"Error\":25,\"Success\":false,\"Data\":\"Not action parameter!\"}"
+#define COMMAND_ERROR_SCHEDULER_EXTERNAL_NOT_ALLOWED		"{\"Category\":\"Command\",\"Error\":26,\"Success\":false,\"Data\":\"Tasker not allowed from external source!\"}"
+#define COMMAND_ERROR_HANDLER_NOT_INITIALIZED				"{\"Category\":\"Command\",\"Error\":27,\"Success\":false,\"Data\":\"Handler is not initialized! Restart server!\"}"
+#define COMMAND_ERROR_PIPE_ERROR							"{\"Category\":\"Command\",\"Error\":28,\"Success\":false,\"Data\":\"System command error. Pipe Error!\"}"
 
-#define APPLICATION_INFORMATION_ERROR_ADD "Error 261:Could not add application information"
-#define APPLICATION_INFORMATION_ERROR_UPDATE "Error 262:Could not update application information"
-#define APPLICATION_INFORMATION_ERROR_DELETE "Error 263:Could not delete application information"
-#define APPLICATION_INFORMATION_ERROR_WRONG_WORD_SIZE "Error 264:Wrong word size for application information"
+#define APPLICATION_INFORMATION_ERROR_ADD					"{\"Category\":\"ApplicationInformation\",\"Error\":261,\"Success\":false,\"Data\":\"Could not add application information!\"}"
+#define APPLICATION_INFORMATION_ERROR_UPDATE				"{\"Category\":\"ApplicationInformation\",\"Error\":262,\"Success\":false,\"Data\":\"Could not update application information!\"}"
+#define APPLICATION_INFORMATION_ERROR_DELETE				"{\"Category\":\"ApplicationInformation\",\"Error\":263,\"Success\":false,\"Data\":\"Could not delete application information!\"}"
+#define APPLICATION_INFORMATION_ERROR_WRONG_WORD_SIZE		"{\"Category\":\"ApplicationInformation\",\"Error\":264,\"Success\":false,\"Data\":\"Wrong word size for application information!\"}"
 
-#define CHANGE_ERROR_ADD "Error 271:Could not add change"
-#define CHANGE_ERROR_UPDATE "Error 272:Could not update change"
-#define CHANGE_ERROR_DELETE "Error 273:Could not delete change"
-#define CHANGE_ERROR_WRONG_WORD_SIZE "Error 274:Wrong word size for change"
+#define CHANGE_ERROR_ADD									"{\"Category\":\"Change\",\"Error\":271,\"Success\":false,\"Data\":\"Could not add change!\"}"
+#define CHANGE_ERROR_UPDATE									"{\"Category\":\"Change\",\"Error\":272,\"Success\":false,\"Data\":\"Could not update change!\"}"
+#define CHANGE_ERROR_DELETE									"{\"Category\":\"Change\",\"Error\":273,\"Success\":false,\"Data\":\"Could not delete change!\"}"
+#define CHANGE_ERROR_WRONG_WORD_SIZE						"{\"Category\":\"Change\",\"Error\":274,\"Success\":false,\"Data\":\"Wrong word size for change!\"}"
 
-#define COIN_ERROR_ADD "Error 171:Could not add coin"
-#define COIN_ERROR_UPDATE "Error 172:Could not update coin"
-#define COIN_ERROR_DELETE "Error 173:Could not delete coin"
-#define COIN_ERROR_WRONG_WORD_SIZE "Error 174:Wrong word size for coin"
+#define COIN_ERROR_ADD										"{\"Category\":\"Coin\",\"Error\":171,\"Success\":false,\"Data\":\"Could not add coin!\"}"
+#define COIN_ERROR_UPDATE									"{\"Category\":\"Coin\",\"Error\":172,\"Success\":false,\"Data\":\"Could not update coin!\"}"
+#define COIN_ERROR_DELETE									"{\"Category\":\"Coin\",\"Error\":173,\"Success\":false,\"Data\":\"Could not delete coin!\"}"
+#define COIN_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"Coin\",\"Error\":174,\"Success\":false,\"Data\":\"Wrong word size for coin!\"}"
 
-#define CONTACT_ERROR_ADD "Error 31:Failed to add contact"
-#define CONTACT_ERROR_UPDATE "Error 32:Failed to update contact"
-#define CONTACT_ERROR_DELETE "Error 33:Failed to delete contact"
-#define CONTACT_ERROR_WRONG_WORD_SIZE "Error 34:Wrong word size for contact"
-#define CONTACT_ERROR_INVALID_DATA "Error 39:Invalid data for contact"
+#define CONTACT_ERROR_ADD									"{\"Category\":\"Contact\",\"Error\":31,\"Success\":false,\"Data\":\"Could not add contact!\"}"
+#define CONTACT_ERROR_UPDATE								"{\"Category\":\"Contact\",\"Error\":32,\"Success\":false,\"Data\":\"Could not update contact!\"}"
+#define CONTACT_ERROR_DELETE								"{\"Category\":\"Contact\",\"Error\":33,\"Success\":false,\"Data\":\"Could not delete contact!\"}"
+#define CONTACT_ERROR_WRONG_WORD_SIZE						"{\"Category\":\"Contact\",\"Error\":34,\"Success\":false,\"Data\":\"Wrong word size for contact!\"}"
+#define CONTACT_ERROR_INVALID_DATA							"{\"Category\":\"Contact\",\"Error\":39,\"Success\":false,\"Data\":\"Invalid data for contact!\"}"
 
-#define DECRYPT_ERROR_KEY_NULL "Error 300:Failed to decrypt! key is null"
-#define ENCRYPT_ERROR_KEY_NULL "Error 301:Failed to encrypt! key is null"
+#define DECRYPT_ERROR_KEY_NULL								"{\"Category\":\"Crypto\",\"Error\":300,\"Success\":false,\"Data\":\"Failed to decrypt! Key is null!\"}"
+#define ENCRYPT_ERROR_KEY_NULL								"{\"Category\":\"Crypto\",\"Error\":301,\"Success\":false,\"Data\":\"Failed to encrypt! Key is null!\"}"
 
-#define GPIO_ERROR_SET "Error 290:Could not set gpio"
-#define GPIO_ERROR_ADD "Error 291:Could not add gpio"
-#define GPIO_ERROR_UPDATE "Error 292:Could not update gpio"
-#define GPIO_ERROR_DELETE "Error 293:Could not delete gpio"
-#define GPIO_ERROR_WRONG_WORD_SIZE "Error 294:Wrong word size for gpio"
-#define GPIO_ERROR_INVALID_STATE "Error 299:Invalid state for gpio"
+#define GPIO_ERROR_SET										"{\"Category\":\"Gpio\",\"Error\":290,\"Success\":false,\"Data\":\"Could not set gpio!\"}"
+#define GPIO_ERROR_ADD										"{\"Category\":\"Gpio\",\"Error\":291,\"Success\":false,\"Data\":\"Could not add gpio!\"}"
+#define GPIO_ERROR_UPDATE									"{\"Category\":\"Gpio\",\"Error\":292,\"Success\":false,\"Data\":\"Could not update gpio!\"}"
+#define GPIO_ERROR_DELETE									"{\"Category\":\"Gpio\",\"Error\":293,\"Success\":false,\"Data\":\"Could not delete gpio!\"}"
+#define GPIO_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"Gpio\",\"Error\":294,\"Success\":false,\"Data\":\"Wrong word size for gpio!\"}"
+#define GPIO_ERROR_INVALID_STATE							"{\"Category\":\"Gpio\",\"Error\":299,\"Success\":false,\"Data\":\"Invalid state for gpio!\"}"
 
-#define MAP_CONTENT_ERROR_ADD "Error 101:Could not add mapcontent"
-#define MAP_CONTENT_ERROR_UPDATE "Error 102:Could not update mapcontent"
-#define MAP_CONTENT_ERROR_DELETE "Error 103:Could not delete mapcontent"
-#define MAP_CONTENT_ERROR_WRONG_WORD_SIZE "Error 104:Wrong word size for mapcontent"
+#define MAP_CONTENT_ERROR_ADD								"{\"Category\":\"MapContent\",\"Error\":101,\"Success\":false,\"Data\":\"Could not add mapcontent!\"}"
+#define MAP_CONTENT_ERROR_UPDATE							"{\"Category\":\"MapContent\",\"Error\":102,\"Success\":false,\"Data\":\"Could not update mapcontent!\"}"
+#define MAP_CONTENT_ERROR_DELETE							"{\"Category\":\"MapContent\",\"Error\":103,\"Success\":false,\"Data\":\"Could not delete mapcontent!\"}"
+#define MAP_CONTENT_ERROR_WRONG_WORD_SIZE					"{\"Category\":\"MapContent\",\"Error\":104,\"Success\":false,\"Data\":\"Wrong word size for mapcontent!\"}"
 
-#define MEAL_ERROR_ADD "Error 131:Could not add meal"
-#define MEAL_ERROR_UPDATE "Error 132:Could not update meal"
-#define MEAL_ERROR_DELETE "Error 133:Could not delete meal"
-#define MEAL_ERROR_WRONG_WORD_SIZE "Error 134:Wrong word size for meal"
-#define MEAL_ERROR_INVALID_DATA "Error 139:Invalid data for meal"
+#define MEAL_ERROR_ADD										"{\"Category\":\"Meal\",\"Error\":131,\"Success\":false,\"Data\":\"Could not add meal!\"}"
+#define MEAL_ERROR_UPDATE									"{\"Category\":\"Meal\",\"Error\":132,\"Success\":false,\"Data\":\"Could not update meal!\"}"
+#define MEAL_ERROR_DELETE									"{\"Category\":\"Meal\",\"Error\":133,\"Success\":false,\"Data\":\"Could not delete meal!\"}"
+#define MEAL_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"Meal\",\"Error\":134,\"Success\":false,\"Data\":\"Wrong word size for meal!\"}"
+#define MEAL_ERROR_INVALID_DATA								"{\"Category\":\"Meal\",\"Error\":139,\"Success\":false,\"Data\":\"Invalid data for meal!\"}"
 
-#define MEDIA_SERVER_ERROR_ADD "Error 211:Could not add mediaserver"
-#define MEDIA_SERVER_ERROR_UPDATE "Error 212:Could not update mediaserver"
-#define MEDIA_SERVER_ERROR_DELETE "Error 213:Could not delete mediaserver"
-#define MEDIA_SERVER_ERROR_WRONG_SIZE "Error 214:Wrong word size for mediaserver"
+#define MEDIA_SERVER_ERROR_ADD								"{\"Category\":\"MediaServer\",\"Error\":211,\"Success\":false,\"Data\":\"Could not add mediaserver!\"}"
+#define MEDIA_SERVER_ERROR_UPDATE							"{\"Category\":\"MediaServer\",\"Error\":212,\"Success\":false,\"Data\":\"Could not update mediaserver!\"}"
+#define MEDIA_SERVER_ERROR_DELETE							"{\"Category\":\"MediaServer\",\"Error\":213,\"Success\":false,\"Data\":\"Could not delete mediaserver!\"}"
+#define MEDIA_SERVER_ERROR_WRONG_WORD_SIZE					"{\"Category\":\"MediaServer\",\"Error\":214,\"Success\":false,\"Data\":\"Wrong word size for mediaserver!\"}"
 
-#define METER_LOG_ITEM_ERROR_ADD "Error 161:Could not add meter log item"
-#define METER_LOG_ITEM_ERROR_UPDATE "Error 162:Could not update meter log item"
-#define METER_LOG_ITEM_ERROR_DELETE "Error 163:Could not delete meter log item"
-#define METER_LOG_ITEM_ERROR_WRONG_WORD_SIZE "Error 164:Wrong word size for meter log item"
-#define METER_LOG_ITEM_ERROR_INVALID_DATA "Error 169:Invalid data for meter log item"
+#define METER_LOG_ITEM_ERROR_ADD							"{\"Category\":\"MeterLogItem\",\"Error\":161,\"Success\":false,\"Data\":\"Could not add meter log item!\"}"
+#define METER_LOG_ITEM_ERROR_UPDATE							"{\"Category\":\"MeterLogItem\",\"Error\":162,\"Success\":false,\"Data\":\"Could not update meter log item!\"}"
+#define METER_LOG_ITEM_ERROR_DELETE							"{\"Category\":\"MeterLogItem\",\"Error\":163,\"Success\":false,\"Data\":\"Could not delete meter log item!\"}"
+#define METER_LOG_ITEM_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"MeterLogItem\",\"Error\":164,\"Success\":false,\"Data\":\"Wrong word size for meter log item!\"}"
+#define METER_LOG_ITEM_ERROR_INVALID_DATA					"{\"Category\":\"MeterLogItem\",\"Error\":169,\"Success\":false,\"Data\":\"Invalid data for meter log item!\"}"
 
-#define MONEY_LOG_ITEM_ERROR_ADD "Error 181:Could not add money log item"
-#define MONEY_LOG_ITEM_ERROR_UPDATE "Error 182:Could not update money log item"
-#define MONEY_LOG_ITEM_ERROR_DELETE "Error 183:Could not delete money log item"
-#define MONEY_LOG_ITEM_ERROR_WRONG_WORD_SIZE "Error 184:Wrong word size for money log item"
-#define MONEY_LOG_ITEM_ERROR_INVALID_DATA "Error 189:Invalid data for money log item"
+#define MONEY_LOG_ITEM_ERROR_ADD							"{\"Category\":\"MoneyLogItem\",\"Error\":181,\"Success\":false,\"Data\":\"Could not add money log item!\"}"
+#define MONEY_LOG_ITEM_ERROR_UPDATE							"{\"Category\":\"MoneyLogItem\",\"Error\":182,\"Success\":false,\"Data\":\"Could not update money log item!\"}"
+#define MONEY_LOG_ITEM_ERROR_DELETE							"{\"Category\":\"MoneyLogItem\",\"Error\":183,\"Success\":false,\"Data\":\"Could not delete money log item!\"}"
+#define MONEY_LOG_ITEM_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"MoneyLogItem\",\"Error\":184,\"Success\":false,\"Data\":\"Wrong word size for money log item!\"}"
+#define MONEY_LOG_ITEM_ERROR_INVALID_DATA					"{\"Category\":\"MoneyLogItem\",\"Error\":189,\"Success\":false,\"Data\":\"Invalid data for money log item!\"}"
 
-#define MOVIE_ERROR_UPDATE "Error 42:Could not update movie"
-#define MOVIE_ERROR_WRONG_WORD_SIZE "Error 44:Wrong word size for movie"
-#define MOVIE_ERROR_INVALID_INDEX "Error 49:Start index higher then last index value"
+#define MOVIE_ERROR_UPDATE									"{\"Category\":\"Movie\",\"Error\":42,\"Success\":false,\"Data\":\"Could not update movie!\"}"
+#define MOVIE_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"Movie\",\"Error\":44,\"Success\":false,\"Data\":\"Wrong word size for movie!\"}"
+#define MOVIE_ERROR_INVALID_INDEX							"{\"Category\":\"Movie\",\"Error\":49,\"Success\":false,\"Data\":\"Start index higher then last index value!\"}"
 
-#define PUCK_JS_ERROR_ADD "Error 191:Could not add puckjs"
-#define PUCK_JS_ERROR_UPDATE "Error 192:Could not update puckjs"
-#define PUCK_JS_ERROR_DELETE "Error 193:Could not delete puckjs"
-#define PUCK_JS_ERROR_WRONG_WORD_SIZE "Error 194:Wrong word size for puckjs"
+#define PUCK_JS_ERROR_ADD									"{\"Category\":\"PuckJs\",\"Error\":191,\"Success\":false,\"Data\":\"Could not add puckjs!\"}"
+#define PUCK_JS_ERROR_UPDATE								"{\"Category\":\"PuckJs\",\"Error\":192,\"Success\":false,\"Data\":\"Could not update puckjs!\"}"
+#define PUCK_JS_ERROR_DELETE								"{\"Category\":\"PuckJs\",\"Error\":193,\"Success\":false,\"Data\":\"Could not delete puckjs!\"}"
+#define PUCK_JS_ERROR_WRONG_WORD_SIZE						"{\"Category\":\"PuckJs\",\"Error\":194,\"Success\":false,\"Data\":\"Wrong word size for puckjs!\"}"
 
-#define RADIO_STREAM_ERROR_ADD "Error 231:Could not add radio stream"
-#define RADIO_STREAM_ERROR_UPDATE "Error 232:Could not update radio stream"
-#define RADIO_STREAM_ERROR_DELETE "Error 233:Could not delete radio stream"
-#define RADIO_STREAM_ERROR_WRONG_WORD_SIZE "Error 234:Wrong word size for radio stream"
+#define RADIO_STREAM_ERROR_ADD								"{\"Category\":\"RadioStream\",\"Error\":231,\"Success\":false,\"Data\":\"Could not add radio stream!\"}"
+#define RADIO_STREAM_ERROR_UPDATE							"{\"Category\":\"RadioStream\",\"Error\":232,\"Success\":false,\"Data\":\"Could not update radio stream!\"}"
+#define RADIO_STREAM_ERROR_DELETE							"{\"Category\":\"RadioStream\",\"Error\":233,\"Success\":false,\"Data\":\"Could not delete radio stream!\"}"
+#define RADIO_STREAM_ERROR_WRONG_WORD_SIZE					"{\"Category\":\"RadioStream\",\"Error\":234,\"Success\":false,\"Data\":\"Wrong word size for radio stream!\"}"
 
-#define ROOM_ERROR_ADD "Error 201:Could not add room"
-#define ROOM_ERROR_UPDATE "Error 202:Could not update room"
-#define ROOM_ERROR_DELETE "Error 203:Could not delete room"
-#define ROOM_ERROR_WRONG_WORD_SIZE "Error 204:Wrong word size for room"
+#define ROOM_ERROR_ADD										"{\"Category\":\"Room\",\"Error\":201,\"Success\":false,\"Data\":\"Could not add room!\"}"
+#define ROOM_ERROR_UPDATE									"{\"Category\":\"Room\",\"Error\":202,\"Success\":false,\"Data\":\"Could not update room!\"}"
+#define ROOM_ERROR_DELETE									"{\"Category\":\"Room\",\"Error\":203,\"Success\":false,\"Data\":\"Could not delete room!\"}"
+#define ROOM_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"Room\",\"Error\":204,\"Success\":false,\"Data\":\"Wrong word size for room!\"}"
 
-#define RSS_FEED_ERROR_ADD "Error 241:Could not add rss feed"
-#define RSS_FEED_ERROR_UPDATE "Error 242:Could not update rss feed"
-#define RSS_FEED_ERROR_DELETE "Error 243:Could not delete rss feed"
-#define RSS_FEED_ERROR_WRONG_WORD_SIZE "Error 244:Wrong word size for rss feed"
+#define RSS_FEED_ERROR_ADD									"{\"Category\":\"RssFeed\",\"Error\":241,\"Success\":false,\"Data\":\"Could not add rss feed!\"}"
+#define RSS_FEED_ERROR_UPDATE								"{\"Category\":\"RssFeed\",\"Error\":242,\"Success\":false,\"Data\":\"Could not update rss feed!\"}"
+#define RSS_FEED_ERROR_DELETE								"{\"Category\":\"RssFeed\",\"Error\":243,\"Success\":false,\"Data\":\"Could not delete rss feed!\"}"
+#define RSS_FEED_ERROR_WRONG_WORD_SIZE						"{\"Category\":\"RssFeed\",\"Error\":244,\"Success\":false,\"Data\":\"Wrong word size for rss feed!\"}"
 
-#define SECURITY_ERROR_MOTION_IS_RUNNING "Error 156:Security motion already running"
-#define SECURITY_ERROR_MOTION_NOT_RUNNING "Error 157:Security motion not running"
-#define SECURITY_ERROR_INVALID_INDEX_5_DATA "Error 158:Invalid data at index 5 for security"
-#define SECURITY_ERROR_INVALID_DATA "Error 159:Invalid data for security"
+#define SECURITY_ERROR_MOTION_IS_RUNNING					"{\"Category\":\"Securitz\",\"Error\":156,\"Success\":false,\"Data\":\"Security motion already running!\"}"
+#define SECURITY_ERROR_MOTION_NOT_RUNNING					"{\"Category\":\"Securitz\",\"Error\":157,\"Success\":false,\"Data\":\"Security motion not running!\"}"
+#define SECURITY_ERROR_INVALID_INDEX_5_DATA					"{\"Category\":\"Securitz\",\"Error\":158,\"Success\":false,\"Data\":\"Invalid data at index 5 for security!\"}"
+#define SECURITY_ERROR_INVALID_DATA							"{\"Category\":\"Securitz\",\"Error\":159,\"Success\":false,\"Data\":\"Invalid data for security!\"}"
 
-#define SHOPPING_ITEM_ERROR_ADD "Error 111:Could not add shopping item"
-#define SHOPPING_ITEM_ERROR_UPDATE "Error 112:Could not update shopping item"
-#define SHOPPING_ITEM_ERROR_DELETE "Error 113:Could not delete shopping item"
-#define SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE "Error 114:Wrong word size for shopping item"
+#define SHOPPING_ITEM_ERROR_ADD								"{\"Category\":\"ShoppingItem\",\"Error\":111,\"Success\":false,\"Data\":\"Could not add shopping item!\"}"
+#define SHOPPING_ITEM_ERROR_UPDATE							"{\"Category\":\"ShoppingItem\",\"Error\":112,\"Success\":false,\"Data\":\"Could not update shopping item!\"}"
+#define SHOPPING_ITEM_ERROR_DELETE							"{\"Category\":\"ShoppingItem\",\"Error\":113,\"Success\":false,\"Data\":\"Could not delete shopping item!\"}"
+#define SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE					"{\"Category\":\"ShoppingItem\",\"Error\":114,\"Success\":false,\"Data\":\"Wrong word size for shopping item!\"}"
 
-#define SUGGESTED_MEAL_ERROR_ADD "Error 141:Could not add suggested meal"
-#define SUGGESTED_MEAL_ERROR_UPDATE "Error 142:Could not update suggested meal"
-#define SUGGESTED_MEAL_ERROR_DELETE "Error 143:Could not delete suggested meal"
-#define SUGGESTED_MEAL_ERROR_WRONG_WORD_SIZE "Error 144:Wrong word size for suggested meal"
+#define SUGGESTED_MEAL_ERROR_ADD							"{\"Category\":\"SuggestedMeal\",\"Error\":141,\"Success\":false,\"Data\":\"Could not add suggested meal!\"}"
+#define SUGGESTED_MEAL_ERROR_UPDATE							"{\"Category\":\"SuggestedMeal\",\"Error\":142,\"Success\":false,\"Data\":\"Could not update suggested meal!\"}"
+#define SUGGESTED_MEAL_ERROR_DELETE							"{\"Category\":\"SuggestedMeal\",\"Error\":143,\"Success\":false,\"Data\":\"Could not delete suggested meal!\"}"
+#define SUGGESTED_MEAL_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"SuggestedMeal\",\"Error\":144,\"Success\":false,\"Data\":\"Wrong word size for suggested meal!\"}"
 
-#define SUGGESTED_SHOPPING_ITEM_ERROR_ADD "Error 121:Could not add suggested shopping item"
-#define SUGGESTED_SHOPPING_ITEM_ERROR_UPDATE "Error 122:Could not update suggested shopping item"
-#define SUGGESTED_SHOPPING_ITEM_ERROR_DELETE "Error 123:Could not delete suggested shopping item"
-#define SUGGESTED_SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE "Error 124:Wrong word size for suggested shopping item"
+#define SUGGESTED_SHOPPING_ITEM_ERROR_ADD					"{\"Category\":\"SuggestedShoppingItem\",\"Error\":121,\"Success\":false,\"Data\":\"Could not add suggested shopping item!\"}"
+#define SUGGESTED_SHOPPING_ITEM_ERROR_UPDATE				"{\"Category\":\"SuggestedShoppingItem\",\"Error\":122,\"Success\":false,\"Data\":\"Could not update suggested shopping item!\"}"
+#define SUGGESTED_SHOPPING_ITEM_ERROR_DELETE				"{\"Category\":\"SuggestedShoppingItem\",\"Error\":123,\"Success\":false,\"Data\":\"Could not delete suggested shopping item!\"}"
+#define SUGGESTED_SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE		"{\"Category\":\"SuggestedShoppingItem\",\"Error\":124,\"Success\":false,\"Data\":\"Wrong word size for suggested shopping item!\"}"
 
-#define TEMPERATURE_ERROR_NOT_INITIALIZED "Error 98:Temperature is not initialized"
-#define TEMPERATURE_ERROR_INVALID_DATA "Error 99:Invalid data for temperature"
+#define TEMPERATURE_ERROR_NOT_INITIALIZED					"{\"Category\":\"Temperature\",\"Error\":98,\"Success\":false,\"Data\":\"Temperature is not initialized!\"}"
+#define TEMPERATURE_ERROR_INVALID_DATA						"{\"Category\":\"Temperature\",\"Error\":99,\"Success\":false,\"Data\":\"Invalid data for temperature!\"}"
 
-#define USER_ERROR_ADD "Error 251:Could not add user"
-#define USER_ERROR_UPDATE "Error 252:Could not update user"
-#define USER_ERROR_DELETE "Error 253:Could not delete user"
-#define USER_ERROR_WRONG_WORD_SIZE "Error 254:Wrong word size for user"
+#define USER_ERROR_VALIDATE									"{\"Category\":\"User\",\"Error\":250,\"Success\":false,\"Data\":\"Failed to validate user!\"}"
+#define USER_ERROR_ADD										"{\"Category\":\"User\",\"Error\":251,\"Success\":false,\"Data\":\"Could not add user!\"}"
+#define USER_ERROR_UPDATE									"{\"Category\":\"User\",\"Error\":252,\"Success\":false,\"Data\":\"Could not update user!\"}"
+#define USER_ERROR_DELETE									"{\"Category\":\"User\",\"Error\":253,\"Success\":false,\"Data\":\"Could not delete user!\"}"
+#define USER_ERROR_WRONG_WORD_SIZE							"{\"Category\":\"User\",\"Error\":254,\"Success\":false,\"Data\":\"Wrong word size for user!\"}"
 
-#define WIRELESS_SCHEDULE_ERROR_SET "Error 60:Could not set wireless schedule"
-#define WIRELESS_SCHEDULE_ERROR_ADD "Error 61:Could not add wireless schedule"
-#define WIRELESS_SCHEDULE_ERROR_UPDATE "Error 62:Could not update wireless schedule"
-#define WIRELESS_SCHEDULE_ERROR_DELETE "Error 63:Could not delete wireless schedule"
-#define WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE "Error 64:Wrong word size for wireless schedule"
-#define WIRELESS_SCHEDULE_ERROR_INVALID_STATE "Error 69:Invalid state for wireless schedule"
+#define WIRELESS_SCHEDULE_ERROR_SET							"{\"Category\":\"WirelessSchedule\",\"Error\":60,\"Success\":false,\"Data\":\"Could not set wireless schedule!\"}"
+#define WIRELESS_SCHEDULE_ERROR_ADD							"{\"Category\":\"WirelessSchedule\",\"Error\":61,\"Success\":false,\"Data\":\"Could not add wireless schedule!\"}"
+#define WIRELESS_SCHEDULE_ERROR_UPDATE						"{\"Category\":\"WirelessSchedule\",\"Error\":62,\"Success\":false,\"Data\":\"Could not update wireless schedule!\"}"
+#define WIRELESS_SCHEDULE_ERROR_DELETE						"{\"Category\":\"WirelessSchedule\",\"Error\":63,\"Success\":false,\"Data\":\"Could not delete wireless schedule!\"}"
+#define WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"WirelessSchedule\",\"Error\":64,\"Success\":false,\"Data\":\"Wrong word size for wireless schedule!\"}"
+#define WIRELESS_SCHEDULE_ERROR_INVALID_STATE				"{\"Category\":\"WirelessSchedule\",\"Error\":69,\"Success\":false,\"Data\":\"Invalid state for wireless schedule!\"}"
 
-#define WIRELESS_SOCKET_ERROR_SET "Error 70:Could not set wireless socket"
-#define WIRELESS_SOCKET_ERROR_ADD "Error 71:Could not add wireless socket"
-#define WIRELESS_SOCKET_ERROR_UPDATE "Error 72:Could not update wireless socket"
-#define WIRELESS_SOCKET_ERROR_DELETE "Error 73:Could not delete wireless socket"
-#define WIRELESS_SOCKET_ERROR_WRONG_WORD_SIZE "Error 74:Wrong word size for wireless socket"
-#define WIRELESS_SOCKET_ERROR_INVALID_STATE "Error 79:Invalid state for wireless socket"
+#define WIRELESS_SOCKET_ERROR_SET							"{\"Category\":\"WirelessSocket\",\"Error\":70,\"Success\":false,\"Data\":\"Could not set wireless socket!\"}"
+#define WIRELESS_SOCKET_ERROR_ADD							"{\"Category\":\"WirelessSocket\",\"Error\":71,\"Success\":false,\"Data\":\"Could not add wireless socket!\"}"
+#define WIRELESS_SOCKET_ERROR_UPDATE						"{\"Category\":\"WirelessSocket\",\"Error\":72,\"Success\":false,\"Data\":\"Could not update wireless socket!\"}"
+#define WIRELESS_SOCKET_ERROR_DELETE						"{\"Category\":\"WirelessSocket\",\"Error\":73,\"Success\":false,\"Data\":\"Could not delete wireless socket!\"}"
+#define WIRELESS_SOCKET_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"WirelessSocket\",\"Error\":74,\"Success\":false,\"Data\":\"Wrong word size for wireless socket!\"}"
+#define WIRELESS_SOCKET_ERROR_INVALID_STATE					"{\"Category\":\"WirelessSocket\",\"Error\":79,\"Success\":false,\"Data\":\"Invalid state for wireless socket!\"}"
 
-#define WIRELESS_SWITCH_ERROR_TOGGLE "Error 80:Could not toggle wireless switch"
-#define WIRELESS_SWITCH_ERROR_ADD "Error 81:Could not add wireless switch"
-#define WIRELESS_SWITCH_ERROR_UPDATE "Error 82:Could not update wireless switch"
-#define WIRELESS_SWITCH_ERROR_DELETE "Error 83:Could not delete wireless switch"
-#define WIRELESS_SWITCH_ERROR_WRONG_WORD_SIZE "Error 84:Wrong word size for wireless switch"
+#define WIRELESS_SWITCH_ERROR_TOGGLE						"{\"Category\":\"WirelessSwitch\",\"Error\":80,\"Success\":false,\"Data\":\"Could not set wireless switch!\"}"
+#define WIRELESS_SWITCH_ERROR_ADD							"{\"Category\":\"WirelessSwitch\",\"Error\":81,\"Success\":false,\"Data\":\"Could not add wireless switch!\"}"
+#define WIRELESS_SWITCH_ERROR_UPDATE						"{\"Category\":\"WirelessSwitch\",\"Error\":82,\"Success\":false,\"Data\":\"Could not update wireless switch!\"}"
+#define WIRELESS_SWITCH_ERROR_DELETE						"{\"Category\":\"WirelessSwitch\",\"Error\":83,\"Success\":false,\"Data\":\"Could not delete wireless switch!\"}"
+#define WIRELESS_SWITCH_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"WirelessSwitch\",\"Error\":84,\"Success\":false,\"Data\":\"Wrong word size for wireless switch!\"}"
 
-#define WIRELESS_TIMER_ERROR_SET "Error 280:Could not set wireless timer"
-#define WIRELESS_TIMER_ERROR_ADD "Error 281:Could not add wireless timer"
-#define WIRELESS_TIMER_ERROR_UPDATE "Error 282:Could not update wireless timer"
-#define WIRELESS_TIMER_ERROR_DELETE "Error 283:Could not delete wireless timer"
-#define WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE "Error 284:Wrong word size for wireless timer"
-#define WIRELESS_TIMER_ERROR_INVALID_STATE "Error 289:Invalid state for wireless timer"
+#define WIRELESS_TIMER_ERROR_SET							"{\"Category\":\"WirelessTimer\",\"Error\":280,\"Success\":false,\"Data\":\"Could not set wireless timer!\"}"
+#define WIRELESS_TIMER_ERROR_ADD							"{\"Category\":\"WirelessTimer\",\"Error\":281,\"Success\":false,\"Data\":\"Could not add wireless timer!\"}"
+#define WIRELESS_TIMER_ERROR_UPDATE							"{\"Category\":\"WirelessTimer\",\"Error\":282,\"Success\":false,\"Data\":\"Could not update wireless timer!\"}"
+#define WIRELESS_TIMER_ERROR_DELETE							"{\"Category\":\"WirelessTimer\",\"Error\":283,\"Success\":false,\"Data\":\"Could not delete wireless timer!\"}"
+#define WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE				"{\"Category\":\"WirelessTimer\",\"Error\":284,\"Success\":false,\"Data\":\"Wrong word size for wireless timer!\"}"
+#define WIRELESS_TIMER_ERROR_INVALID_STATE					"{\"Category\":\"WirelessTimer\",\"Error\":289,\"Success\":false,\"Data\":\"Invalid state for wireless timer!\"}"
 
-#define YOUTUBE_VIDEO_ERROR_ADD "Error 221:Could not add youtube video"
-#define YOUTUBE_VIDEO_ERROR_UPDATE "Error 222:Could not update youtube video"
-#define YOUTUBE_VIDEO_ERROR_DELETE "Error 223:Could not delete youtube video"
-#define YOUTUBE_VIDEO_ERROR_WRONG_WORD_SIZE "Error 224:Wrong word size for youtube video"
+#define YOUTUBE_VIDEO_ERROR_ADD								"{\"Category\":\"YoutubeVideo\",\"Error\":221,\"Success\":false,\"Data\":\"Could not add youtube video!\"}"
+#define YOUTUBE_VIDEO_ERROR_UPDATE							"{\"Category\":\"YoutubeVideo\",\"Error\":222,\"Success\":false,\"Data\":\"Could not update youtube video!\"}"
+#define YOUTUBE_VIDEO_ERROR_DELETE							"{\"Category\":\"YoutubeVideo\",\"Error\":223,\"Success\":false,\"Data\":\"Could not delete youtube video!\"}"
+#define YOUTUBE_VIDEO_ERROR_WRONG_WORD_SIZE					"{\"Category\":\"YoutubeVideo\",\"Error\":224,\"Success\":false,\"Data\":\"Wrong word size for youtube video!\"}"
 
-/***********************************************/
-/************* COMMAND DEFINITIONS *************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************* COMMAND DEFINITIONS ************************************/
+/**********************************************************************************************/
 
 #define COMMAND_SPLITTER "::"
 
@@ -387,9 +388,9 @@
 
 #define CMD_SEND_MAIL "python /etc/default/lucahome/mail.py"
 
-/***********************************************/
-/************** INDEX DEFINITIONS **************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************** INDEX DEFINITIONS *************************************/
+/**********************************************************************************************/
 
 #define USER_NAME_INDEX 0
 #define PASSWORD_INDEX 1
@@ -604,9 +605,9 @@
 #define YOUTUBE_VIDEO_MEDIUM_IMAGE_URL_INDEX 9
 #define YOUTUBE_VIDEO_DATA_SIZE 10
 
-/***********************************************/
-/************** TIMEOUT DEFINITIONS ************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************* TIMEOUT DEFINITIONS ************************************/
+/**********************************************************************************************/
 
 #define BIRTHDAY_CHECK_TIMEOUT 2 * 60 * 60
 #define MOTION_CONTROL_TIMEOUT 15
@@ -614,9 +615,9 @@
 #define TASK_CONTROL_TIMEOUT 10
 #define TEMPERATURE_CONTROL_TIMEOUT 60
 
-/***********************************************/
-/*************** PATH DEFINITIONS **************/
-/***********************************************/
+/**********************************************************************************************/
+/*************************************** PATH DEFINITIONS *************************************/
+/**********************************************************************************************/
 
 #define NAS_PATH_CAMERA "/mnt/NAS/Camera/"
 #define NAS_PATH_LUCAHOME "/mnt/NAS/LucaHome/"
@@ -625,9 +626,9 @@
 #define NAS_PATH_MUSIC "/mnt/NAS/Music/"
 #define NAS_PATH_SERIES "/mnt/NAS/Series/"
 
-/***********************************************/
-/**************** FILE DEFINITIONS *************/
-/***********************************************/
+/**********************************************************************************************/
+/*************************************** FILE DEFINITIONS *************************************/
+/**********************************************************************************************/
 
 #define IS_FOLDER 0x4
 #define IS_FILE 0x8
@@ -637,9 +638,9 @@
 
 #define NFO_LUCA_FILE "NFO.luca"
 
-/***********************************************/
-/*************** OTHER DEFINITIONS *************/
-/***********************************************/
+/**********************************************************************************************/
+/************************************** OTHER DEFINITIONS *************************************/
+/**********************************************************************************************/
 
 #define DATA_GPIO 17
 #define SECONDS_OF_7_DAYS 7 * 24 * 60 * 60
