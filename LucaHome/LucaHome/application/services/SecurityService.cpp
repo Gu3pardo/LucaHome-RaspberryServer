@@ -160,9 +160,12 @@ string SecurityService::getJsonString()
 	stringstream out;
 	out << "{\"Category\":\"Security\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
 		<< "{"
+		<< "\"Security\":"
+		<< "{"
 		<< "\"Active\":" << (_isMotionActive ? "true" : "false") << ","
 		<< "\"TaskActive\":true" << ","
 		<< "\"Events\":" << getMotionEventsJsonString()
+		<< "}"
 		<< "}"
 		<< "]}\x00" << endl;
 	return out.str();
