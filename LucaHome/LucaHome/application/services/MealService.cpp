@@ -98,7 +98,7 @@ string MealService::getJsonString()
 
 char MealService::addMeal(vector<string> newMealData)
 {
-	vector<string> shoppingItemUuidList = Tools::Explode(",", newMealData[MEAL_SHOPPING_UUID_LIST_INDEX].c_str());
+	vector<string> shoppingItemUuidList = Tools::Explode(",,", newMealData[MEAL_SHOPPING_UUID_LIST_INDEX].c_str());
 	Meal newMeal(
 		newMealData[MEAL_UUID_INDEX].c_str(),
 		newMealData[MEAL_TITLE_INDEX].c_str(),
@@ -113,7 +113,7 @@ char MealService::addMeal(vector<string> newMealData)
 
 char MealService::updateMeal(vector<string> updateMealData)
 {
-	vector<string> shoppingItemUuidList = Tools::Explode(",", updateMealData[MEAL_SHOPPING_UUID_LIST_INDEX].c_str());
+	vector<string> shoppingItemUuidList = Tools::Explode(",,", updateMealData[MEAL_SHOPPING_UUID_LIST_INDEX].c_str());
 	Meal updateMeal(
 		updateMealData[MEAL_UUID_INDEX].c_str(),
 		updateMealData[MEAL_TITLE_INDEX].c_str(),
