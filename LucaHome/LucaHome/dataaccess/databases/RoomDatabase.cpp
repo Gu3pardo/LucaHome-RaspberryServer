@@ -41,10 +41,8 @@ vector<Room> RoomDatabase::GetList()
 		string uuid = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 1)));
 		string name = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 2)));
 		int type = sqlite3_column_int(res, 3);
-		string polylineDbString = string(reinterpret_cast<const char*>(sqlite3_column_text(res, 4)));
 
 		Room newEntry(uuid, name, type);
-		newEntry.ParsePointDbString(polylineDbString);
 		list.push_back(newEntry);
 	}
 
@@ -64,13 +62,11 @@ char RoomDatabase::Insert(Room entry)
 		"INSERT INTO " + _tableName + " ("
 		+ _keyUuid + " ,"
 		+ _keyName + " ,"
-		+ _keyType + " ,"
-		+ _keyPolyline + " ) "
+		+ _keyType + " ) "
 		+ "VALUES("
 		+ "'" + entry.GetUuid() + "',"
 		+ "'" + entry.GetName() + "',"
-		+ Tools::ConvertIntToStr(entry.GetType()) + ","
-		+ "'" + entry.GetPointDbString() + "'"
+		+ Tools::ConvertIntToStr(entry.GetType())
 		+ ");";
 
 	char *errorMessage = 0;
@@ -95,8 +91,7 @@ char RoomDatabase::Update(Room entry)
 	string sqlUpdateCommand =
 		"UPDATE " + _tableName + " "
 		+ "SET " + _keyName + " = '" + entry.GetName() + "',"
-		+ "SET " + _keyType + " = '" + Tools::ConvertIntToStr(entry.GetType()) + "',"
-		+ "SET " + _keyPolyline + " = " + entry.GetPointDbString() + " "
+		+ "SET " + _keyType + " = '" + Tools::ConvertIntToStr(entry.GetType()) + " "
 		+ "WHERE " + _keyUuid + "=" + entry.GetUuid() + ";";
 
 	char *errorMessage = 0;
@@ -151,8 +146,7 @@ char RoomDatabase::create()
 		+ _keyRowId + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ _keyUuid + " TEXT NOT NULL,"
 		+ _keyName + " TEXT NOT NULL,"
-		+ _keyType + " TEXT NOT NULL,"
-		+ _keyPolyline + " TEXT NOT NULL);";
+		+ _keyType + " TEXT NOT NULL);";
 
 	char *errorMessage = 0;
 	int error = sqlite3_exec(database, sqlCreateCommand.c_str(), NULL, NULL, &errorMessage);

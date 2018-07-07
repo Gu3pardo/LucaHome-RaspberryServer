@@ -15,7 +15,6 @@ protected:
 	string _keyUuid = "_uuid";
 	string _keyName = "_name";
 	string _keyType = "_type";
-	string _keyPolyline = "_polyline";
 
 	sqlite3 *database;
 

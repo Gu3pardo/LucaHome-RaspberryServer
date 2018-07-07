@@ -16,14 +16,10 @@ private:
 	string _uuid;
 	string _name;
 	int _type;
-	vector<Point> _pointList;
-
-	string pointJsonString();
 
 public:
 	Room();
 	Room(string, string, int);
-	Room(string, string, int, vector<Point>);
 	~Room();
 
 	void SetUuid(string);
@@ -34,11 +30,6 @@ public:
 
 	void SetType(int);
 	int GetType();
-
-	void SetPointList(vector<Point>);
-	vector<Point> GetPointList();
-	string GetPointDbString();
-	void ParsePointDbString(string);
 
 	string JsonString();
 	string ToString();
