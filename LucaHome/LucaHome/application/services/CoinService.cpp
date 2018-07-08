@@ -39,10 +39,7 @@ string CoinService::PerformAction(vector<string> data)
 			{
 				return COIN_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return COIN_ERROR_ADD;
 		}
 		return COIN_ERROR_WRONG_WORD_SIZE;
 	}
@@ -56,10 +53,7 @@ string CoinService::PerformAction(vector<string> data)
 			{
 				return COIN_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return COIN_ERROR_UPDATE;
 		}
 		return COIN_ERROR_WRONG_WORD_SIZE;
 	}
@@ -71,10 +65,7 @@ string CoinService::PerformAction(vector<string> data)
 		{
 			return COIN_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"Coin\",\"Error\":175,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return COIN_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -98,7 +89,11 @@ string CoinService::getAllJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Coin\",\"Action\":\"GetAll\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Coin\","
+		<< "\"Action\":\"GetAll\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();
@@ -115,7 +110,11 @@ string CoinService::getUserJsonString(string userUuid)
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Coin\",\"Action\":\"GetUser\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Coin\","
+		<< "\"Action\":\"GetUser\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

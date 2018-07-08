@@ -31,10 +31,7 @@ string YoutubeVideoService::PerformAction(vector<string> data)
 			{
 				return YOUTUBE_VIDEO_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"YoutubeVideo\",\"Error\":225,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return YOUTUBE_VIDEO_ERROR_ADD;
 		}
 		return YOUTUBE_VIDEO_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string YoutubeVideoService::PerformAction(vector<string> data)
 			{
 				return YOUTUBE_VIDEO_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"YoutubeVideo\",\"Error\":225,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return YOUTUBE_VIDEO_ERROR_UPDATE;
 		}
 		return YOUTUBE_VIDEO_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string YoutubeVideoService::PerformAction(vector<string> data)
 		{
 			return YOUTUBE_VIDEO_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"YoutubeVideo\",\"Error\":225,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return YOUTUBE_VIDEO_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string YoutubeVideoService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"YoutubeVideo\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"YoutubeVideo\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

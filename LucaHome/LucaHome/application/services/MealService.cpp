@@ -31,10 +31,7 @@ string MealService::PerformAction(vector<string> data)
 			{
 				return MEAL_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Meal\",\"Error\":135,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MEAL_ERROR_ADD;
 		}
 		return MEAL_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string MealService::PerformAction(vector<string> data)
 			{
 				return MEAL_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Meal\",\"Error\":135,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MEAL_ERROR_UPDATE;
 		}
 		return MEAL_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string MealService::PerformAction(vector<string> data)
 		{
 			return MEAL_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"Meal\",\"Error\":135,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return MEAL_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string MealService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Meal\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Meal\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

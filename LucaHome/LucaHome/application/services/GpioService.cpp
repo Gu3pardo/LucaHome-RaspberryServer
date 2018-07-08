@@ -31,10 +31,7 @@ string GpioService::PerformAction(vector<string> data)
 			{
 				return GPIO_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Gpio\",\"Error\":295,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return GPIO_ERROR_ADD;
 		}
 		return GPIO_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string GpioService::PerformAction(vector<string> data)
 			{
 				return GPIO_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Gpio\",\"Error\":295,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return GPIO_ERROR_UPDATE;
 		}
 		return GPIO_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string GpioService::PerformAction(vector<string> data)
 		{
 			return GPIO_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"Gpio\",\"Error\":295,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return GPIO_ERROR_DELETE;
 	}
 
 	else if (action == SET)
@@ -78,10 +69,7 @@ string GpioService::PerformAction(vector<string> data)
 			{
 				return GPIO_SET_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Gpio\",\"Error\":295,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return GPIO_ERROR_SET;
 		}
 		return GPIO_ERROR_WRONG_WORD_SIZE;
 	}
@@ -107,7 +95,11 @@ string GpioService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Gpio\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Gpio\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

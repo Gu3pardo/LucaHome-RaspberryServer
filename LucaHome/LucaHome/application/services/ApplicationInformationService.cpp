@@ -31,10 +31,7 @@ string ApplicationInformationService::PerformAction(vector<string> data)
 			{
 				return APPLICATION_INFORMATION_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"ApplicationInformation\",\"Error\":265,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return APPLICATION_INFORMATION_ERROR_ADD;
 		}
 		return APPLICATION_INFORMATION_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string ApplicationInformationService::PerformAction(vector<string> data)
 			{
 				return APPLICATION_INFORMATION_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"ApplicationInformation\",\"Error\":265,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return APPLICATION_INFORMATION_ERROR_UPDATE;
 		}
 		return APPLICATION_INFORMATION_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string ApplicationInformationService::PerformAction(vector<string> data)
 		{
 			return APPLICATION_INFORMATION_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"ApplicationInformation\",\"Error\":265,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return APPLICATION_INFORMATION_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string ApplicationInformationService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"ApplicationInformation\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"ApplicationInformation\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

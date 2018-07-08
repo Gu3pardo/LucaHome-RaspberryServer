@@ -31,10 +31,7 @@ string SuggestedShoppingItemService::PerformAction(vector<string> data)
 			{
 				return SUGGESTED_SHOPPING_ITEM_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"SuggestedShoppingItem\",\"Error\":125,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return SUGGESTED_SHOPPING_ITEM_ERROR_ADD;
 		}
 		return SUGGESTED_SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string SuggestedShoppingItemService::PerformAction(vector<string> data)
 			{
 				return SUGGESTED_SHOPPING_ITEM_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"SuggestedShoppingItem\",\"Error\":125,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return SUGGESTED_SHOPPING_ITEM_ERROR_UPDATE;
 		}
 		return SUGGESTED_SHOPPING_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string SuggestedShoppingItemService::PerformAction(vector<string> data)
 		{
 			return SUGGESTED_SHOPPING_ITEM_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"SuggestedShoppingItem\",\"Error\":125,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return SUGGESTED_SHOPPING_ITEM_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string SuggestedShoppingItemService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"SuggestedShoppingItem\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"SuggestedShoppingItem\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

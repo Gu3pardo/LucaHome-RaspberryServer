@@ -158,7 +158,11 @@ string SecurityService::stopMotion()
 string SecurityService::getJsonString()
 {
 	stringstream out;
-	out << "{\"Category\":\"Security\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Security\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< "{"
 		<< "\"Security\":"
 		<< "{"

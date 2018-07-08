@@ -31,10 +31,7 @@ string MapContentService::PerformAction(vector<string> data)
 			{
 				return MAP_CONTENT_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MapContent\",\"Error\":105,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MAP_CONTENT_ERROR_ADD;
 		}
 		return MAP_CONTENT_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string MapContentService::PerformAction(vector<string> data)
 			{
 				return MAP_CONTENT_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MapContent\",\"Error\":105,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MAP_CONTENT_ERROR_UPDATE;
 		}
 		return MAP_CONTENT_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string MapContentService::PerformAction(vector<string> data)
 		{
 			return MAP_CONTENT_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"MapContent\",\"Error\":105,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return MAP_CONTENT_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string MapContentService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"MapContent\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"MapContent\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

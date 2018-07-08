@@ -31,10 +31,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_TIMER_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_TIMER_ERROR_ADD;
 		}
 		return WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_TIMER_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_TIMER_ERROR_UPDATE;
 		}
 		return WIRELESS_TIMER_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string WirelessTimerService::PerformAction(vector<string> data)
 		{
 			return WIRELESS_TIMER_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"WirelessTimer\",\"Error\":285,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return WIRELESS_TIMER_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -94,7 +85,11 @@ string WirelessTimerService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"WirelessTimer\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"WirelessTimer\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

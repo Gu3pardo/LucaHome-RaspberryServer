@@ -157,7 +157,11 @@ string MovieService::getJsonString(int start, int end, bool stepByStepAllMovies)
 
 	stringstream out;
 	if ((stepByStepAllMovies && start == 0) || !stepByStepAllMovies) {
-		out << "{\"Category\":\"Movie\",\"Action\":\"Get\",\"Success\":true,\"Data\":[";
+		out << "{\"Category\":\"Movie\","
+			<< "\"Action\":\"Get\","
+			<< "\"Error\":0,"
+			<< "\"Success\":true,"
+			<< "\"Data\":["
 	}
 
 	stringstream data;

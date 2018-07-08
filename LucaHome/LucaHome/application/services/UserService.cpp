@@ -31,10 +31,7 @@ string UserService::PerformAction(vector<string> data)
 			{
 				return USER_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return USER_ERROR_ADD;
 		}
 		return USER_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string UserService::PerformAction(vector<string> data)
 			{
 				return USER_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return USER_ERROR_UPDATE;
 		}
 		return USER_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string UserService::PerformAction(vector<string> data)
 		{
 			return USER_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"User\",\"Error\":255,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return USER_ERROR_DELETE;
 	}
 
 	else if (action == VALIDATE)

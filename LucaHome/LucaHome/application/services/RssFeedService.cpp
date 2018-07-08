@@ -31,10 +31,7 @@ string RssFeedService::PerformAction(vector<string> data)
 			{
 				return RSS_FEED_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"RssFeed\",\"Error\":245,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return RSS_FEED_ERROR_ADD;
 		}
 		return RSS_FEED_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string RssFeedService::PerformAction(vector<string> data)
 			{
 				return RSS_FEED_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"RssFeed\",\"Error\":245,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return RSS_FEED_ERROR_UPDATE;
 		}
 		return RSS_FEED_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string RssFeedService::PerformAction(vector<string> data)
 		{
 			return RSS_FEED_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"RssFeed\",\"Error\":245,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return RSS_FEED_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string RssFeedService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"RssFeed\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"RssFeed\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

@@ -112,7 +112,11 @@ string TemperatureService::getJsonString()
 		_graphPath);
 
 	stringstream out;
-	out << "{\"Category\":\"Temperature\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Temperature\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< temperature.JsonString()
 		<< "]}\x00" << endl;
 	return out.str();

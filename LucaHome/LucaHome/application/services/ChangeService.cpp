@@ -57,7 +57,11 @@ string ChangeService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Change\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Change\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

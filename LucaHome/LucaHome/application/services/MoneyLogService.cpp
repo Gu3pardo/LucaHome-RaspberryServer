@@ -39,10 +39,7 @@ string MoneyLogService::PerformAction(vector<string> data)
 			{
 				return MONEY_LOG_ITEM_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MoneyLogItem\",\"Error\":185,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MONEY_LOG_ITEM_ERROR_ADD;
 		}
 		return MONEY_LOG_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -56,10 +53,7 @@ string MoneyLogService::PerformAction(vector<string> data)
 			{
 				return MONEY_LOG_ITEM_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MoneyLogItem\",\"Error\":185,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return MONEY_LOG_ITEM_ERROR_UPDATE;
 		}
 		return MONEY_LOG_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -71,10 +65,7 @@ string MoneyLogService::PerformAction(vector<string> data)
 		{
 			return MONEY_LOG_ITEM_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"MoneyLogItem\",\"Error\":185,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return MONEY_LOG_ITEM_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -98,7 +89,11 @@ string MoneyLogService::getAllJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"MoneyLogItem\",\"Action\":\"GetAll\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"MoneyLogItem\","
+		<< "\"Action\":\"GetAll\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();
@@ -115,7 +110,11 @@ string MoneyLogService::getUserJsonString(string userUuid)
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"MoneyLogItem\",\"Action\":\"GetUser\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"MoneyLogItem\","
+		<< "\"Action\":\"GetUser\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

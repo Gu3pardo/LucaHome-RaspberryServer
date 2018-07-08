@@ -31,10 +31,7 @@ string RadioStreamService::PerformAction(vector<string> data)
 			{
 				return RADIO_STREAM_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"RadioStream\",\"Error\":235,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return RADIO_STREAM_ERROR_ADD;
 		}
 		return RADIO_STREAM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string RadioStreamService::PerformAction(vector<string> data)
 			{
 				return RADIO_STREAM_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"RadioStream\",\"Error\":235,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return RADIO_STREAM_ERROR_UPDATE;
 		}
 		return RADIO_STREAM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string RadioStreamService::PerformAction(vector<string> data)
 		{
 			return RADIO_STREAM_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"RadioStream\",\"Error\":235,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return RADIO_STREAM_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string RadioStreamService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"RadioStream\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"RadioStream\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

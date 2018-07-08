@@ -31,10 +31,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SCHEDULE_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SCHEDULE_ERROR_ADD;
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SCHEDULE_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SCHEDULE_ERROR_UPDATE;
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 		{
 			return WIRELESS_SCHEDULE_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return WIRELESS_SCHEDULE_ERROR_DELETE;
 	}
 
 	else if (action == SET)
@@ -78,10 +69,7 @@ string WirelessScheduleService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SCHEDULE_SET_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSchedule\",\"Error\":65,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SCHEDULE_ERROR_SET;
 		}
 		return WIRELESS_SCHEDULE_ERROR_WRONG_WORD_SIZE;
 	}
@@ -111,7 +99,11 @@ string WirelessScheduleService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"WirelessSchedule\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"WirelessSchedule\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

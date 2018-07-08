@@ -31,10 +31,7 @@ string WirelessSwitchService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SWITCH_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSwitch\",\"Error\":85,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SWITCH_ERROR_ADD;
 		}
 		return WIRELESS_SWITCH_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string WirelessSwitchService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SWITCH_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSwitch\",\"Error\":85,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SWITCH_ERROR_UPDATE;
 		}
 		return WIRELESS_SWITCH_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string WirelessSwitchService::PerformAction(vector<string> data)
 		{
 			return WIRELESS_SWITCH_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"WirelessSwitch\",\"Error\":85,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return WIRELESS_SWITCH_ERROR_DELETE;
 	}
 
 	else if (action == TOGGLE)
@@ -78,10 +69,7 @@ string WirelessSwitchService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SWITCH_TOGGLE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSwitch\",\"Error\":85,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SWITCH_ERROR_TOGGLE;
 		}
 		return WIRELESS_SWITCH_ERROR_WRONG_WORD_SIZE;
 	}
@@ -111,7 +99,11 @@ string WirelessSwitchService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"WirelessSwitch\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"WirelessSwitch\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

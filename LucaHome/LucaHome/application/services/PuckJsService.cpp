@@ -31,10 +31,7 @@ string PuckJsService::PerformAction(vector<string> data)
 			{
 				return PUCK_JS_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"PuckJs\",\"Error\":195,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return PUCK_JS_ERROR_ADD;
 		}
 		return PUCK_JS_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string PuckJsService::PerformAction(vector<string> data)
 			{
 				return PUCK_JS_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"PuckJs\",\"Error\":195,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return PUCK_JS_ERROR_UPDATE;
 		}
 		return PUCK_JS_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string PuckJsService::PerformAction(vector<string> data)
 		{
 			return PUCK_JS_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"PuckJs\",\"Error\":195,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return PUCK_JS_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string PuckJsService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"PuckJs\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"PuckJs\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

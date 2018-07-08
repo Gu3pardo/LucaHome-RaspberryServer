@@ -31,10 +31,7 @@ string ContactService::PerformAction(vector<string> data)
 			{
 				return CONTACT_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return CONTACT_ERROR_ADD;
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string ContactService::PerformAction(vector<string> data)
 			{
 				return CONTACT_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return CONTACT_ERROR_UPDATE;
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string ContactService::PerformAction(vector<string> data)
 		{
 			return CONTACT_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return CONTACT_ERROR_DELETE;
 	}
 
 	else if (action == MAIL)
@@ -78,10 +69,7 @@ string ContactService::PerformAction(vector<string> data)
 			{
 				return CONTACT_MAIL_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Contact\",\"Error\":35,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return CONTACT_ERROR_MAIL;
 		}
 		return CONTACT_ERROR_WRONG_WORD_SIZE;
 	}
@@ -129,7 +117,11 @@ string ContactService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Contact\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Contact\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

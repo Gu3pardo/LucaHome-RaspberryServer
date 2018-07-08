@@ -31,10 +31,7 @@ string RoomService::PerformAction(vector<string> data)
 			{
 				return ROOM_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Room\",\"Error\":205,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return ROOM_ERROR_ADD;
 		}
 		return ROOM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string RoomService::PerformAction(vector<string> data)
 			{
 				return ROOM_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"Room\",\"Error\":205,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return ROOM_ERROR_UPDATE;
 		}
 		return ROOM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string RoomService::PerformAction(vector<string> data)
 		{
 			return ROOM_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"Room\",\"Error\":205,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return ROOM_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string RoomService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"Room\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"Room\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

@@ -31,10 +31,7 @@ string WirelessSocketService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SOCKET_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSocket\",\"Error\":75,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SOCKET_ERROR_ADD;
 		}
 		return WIRELESS_SOCKET_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string WirelessSocketService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SOCKET_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSocket\",\"Error\":75,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SOCKET_ERROR_UPDATE;
 		}
 		return WIRELESS_SOCKET_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string WirelessSocketService::PerformAction(vector<string> data)
 		{
 			return WIRELESS_SOCKET_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"WirelessSocket\",\"Error\":75,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return WIRELESS_SOCKET_ERROR_DELETE;
 	}
 
 	else if (action == SET)
@@ -78,10 +69,7 @@ string WirelessSocketService::PerformAction(vector<string> data)
 			{
 				return WIRELESS_SOCKET_SET_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"WirelessSocket\",\"Error\":75,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return WIRELESS_SOCKET_ERROR_SET;
 		}
 		return WIRELESS_SOCKET_ERROR_WRONG_WORD_SIZE;
 	}
@@ -111,7 +99,11 @@ string WirelessSocketService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"WirelessSocket\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"WirelessSocket\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();

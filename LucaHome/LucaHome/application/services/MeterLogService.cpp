@@ -31,10 +31,7 @@ string MeterLogService::PerformAction(vector<string> data)
 			{
 				return METER_LOG_ITEM_ADD_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MeterLogItem\",\"Error\":165,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return METER_LOG_ITEM_ERROR_ADD;
 		}
 		return METER_LOG_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -48,10 +45,7 @@ string MeterLogService::PerformAction(vector<string> data)
 			{
 				return METER_LOG_ITEM_UPDATE_SUCCESS;
 			}
-
-			stringstream actionAnswer;
-			actionAnswer << "{\"Category\":\"MeterLogItem\",\"Error\":165,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-			return actionAnswer.str();
+			return METER_LOG_ITEM_ERROR_UPDATE;
 		}
 		return METER_LOG_ITEM_ERROR_WRONG_WORD_SIZE;
 	}
@@ -63,10 +57,7 @@ string MeterLogService::PerformAction(vector<string> data)
 		{
 			return METER_LOG_ITEM_DELETE_SUCCESS;
 		}
-
-		stringstream actionAnswer;
-		actionAnswer << "{\"Category\":\"MeterLogItem\",\"Error\":165,\"Success\":false,\"Data\":\"" << error << "\"}\x00" << endl;
-		return actionAnswer.str();
+		return METER_LOG_ITEM_ERROR_DELETE;
 	}
 
 	return COMMAND_ERROR_NO_ACTION_FOUND;
@@ -90,7 +81,11 @@ string MeterLogService::getJsonString()
 	}
 
 	stringstream out;
-	out << "{\"Category\":\"MeterLogItem\",\"Action\":\"Get\",\"Success\":true,\"Data\":["
+	out << "{\"Category\":\"MeterLogItem\","
+		<< "\"Action\":\"Get\","
+		<< "\"Error\":0,"
+		<< "\"Success\":true,"
+		<< "\"Data\":["
 		<< data.str().substr(0, data.str().size() - 1)
 		<< "]}\x00" << endl;
 	return out.str();
