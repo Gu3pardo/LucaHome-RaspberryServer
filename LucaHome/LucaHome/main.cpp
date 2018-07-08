@@ -678,7 +678,7 @@ int main(void) {
 	_roomService.Initialize("Room.db");
 	_rssFeedService.Initialize("RssFeed.db");
 	_securityService.Initialize("http://192.168.178.25:8081");
-	_shoppingItemService.Initialize("ShoppinItem.db");
+	_shoppingItemService.Initialize("ShoppingItem.db");
 	_suggestedMealService.Initialize("SuggestedMeal.db");
 	_suggestedShoppingItemService.Initialize("SuggestedShoppinItem.db");
 	_temperatureService.Initialize(Room("72B08CD8-54A2-4959-9BFE-26C4C9D876BF", "Living Room", 0), "28-000006f437d1", "http://192.168.178.25/cgi-bin/webgui.py", 15, 35);
