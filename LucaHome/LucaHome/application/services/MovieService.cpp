@@ -161,7 +161,7 @@ string MovieService::getJsonString(int start, int end, bool stepByStepAllMovies)
 			<< "\"Action\":\"Get\","
 			<< "\"Error\":0,"
 			<< "\"Success\":true,"
-			<< "\"Data\":["
+			<< "\"Data\":[";
 	}
 
 	stringstream data;
