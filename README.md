@@ -4,13 +4,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Build](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
-[![Version](https://img.shields.io/badge/version-v5.2.2.180108-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer)
+[![Build](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/LucaHome/LucaHome-RaspberryServer)
+[![Version](https://img.shields.io/badge/version-v5.2.2.180108-blue.svg)](https://github.com/LucaHome/LucaHome-RaspberryServer)
 
 Part of the LucaHome-Project
 
 Small server running on a raspberry to control your home.
-Remotely controlled by an android application (https://github.com/GuepardoApps/LucaHome-AndroidApplication)
+Remotely controlled by an android application (https://github.com/LucaHome/LucaHome-AndroidApplication)
 
 # Installation
 
@@ -74,19 +74,23 @@ pi@raspberrypi ~/lucahome $ sudo /etc/init.d/LucaHome start
 # IMPORTANT
 
 following project is also needed to work with the android application
-https://github.com/GuepardoApps/LucaHome-Website
+https://github.com/LucaHome/LucaHome-Website
 The code of this project needs to be copied to /var/www
 
 optional:
-https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
+https://github.com/LucaHome/LucaHome-RaspberryTemperatureLogger
 
 for the CAMERA module (working with motion!)
 https://www.pcwelt.de/ratgeber/Mit_dem_Raspberry_Pi_die_Wohnung_ueberwachen-Sicherheit-8638548.html
 
 ---
 
-![alt tag](https://github.com/GuepardoApps/LucaHome-RaspberryServer/blob/master/screenshots/img001.png)
+![alt tag](https://github.com/LucaHome/LucaHome-RaspberryServer/blob/master/screenshots/img001.png)
 
 ---
 
 Based on the original project of http://raspberrypiguide.de/howtos/powerpi-raspberry-pi-haussteuerung/
+
+# License
+
+LucaHome-RaspberryServer is distributed under the MIT license. [See LICENSE](LICENSE.md) for details.
