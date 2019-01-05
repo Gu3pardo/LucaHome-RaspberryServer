@@ -4,13 +4,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Build](https://img.shields.io/badge/build-WIP-yellow.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
-[![Version](https://img.shields.io/badge/version-v6.0.0.180709alpha9-blue.svg)](https://github.com/Gu3pardo/LucaHome-RaspberryServer/tree/develop)
+[![Build](https://img.shields.io/badge/build-WIP-yellow.svg)](https://github.com/LucaHome/LucaHome-RaspberryServer/tree/develop)
+[![Version](https://img.shields.io/badge/version-v6.0.0.180709alpha9-blue.svg)](https://github.com/LucaHome/LucaHome-RaspberryServer/tree/develop)
 
 Part of the LucaHome-Project
 
 Small server running on a raspberry to control your home.
-Remotely controlled by an android application (https://github.com/GuepardoApps/LucaHome-AndroidApplication)
+Remotely controlled by an android application (https://github.com/LucaHome/LucaHome-AndroidApplication)
 
 # Installation
 
@@ -96,7 +96,11 @@ sudo /etc/init.d/LucaHome start
 
 ## Optional
 
-https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
+https://github.com/LucaHome/LucaHome-RaspberryTemperatureLogger
 
 # Origin
 Based on the original project of http://raspberrypiguide.de/howtos/powerpi-raspberry-pi-haussteuerung/
+
+# License
+
+LucaHome-RaspberryServer is distributed under the MIT license. [See LICENSE](LICENSE.md) for details.
